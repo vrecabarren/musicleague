@@ -24,5 +24,10 @@ def view_submit(session_code):
     return render_template("view_submit.html", session_code=session_code)
 
 
+@app.route(VIEW_SUBMIT_URL, methods=['POST'])
+def post_submit(session_code):
+    return render_template("post_submit.html", session_code=session_code)
+
+
 if __name__ == "__main__":
     app.run()
