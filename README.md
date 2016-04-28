@@ -1,5 +1,6 @@
 # Feedback
 [![Build Status](https://travis-ci.org/nathancoleman/feedback.svg?branch=master)](https://travis-ci.org/nathancoleman/feedback)
+[![Project Status: WIP - Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
 
 Have you ever wanted to battle it out with your friends and see who has the
 best taste in music?
