@@ -1,5 +1,10 @@
+from mongoengine import BooleanField
+from mongoengine import DateTimeField
 from mongoengine import Document
 from mongoengine import EmbeddedDocumentListField
+from mongoengine import IntField
+from mongoengine import ListField
+from mongoengine import StringField
 
 
 class Submission(EmbeddedDocument):
