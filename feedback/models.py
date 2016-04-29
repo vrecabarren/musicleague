@@ -1,6 +1,9 @@
+from datetime import datetime
+
 from mongoengine import BooleanField
 from mongoengine import DateTimeField
 from mongoengine import Document
+from mongoengine import EmbeddedDocument
 from mongoengine import EmbeddedDocumentListField
 from mongoengine import IntField
 from mongoengine import ListField
@@ -17,7 +20,7 @@ class Submission(EmbeddedDocument):
 class Session(Document):
     created = DateTimeField(default=datetime.now, required=True)
     locked = BooleanField(default=False)
-    name = StringField(required=True)
+    name = StringField(primary_key=True, required=True)
     submissions = EmbeddedDocumentListField(Submission)
 
     def embed_url(self):
