@@ -5,6 +5,11 @@
     <title>Feedback | {{ session.name }}</title>
 </head>
 <body>
-
+    <h1>{{ session.name }}</h1>
+    <ul>
+        <li>Created: {{ session.created }}</li>
+        <li>Submissions: {{ session.submissions|length }}</li>
+        <li>Locked: {{ session.locked }}</li>
+    </ul>
 </body>
 </html>
