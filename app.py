@@ -5,7 +5,6 @@ from flask import request
 from flask import url_for
 
 from feedback.api import create_session
-from feedback.api import create_submission
 from feedback.api import get_session
 
 from feedback.urls import CREATE_SESSION_URL
