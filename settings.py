@@ -1,3 +1,3 @@
 DEBUG = True
 
-MONGO_DB_NAME = ''
+MONGO_DB_NAME = 'test'

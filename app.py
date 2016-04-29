@@ -37,23 +37,23 @@ def view_create_session():
 def post_create_session():
     session_name = request.form.get('session_name')
     session = create_session(session_name)
-    return redirect(url_for(view_session.__name__, session_code=session.name))
+    return redirect(url_for(view_session.__name__, session_name=session.name))
 
 
 @app.route(VIEW_SESSION_URL, methods=['GET'])
-def view_session(session_code):
-    session = get_session(session_code)
+def view_session(session_name):
+    session = get_session(session_name)
     return render_template("view_session.html", session=session)
 
 
 @app.route(VIEW_SUBMIT_URL, methods=['GET'])
-def view_submit(session_code):
-    return render_template("view_submit.html", session_code=session_code)
+def view_submit(session_name):
+    return render_template("view_submit.html", session_name=session_name)
 
 
 @app.route(VIEW_SUBMIT_URL, methods=['POST'])
-def post_submit(session_code):
-    return render_template("post_submit.html", session_code=session_code)
+def post_submit(session_name):
+    return render_template("post_submit.html", session_name=session_name)
 
 
 if __name__ == "__main__":
