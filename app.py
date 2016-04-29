@@ -1,6 +1,8 @@
 from flask import Flask
+from flask import redirect
 from flask import render_template
 from flask import request
+from flask import url_for
 
 from feedback.api import create_session
 from feedback.api import create_submission
@@ -35,7 +37,7 @@ def view_create_session():
 def post_create_session():
     session_name = request.form.get('session_name')
     session = create_session(session_name)
-    return render_template("view_session.html", session=session)
+    return redirect(url_for(view_session.__name__, session_code=session.name))
 
 
 @app.route(VIEW_SESSION_URL, methods=['GET'])
