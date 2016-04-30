@@ -1,3 +1,5 @@
+from os import environ
+
 from flask import Flask
 from flask import redirect
 from flask import render_template
@@ -56,4 +58,5 @@ def post_submit(session_name):
 
 
 if __name__ == "__main__":
-    app.run(debug=DEBUG)
+    port = int(environ.get('PORT', 33507))
+    app.run(host='0.0.0.0', port=port, debug=DEBUG)
