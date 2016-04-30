@@ -1,8 +1,6 @@
-from os import environ
 from unittest import TestCase
 
 from feedback.environment import DEBUG_ENV_VAR
-from feedback.environment import DEPLOYED_ENV_VAR
 from feedback.environment import get_port
 from feedback.environment import is_debug
 from feedback.environment import is_deployed
@@ -11,43 +9,46 @@ from feedback.environment import parse_mongolab_uri
 from feedback.environment import PORT_ENV_VAR
 from feedback.environment import PORT_ENV_VAR_DEFAULT
 
+from feedback.tests.utils import decorators as dec
+from feedback.tests.utils.environment import set_environment_state
+
 
 class GetPortTestCase(TestCase):
 
     def test_env_var(self):
-        _set_environment_state(PORT_ENV_VAR, '1111')
+        set_environment_state(PORT_ENV_VAR, '1111')
         self.assertEqual(1111, get_port())
 
     def test_no_env_var(self):
-        _set_environment_state(PORT_ENV_VAR, remove=True)
+        set_environment_state(PORT_ENV_VAR, remove=True)
         self.assertEqual(PORT_ENV_VAR_DEFAULT, get_port())
 
 
 class IsDebugTestCase(TestCase):
 
+    @dec.env_local
     def test_not_deployed(self):
-        _set_environment_state(DEPLOYED_ENV_VAR, remove=True)
         self.assertTrue(is_debug())
 
+    @dec.env_deployed
     def test_deployed_no_env_var(self):
-        _set_environment_state(DEPLOYED_ENV_VAR, 'True')
-        _set_environment_state(DEBUG_ENV_VAR, remove=True)
+        set_environment_state(DEBUG_ENV_VAR, remove=True)
         self.assertFalse(is_debug())
 
+    @dec.env_deployed
+    @dec.env_debug
     def test_deployed_env_var(self):
-        _set_environment_state(DEPLOYED_ENV_VAR, 'True')
-        _set_environment_state(DEBUG_ENV_VAR, 'True')
         self.assertTrue(is_debug())
 
 
 class IsDeployedTestCase(TestCase):
 
+    @dec.env_deployed
     def test_deployed(self):
-        _set_environment_state(DEPLOYED_ENV_VAR, 'True')
         self.assertTrue(is_deployed())
 
+    @dec.env_local
     def test_not_deployed(self):
-        _set_environment_state(DEPLOYED_ENV_VAR, remove=True)
         self.assertFalse(is_deployed())
 
 
@@ -63,20 +64,10 @@ class ParseMongoLabURITestCase(TestCase):
             username=self.username, password=self.password, host=self.host,
             port=self.port, db=self.db)
 
+    @dec.env_deployed
     def test_happy_path(self):
-        _set_environment_state(DEPLOYED_ENV_VAR, 'True')
-        _set_environment_state(MONGODB_URI_ENV_VAR, self.uri)
+        set_environment_state(MONGODB_URI_ENV_VAR, self.uri)
 
         self.assertEqual(
             (self.host, int(self.port), self.username, self.password, self.db),
             parse_mongolab_uri())
-
-
-# TODO Add decorators for various environment states - @env_local, @env_debug
-def _set_environment_state(key, value=None, remove=False):
-    if not remove:
-        environ[key] = value
-        return
-
-    if key in environ:
-        del environ[key]
