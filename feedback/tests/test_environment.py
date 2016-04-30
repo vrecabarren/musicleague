@@ -4,7 +4,7 @@ from unittest import TestCase
 from feedback.environment import DEPLOYED_ENV_VAR
 from feedback.environment import get_port
 from feedback.environment import is_deployed
-from feedback.environment import MONGOLAB_URI_ENV_VAR
+from feedback.environment import MONGODB_URI_ENV_VAR
 from feedback.environment import parse_mongolab_uri
 from feedback.environment import PORT_ENV_VAR
 from feedback.environment import PORT_ENV_VAR_DEFAULT
@@ -48,7 +48,7 @@ class ParseMongoLabURITestCase(TestCase):
 
     def test_happy_path(self):
         environ[DEPLOYED_ENV_VAR] = 'True'
-        environ[MONGOLAB_URI_ENV_VAR] = self.uri
+        environ[MONGODB_URI_ENV_VAR] = self.uri
 
         self.assertEqual(
             (self.host, int(self.port), self.username, self.password, self.db),

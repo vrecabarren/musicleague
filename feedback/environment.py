@@ -4,7 +4,7 @@ import re
 
 DEPLOYED_ENV_VAR = 'ON_HEROKU'
 DEPLOYED_ENV_VAR_DEFAULT = False
-MONGOLAB_URI_ENV_VAR = 'MONGOLAB_URI'
+MONGODB_URI_ENV_VAR = 'MONGODB_URI'
 PORT_ENV_VAR = 'PORT'
 PORT_ENV_VAR_DEFAULT = 33507
 
@@ -24,7 +24,7 @@ def parse_mongolab_uri():
     r = (r'^mongodb\:\/\/(?P<username>[_\w]+):(?P<password>[\w]+)@(?P<host>'
          r'[\.\w]+):(?P<port>\d+)/(?P<database>[_\w]+)$')
     regex = re.compile(r)
-    mongolab_url = os.environ.get(MONGOLAB_URI_ENV_VAR)
+    mongolab_url = os.environ.get(MONGODB_URI_ENV_VAR)
     match = regex.search(mongolab_url)
     data = match.groupdict()
 
