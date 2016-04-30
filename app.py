@@ -1,5 +1,3 @@
-from os import environ
-
 from flask import Flask
 from flask import redirect
 from flask import render_template
@@ -9,6 +7,10 @@ from flask import url_for
 from feedback.api import create_session
 from feedback.api import get_session
 
+from feedback.environment import get_port
+from feedback.environment import is_deployed
+from feedback.environment import parse_mongolab_uri
+
 from feedback.urls import CREATE_SESSION_URL
 from feedback.urls import HELLO_URL
 from feedback.urls import VIEW_SESSION_URL
@@ -16,12 +18,15 @@ from feedback.urls import VIEW_SUBMIT_URL
 
 from mongoengine import connect
 
-from settings import DEBUG
 from settings import MONGO_DB_NAME
 
 
 app = Flask(__name__)
-connect(MONGO_DB_NAME)
+if is_deployed():
+    host, port, username, password, db = parse_mongolab_uri()
+    connect(db, host=host, port=port, username=username, password=password)
+else:
+    connect(MONGO_DB_NAME)
 
 
 @app.route(HELLO_URL)
@@ -58,5 +63,6 @@ def post_submit(session_name):
 
 
 if __name__ == "__main__":
-    port = int(environ.get('PORT', 33507))
-    app.run(host='0.0.0.0', port=port, debug=DEBUG)
+    debug = not is_deployed()
+    port = get_port()
+    app.run(host='0.0.0.0', port=port, debug=debug)
