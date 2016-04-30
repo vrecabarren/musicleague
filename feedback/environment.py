@@ -2,11 +2,19 @@ import os
 import re
 
 
+DEBUG_ENV_VAR = 'DEBUG'
+DEBUG_ENV_VAR_DEFAULT = False
 DEPLOYED_ENV_VAR = 'ON_HEROKU'
 DEPLOYED_ENV_VAR_DEFAULT = False
 MONGODB_URI_ENV_VAR = 'MONGODB_URI'
 PORT_ENV_VAR = 'PORT'
 PORT_ENV_VAR_DEFAULT = 33507
+
+
+def is_debug():
+    if not is_deployed():
+        return True
+    return bool(os.environ.get(DEBUG_ENV_VAR, DEBUG_ENV_VAR_DEFAULT))
 
 
 def is_deployed():

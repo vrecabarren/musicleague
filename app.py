@@ -8,6 +8,7 @@ from feedback.api import create_session
 from feedback.api import get_session
 
 from feedback.environment import get_port
+from feedback.environment import is_debug
 from feedback.environment import is_deployed
 from feedback.environment import parse_mongolab_uri
 
@@ -63,6 +64,6 @@ def post_submit(session_name):
 
 
 if __name__ == "__main__":
-    debug = not is_deployed()
+    debug = is_debug()
     port = get_port()
     app.run(host='0.0.0.0', port=port, debug=debug)
