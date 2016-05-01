@@ -1,3 +1,5 @@
+import logging
+
 from flask import Flask
 from flask import redirect
 from flask import render_template
@@ -42,9 +44,13 @@ def view_create_session():
 
 @app.route(CREATE_SESSION_URL, methods=['POST'])
 def post_create_session():
-    session_name = request.form.get('session_name')
-    session = create_session(session_name)
-    return redirect(url_for(view_session.__name__, session_name=session.name))
+    try:
+        session_name = request.form.get('session_name')
+        session = create_session(session_name)
+        return redirect(
+            url_for(view_session.__name__, session_name=session.name))
+    except Exception as e:
+        logging.exception('There was an exception: %s', e)
 
 
 @app.route(VIEW_SESSION_URL, methods=['GET'])
