@@ -36,6 +36,11 @@ class IsDebugTestCase(TestCase):
         self.assertFalse(is_debug())
 
     @dec.env_deployed
+    def test_deployed_false_env_var(self):
+        set_environment_state(DEBUG_ENV_VAR, 'False')
+        self.assertFalse(is_debug())
+
+    @dec.env_deployed
     @dec.env_debug
     def test_deployed_env_var(self):
         self.assertTrue(is_debug())

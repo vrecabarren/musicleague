@@ -14,7 +14,9 @@ PORT_ENV_VAR_DEFAULT = 33507
 def is_debug():
     if not is_deployed():
         return True
-    return bool(os.environ.get(DEBUG_ENV_VAR, DEBUG_ENV_VAR_DEFAULT))
+    if DEBUG_ENV_VAR not in os.environ:
+        return DEBUG_ENV_VAR_DEFAULT
+    return os.environ[DEBUG_ENV_VAR].lower() == 'true'
 
 
 def is_deployed():
