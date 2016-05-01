@@ -14,7 +14,7 @@ submit and listen!
 ## Using this Repo
 Feedback is a [Python](https://www.python.org/) project that relies on
 [Flask](http://flask.pocoo.org/), [Mongo](https://www.mongodb.org/) (via [MongoEngine](http://mongoengine.org/)),
-and [Heroku](https://www.heroku.com/).
+[Travis CI](https://travis-ci.com), and [Heroku](https://www.heroku.com/).
 
 I recommend using [virtualenv](http://www.virtualenv.org/en/latest/) along with
 [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/) for
@@ -35,4 +35,9 @@ make unit
 ### Running Locally
 ```
 make run
+```
+
+### Running Continuous Integration Script
+```
+make ci
 ```
