@@ -3,13 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Feedback | {{ session.name }}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 </head>
-<body>
-    <h1>{{ session.name }}</h1>
-    <ul>
-        <li>Created: {{ session.created }}</li>
-        <li>Submissions: {{ session.submissions|length }}</li>
-        <li>Locked: {{ session.locked }}</li>
-    </ul>
+<body style="padding-top: 50px">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="well col-md-4 col-md-offset-4">
+                <h1 class=text-center>{{ session.name }}</h1>
+                <ul>
+                    <li>Created: {{ session.created }}</li>
+                    <li>Submissions: {{ session.submissions|length }}</li>
+                    <li>Locked: {{ session.locked }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
