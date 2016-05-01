@@ -80,11 +80,6 @@ def view_submit(session_name):
     return render_template("view_submit.html", session_name=session_name)
 
 
-@app.route(VIEW_SUBMIT_URL, methods=['POST'])
-def post_submit(session_name):
-    return render_template("post_submit.html", session_name=session_name)
-
-
 if __name__ == "__main__":
     debug = is_debug()
     port = get_port()

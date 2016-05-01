@@ -2,11 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Feedback | {{ session_name }}</title>
+    <title>{% block title %}Feedback{% endblock %}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h1>SUCCESS!</h1>
-
+    {% block content %}
+    No content here! Please check back later.
+    {% endblock %}
 </body>
 </html>
