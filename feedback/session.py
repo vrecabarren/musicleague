@@ -13,5 +13,8 @@ def create_session(name):
 
 
 def get_session(name):
-    session = Session.objects.get(name=name)
-    return session
+    try:
+        session = Session.objects.get(name=name)
+        return session
+    except Session.DoesNotExist:
+        return None
