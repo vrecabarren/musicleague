@@ -17,6 +17,7 @@ from feedback.environment import parse_mongolab_uri
 
 from feedback.urls import CREATE_SESSION_URL
 from feedback.urls import HELLO_URL
+from feedback.urls import REGISTER_URL
 from feedback.urls import VIEW_SESSION_URL
 from feedback.urls import VIEW_SUBMIT_URL
 
@@ -40,6 +41,16 @@ else:
 @app.route(HELLO_URL)
 def hello():
     return render_template("hello.html")
+
+
+@app.route(REGISTER_URL, methods=['GET'])
+def view_register():
+    return render_template("register.html")
+
+
+@app.route(REGISTER_URL, methods=['POST'])
+def post_register():
+    return redirect(url_for(hello.__name__))
 
 
 @app.route(CREATE_SESSION_URL, methods=['GET'])
