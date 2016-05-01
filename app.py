@@ -1,4 +1,5 @@
 import logging
+import sys
 
 from flask import Flask
 from flask import redirect
@@ -25,11 +26,15 @@ from settings import MONGO_DB_NAME
 
 
 app = Flask(__name__)
+app.logger.addHandler(logging.StreamHandler(sys.stdout))
+
 if is_deployed():
     host, port, username, password, db = parse_mongolab_uri()
     connect(db, host=host, port=port, username=username, password=password)
+    app.logger.setLevel(logging.ERROR)
 else:
     connect(MONGO_DB_NAME)
+    app.logger.setLevel(logging.DEBUG)
 
 
 @app.route(HELLO_URL)
