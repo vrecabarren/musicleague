@@ -12,9 +12,11 @@ handle the playlists, email reminders, and voting - all you have to do is
 submit and listen!
 
 ## Using this Repo
-Feedback is a [Python](https://www.python.org/) project that relies on
-[Flask](http://flask.pocoo.org/), [Mongo](https://www.mongodb.org/) (via [MongoEngine](http://mongoengine.org/)),
-[Travis CI](https://travis-ci.com), and [Heroku](https://www.heroku.com/).
+Feedback relies on multiple other open source projects:
+- [Flask](http://flask.pocoo.org/)
+- [Mongo](https://www.mongodb.org/) (via [MongoEngine](http://mongoengine.org/))
+- [Spotipy](http://spotipy.readthedocs.io/en/latest/)
+- [HaikunatorPy](https://github.com/Atrox/haikunatorpy)
 
 I recommend using [virtualenv](http://www.virtualenv.org/en/latest/) along with
 [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/) for
