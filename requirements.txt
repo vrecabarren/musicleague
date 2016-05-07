@@ -3,5 +3,6 @@ Flask
 Flask-MongoEngine
 Flask-OAuth
 Flask-Security
+Flask-Social
 mongoengine
 spotipy
