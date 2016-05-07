@@ -14,17 +14,17 @@ from feedback.environment.variables import SECRET_KEY
 def is_debug():
     if not is_deployed():
         return True
-    setting = get_environment_setting(DEBUG)
-    return (setting.lower() == 'true' if isinstance(setting, basestring)
-            else DEBUG.default)
+    if DEBUG.key not in os.environ:
+        return DEBUG.default
+    return os.environ.get(DEBUG.key).lower() == 'true'
 
 
 def is_deployed():
-    return get_environment_setting(DEPLOYED, typecast=bool)
+    return get_environment_setting(DEPLOYED)
 
 
 def get_port():
-    return get_environment_setting(PORT, typecast=int)
+    return get_environment_setting(PORT)
 
 
 def get_secret_key():
@@ -42,26 +42,36 @@ def get_facebook_config():
     return {'consumer_key': consumer_key, 'consumer_secret': consumer_secret}
 
 
-def get_environment_setting(env_setting, typecast=str):
+def get_environment_setting(env_setting, resort_local=True):
+    """Any value retrieved from the environment will be typecast to match
+    env_setting.default
+    """
     if env_setting.key == DEPLOYED.key:
         setting = os.environ.get(DEPLOYED.key, DEPLOYED.default)
 
     elif not is_deployed():
-        setting = get_local_setting(env_setting)
+        setting = env_setting.default
+        if resort_local:
+            setting = get_local_setting(env_setting)
 
     else:
         setting = os.environ.get(env_setting.key, env_setting.default)
 
+    typecast = type(env_setting.default)
     return typecast(setting)
 
 
-def get_local_setting(env_setting, typecast=str):
+def get_local_setting(env_setting):
+    """Any value retrieved from the environment will be typecast to match
+    env_setting.default
+    """
     if is_deployed():
         return env_setting.default
 
     try:
         import settingslocal
         setting = getattr(settingslocal, env_setting.key)
+        typecast = type(env_setting.default)
         return typecast(setting)
     except AttributeError:
         logging.warning('Attempt to get local setting %s failed because we '
