@@ -6,15 +6,22 @@ from flask import redirect
 from flask import render_template
 from flask import request
 from flask import url_for
+from flask.ext.security import MongoEngineUserDatastore
+from flask.ext.security import Security
+from flask.ext.social import Social
+from flask.ext.social.datastore import MongoEngineConnectionDatastore
 
 from feedback.api import create_session
 from feedback.api import get_session
-
+from feedback.environment import get_facebook_config
 from feedback.environment import get_port
+from feedback.environment import get_secret_key
 from feedback.environment import is_debug
 from feedback.environment import is_deployed
 from feedback.environment import parse_mongolab_uri
-
+from feedback.models import Connection
+from feedback.models import Role
+from feedback.models import User
 from feedback.urls import CREATE_SESSION_URL
 from feedback.urls import HELLO_URL
 from feedback.urls import REGISTER_URL
@@ -27,15 +34,28 @@ from settings import MONGO_DB_NAME
 
 
 app = Flask(__name__)
+app.config['SOCIAL_FACEBOOK'] = get_facebook_config()
+app.config['SECURITY_POST_LOGIN'] = '/profile'
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
+app.secret_key = get_secret_key()
 
 if is_deployed():
     host, port, username, password, db = parse_mongolab_uri()
-    connect(db, host=host, port=port, username=username, password=password)
+    db = connect(db, host=host, port=port, username=username,
+                 password=password)
     app.logger.setLevel(logging.ERROR)
 else:
-    connect(MONGO_DB_NAME)
+    db = connect(MONGO_DB_NAME)
     app.logger.setLevel(logging.DEBUG)
+
+
+security = Security(app, MongoEngineUserDatastore(db, User, Role))
+social = Social(app, MongoEngineConnectionDatastore(db, Connection))
+
+
+@app.route('/profile')
+def profile():
+    return render_template('profile.html', content='Profile Page')
 
 
 @app.route(HELLO_URL)

@@ -1,3 +1,7 @@
-flask
+facebook-sdk
+Flask
+Flask-MongoEngine
+Flask-OAuth
+Flask-Security
 mongoengine
 spotipy

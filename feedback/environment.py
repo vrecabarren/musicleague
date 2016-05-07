@@ -6,9 +6,15 @@ DEBUG_ENV_VAR = 'DEBUG'
 DEBUG_ENV_VAR_DEFAULT = False
 DEPLOYED_ENV_VAR = 'ON_HEROKU'
 DEPLOYED_ENV_VAR_DEFAULT = False
+FB_CONSUMER_KEY_ENV_VAR = 'FB_CONSUMER_KEY'
+FB_CONSUMER_KEY_ENV_VAR_DEFAULT = ''
+FB_CONSUMER_SECRET_ENV_VAR = 'FB_CONSUMER_SECRET'
+FB_CONSUMER_SECRET_ENV_VAR_DEFAULT = ''
 MONGODB_URI_ENV_VAR = 'MONGODB_URI'
 PORT_ENV_VAR = 'PORT'
 PORT_ENV_VAR_DEFAULT = 33507
+SECRET_KEY_ENV_VAR = 'SECRET_KEY'
+SECRET_KEY_ENV_VAR_DEFAULT = ''
 
 
 def is_debug():
@@ -25,6 +31,25 @@ def is_deployed():
 
 def get_port():
     return int(os.environ.get(PORT_ENV_VAR, PORT_ENV_VAR_DEFAULT))
+
+
+def get_secret_key():
+    if not is_deployed():
+        return
+
+    return os.environ.get(SECRET_KEY_ENV_VAR, SECRET_KEY_ENV_VAR_DEFAULT)
+
+
+def get_facebook_config():
+    if not is_deployed():
+        return
+
+    return {
+        'consumer_key': os.environ.get(FB_CONSUMER_KEY_ENV_VAR,
+                                       FB_CONSUMER_KEY_ENV_VAR_DEFAULT),
+        'consumer_secret': os.environ.get(FB_CONSUMER_SECRET_ENV_VAR,
+                                          FB_CONSUMER_SECRET_ENV_VAR_DEFAULT)
+    }
 
 
 def parse_mongolab_uri():
