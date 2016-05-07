@@ -11,38 +11,15 @@ from feedback.environment.variables import PORT
 from feedback.environment.variables import SECRET_KEY
 
 
-def is_debug():
-    if not is_deployed():
-        return True
-    if DEBUG.key not in os.environ:
-        return DEBUG.default
-    return os.environ.get(DEBUG.key).lower() == 'true'
+def get_setting(env_setting):
+    if env_setting.key == DEPLOYED.key:
+        return get_environment_setting(DEPLOYED)
+
+    getter = get_environment_setting if is_deployed() else get_local_setting
+    return getter(env_setting)
 
 
-def is_deployed():
-    return get_environment_setting(DEPLOYED)
-
-
-def get_port():
-    return get_environment_setting(PORT)
-
-
-def get_secret_key():
-    return get_environment_setting(SECRET_KEY)
-
-
-def get_facebook_config():
-    if not is_deployed():
-        consumer_key = get_local_setting(FB_CONSUMER_KEY)
-        consumer_secret = get_local_setting(FB_CONSUMER_SECRET)
-    else:
-        consumer_key = get_environment_setting(FB_CONSUMER_KEY)
-        consumer_secret = get_environment_setting(FB_CONSUMER_SECRET)
-
-    return {'consumer_key': consumer_key, 'consumer_secret': consumer_secret}
-
-
-def get_environment_setting(env_setting, resort_local=True):
+def get_environment_setting(env_setting):
     """Any value retrieved from the environment will be typecast to match
     env_setting.default
     """
@@ -51,8 +28,6 @@ def get_environment_setting(env_setting, resort_local=True):
 
     elif not is_deployed():
         setting = env_setting.default
-        if resort_local:
-            setting = get_local_setting(env_setting)
 
     else:
         setting = os.environ.get(env_setting.key, env_setting.default)
@@ -65,9 +40,6 @@ def get_local_setting(env_setting):
     """Any value retrieved from the environment will be typecast to match
     env_setting.default
     """
-    if is_deployed():
-        return env_setting.default
-
     try:
         import settingslocal
         setting = getattr(settingslocal, env_setting.key)
@@ -81,6 +53,31 @@ def get_local_setting(env_setting):
         logging.warning('Attempt to get local setting %s failed because we '
                         'could not find settingslocal.py', env_setting.key)
     return env_setting.default
+
+
+def is_debug():
+    if not is_deployed():
+        return True
+    if DEBUG.key not in os.environ:
+        return DEBUG.default
+    return os.environ.get(DEBUG.key).lower() == 'true'
+
+
+def is_deployed():
+    return get_setting(DEPLOYED)
+
+
+def get_facebook_config():
+    return {'consumer_key': get_setting(FB_CONSUMER_KEY),
+            'consumer_secret': get_setting(FB_CONSUMER_SECRET)}
+
+
+def get_port():
+    return get_setting(PORT)
+
+
+def get_secret_key():
+    return get_setting(SECRET_KEY)
 
 
 def parse_mongolab_uri():
