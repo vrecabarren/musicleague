@@ -1,21 +1,21 @@
 from functools import wraps
 
-from feedback.environment import DEBUG_ENV_VAR
-from feedback.environment import DEPLOYED_ENV_VAR
+from feedback.environment.variables import DEBUG
+from feedback.environment.variables import DEPLOYED
 
 from feedback.tests.utils.environment import set_environment_state
 
 
 def env_debug(func):
-    return _get_env_wrapper(func, DEBUG_ENV_VAR, 'True')
+    return _get_env_wrapper(func, DEBUG.key, 'True')
 
 
 def env_deployed(func):
-    return _get_env_wrapper(func, DEPLOYED_ENV_VAR, 'True')
+    return _get_env_wrapper(func, DEPLOYED.key, 'True')
 
 
 def env_local(func):
-    return _get_env_wrapper(func, DEPLOYED_ENV_VAR, remove=True)
+    return _get_env_wrapper(func, DEPLOYED.key, remove=True)
 
 
 def _get_env_wrapper(func, key, value=None, remove=False):
