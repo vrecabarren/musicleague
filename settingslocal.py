@@ -1,3 +1,3 @@
-FB_CONSUMER_KEY = 'fb_consumer_key'
-FB_CONSUMER_SECRET = 'fb_consumer_secret'
+FB_CONSUMER_KEY = '461944310682386'
+FB_CONSUMER_SECRET = '9f679a2adc6777682a59fd3460d434e6'
 SECRET_KEY = 'secret_key_local'
