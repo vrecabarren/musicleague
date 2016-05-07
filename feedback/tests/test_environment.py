@@ -2,6 +2,7 @@ from unittest import TestCase
 from uuid import uuid4
 
 from feedback.environment import get_facebook_config
+from feedback.environment import get_local_setting
 from feedback.environment import get_port
 from feedback.environment import get_secret_key
 from feedback.environment import is_debug
@@ -28,10 +29,11 @@ class GetFacebookConfigTestCase(TestCase):
     @dec.env_local
     def test_env_local(self):
         config = get_facebook_config()
+        local_key = get_local_setting(FB_CONSUMER_KEY)
+        local_secret = get_local_setting(FB_CONSUMER_SECRET)
 
-        self.assertEqual(FB_CONSUMER_KEY.default, config.get('consumer_key'))
-        self.assertEqual(
-            FB_CONSUMER_SECRET.default, config.get('consumer_secret'))
+        self.assertEqual(local_key, config.get('consumer_key'))
+        self.assertEqual(local_secret, config.get('consumer_secret'))
 
     @dec.env_deployed
     def test_no_env_var(self):
@@ -75,7 +77,8 @@ class GetSecretKeyTestCase(TestCase):
     @dec.env_local
     def test_env_local(self):
         set_environment_state(SECRET_KEY.key, remove=True)
-        self.assertEqual(SECRET_KEY.default, get_secret_key())
+        local_setting = get_local_setting(SECRET_KEY)
+        self.assertEqual(local_setting, get_secret_key())
 
     @dec.env_deployed
     def test_no_env_var(self):
