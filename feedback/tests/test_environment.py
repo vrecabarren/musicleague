@@ -30,9 +30,12 @@ class GetFacebookConfigTestCase(TestCase):
 
     @dec.env_local
     def test_env_local(self):
-        set_environment_state(FB_CONSUMER_KEY_ENV_VAR, self.consumer_key)
-        set_environment_state(FB_CONSUMER_SECRET_ENV_VAR, self.consumer_secret)
-        self.assertIsNone(get_facebook_config())
+        config = get_facebook_config()
+
+        self.assertEqual(
+            FB_CONSUMER_KEY_ENV_VAR_DEFAULT, config.get('consumer_key'))
+        self.assertEqual(
+            FB_CONSUMER_SECRET_ENV_VAR_DEFAULT, config.get('consumer_secret'))
 
     @dec.env_deployed
     def test_no_env_var(self):
@@ -75,8 +78,8 @@ class GetSecretKeyTestCase(TestCase):
 
     @dec.env_local
     def test_env_local(self):
-        set_environment_state(SECRET_KEY_ENV_VAR, self.secret_key)
-        self.assertIsNone(get_secret_key())
+        set_environment_state(SECRET_KEY_ENV_VAR, remove=True)
+        self.assertEqual(SECRET_KEY_ENV_VAR_DEFAULT, get_secret_key())
 
     @dec.env_deployed
     def test_no_env_var(self):

@@ -34,16 +34,10 @@ def get_port():
 
 
 def get_secret_key():
-    if not is_deployed():
-        return
-
     return os.environ.get(SECRET_KEY_ENV_VAR, SECRET_KEY_ENV_VAR_DEFAULT)
 
 
 def get_facebook_config():
-    if not is_deployed():
-        return
-
     return {
         'consumer_key': os.environ.get(FB_CONSUMER_KEY_ENV_VAR,
                                        FB_CONSUMER_KEY_ENV_VAR_DEFAULT),
