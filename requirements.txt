@@ -4,5 +4,6 @@ Flask-MongoEngine
 Flask-OAuth
 Flask-Security
 Flask-Social
+Flask-WTF
 mongoengine
 spotipy
