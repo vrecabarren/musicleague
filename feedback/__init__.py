@@ -1,18 +1,21 @@
 import logging
 import sys
 
+from flask import current_app
 from flask import Flask
 from flask import redirect
 from flask import render_template
 from flask import request
 from flask import url_for
 from flask.ext.security import login_required
+from flask.ext.security import login_user
 from flask.ext.security import MongoEngineUserDatastore
 from flask.ext.security import Security
 from flask.ext.social import login_failed
 from flask.ext.social import Social
 from flask.ext.social.datastore import MongoEngineConnectionDatastore
 from flask.ext.social.utils import get_connection_values_from_oauth_response
+from flask.ext.social.views import connect_handler
 
 from feedback.api import create_session
 from feedback.api import get_session
@@ -103,5 +106,14 @@ def on_login_failed(sender, provider, oauth_response):
 
     full_name = connection_values.get('full_name')
     email = connection_values.get('email')
+
+    ds = current_app.security.datastore
+    user = ds.create_user(name=full_name, email=email)
+    ds.commit()
+    connection_values['user_id'] = user.id
+    connect_handler(connection_values, provider)
+    login_user(user)
+    db.commit()
+    return render_template('success.html')
 
     logging.warning('full_name: %s, email: %s', full_name, email)
