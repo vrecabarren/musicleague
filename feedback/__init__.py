@@ -1,25 +1,18 @@
 import logging
 import sys
 
-from flask import current_app
-from flask import flash
 from flask import Flask
 from flask import redirect
 from flask import render_template
 from flask import request
-from flask import session as flask_session
 from flask import url_for
-from flask.ext.security import current_user
 from flask.ext.security import login_required
-from flask.ext.security import login_user
 from flask.ext.security import MongoEngineUserDatastore
 from flask.ext.security import Security
 from flask.ext.social import login_failed
 from flask.ext.social import Social
 from flask.ext.social.datastore import MongoEngineConnectionDatastore
 from flask.ext.social.utils import get_connection_values_from_oauth_response
-from flask.ext.social.utils import get_provider_or_404
-from flask.ext.social.views import connect_handler
 
 from feedback.api import create_session
 from feedback.api import get_session
@@ -28,15 +21,11 @@ from feedback.environment import get_secret_key
 from feedback.environment import is_debug
 from feedback.environment import is_deployed
 from feedback.environment import parse_mongolab_uri
-from feedback.errors import SocialLoginError
-from feedback.forms import RegisterForm
 from feedback.models import Connection
 from feedback.models import Role
 from feedback.models import User
 from feedback.urls import CREATE_SESSION_URL
 from feedback.urls import HELLO_URL
-from feedback.urls import REGISTER_URL
-from feedback.urls import REGISTER_WITH_PROVIDER_URL
 from feedback.urls import VIEW_SESSION_URL
 from feedback.urls import VIEW_SUBMIT_URL
 
@@ -77,56 +66,6 @@ def hello():
     return render_template("hello.html")
 
 
-@app.route(REGISTER_URL, methods=['GET'])
-@app.route(REGISTER_WITH_PROVIDER_URL, methods=['POST', 'GET'])
-def view_register(provider_id=None):
-    if current_user.is_authenticated:
-        return redirect(request.referrer or '/')
-
-    form = RegisterForm()
-
-    if provider_id:
-        provider = get_provider_or_404(provider_id)
-        connection_values = flask_session.get('failed_login_connection', None)
-    else:
-        provider = None
-        connection_values = None
-
-    if form.validate_on_submit():
-        ds = current_app.security.datastore
-        user = ds.create_user(email=form.email.data,
-                              password=form.password.data)
-        ds.commit()
-
-        # See if there was an attempted social login prior to registering
-        # and if so use the provider connect_handler to save a connection
-        connection_values = flask_session.pop('failed_login_connection', None)
-
-        if connection_values:
-            connection_values['user_id'] = user.id
-            connect_handler(connection_values, provider)
-
-        if login_user(user):
-            ds.commit()
-            flash('Account created successfully', 'info')
-            return redirect(url_for('profile'))
-
-        return render_template('thanks.html', user=user)
-
-    login_failed = int(request.args.get('login_failed', 0))
-
-    return render_template('register.html',
-                           form=form,
-                           provider=provider,
-                           login_failed=login_failed,
-                           connection_values=connection_values)
-
-
-@app.route(REGISTER_URL, methods=['POST'])
-def post_register():
-    return redirect(url_for(hello.__name__))
-
-
 @app.route(CREATE_SESSION_URL, methods=['GET'])
 def view_create_session():
     return render_template("create_session.html")
@@ -159,18 +98,10 @@ def on_login_failed(sender, provider, oauth_response):
     logging.debug('Social Login Failed via %s; &oauth_response=%s',
                   provider.name, oauth_response)
 
-    # Save the oauth response in the session so we can make the connection
-    # later after the user possibly registers
     connection_values = get_connection_values_from_oauth_response(
         provider, oauth_response)
 
-    logging.warning('connection_values: %s', connection_values)
+    full_name = connection_values.get('full_name')
+    email = connection_values.get('email')
 
-    raise SocialLoginError(provider)
-
-
-@app.errorhandler(SocialLoginError)
-def social_login_error(error):
-    return redirect(
-        url_for(view_register.__name__, provider_id=error.provider.id,
-                login_failed=1))
+    logging.warning('full_name: %s, email: %s', full_name, email)
