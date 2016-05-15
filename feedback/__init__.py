@@ -118,4 +118,4 @@ def on_login_failed(sender, provider, oauth_response):
     db.commit()
     return render_template('success.html')
 
-    logging.warning('full_name: %s, email: %s', full_name, email)
+    logging.warning('full_name: %s, email: %s', name, email)
