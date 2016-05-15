@@ -43,6 +43,7 @@ class Role(Document, RoleMixin):
 
 
 class User(Document, UserMixin):
+    user_id = IntField(primary_key=True)
     name = StringField(max_length=255)
     email = StringField(max_length=255)
     active = BooleanField(default=True)

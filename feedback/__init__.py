@@ -104,11 +104,13 @@ def on_login_failed(sender, provider, oauth_response):
     connection_values = get_connection_values_from_oauth_response(
         provider, oauth_response)
 
-    full_name = connection_values.get('full_name')
+    name = connection_values.get('full_name')
+    connection_values['name'] = name
+    del connection_values['full_name']
     email = connection_values.get('email')
 
     ds = current_app.security.datastore
-    user = ds.create_user(name=full_name, email=email)
+    user = ds.create_user(name=name, email=email)
     ds.commit()
     connection_values['user_id'] = user.id
     connect_handler(connection_values, provider)
