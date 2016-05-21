@@ -17,7 +17,7 @@ class Submission(EmbeddedDocument):
     user = StringField(required=True)
 
 
-class Session(Document):
+class Season(Document):
     created = DateTimeField(default=datetime.now, required=True)
     locked = BooleanField(default=False)
     name = StringField(primary_key=True, required=True)

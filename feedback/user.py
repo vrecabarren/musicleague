@@ -13,7 +13,7 @@ def create_user(id, name, email):
 
 def get_user(id):
     try:
-        session = User.objects.get(id=id)
-        return session
+        user = User.objects.get(id=id)
+        return user
     except User.DoesNotExist:
         return None

@@ -1,20 +1,20 @@
-from feedback.errors import SessionExistsError
+from feedback.errors import SeasonExistsError
 
-from feedback.models import Session
-
-
-def create_session(name):
-    if get_session(name):
-        raise SessionExistsError('Session with name %s already exists' % name)
-
-    new_session = Session(name=name)
-    new_session.save()
-    return new_session
+from feedback.models import Season
 
 
-def get_session(name):
+def create_season(name):
+    if get_season(name):
+        raise SeasonExistsError('Season with name %s already exists' % name)
+
+    new_season = Season(name=name)
+    new_season.save()
+    return new_season
+
+
+def get_season(name):
     try:
-        session = Session.objects.get(name=name)
-        return session
-    except Session.DoesNotExist:
+        season = Season.objects.get(name=name)
+        return season
+    except Season.DoesNotExist:
         return None

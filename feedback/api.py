@@ -1,4 +1,4 @@
-from feedback.session import create_session
-from feedback.session import get_session
+from feedback.season import create_season
+from feedback.season import get_season
 
 from feedback.submit import create_submission
