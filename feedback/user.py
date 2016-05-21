@@ -11,6 +11,20 @@ def create_user(id, name, email):
     return new_user
 
 
+def create_or_update_user(id, name, email):
+    user = get_user(id)
+
+    if not user:
+        user = create_user(id, name, email)
+    else:
+        user.id = id
+        user.name = name
+        user.email = email
+
+    user.save()
+    return user
+
+
 def get_user(id):
     try:
         user = User.objects.get(id=id)

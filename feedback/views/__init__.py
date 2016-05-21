@@ -12,8 +12,7 @@ from feedback import app
 from feedback.api import create_season
 from feedback.api import get_season
 from feedback.spotify import get_spotify_oauth
-from feedback.user import get_user
-from feedback.user import create_user
+from feedback.user import create_or_update_user
 from feedback.views import urls
 from feedback.views.decorators import login_required
 
@@ -48,22 +47,14 @@ def login(**kwargs):
             token_info = oauth.get_access_token(code)
             access_token = token_info['access_token']
             session['access_token'] = access_token
+
             spotify = Spotify(access_token)
-            user_id = spotify.current_user().get('id')
-            user = get_user(user_id)
-            user_email = spotify.current_user().get('email')
-            user_name = spotify.current_user().get('display_name')
+            user = create_or_update_user(
+                spotify.current_user().get('id'),
+                spotify.current_user().get('email'),
+                spotify.current_user().get('display_name'))
 
-            if not user:
-                user = create_user(user_id, user_name, user_email)
-
-            else:
-                user.id = user_id
-                user.name = user_name
-                user.email = user_email
-                user.save()
-
-            session['current_user'] = user_id
+            session['current_user'] = user.id
 
     return redirect(url_for('profile'))
 
