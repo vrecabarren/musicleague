@@ -12,6 +12,7 @@ from spotipy import Spotify
 from feedback import app
 from feedback.api import create_season
 from feedback.api import get_season
+from feedback.season import get_seasons_for_user
 from feedback.spotify import get_spotify_oauth
 from feedback.user import create_or_update_user
 from feedback.user import get_user
@@ -40,8 +41,10 @@ def hello():
 @app.route('/profile/')
 @login_required
 def profile():
+    seasons = get_seasons_for_user(g.user)
     kwargs = {
-        'user': g.user
+        'user': g.user,
+        'seasons': seasons
     }
     return render_template("profile.html", **kwargs)
 
@@ -89,7 +92,7 @@ def view_create_season():
 def post_create_season():
     try:
         season_name = request.form.get('season_name')
-        season = create_season(season_name)
+        season = create_season(season_name, user=g.user)
         return redirect(
             url_for(view_season.__name__, season_name=season.name))
     except Exception as e:

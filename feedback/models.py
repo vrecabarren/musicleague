@@ -7,7 +7,15 @@ from mongoengine import EmbeddedDocument
 from mongoengine import EmbeddedDocumentListField
 from mongoengine import IntField
 from mongoengine import ListField
+from mongoengine import ReferenceField
 from mongoengine import StringField
+
+
+class User(Document):
+    id = IntField(primary_key=True)
+    name = StringField(max_length=255)
+    email = StringField(max_length=255)
+    joined = DateTimeField(default=datetime.now())
 
 
 class Submission(EmbeddedDocument):
@@ -19,6 +27,7 @@ class Submission(EmbeddedDocument):
 
 class Season(Document):
     created = DateTimeField(default=datetime.now, required=True)
+    owner = ReferenceField(User)
     locked = BooleanField(default=False)
     name = StringField(primary_key=True, required=True)
     submissions = EmbeddedDocumentListField(Submission)
@@ -31,10 +40,3 @@ class Season(Document):
         for submission in self.submissions:
             guids.update(submission.tracks)
             return url.format(title=self.name, guids=','.join(list(guids)))
-
-
-class User(Document):
-    id = IntField(primary_key=True)
-    name = StringField(max_length=255)
-    email = StringField(max_length=255)
-    joined = DateTimeField(default=datetime.now())
