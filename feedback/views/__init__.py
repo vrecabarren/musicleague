@@ -14,15 +14,11 @@ from feedback.api import get_season
 from feedback.spotify import get_spotify_oauth
 from feedback.user import get_user
 from feedback.user import create_user
-from feedback.views.urls import CREATE_SEASON_URL
-from feedback.views.urls import HELLO_URL
-from feedback.views.urls import LOGIN_URL
-from feedback.views.urls import LOGOUT_URL
-from feedback.views.urls import VIEW_SEASON_URL
-from feedback.views.urls import VIEW_SUBMIT_URL
+from feedback.views import urls
+from feedback.views.decorators import login_required
 
 
-@app.route(HELLO_URL)
+@app.route(urls.HELLO_URL)
 def hello():
     oauth = get_spotify_oauth()
     return render_template(
@@ -32,14 +28,20 @@ def hello():
         oauth_url=oauth.get_authorize_url())
 
 
-@app.route(LOGOUT_URL)
+@app.route('/profile/')
+@login_required
+def profile():
+    return 'logged in! here is your profile!'
+
+
+@app.route(urls.LOGOUT_URL)
 def logout():
     if 'current_user' in flask_session:
         flask_session.pop('current_user')
     return redirect(url_for(hello.__name__))
 
 
-@app.route(LOGIN_URL)
+@app.route(urls.LOGIN_URL)
 def login():
     if 'current_user' not in flask_session:
         url = request.url
@@ -69,12 +71,12 @@ def login():
     return redirect(url_for(hello.__name__))
 
 
-@app.route(CREATE_SEASON_URL, methods=['GET'])
+@app.route(urls.CREATE_SEASON_URL, methods=['GET'])
 def view_create_season():
     return render_template("create_season.html")
 
 
-@app.route(CREATE_SEASON_URL, methods=['POST'])
+@app.route(urls.CREATE_SEASON_URL, methods=['POST'])
 def post_create_season():
     try:
         season_name = request.form.get('season_name')
@@ -85,12 +87,12 @@ def post_create_season():
         logging.exception('There was an exception: %s', e)
 
 
-@app.route(VIEW_SEASON_URL, methods=['GET'])
+@app.route(urls.VIEW_SEASON_URL, methods=['GET'])
 def view_season(season_name):
     season = get_season(season_name)
     return render_template("view_season.html", season=season)
 
 
-@app.route(VIEW_SUBMIT_URL, methods=['GET'])
+@app.route(urls.VIEW_SUBMIT_URL, methods=['GET'])
 def view_submit(season_name):
     return render_template("view_submit.html", season=season_name)
