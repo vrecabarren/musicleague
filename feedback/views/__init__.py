@@ -50,9 +50,9 @@ def login(**kwargs):
 
             spotify = Spotify(access_token)
             user = create_or_update_user(
-                spotify.current_user().get('id'),
-                spotify.current_user().get('email'),
-                spotify.current_user().get('display_name'))
+                id=spotify.current_user().get('id'),
+                email=spotify.current_user().get('email'),
+                name=spotify.current_user().get('display_name'))
 
             session['current_user'] = user.id
 
