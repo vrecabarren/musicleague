@@ -4,8 +4,6 @@ import re
 
 from feedback.environment.variables import DEBUG
 from feedback.environment.variables import DEPLOYED
-from feedback.environment.variables import FB_CONSUMER_KEY
-from feedback.environment.variables import FB_CONSUMER_SECRET
 from feedback.environment.variables import MONGODB_URI
 from feedback.environment.variables import PORT
 from feedback.environment.variables import SECRET_KEY
@@ -66,11 +64,6 @@ def is_debug():
 
 def is_deployed():
     return get_setting(DEPLOYED)
-
-
-def get_facebook_config():
-    return {'consumer_key': get_setting(FB_CONSUMER_KEY),
-            'consumer_secret': get_setting(FB_CONSUMER_SECRET)}
 
 
 def get_port():

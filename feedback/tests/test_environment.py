@@ -1,7 +1,6 @@
 from unittest import TestCase
 from uuid import uuid4
 
-from feedback.environment import get_facebook_config
 from feedback.environment import get_local_setting
 from feedback.environment import get_port
 from feedback.environment import get_secret_key
@@ -10,52 +9,12 @@ from feedback.environment import is_deployed
 from feedback.environment import parse_mongolab_uri
 
 from feedback.environment.variables import DEBUG
-from feedback.environment.variables import FB_CONSUMER_KEY
-from feedback.environment.variables import FB_CONSUMER_SECRET
 from feedback.environment.variables import MONGODB_URI
 from feedback.environment.variables import PORT
 from feedback.environment.variables import SECRET_KEY
 
 from feedback.tests.utils import decorators as dec
 from feedback.tests.utils.environment import set_environment_state
-
-
-class GetFacebookConfigTestCase(TestCase):
-
-    def setUp(self):
-        self.consumer_key = uuid4().hex
-        self.consumer_secret = uuid4().hex
-
-    @dec.env_local
-    def test_env_local(self):
-        config = get_facebook_config()
-        local_key = get_local_setting(FB_CONSUMER_KEY)
-        local_secret = get_local_setting(FB_CONSUMER_SECRET)
-
-        self.assertEqual(local_key, config.get('consumer_key'))
-        self.assertEqual(local_secret, config.get('consumer_secret'))
-
-    @dec.env_deployed
-    def test_no_env_var(self):
-        set_environment_state(FB_CONSUMER_KEY.key, remove=True)
-        set_environment_state(FB_CONSUMER_SECRET.key, remove=True)
-
-        config = get_facebook_config()
-
-        self.assertEqual(
-            FB_CONSUMER_KEY.default, config.get('consumer_key'))
-        self.assertEqual(
-            FB_CONSUMER_SECRET.default, config.get('consumer_secret'))
-
-    @dec.env_deployed
-    def test_env_var(self):
-        set_environment_state(FB_CONSUMER_KEY.key, self.consumer_key)
-        set_environment_state(FB_CONSUMER_SECRET.key, self.consumer_secret)
-
-        config = get_facebook_config()
-
-        self.assertEqual(self.consumer_key, config.get('consumer_key'))
-        self.assertEqual(self.consumer_secret, config.get('consumer_secret'))
 
 
 class GetPortTestCase(TestCase):
