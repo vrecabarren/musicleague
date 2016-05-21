@@ -1,5 +1,6 @@
 import logging
 
+from flask import escape
 from flask import g
 from flask import redirect
 from flask import render_template
@@ -86,21 +87,12 @@ def view_user(user_id):
     return render_template("user.html", **kwargs)
 
 
-@app.route(urls.CREATE_SEASON_URL, methods=['GET'])
-@login_required
-def view_create_season():
-    kwargs = {
-        'user': g.user
-    }
-    return render_template("create_season.html", **kwargs)
-
-
 @app.route(urls.CREATE_SEASON_URL, methods=['POST'])
 @login_required
 def post_create_season():
     try:
-        season_name = request.form.get('season_name')
-        season = create_season(season_name, user=g.user)
+        season_name = escape(request.form.get('season_name'))
+        season = create_season(season_name, g.user)
         return redirect(
             url_for(view_season.__name__, season_name=season.name))
     except Exception as e:
@@ -124,7 +116,7 @@ def view_season(season_name):
         'user': g.user,
         'season': season
     }
-    return render_template("view_season.html", **kwargs)
+    return render_template("season.html", **kwargs)
 
 
 @app.route(urls.VIEW_SUBMIT_URL, methods=['GET'])
@@ -135,7 +127,7 @@ def view_submit(season_name):
         'user': g.user,
         'season': season
     }
-    return render_template("view_submit.html", **kwargs)
+    return render_template("submit.html", **kwargs)
 
 
 @app.route(urls.CREATE_PLAYLIST_URL)
