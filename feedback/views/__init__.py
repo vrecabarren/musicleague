@@ -1,5 +1,6 @@
 import logging
 
+from flask import g
 from flask import redirect
 from flask import render_template
 from flask import request
@@ -13,32 +14,46 @@ from feedback.api import create_season
 from feedback.api import get_season
 from feedback.spotify import get_spotify_oauth
 from feedback.user import create_or_update_user
+from feedback.user import get_user
 from feedback.views import urls
 from feedback.views.decorators import login_required
 
 
+@app.before_request
+def before_request():
+    if 'current_user' in session:
+        g.user = get_user(session['current_user'])
+    else:
+        g.user = None
+
+
 @app.route(urls.HELLO_URL)
-def hello(**kwargs):
-    oauth = get_spotify_oauth()
-    kwargs['oauth_url'] = oauth.get_authorize_url()
+def hello():
+    kwargs = {
+        'user': g.user,
+        'oauth_url': get_spotify_oauth().get_authorize_url()
+    }
     return render_template("hello.html", **kwargs)
 
 
 @app.route('/profile/')
 @login_required
-def profile(**kwargs):
+def profile():
+    kwargs = {
+        'user': g.user
+    }
     return render_template("profile.html", **kwargs)
 
 
 @app.route(urls.LOGOUT_URL)
 @login_required
-def logout(**kwargs):
+def logout():
     session.pop('current_user')
     return redirect(url_for("hello"))
 
 
 @app.route(urls.LOGIN_URL)
-def login(**kwargs):
+def login():
     if 'current_user' not in session:
         url = request.url
         oauth = get_spotify_oauth()
@@ -61,13 +76,16 @@ def login(**kwargs):
 
 @app.route(urls.CREATE_SEASON_URL, methods=['GET'])
 @login_required
-def view_create_season(**kwargs):
+def view_create_season():
+    kwargs = {
+        'user': g.user
+    }
     return render_template("create_season.html", **kwargs)
 
 
 @app.route(urls.CREATE_SEASON_URL, methods=['POST'])
 @login_required
-def post_create_season(**kwargs):
+def post_create_season():
     try:
         season_name = request.form.get('season_name')
         season = create_season(season_name)
@@ -79,12 +97,21 @@ def post_create_season(**kwargs):
 
 @app.route(urls.VIEW_SEASON_URL, methods=['GET'])
 @login_required
-def view_season(season_name, **kwargs):
+def view_season(season_name):
     season = get_season(season_name)
-    return render_template("view_season.html", season=season, **kwargs)
+    kwargs = {
+        'user': g.user,
+        'season': season
+    }
+    return render_template("view_season.html", **kwargs)
 
 
 @app.route(urls.VIEW_SUBMIT_URL, methods=['GET'])
 @login_required
-def view_submit(season_name, **kwargs):
-    return render_template("view_submit.html", season=season_name, **kwargs)
+def view_submit(season_name):
+    season = get_season(season_name)
+    kwargs = {
+        'user': g.user,
+        'season': season
+    }
+    return render_template("view_submit.html", **kwargs)
