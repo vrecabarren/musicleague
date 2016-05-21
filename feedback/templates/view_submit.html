@@ -4,11 +4,29 @@
 
 {% block content %}
 
-<h1>Submit</h1>
-<form method="post" action="">
-    <input type="text" name="track1">
-    <input type="text" name="track2">
-    <button type="submit" class="btn btn-large">Submit</button>
-</form>
+<div class="container-fluid">
+    <div class="row">
+        <div class="well col-md-4 col-md-offset-4">
+            <h1 class=text-center>Submit</h1>
+            <form method="post" action="">
+
+                <div class="form-group">
+                    <label for="track1">Track #1:</label>
+                    <input type="text" class="form-control" name="track1">
+                </div>
+
+                <div class="form-group">
+                    <label for="track2">Track #2:</label>
+                    <input type="text" class="form-control" name="track2">
+                </div>
+
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
