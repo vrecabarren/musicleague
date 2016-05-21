@@ -21,10 +21,11 @@ from feedback.views.decorators import login_required
 
 @app.before_request
 def before_request():
-    if 'current_user' in session:
-        g.user = get_user(session['current_user'])
-    else:
-        g.user = None
+    current_user = session['current_user'] if 'current_user' in session else ''
+    g.user = get_user(current_user) if current_user else None
+
+    access_token = session['access_token'] if 'access_token' in session else ''
+    g.spotify = Spotify(access_token) if access_token else None
 
 
 @app.route(urls.HELLO_URL)
