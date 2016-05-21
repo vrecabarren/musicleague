@@ -31,10 +31,14 @@ def hello():
 @app.route('/profile/')
 @login_required
 def profile():
-    return 'logged in! here is your profile!'
+    return render_template(
+        "profile.html",
+        user=(get_user(flask_session['current_user'])
+              if 'current_user' in flask_session else None))
 
 
 @app.route(urls.LOGOUT_URL)
+@login_required
 def logout():
     if 'current_user' in flask_session:
         flask_session.pop('current_user')
@@ -68,15 +72,17 @@ def login():
 
             flask_session['current_user'] = user_id
 
-    return redirect(url_for(hello.__name__))
+    return redirect(url_for('profile'))
 
 
 @app.route(urls.CREATE_SEASON_URL, methods=['GET'])
+@login_required
 def view_create_season():
     return render_template("create_season.html")
 
 
 @app.route(urls.CREATE_SEASON_URL, methods=['POST'])
+@login_required
 def post_create_season():
     try:
         season_name = request.form.get('season_name')
@@ -88,11 +94,13 @@ def post_create_season():
 
 
 @app.route(urls.VIEW_SEASON_URL, methods=['GET'])
+@login_required
 def view_season(season_name):
     season = get_season(season_name)
     return render_template("view_season.html", season=season)
 
 
 @app.route(urls.VIEW_SUBMIT_URL, methods=['GET'])
+@login_required
 def view_submit(season_name):
     return render_template("view_submit.html", season=season_name)

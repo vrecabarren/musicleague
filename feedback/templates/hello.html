@@ -4,19 +4,10 @@
 
 {% block content %}
 
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <div class="col-md-4 col-md-offset-4 text-center">
             <h1 style="color: #2dbe60">Welcome to Feedback</h1>
-            {% if user %}
-            <ul>
-                <li>{{ user.name }}</li>
-                <li>{{ user.email }}</li>
-            </ul>
-            <a href="logout" class="btn btn-primary">Log Out</a>
-            {% else %}
-            <a href="{{ oauth_url }}" class="btn btn-primary">Log In with Spotify</a>
-            {% endif %}
         </div>
     </div>
 </div>
