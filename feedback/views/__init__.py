@@ -136,3 +136,22 @@ def view_submit(season_name):
         'season': season
     }
     return render_template("view_submit.html", **kwargs)
+
+
+@app.route(urls.CREATE_PLAYLIST_URL)
+@login_required
+def create_playlist(season_name):
+    season = get_season(season_name)
+    if season.owner == g.user:
+        season.playlist_url = 'https://spotify.com'
+        season.save()
+        return redirect(season.playlist_url)
+    return redirect(url_for('view_season', season_name=season_name))
+
+
+@app.route(urls.VIEW_PLAYLIST_URL)
+def view_playlist(season_name):
+    season = get_season(season_name)
+    if season and season.playlist_url:
+        return redirect(season.playlist_url)
+    return redirect(url_for('view_season', season_name=season_name))

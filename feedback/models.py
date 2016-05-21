@@ -31,6 +31,7 @@ class Season(Document):
     users = ListField(ReferenceField(User))
     locked = BooleanField(default=False)
     name = StringField(primary_key=True, required=True)
+    playlist_url = StringField()
     submissions = EmbeddedDocumentListField(Submission)
 
     def embed_url(self):
