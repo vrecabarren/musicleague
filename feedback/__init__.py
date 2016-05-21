@@ -5,6 +5,7 @@ from flask import Flask
 from flask import redirect
 from flask import render_template
 from flask import request
+from flask import session as flask_session
 from flask import url_for
 
 from feedback.api import create_session
@@ -16,7 +17,8 @@ from feedback.environment import parse_mongolab_uri
 from feedback.spotify import get_spotify_oauth
 from feedback.urls import CREATE_SESSION_URL
 from feedback.urls import HELLO_URL
-from feedback.urls import SPOTIFY_OAUTH_REDIRECT_URL
+from feedback.urls import LOGIN_URL
+from feedback.urls import LOGOUT_URL
 from feedback.urls import VIEW_SESSION_URL
 from feedback.urls import VIEW_SUBMIT_URL
 from feedback.user import get_user
@@ -42,30 +44,26 @@ else:
     db = connect(MONGO_DB_NAME)
     app.logger.setLevel(logging.DEBUG)
 
-spotify = None
-current_user = None
-
-
-@app.route('/profile')
-def profile():
-    return render_template('profile.html', content='Profile Page',
-                           facebook_conn=app.social.facebook.get_connection())
-
 
 @app.route(HELLO_URL)
 def hello():
     oauth = get_spotify_oauth()
-    if current_user:
-        return current_user.name
-    return render_template("hello.html",
-                           current_user=current_user,
-                           oauth_url=oauth.get_authorize_url())
+    return render_template(
+        "hello.html",
+        user=(get_user(flask_session['current_user'])
+              if 'current_user' in flask_session else None),
+        oauth_url=oauth.get_authorize_url())
 
 
-@app.route(SPOTIFY_OAUTH_REDIRECT_URL)
+@app.route(LOGOUT_URL)
+def logout():
+    if 'current_user' in flask_session:
+        flask_session.pop('current_user')
+    return redirect(url_for(hello.__name__))
+
+
+@app.route(LOGIN_URL)
 def spotify_oauth():
-    global current_user
-    global spotify
     url = request.url
     oauth = get_spotify_oauth()
     code = oauth.parse_response_code(url)
@@ -87,11 +85,9 @@ def spotify_oauth():
             user.email = user_email
             user.save()
 
-        current_user = user
+        flask_session['current_user'] = user_id
 
-        return user.email
-    else:
-        return 'No access token'
+    return redirect(url_for(hello.__name__))
 
 
 @app.route(CREATE_SESSION_URL, methods=['GET'])
