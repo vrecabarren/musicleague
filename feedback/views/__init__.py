@@ -3,7 +3,7 @@ import logging
 from flask import redirect
 from flask import render_template
 from flask import request
-from flask import session as flask_session
+from flask import session as session
 from flask import url_for
 
 from spotipy import Spotify
@@ -19,42 +19,35 @@ from feedback.views.decorators import login_required
 
 
 @app.route(urls.HELLO_URL)
-def hello():
+def hello(**kwargs):
     oauth = get_spotify_oauth()
-    return render_template(
-        "hello.html",
-        user=(get_user(flask_session['current_user'])
-              if 'current_user' in flask_session else None),
-        oauth_url=oauth.get_authorize_url())
+    kwargs['oauth_url'] = oauth.get_authorize_url()
+    return render_template("hello.html", **kwargs)
 
 
 @app.route('/profile/')
 @login_required
-def profile():
-    return render_template(
-        "profile.html",
-        user=(get_user(flask_session['current_user'])
-              if 'current_user' in flask_session else None))
+def profile(**kwargs):
+    return render_template("profile.html", **kwargs)
 
 
 @app.route(urls.LOGOUT_URL)
 @login_required
-def logout():
-    if 'current_user' in flask_session:
-        flask_session.pop('current_user')
-    return redirect(url_for(hello.__name__))
+def logout(**kwargs):
+    session.pop('current_user')
+    return redirect(url_for("hello"))
 
 
 @app.route(urls.LOGIN_URL)
-def login():
-    if 'current_user' not in flask_session:
+def login(**kwargs):
+    if 'current_user' not in session:
         url = request.url
         oauth = get_spotify_oauth()
         code = oauth.parse_response_code(url)
         if code:
             token_info = oauth.get_access_token(code)
             access_token = token_info['access_token']
-            flask_session['access_token'] = access_token
+            session['access_token'] = access_token
             spotify = Spotify(access_token)
             user_id = spotify.current_user().get('id')
             user = get_user(user_id)
@@ -70,20 +63,20 @@ def login():
                 user.email = user_email
                 user.save()
 
-            flask_session['current_user'] = user_id
+            session['current_user'] = user_id
 
     return redirect(url_for('profile'))
 
 
 @app.route(urls.CREATE_SEASON_URL, methods=['GET'])
 @login_required
-def view_create_season():
-    return render_template("create_season.html")
+def view_create_season(**kwargs):
+    return render_template("create_season.html", **kwargs)
 
 
 @app.route(urls.CREATE_SEASON_URL, methods=['POST'])
 @login_required
-def post_create_season():
+def post_create_season(**kwargs):
     try:
         season_name = request.form.get('season_name')
         season = create_season(season_name)
@@ -95,12 +88,12 @@ def post_create_season():
 
 @app.route(urls.VIEW_SEASON_URL, methods=['GET'])
 @login_required
-def view_season(season_name):
+def view_season(season_name, **kwargs):
     season = get_season(season_name)
-    return render_template("view_season.html", season=season)
+    return render_template("view_season.html", season=season, **kwargs)
 
 
 @app.route(urls.VIEW_SUBMIT_URL, methods=['GET'])
 @login_required
-def view_submit(season_name):
-    return render_template("view_submit.html", season=season_name)
+def view_submit(season_name, **kwargs):
+    return render_template("view_submit.html", season=season_name, **kwargs)
