@@ -107,6 +107,15 @@ def post_create_season():
         logging.exception('There was an exception: %s', e)
 
 
+@app.route(urls.REMOVE_SEASON_URL)
+@login_required
+def remove_season(season_name):
+    season = get_season(season_name)
+    if season and season.owner == g.user:
+        season.delete()
+    return redirect(url_for('profile'))
+
+
 @app.route(urls.VIEW_SEASON_URL, methods=['GET'])
 @login_required
 def view_season(season_name):

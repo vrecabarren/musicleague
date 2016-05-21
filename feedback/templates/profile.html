@@ -10,7 +10,7 @@
         <h1>Welcome to Your Profile, {{ user.name }}!</h1>
 
         <div style="margin: 30px 0px">
-            <a href="{{ url_for('view_create_season') }}" class="btn btn-success">Create Season</a>
+            <a href="{{ url_for('view_create_season') }}" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Create</a>
         </div>
 
         <table class="table table-hover">
@@ -32,7 +32,7 @@
                         <td>{{ season.locked }}</td>
                         <td>
                             {% if season.owner == user %}
-                            <a href="#"><i class="fa fa-times" aria-hidden="true" style="color: red"></i></a>
+                            <a href="{{ url_for('remove_season', season_name=season.name) }}"><i class="fa fa-times" aria-hidden="true" style="color: red"></i></a>
                             {% endif %}
                         </td>
                     </tr>

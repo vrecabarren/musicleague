@@ -7,7 +7,6 @@ from mongoengine import EmbeddedDocument
 from mongoengine import EmbeddedDocumentListField
 from mongoengine import IntField
 from mongoengine import ListField
-from mongoengine import PULL
 from mongoengine import ReferenceField
 from mongoengine import StringField
 
@@ -42,5 +41,3 @@ class Season(Document):
         for submission in self.submissions:
             guids.update(submission.tracks)
             return url.format(title=self.name, guids=','.join(list(guids)))
-
-Season.register_delete_rule(User, 'users', PULL)
