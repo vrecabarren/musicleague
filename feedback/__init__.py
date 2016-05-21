@@ -16,6 +16,7 @@ from feedback.environment import parse_mongolab_uri
 from feedback.spotify import get_spotify_oauth
 from feedback.urls import CREATE_SESSION_URL
 from feedback.urls import HELLO_URL
+from feedback.urls import SPOTIFY_OAUTH_REDIRECT_URL
 from feedback.urls import VIEW_SESSION_URL
 from feedback.urls import VIEW_SUBMIT_URL
 from feedback.user import get_user
@@ -61,7 +62,7 @@ def hello():
                            oauth_url=oauth.get_authorize_url())
 
 
-@app.route('/spotify-oauth')
+@app.route(SPOTIFY_OAUTH_REDIRECT_URL)
 def spotify_oauth():
     global current_user
     global spotify

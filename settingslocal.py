@@ -4,4 +4,4 @@ SECRET_KEY = 'secret_key_local'
 
 SPOTIFY_CLIENT_ID = '96b3fbe9ebad42559cd306ea482b3085'
 SPOTIFY_CLIENT_SECRET = '534afaf2c6694fd7b1155f326a00f136'
-SPOTIFY_REDIRECT_URI = 'http://localhost:5000/spotify-oauth'
+SPOTIFY_REDIRECT_URI = 'http://localhost:5000/spotify-oauth/'
