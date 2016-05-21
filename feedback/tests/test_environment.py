@@ -19,6 +19,7 @@ from feedback.tests.utils.environment import set_environment_state
 
 class GetPortTestCase(TestCase):
 
+    @dec.env_deployed
     def test_env_var(self):
         set_environment_state(PORT.key, '1111')
         self.assertEqual(1111, get_port())
