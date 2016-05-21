@@ -38,7 +38,7 @@ def hello():
     return render_template("hello.html", **kwargs)
 
 
-@app.route('/profile/')
+@app.route(urls.PROFILE_URL)
 @login_required
 def profile():
     seasons = get_seasons_for_user(g.user)
@@ -76,6 +76,14 @@ def login():
             session['current_user'] = user.id
 
     return redirect(url_for('profile'))
+
+
+@app.route(urls.VIEW_USER_URL)
+def view_user(user_id):
+    kwargs = {
+        'page_user': get_user(user_id)
+    }
+    return render_template("user.html", **kwargs)
 
 
 @app.route(urls.CREATE_SEASON_URL, methods=['GET'])

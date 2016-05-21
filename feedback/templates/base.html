@@ -15,6 +15,7 @@
                 <a href="/" class="navbar-brand" style="color: #2dbe60">Feedback</a>
             </div>
             <ul class="nav navbar-nav navbar-right">
+                <li><a href="https://github.com/nathancoleman/feedback">GitHub</a></li>
                 {% if user %}
                 <li><a href="{{ url_for('profile') }}" title="Your Profile">{{ user.name }}</a></li>
                 <li><a href="{{ url_for('logout') }}">Log Out</a></li>

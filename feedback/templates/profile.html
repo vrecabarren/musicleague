@@ -26,8 +26,8 @@
             <tbody>
                 {% for season in seasons %}
                     <tr>
-                        <td><a href="{{url_for('view_season', season_name=season.name)}}">{{ season.name }}</a></td>
-                        <td>{{ season.owner.name }}</td>
+                        <td><a href="{{ url_for('view_season', season_name=season.name) }}">{{ season.name }}</a></td>
+                        <td><a href="{{ url_for('view_user', user_id=season.owner.id) }}">{{ season.owner.name }}</a></td>
                         <td>{{ season.created.strftime('%m/%d/%Y') }}</td>
                         <td>{{ season.locked }}</td>
                         <td>

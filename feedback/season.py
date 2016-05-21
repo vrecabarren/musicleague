@@ -7,7 +7,7 @@ def create_season(name, user):
     if get_season(name):
         raise SeasonExistsError('Season with name %s already exists' % name)
 
-    new_season = Season(name=name, owner=user)
+    new_season = Season(name=name, owner=user, users=[user])
     new_season.save()
     return new_season
 
