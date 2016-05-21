@@ -13,6 +13,9 @@
                 <li>Submissions: {{ season.submissions|length }}</li>
                 <li>Locked: {{ season.locked }}</li>
             </ul>
+            {% if season.owner == user %}
+            <a href="#" class="btn btn-danger">Delete</a>
+            {% endif %}
         </div>
     </div>
 </div>
