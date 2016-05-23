@@ -1,3 +1,4 @@
+CONFIRM_SUBMIT_URL = '/season/<season_name>/submit/<submission_id>/confirm/'
 CREATE_PLAYLIST_URL = '/season/<season_name>/playlist/create/'
 CREATE_SEASON_URL = '/season/create/'
 HELLO_URL = '/'

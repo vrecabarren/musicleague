@@ -15,7 +15,6 @@
                 <dt>Owner:</dt><dd><a href="{{ url_for('view_user', user_id=season.owner.id) }}">{{ season.owner.name }}</a></dd>
                 <dt>Created:</dt><dd>{{ season.created.strftime('%m/%d/%Y') }}</dd>
                 <dt>Locked:</dt><dd>{{ season.locked }}</dd>
-                <dt>Submissions:</dt><dd>{{ season.submissions|length }}</dd>
                 <dt>Users:</dt>
                 <dd>
                     <table>

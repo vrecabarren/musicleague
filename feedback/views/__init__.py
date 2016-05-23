@@ -13,8 +13,10 @@ from spotipy import Spotify
 from feedback import app
 from feedback.api import create_season
 from feedback.api import get_season
+from feedback.models import Submission
 from feedback.season import get_seasons_for_user
 from feedback.spotify import get_spotify_oauth
+from feedback.submit import create_submission
 from feedback.user import create_or_update_user
 from feedback.user import get_user
 from feedback.views import urls
@@ -128,6 +130,51 @@ def view_submit(season_name):
         'season': season
     }
     return render_template("submit.html", **kwargs)
+
+
+@app.route(urls.VIEW_SUBMIT_URL, methods=['POST'])
+@login_required
+def post_submit(season_name):
+    season = get_season(season_name)
+    tracks = [
+        escape(request.form.get('track1')),
+        escape(request.form.get('track2'))
+    ]
+
+    latest = season.current_submission_period
+
+    submission = create_submission(tracks, g.user)
+    submission.save()
+    latest.submissions.append(submission)
+    latest.save()
+
+    return redirect(
+        url_for('view_confirm_submit', season_name=season_name,
+                submission_id=submission.id))
+
+
+@app.route(urls.CONFIRM_SUBMIT_URL, methods=['GET'])
+@login_required
+def view_confirm_submit(season_name, submission_id):
+    season = get_season(season_name)
+    tracks = Submission.objects(id=submission_id).get().tracks
+    spotify_tracks = [g.spotify.track(t_url) for t_url in tracks]
+    kwargs = {
+        'user': g.user,
+        'season': season,
+        'tracks': spotify_tracks
+    }
+
+    return render_template("confirm.html", **kwargs)
+
+
+@app.route(urls.CONFIRM_SUBMIT_URL, methods=['POST'])
+@login_required
+def post_confirm_submit(season_name, submission_id):
+    submission = Submission.objects(id=submission_id).get()
+    submission.confirmed = True
+    submission.save()
+    return redirect(url_for('profile'))
 
 
 @app.route(urls.CREATE_PLAYLIST_URL)

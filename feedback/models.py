@@ -3,8 +3,6 @@ from datetime import datetime
 from mongoengine import BooleanField
 from mongoengine import DateTimeField
 from mongoengine import Document
-from mongoengine import EmbeddedDocument
-from mongoengine import EmbeddedDocumentListField
 from mongoengine import IntField
 from mongoengine import ListField
 from mongoengine import ReferenceField
@@ -18,11 +16,12 @@ class User(Document):
     joined = DateTimeField(default=datetime.now())
 
 
-class Submission(EmbeddedDocument):
+class Submission(Document):
+    confirmed = BooleanField(default=False)
     count = IntField(default=1)
     created = DateTimeField(default=datetime.now, required=True)
-    tracks = ListField(default=[], required=True)
-    user = StringField(required=True)
+    tracks = ListField(default=[])
+    user = ReferenceField(User)
 
 
 class Season(Document):
@@ -31,14 +30,21 @@ class Season(Document):
     users = ListField(ReferenceField(User))
     locked = BooleanField(default=False)
     name = StringField(primary_key=True, required=True)
-    playlist_url = StringField()
-    submissions = EmbeddedDocumentListField(Submission)
 
-    def embed_url(self):
-        if not self.submissions:
-            return
-        url = "https://embed.spotify.com/?uri=spotify:trackset:{title}:{guids}"
-        guids = set()
-        for submission in self.submissions:
-            guids.update(submission.tracks)
-            return url.format(title=self.name, guids=','.join(list(guids)))
+    @property
+    def current_submission_period(self):
+        try:
+            return SubmissionPeriod.objects(is_latest=True, season=self).get()
+        except SubmissionPeriod.DoesNotExist:
+            latest = SubmissionPeriod(is_latest=True, season=self)
+            latest.save()
+            return latest
+
+
+class SubmissionPeriod(Document):
+    complete = BooleanField(default=False)
+    is_latest = BooleanField(default=True)
+    playlist_created = BooleanField(default=False)
+    playlist_url = StringField()
+    season = ReferenceField(Season)
+    submissions = ListField(ReferenceField(Submission))

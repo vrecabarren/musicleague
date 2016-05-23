@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Feedback | Hello{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <form method="post">
+        {% for track in tracks %}
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                <img src="{{ track.album.images[1].url }}" height="{{ track.album.images[1].height }}" width="{{ track.album.images[1].width }}" alt="" class="inline-block"></dt>
+                <div class="inline-block">
+                    <p>{{ track.name }}</p>
+                    <p>{{ track.artists[0].name }}</p>
+                    <p>{{ track.album.name }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-success">Confirm</button>
+    </form>
+</div>
+
+{% endblock %}
