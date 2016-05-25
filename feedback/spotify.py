@@ -31,6 +31,7 @@ def create_playlist(submission_period):
 
     external_urls = playlist.get('external_urls')
     submission_period.playlist_url = external_urls.get('spotify')
+    submission_period.save()
     submission.save()
 
     return playlist
