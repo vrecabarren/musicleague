@@ -24,27 +24,29 @@ class Submission(Document):
     user = ReferenceField(User)
 
 
+class SubmissionPeriod(Document):
+    complete = BooleanField(default=False)
+    is_current = BooleanField(default=True)
+    name = StringField(max_length=255)
+    playlist_url = StringField(default='')
+    submissions = ListField(ReferenceField(Submission))
+
+    @property
+    def playlist_created(self):
+        return self.playlist_url != ''
+
+
 class Season(Document):
     created = DateTimeField(default=datetime.now, required=True)
-    owner = ReferenceField(User)
-    users = ListField(ReferenceField(User))
     locked = BooleanField(default=False)
     name = StringField(primary_key=True, required=True)
+    owner = ReferenceField(User)
+    submission_periods = ListField(ReferenceField(SubmissionPeriod))
+    users = ListField(ReferenceField(User))
 
     @property
     def current_submission_period(self):
-        try:
-            return SubmissionPeriod.objects(is_latest=True, season=self).get()
-        except SubmissionPeriod.DoesNotExist:
-            latest = SubmissionPeriod(is_latest=True, season=self)
-            latest.save()
-            return latest
-
-
-class SubmissionPeriod(Document):
-    complete = BooleanField(default=False)
-    is_latest = BooleanField(default=True)
-    playlist_created = BooleanField(default=False)
-    playlist_url = StringField()
-    season = ReferenceField(Season)
-    submissions = ListField(ReferenceField(Submission))
+        for submission_period in self.submission_periods:
+            if submission_period.is_current:
+                return submission_period
+        return None

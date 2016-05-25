@@ -6,6 +6,7 @@ from feedback.environment import get_setting
 from feedback.environment.variables import SPOTIFY_CLIENT_ID
 from feedback.environment.variables import SPOTIFY_CLIENT_SECRET
 from feedback.environment.variables import SPOTIFY_REDIRECT_URI
+from feedback.views.decorators import login_required
 
 
 def get_spotify_oauth():
@@ -18,15 +19,16 @@ def get_spotify_oauth():
     return spotify_oauth
 
 
+@login_required
 def create_playlist(submission_period):
     tracks = []
     for submission in submission_period.submissions:
         tracks.extend(submission.tracks)
-    playlist = g.spotify.user_playlist_create(
-        g.user.id, str(submission_period.id))
+
+    playlist_name = str(submission_period.name)
+    playlist = g.spotify.user_playlist_create(g.user.id, playlist_name)
     g.spotify.user_playlist_add_tracks(g.user.id, playlist.get('id'), tracks)
 
-    submission_period.playlist_created = True
     external_urls = playlist.get('external_urls')
     submission_period.playlist_url = external_urls.get('spotify')
     submission.save()

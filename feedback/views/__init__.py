@@ -18,6 +18,7 @@ from feedback.season import get_seasons_for_user
 from feedback.spotify import create_playlist
 from feedback.spotify import get_spotify_oauth
 from feedback.submit import create_submission
+from feedback.submit import create_submission_period
 from feedback.user import create_or_update_user
 from feedback.user import get_user
 from feedback.views import urls
@@ -143,6 +144,8 @@ def post_submit(season_name):
     ]
 
     submission_period = season.current_submission_period
+    if not submission_period:
+        submission_period = create_submission_period(season)
 
     submission = create_submission(tracks, submission_period, g.user)
 
