@@ -15,6 +15,7 @@ from feedback.api import create_season
 from feedback.api import get_season
 from feedback.models import Submission
 from feedback.season import get_seasons_for_user
+from feedback.spotify import create_playlist
 from feedback.spotify import get_spotify_oauth
 from feedback.submit import create_submission
 from feedback.user import create_or_update_user
@@ -141,12 +142,9 @@ def post_submit(season_name):
         escape(request.form.get('track2'))
     ]
 
-    latest = season.current_submission_period
+    submission_period = season.current_submission_period
 
-    submission = create_submission(tracks, g.user)
-    submission.save()
-    latest.submissions.append(submission)
-    latest.save()
+    submission = create_submission(tracks, submission_period, g.user)
 
     return redirect(
         url_for('view_confirm_submit', season_name=season_name,
@@ -179,12 +177,11 @@ def post_confirm_submit(season_name, submission_id):
 
 @app.route(urls.CREATE_PLAYLIST_URL)
 @login_required
-def create_playlist(season_name):
+def create_spotify_playlist(season_name):
     season = get_season(season_name)
     if season.owner == g.user:
-        season.playlist_url = 'https://spotify.com'
-        season.save()
-        return redirect(season.playlist_url)
+        playlist = create_playlist(season.current_submission_period)
+        return redirect(playlist.get('external_urls').get('spotify'))
     return redirect(url_for('view_season', season_name=season_name))
 
 
