@@ -9,29 +9,43 @@ from feedback.environment.variables import SPOTIFY_REDIRECT_URI
 from feedback.views.decorators import login_required
 
 
+OAUTH_SCOPES = ['user-read-email',
+                'playlist-modify-public']
+
+
 def get_spotify_oauth():
     client_id = get_setting(SPOTIFY_CLIENT_ID)
     client_secret = get_setting(SPOTIFY_CLIENT_SECRET)
     redirect_uri = get_setting(SPOTIFY_REDIRECT_URI)
-    scope = 'user-read-email playlist-modify-public'
+    scopes = ' '.join(OAUTH_SCOPES)
     spotify_oauth = oauth2.SpotifyOAuth(
-        client_id, client_secret, redirect_uri, scope=scope)
+        client_id, client_secret, redirect_uri, scope=scopes)
     return spotify_oauth
 
 
 @login_required
-def create_playlist(submission_period):
+def create_or_update_playlist(submission_period):
     tracks = []
     for submission in submission_period.submissions:
         tracks.extend(submission.tracks)
 
-    playlist_name = str(submission_period.name)
-    playlist = g.spotify.user_playlist_create(g.user.id, playlist_name)
-    g.spotify.user_playlist_add_tracks(g.user.id, playlist.get('id'), tracks)
+    # Create new playlist and link to this submission period
+    if not submission_period.playlist_created:
+        playlist_name = str(submission_period.name)
+        playlist = g.spotify.user_playlist_create(g.user.id, playlist_name)
 
-    external_urls = playlist.get('external_urls')
-    submission_period.playlist_url = external_urls.get('spotify')
-    submission_period.save()
-    submission.save()
+        g.spotify.user_playlist_add_tracks(
+            g.user.id, playlist.get('id'), tracks)
+
+        external_urls = playlist.get('external_urls')
+        submission_period.playlist_url = external_urls.get('spotify')
+        submission_period.save()
+
+    # Update existing playlist for this submission period
+    else:
+        # TODO Only get the playlist's id
+        playlist = g.spotify.user_playlist(submission_period.playlist_url)
+        g.spotify.user_playlist_replace_tracks(
+            g.user.id, playlist.get('id'), tracks)
 
     return playlist
