@@ -28,6 +28,7 @@ class SubmissionPeriod(Document):
     complete = BooleanField(default=False)
     is_current = BooleanField(default=True)
     name = StringField(max_length=255)
+    playlist_id = StringField()
     playlist_url = StringField(default='')
     submissions = ListField(ReferenceField(Submission))
 

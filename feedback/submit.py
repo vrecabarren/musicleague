@@ -2,6 +2,22 @@ from feedback.models import Submission
 from feedback.models import SubmissionPeriod
 
 
+def create_or_update_submission(tracks, submission_period, user):
+    s = None
+    for submission in submission_period.submissions:
+        if submission.user == user:
+            s = submission
+            break
+
+    if s:
+        s.tracks = tracks
+        s.save()
+    else:
+        s = create_submission(tracks, submission_period, user)
+
+    return s
+
+
 def create_submission(tracks, submission_period, user, persist=True):
     new_submission = Submission(tracks=tracks, user=user)
     if persist:
