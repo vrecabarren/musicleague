@@ -54,7 +54,11 @@
             </thead>
             <tbody>
                 {% for submission_period in season.submission_periods %}
+                    {% if submission_period.is_current %}
+                    <tr class="info">
+                    {% else %}
                     <tr>
+                    {% endif %}
                         <td>{{ submission_period.name }}</td>
                         <td>
                             {% if submission_period.playlist_created %}
