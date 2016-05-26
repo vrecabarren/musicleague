@@ -112,6 +112,15 @@ def remove_season(season_name):
     return redirect(url_for('profile'))
 
 
+@app.route(urls.CREATE_SUBMISSION_PERIOD_URL)
+@login_required
+def post_create_submission_period(season_name):
+    season = get_season(season_name)
+    if season.owner == g.user:
+        create_submission_period(season)
+    return redirect(url_for('view_season', season_name=season_name))
+
+
 @app.route(urls.VIEW_SEASON_URL, methods=['GET'])
 @login_required
 def view_season(season_name):

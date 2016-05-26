@@ -1,6 +1,7 @@
 CONFIRM_SUBMIT_URL = '/season/<season_name>/submit/<submission_id>/confirm/'
 CREATE_PLAYLIST_URL = '/season/<season_name>/playlist/create/'
 CREATE_SEASON_URL = '/season/create/'
+CREATE_SUBMISSION_PERIOD_URL = '/season/<season_name>/submission_period/create/'  # noqa
 HELLO_URL = '/'
 LOGIN_URL = '/login/'
 LOGOUT_URL = '/logout/'

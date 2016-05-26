@@ -6,36 +6,42 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-            <h1 class=text-center>{{ season.name }}</h1>
 
-            <div style="margin: 30px 0px"></div>
+        <h1>{{ season.name }}</h1>
 
-            <dl class="dl-horizontal" style="font-size: 1.2em">
-                <dt>Owner:</dt><dd><a href="{{ url_for('view_user', user_id=season.owner.id) }}">{{ season.owner.name }}</a></dd>
-                <dt>Created:</dt><dd>{{ season.created.strftime('%m/%d/%Y') }}</dd>
-                <dt>Locked:</dt><dd>{{ season.locked }}</dd>
-                <dt>Users:</dt>
-                <dd>
+        <table>
+            <tr>
+                <td>Owner:</td>
+                <td><a href="{{ url_for('view_user', user_id=season.owner.id) }}">{{ season.owner.name }}</a></td>
+            <tr>
+                <td>Created:</td>
+                <td>{{ season.created.strftime('%m/%d/%Y') }}</td>
+            </tr>
+            <tr>
+                <td>Locked:</td>
+                <td>{{ season.locked }}</td>
+            </tr>
+            <tr>
+                <td>Users:</td>
+                <td>
                     <table>
                         {% for u in season.users %}
                         <tr><a href="{{ url_for('view_user', user_id=u.id) }}">{{ u.name }}</a></tr>
                         {% endfor %}
                     </table>
-                </dd>
-                {% if user in season.users %}
-                <a href="{{ url_for('view_submit', season_name=season.name) }}" class="btn btn-success"><i class="fa fa-check-square-o" aria-hidden="true"></i>&nbsp;Submit</a>
-                {% endif %}
-                {% if user == season.owner and not season.playlist_url %}
-                <a href="{{ url_for('create_spotify_playlist', season_name=season.name) }}" class="btn btn-success"><i class="fa fa-spotify" aria-hidden="true"></i>&nbsp;Create Playlist</a>
-                {% else %}
-                <a href="{{ season.playlist_url }}" target="_blank" class="btn btn-success"><i class="fa fa-spotify" aria-hidden="true"></i>&nbsp;Playlist</a>
-                {% endif %}
-            </dl>
-        </div>
+                </td>
+            </tr>
+        </table>
     </div>
-    <div class="row">
 
+    <div class="row" style="margin: 30px 0px">
+        {% if user == season.owner %}
+        <a href="{{ url_for('post_create_submission_period', season_name=season.name) }}" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Submission Period</a>
+        <a href="" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Users</a>
+        {% endif %}
+    </div>
+
+    <div class="row">
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -52,7 +58,7 @@
                         <td>{{ submission_period.name }}</td>
                         <td>
                             {% if submission_period.playlist_created %}
-                            <a href="{{ submission_period.playlist_url }}">Spotify</a>
+                            <a href="{{ submission_period.playlist_url }}" target="_blank">Spotify</a>
                             {% else %}
                             Pending
                             {% endif %}
@@ -69,7 +75,6 @@
                 {% endfor %}
             </tbody>
         </table>
-
     </div>
 </div>
 
