@@ -19,6 +19,7 @@ from feedback.spotify import create_or_update_playlist
 from feedback.spotify import get_spotify_oauth
 from feedback.submit import create_submission
 from feedback.submit import create_submission_period
+from feedback.submit import get_submission_period
 from feedback.user import create_or_update_user
 from feedback.user import get_user
 from feedback.views import urls
@@ -119,6 +120,21 @@ def post_create_submission_period(season_name):
     if season.owner == g.user:
         create_submission_period(season)
     return redirect(url_for('view_season', season_name=season_name))
+
+
+@app.route(urls.VIEW_SUBMISSION_PERIOD_URL)
+@login_required
+def view_submission_period(season_name, submission_period_id):
+    season = get_season(season_name)
+    submission_period = get_submission_period(submission_period_id)
+
+    kwargs = {
+        'user': g.user,
+        'season': season,
+        'submission_period': submission_period
+    }
+
+    return render_template("submission_period.html", **kwargs)
 
 
 @app.route(urls.VIEW_SEASON_URL, methods=['GET'])

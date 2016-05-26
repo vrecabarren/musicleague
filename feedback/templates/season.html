@@ -39,6 +39,9 @@
         <a href="{{ url_for('post_create_submission_period', season_name=season.name) }}" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Submission Period</a>
         <a href="" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Users</a>
         {% endif %}
+        {% if user in season.users %}
+        <a href="{{ url_for('view_submit', season_name=season.name) }}" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp;Submit</a>
+        {% endif %}
     </div>
 
     <div class="row">
@@ -53,13 +56,13 @@
                 </tr>
             </thead>
             <tbody>
-                {% for submission_period in season.submission_periods %}
+                {% for submission_period in season.submission_periods|reverse %}
                     {% if submission_period.is_current %}
                     <tr class="info">
                     {% else %}
                     <tr>
                     {% endif %}
-                        <td>{{ submission_period.name }}</td>
+                        <td><a href="{{ url_for('view_submission_period', season_name=season.name, submission_period_id=submission_period.id) }}">{{ submission_period.name }}</a></td>
                         <td>
                             {% if submission_period.playlist_created %}
                             <a href="{{ submission_period.playlist_url }}" target="_blank">Spotify</a>

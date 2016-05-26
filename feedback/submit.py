@@ -26,3 +26,10 @@ def create_submission_period(season):
     season.save()
 
     return new_submission_period
+
+
+def get_submission_period(submission_period_id):
+    try:
+        return SubmissionPeriod.objects(id=submission_period_id).get()
+    except SubmissionPeriod.DoesNotExist:
+        return None
