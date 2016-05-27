@@ -5,7 +5,7 @@ install:
 	pip install -r requirements.txt
 
 lint:
-	flake8 feedback app.py --exclude=feedback/__init__.py,feedback/api.py
+	flake8 feedback app.py
 
 run:
 	python app.py
