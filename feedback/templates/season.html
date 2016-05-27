@@ -27,6 +27,15 @@
         </table>
     </div>
 
+    <div class="row">
+        <form action="{{ url_for('add_user_for_season', season_name=season.name) }}" method="post" class="form-inline">
+            <div class="control-group">
+                <input type="text" class="form-control" name="email" placeholder="User Email">
+                <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+            </div>
+        </form>
+    </div>
+
     <div class="row" style="margin: 30px 0px">
         {% if user == season.owner %}
         <a href="{{ url_for('post_create_submission_period', season_name=season.name) }}" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Submission Period</a>
@@ -34,15 +43,6 @@
         {% if user in season.users %}
         <a href="{{ url_for('view_submit', season_name=season.name) }}" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp;Submit</a>
         {% endif %}
-    </div>
-
-    <div class="row">
-        <form action="{{ url_for('add_user_for_season', season_name=season.name) }}" method="post" class="form-inline">
-            <div class="control-group">
-                <input type="text" class="form-control" name="email">
-                <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;User</button>
-            </div>
-        </form>
     </div>
 
     <div class="row">
