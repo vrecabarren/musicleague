@@ -6,84 +6,90 @@
 
 <div class="container">
     <div class="row">
-
         <h1>{{ season.name }}</h1>
 
         <table>
             <tr><td>Owner:</td><td><a href="{{ url_for('view_user', user_id=season.owner.id) }}">{{ season.owner.name }}</a></td></tr>
             <tr><td>Created:</td><td>{{ season.created.strftime('%m/%d/%Y') }}</td></tr>
             <tr><td>Locked:</td><td>{{ season.locked }}</td></tr>
-            <tr><td>Users:</td>
-                <td>
-                    <table>
-                        {% for u in season.users %}
+        </table>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-9">
+
+            <div class="row" style="margin: 30px 0px">
+                {% if user == season.owner %}
+                <a href="{{ url_for('post_create_submission_period', season_name=season.name) }}" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Submission Period</a>
+                {% endif %}
+                {% if user in season.users %}
+                <a href="{{ url_for('view_submit', season_name=season.name) }}" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp;Submit</a>
+                {% endif %}
+            </div>
+
+            <div class="row">
+                <table class="table table-hover">
+                    <thead>
                         <tr>
-                            <td><a href="{{ url_for('view_user', user_id=u.id) }}">{{ u.name }}</a></td>
+                            <th>Name</th>
+                            <th>Playlist</th>
+                            <th># Submissions</th>
+                            <th>Complete</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for submission_period in season.submission_periods|reverse %}
+                            {% if submission_period.is_current %}
+                            <tr class="info">
+                            {% else %}
+                            <tr>
+                            {% endif %}
+                                <td><a href="{{ url_for('view_submission_period', season_name=season.name, submission_period_id=submission_period.id) }}">{{ submission_period.name }}</a></td>
+                                <td>
+                                    {% if submission_period.playlist_created %}
+                                    <a href="{{ submission_period.playlist_url }}" target="_blank">Spotify</a>
+                                    {% else %}
+                                    Pending
+                                    {% endif %}
+                                </td>
+                                <td>{{ submission_period.submissions|length }}</td>
+                                <td>{{ submission_period.complete }}</td>
+                                <td>
+                                    {% if season.owner == user %}
+                                    <a href="{{ url_for('remove_submission_period', season_name=season.name, submission_period_id=submission_period.id) }}">
+                                        <i class="fa fa-times" aria-hidden="true" style="color: red"></i>
+                                    </a>
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </div>
-
-    <div class="row">
-        <form action="{{ url_for('add_user_for_season', season_name=season.name) }}" method="post" class="form-inline">
-            <div class="control-group">
-                <input type="text" class="form-control" name="email" placeholder="User Email">
-                <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+                    </tbody>
+                </table>
             </div>
-        </form>
+
+        </div>
+
+        <div class="col-md-3">
+
+            {% for user in season.users %}
+            <p><a href="{{ url_for('view_user', user_id=user.id) }}">{{ user.name }}</a></p>
+            {% endfor %}
+
+            <div class="row">
+                <form action="{{ url_for('add_user_for_season', season_name=season.name) }}" method="post" class="form-inline">
+                    <div class="control-group">
+                        <input type="text" class="form-control" name="email" placeholder="User Email">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="row" style="margin: 30px 0px">
-        {% if user == season.owner %}
-        <a href="{{ url_for('post_create_submission_period', season_name=season.name) }}" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Submission Period</a>
-        {% endif %}
-        {% if user in season.users %}
-        <a href="{{ url_for('view_submit', season_name=season.name) }}" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp;Submit</a>
-        {% endif %}
-    </div>
-
-    <div class="row">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Playlist</th>
-                    <th># Submissions</th>
-                    <th>Complete</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for submission_period in season.submission_periods|reverse %}
-                    {% if submission_period.is_current %}
-                    <tr class="info">
-                    {% else %}
-                    <tr>
-                    {% endif %}
-                        <td><a href="{{ url_for('view_submission_period', season_name=season.name, submission_period_id=submission_period.id) }}">{{ submission_period.name }}</a></td>
-                        <td>
-                            {% if submission_period.playlist_created %}
-                            <a href="{{ submission_period.playlist_url }}" target="_blank">Spotify</a>
-                            {% else %}
-                            Pending
-                            {% endif %}
-                        </td>
-                        <td>{{ submission_period.submissions|length }}</td>
-                        <td>{{ submission_period.complete }}</td>
-                        <td>
-                            {% if season.owner == user %}
-                            <!-- TODO: url for deleting submission period -->
-                            <a href=""><i class="fa fa-times" aria-hidden="true" style="color: red"></i></a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
 </div>
 
 {% endblock %}
