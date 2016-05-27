@@ -20,9 +20,17 @@ def get_season(name):
         return None
 
 
-def get_seasons_for_user(user):
+def get_seasons_for_owner(user):
     try:
         seasons = Season.objects(owner=user).all().order_by('-created')
+        return seasons
+    except Season.DoesNotExist:
+        return []
+
+
+def get_seasons_for_user(user):
+    try:
+        seasons = Season.objects(users=user).all().order_by('-created')
         return seasons
     except Season.DoesNotExist:
         return []
