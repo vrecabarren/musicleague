@@ -20,8 +20,10 @@ def profile():
 
 
 @app.route(urls.VIEW_USER_URL)
+@login_required
 def view_user(user_id):
     kwargs = {
-        'page_user': get_user(user_id)
+        'page_user': get_user(user_id),
+        'user_image': g.spotify.user(user_id).get('images')[0]
     }
     return render_template("user.html", **kwargs)
