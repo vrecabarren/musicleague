@@ -1,3 +1,4 @@
+# flake8: noqa
 ADD_USER_FOR_SEASON_URL = '/<season_name>/users/add/'
 CONFIRM_SUBMIT_URL = '/<season_name>/submit/<submission_id>/confirm/'
 CREATE_PLAYLIST_URL = '/<season_name>/playlist/create/'
@@ -10,6 +11,7 @@ PROFILE_URL = '/profile/'
 REGISTER_URL = '/register/'
 REGISTER_WITH_PROVIDER_URL = '/register/<provider_id>/'
 REMOVE_SEASON_URL = '/<season_name>/remove/'
+REMOVE_SUBMISSION_URL = '/<season_name>/<submission_period_id>/<submission_id>/remove/'
 REMOVE_SUBMISSION_PERIOD_URL = '/<season_name>/<submission_period_id>/remove/'
 VIEW_PLAYLIST_URL = '/<season_name>/playlist/'
 VIEW_SEASON_URL = '/<season_name>/'

@@ -35,7 +35,7 @@ def post_confirm_submit(season_name, submission_id):
     submission = Submission.objects(id=submission_id).get()
     submission.confirmed = True
     submission.save()
-    return redirect(url_for('profile'))
+    return redirect(url_for('view_season', season_name=season_name))
 
 
 @app.route(urls.VIEW_SUBMIT_URL, methods=['GET'])

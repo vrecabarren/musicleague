@@ -13,6 +13,7 @@ from feedback.routes.decorators import login_required
 from feedback.season import create_season
 from feedback.season import get_season
 from feedback.submit import create_submission_period
+from feedback.submit import get_submission
 from feedback.submit import get_submission_period
 from feedback.user import get_user_by_email
 
@@ -57,6 +58,17 @@ def remove_season(season_name):
     return redirect(url_for('profile'))
 
 
+@app.route(urls.REMOVE_SUBMISSION_URL)
+@login_required
+def remove_submission(season_name, submission_period_id, submission_id):
+    season = get_season(season_name)
+    if season and season.owner == g.user:
+        submission = get_submission(submission_id)
+        submission.delete()
+    return redirect(url_for('view_submission_period', season_name=season_name,
+                            submission_period_id=submission_period_id))
+
+
 @app.route(urls.REMOVE_SUBMISSION_PERIOD_URL)
 @login_required
 def remove_submission_period(season_name, submission_period_id):
@@ -84,10 +96,17 @@ def view_submission_period(season_name, submission_period_id):
     season = get_season(season_name)
     submission_period = get_submission_period(submission_period_id)
 
+    all_tracks = []
+    for submission in submission_period.submissions:
+        all_tracks.extend(submission.tracks)
+
+    tracks = g.spotify.tracks(all_tracks).get('tracks') if all_tracks else []
+
     kwargs = {
         'user': g.user,
         'season': season,
-        'submission_period': submission_period
+        'submission_period': submission_period,
+        'tracks': tracks
     }
 
     return render_template("submission_period.html", **kwargs)

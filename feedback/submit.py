@@ -44,6 +44,13 @@ def create_submission_period(season):
     return new_submission_period
 
 
+def get_submission(submission_id):
+    try:
+        return Submission.objects(id=submission_id).get()
+    except SubmissionPeriod.DoesNotExist:
+        return None
+
+
 def get_submission_period(submission_period_id):
     try:
         return SubmissionPeriod.objects(id=submission_period_id).get()
