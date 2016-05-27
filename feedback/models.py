@@ -5,6 +5,7 @@ from mongoengine import DateTimeField
 from mongoengine import Document
 from mongoengine import IntField
 from mongoengine import ListField
+from mongoengine import PULL
 from mongoengine import ReferenceField
 from mongoengine import StringField
 
@@ -30,7 +31,8 @@ class SubmissionPeriod(Document):
     name = StringField(max_length=255)
     playlist_id = StringField()
     playlist_url = StringField(default='')
-    submissions = ListField(ReferenceField(Submission))
+    submissions = ListField(
+        ReferenceField(Submission, reverse_delete_rule=PULL))
 
     @property
     def playlist_created(self):
@@ -42,7 +44,8 @@ class Season(Document):
     locked = BooleanField(default=False)
     name = StringField(primary_key=True, required=True)
     owner = ReferenceField(User)
-    submission_periods = ListField(ReferenceField(SubmissionPeriod))
+    submission_periods = ListField(
+        ReferenceField(SubmissionPeriod, reverse_delete_rule=PULL))
     users = ListField(ReferenceField(User))
 
     @property
