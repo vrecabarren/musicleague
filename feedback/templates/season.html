@@ -10,19 +10,10 @@
         <h1>{{ season.name }}</h1>
 
         <table>
-            <tr>
-                <td>Owner:</td>
-                <td><a href="{{ url_for('view_user', user_id=season.owner.id) }}">{{ season.owner.name }}</a></td>
-            <tr>
-                <td>Created:</td>
-                <td>{{ season.created.strftime('%m/%d/%Y') }}</td>
-            </tr>
-            <tr>
-                <td>Locked:</td>
-                <td>{{ season.locked }}</td>
-            </tr>
-            <tr>
-                <td>Users:</td>
+            <tr><td>Owner:</td><td><a href="{{ url_for('view_user', user_id=season.owner.id) }}">{{ season.owner.name }}</a></td></tr>
+            <tr><td>Created:</td><td>{{ season.created.strftime('%m/%d/%Y') }}</td></tr>
+            <tr><td>Locked:</td><td>{{ season.locked }}</td></tr>
+            <tr><td>Users:</td>
                 <td>
                     <table>
                         {% for u in season.users %}
@@ -37,11 +28,19 @@
     <div class="row" style="margin: 30px 0px">
         {% if user == season.owner %}
         <a href="{{ url_for('post_create_submission_period', season_name=season.name) }}" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Submission Period</a>
-        <a href="" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Users</a>
         {% endif %}
         {% if user in season.users %}
         <a href="{{ url_for('view_submit', season_name=season.name) }}" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp;Submit</a>
         {% endif %}
+    </div>
+
+    <div class="row">
+        <form action="" class="form-inline">
+            <div class="control-group">
+                <input type="text" class="form-control" name="email">
+                <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;User</button>
+            </div>
+        </form>
     </div>
 
     <div class="row">

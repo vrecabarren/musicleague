@@ -21,6 +21,7 @@ from feedback.submit import create_or_update_submission
 from feedback.submit import create_submission_period
 from feedback.submit import get_submission_period
 from feedback.user import create_or_update_user
+from feedback.user import get_user_by_email
 from feedback.user import get_user
 from feedback.routes import urls
 from feedback.routes.decorators import login_required
@@ -90,6 +91,17 @@ def view_user(user_id):
         'page_user': get_user(user_id)
     }
     return render_template("user.html", **kwargs)
+
+
+@app.route(urls.ADD_USER_FOR_SEASON_URL, methods=['POST'])
+def add_user_for_season(season_name):
+    season = get_season(season_name)
+    user = get_user_by_email(escape(request.form.get('email')))
+    # TODO Only allow season owner to do this
+    if user:
+        season.users.append(user)
+        season.save()
+    return redirect(url_for('view_season', season_name=season_name))
 
 
 @app.route(urls.CREATE_SEASON_URL, methods=['POST'])

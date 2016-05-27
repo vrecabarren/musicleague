@@ -1,3 +1,4 @@
+ADD_USER_FOR_SEASON_URL = '/season/<season_name>/users/add/'
 CONFIRM_SUBMIT_URL = '/season/<season_name>/submit/<submission_id>/confirm/'
 CREATE_PLAYLIST_URL = '/season/<season_name>/playlist/create/'
 CREATE_SEASON_URL = '/season/create/'

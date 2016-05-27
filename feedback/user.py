@@ -31,3 +31,11 @@ def get_user(id):
         return user
     except User.DoesNotExist:
         return None
+
+
+def get_user_by_email(email):
+    try:
+        user = User.objects(email=email).get()
+        return user
+    except User.DoesNotExist:
+        return None
