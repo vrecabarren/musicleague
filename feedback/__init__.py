@@ -27,4 +27,4 @@ else:
     app.logger.setLevel(logging.DEBUG)
 
 
-from feedback import views
+from feedback import routes

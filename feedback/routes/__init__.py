@@ -22,8 +22,8 @@ from feedback.submit import create_submission_period
 from feedback.submit import get_submission_period
 from feedback.user import create_or_update_user
 from feedback.user import get_user
-from feedback.views import urls
-from feedback.views.decorators import login_required
+from feedback.routes import urls
+from feedback.routes.decorators import login_required
 
 
 @app.before_request

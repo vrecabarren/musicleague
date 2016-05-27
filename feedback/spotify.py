@@ -6,7 +6,7 @@ from feedback.environment import get_setting
 from feedback.environment.variables import SPOTIFY_CLIENT_ID
 from feedback.environment.variables import SPOTIFY_CLIENT_SECRET
 from feedback.environment.variables import SPOTIFY_REDIRECT_URI
-from feedback.views.decorators import login_required
+from feedback.routes.decorators import login_required
 
 
 OAUTH_SCOPES = ['user-read-email',
