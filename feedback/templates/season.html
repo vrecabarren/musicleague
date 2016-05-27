@@ -17,7 +17,9 @@
                 <td>
                     <table>
                         {% for u in season.users %}
-                        <tr><a href="{{ url_for('view_user', user_id=u.id) }}">{{ u.name }}</a></tr>
+                        <tr>
+                            <td><a href="{{ url_for('view_user', user_id=u.id) }}">{{ u.name }}</a></td>
+                            </tr>
                         {% endfor %}
                     </table>
                 </td>
