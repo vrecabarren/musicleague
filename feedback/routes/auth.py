@@ -24,9 +24,12 @@ def before_request():
     access_token = session['access_token'] if 'access_token' in session else ''
     g.spotify = None
     if access_token:
-        at = get_spotify_oauth().get_cached_token().get('access_token')
-        session['access_token'] = at
-        g.spotify = Spotify(at)
+        cached_token = get_spotify_oauth().get_cached_token()
+        if cached_token:
+            # This will retrieve a new token if current token has expired
+            access_token = cached_token.get('access_token')
+            session['access_token'] = access_token
+        g.spotify = Spotify(access_token)
 
 
 @app.route(urls.LOGIN_URL)
