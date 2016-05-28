@@ -23,6 +23,7 @@ def profile():
 @login_required
 def view_user(user_id):
     kwargs = {
+        'user': g.user,
         'page_user': get_user(user_id),
         'user_image': g.spotify.user(user_id).get('images')[0]
     }
