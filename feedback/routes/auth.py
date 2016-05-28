@@ -17,10 +17,16 @@ from feedback.user import get_user
 @app.before_request
 def before_request():
     current_user = session['current_user'] if 'current_user' in session else ''
-    g.user = get_user(current_user) if current_user else None
+    g.user = None
+    if current_user:
+        g.user = get_user(current_user)
 
     access_token = session['access_token'] if 'access_token' in session else ''
-    g.spotify = Spotify(access_token) if access_token else None
+    g.spotify = None
+    if access_token:
+        at = get_spotify_oauth().get_cached_token().get('access_token')
+        session['access_token'] = at
+        g.spotify = Spotify(at)
 
 
 @app.route(urls.LOGIN_URL)
@@ -33,6 +39,7 @@ def login():
             token_info = oauth.get_access_token(code)
             access_token = token_info['access_token']
             session['access_token'] = access_token
+            session['refresh_token'] = token_info['refresh_token']
 
             spotify = Spotify(access_token)
             user = create_or_update_user(
