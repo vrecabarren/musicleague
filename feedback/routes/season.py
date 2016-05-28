@@ -22,7 +22,7 @@ from feedback.user import get_user_by_email
 def add_user_for_season(season_name):
     season = get_season(season_name)
     user = get_user_by_email(escape(request.form.get('email')))
-    if user and season.owner == g.user:
+    if user and user not in season.users and season.owner == g.user:
         season.users.append(user)
         season.save()
     return redirect(url_for('view_season', season_name=season_name))

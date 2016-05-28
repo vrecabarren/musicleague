@@ -1,5 +1,6 @@
 # flake8: noqa
 ADD_USER_FOR_SEASON_URL = '/<season_name>/users/add/'
+AUTOCOMPLETE = '/autocomplete/'
 CONFIRM_SUBMIT_URL = '/<season_name>/submit/<submission_id>/confirm/'
 CREATE_PLAYLIST_URL = '/<season_name>/playlist/create/'
 CREATE_SEASON_URL = '/create/'
