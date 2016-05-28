@@ -56,4 +56,5 @@ def login():
 @login_required
 def logout():
     session.pop('current_user')
+    session.pop('access_token')
     return redirect(url_for("hello"))
