@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Music League | {{ season.name }}{% endblock %}
+{% block title %}Music League | {{ league.name }}{% endblock %}
 
 {% block content %}
 
@@ -8,7 +8,7 @@
     <div class="row">
 
         <h1>{{ submission_period.name }}</h1>
-        <h3><a href="{{ url_for('view_season', season_name=season.name )}}">{{ season.name }}</a></h3>
+        <h3><a href="{{ url_for('view_league', league_name=league.name )}}">{{ league.name }}</a></h3>
 
     </div>
 
@@ -17,11 +17,11 @@
             <!-- Anyone should see the playlist link if one has been created -->
             <a href="{{ submission_period.playlist_url }}" target="_blank" class="btn btn-primary"><i class="fa fa-spotify"></i>&nbsp;Playlist</a>
             <!-- Owners should be able to regenerate the playlist from current submission period state -->
-            <a href="{{ url_for('create_spotify_playlist', season_name=season.name) }}" target="_blank" class="btn btn-primary"><i class="fa fa-spotify"></i>&nbsp; Regenerate Playlist</a>
+            <a href="{{ url_for('create_spotify_playlist', league_name=league.name) }}" target="_blank" class="btn btn-primary"><i class="fa fa-spotify"></i>&nbsp; Regenerate Playlist</a>
         {% else %}
             <!-- If no playlist has been created, owners should be able to create one -->
-            {% if user == season.owner and submission_period == season.current_submission_period %}
-                <a href="{{ url_for('create_spotify_playlist', season_name=season.name) }}" target="_blank" class="btn btn-primary"><i class="fa fa-spotify"></i>&nbsp;Create Playlist</a>
+            {% if user == league.owner and submission_period == league.current_submission_period %}
+                <a href="{{ url_for('create_spotify_playlist', league_name=league.name) }}" target="_blank" class="btn btn-primary"><i class="fa fa-spotify"></i>&nbsp;Create Playlist</a>
             {% endif %}
         {% endif %}
     </div>
@@ -56,8 +56,8 @@
                         <td>{{ submission.created.strftime('%m/%d/%Y') }}</td>
                         <td>{{ submission.confirmed }}</td>
                         <td>
-                            {% if user == submission.user  or user == season.owner %}
-                            <a href="{{ url_for('remove_submission', season_name=season.name, submission_period_id=submission_period.id, submission_id=submission.id) }}">
+                            {% if user == submission.user  or user == league.owner %}
+                            <a href="{{ url_for('remove_submission', league_name=league.name, submission_period_id=submission_period.id, submission_id=submission.id) }}">
                                 <i class="fa fa-times" aria-hidden="true" style="color: red"></i>
                             </a>
                             {% endif %}

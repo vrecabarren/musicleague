@@ -8,7 +8,7 @@ from feedback import app
 from feedback.models import User
 from feedback.routes import urls
 from feedback.routes.decorators import login_required
-from feedback.season import get_seasons_for_user
+from feedback.league import get_leagues_for_user
 from feedback.user import get_user
 
 
@@ -24,10 +24,10 @@ def autocomplete():
 @app.route(urls.PROFILE_URL)
 @login_required
 def profile():
-    seasons = get_seasons_for_user(g.user)
+    leagues = get_leagues_for_user(g.user)
     kwargs = {
         'user': g.user,
-        'seasons': seasons
+        'leagues': leagues
     }
     return render_template("profile.html", **kwargs)
 

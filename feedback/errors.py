@@ -1,4 +1,4 @@
-class SeasonExistsError(Exception):
+class LeagueExistsError(Exception):
     def __init__(self, *args, **kwargs):
         Exception.__init__(self, *args, **kwargs)
 

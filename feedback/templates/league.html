@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}Music League | {{ season.name }}{% endblock %}
+{% block title %}Music League | {{ league.name }}{% endblock %}
 
 {% block content %}
 
 <div class="container">
     <div class="row">
-        <h1>{{ season.name }}</h1>
+        <h1>{{ league.name }}</h1>
 
         <table>
-            <tr><td>Owner:</td><td><a href="{{ url_for('view_user', user_id=season.owner.id) }}">{{ season.owner.name }}</a></td></tr>
-            <tr><td>Created:</td><td>{{ season.created.strftime('%m/%d/%Y') }}</td></tr>
-            <tr><td>Locked:</td><td>{{ season.locked }}</td></tr>
+            <tr><td>Owner:</td><td><a href="{{ url_for('view_user', user_id=league.owner.id) }}">{{ league.owner.name }}</a></td></tr>
+            <tr><td>Created:</td><td>{{ league.created.strftime('%m/%d/%Y') }}</td></tr>
+            <tr><td>Locked:</td><td>{{ league.locked }}</td></tr>
         </table>
     </div>
 
@@ -20,11 +20,11 @@
         <div class="col-md-9">
 
             <div class="row" style="margin: 30px 0px">
-                {% if user == season.owner %}
-                <a href="{{ url_for('post_create_submission_period', season_name=season.name) }}" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Submission Period</a>
+                {% if user == league.owner %}
+                <a href="{{ url_for('post_create_submission_period', league_name=league.name) }}" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Submission Period</a>
                 {% endif %}
-                {% if user in season.users and season.current_submission_period %}
-                <a href="{{ url_for('view_submit', season_name=season.name) }}" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp;Submit</a>
+                {% if user in league.users and league.current_submission_period %}
+                <a href="{{ url_for('view_submit', league_name=league.name) }}" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp;Submit</a>
                 {% endif %}
             </div>
 
@@ -40,13 +40,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for submission_period in season.submission_periods|reverse %}
+                        {% for submission_period in league.submission_periods|reverse %}
                             {% if submission_period.is_current %}
                             <tr class="info">
                             {% else %}
                             <tr>
                             {% endif %}
-                                <td><a href="{{ url_for('view_submission_period', season_name=season.name, submission_period_id=submission_period.id) }}">{{ submission_period.name }}</a></td>
+                                <td><a href="{{ url_for('view_submission_period', league_name=league.name, submission_period_id=submission_period.id) }}">{{ submission_period.name }}</a></td>
                                 <td>
                                     {% if submission_period.playlist_created %}
                                     <a href="{{ submission_period.playlist_url }}" target="_blank">Spotify</a>
@@ -57,8 +57,8 @@
                                 <td>{{ submission_period.submissions|length }}</td>
                                 <td>{{ submission_period.complete }}</td>
                                 <td>
-                                    {% if season.owner == user %}
-                                    <a href="{{ url_for('remove_submission_period', season_name=season.name, submission_period_id=submission_period.id) }}">
+                                    {% if league.owner == user %}
+                                    <a href="{{ url_for('remove_submission_period', league_name=league.name, submission_period_id=submission_period.id) }}">
                                         <i class="fa fa-times" aria-hidden="true" style="color: red"></i>
                                     </a>
                                     {% endif %}
@@ -73,12 +73,12 @@
 
         <div class="col-md-3">
 
-            {% for user in season.users %}
+            {% for user in league.users %}
             <p><a href="{{ url_for('view_user', user_id=user.id) }}">{{ user.name }}</a></p>
             {% endfor %}
 
             <div class="row">
-                <form action="{{ url_for('add_user_for_season', season_name=season.name) }}" method="post" class="form-inline">
+                <form action="{{ url_for('add_user_for_league', league_name=league.name) }}" method="post" class="form-inline">
                     <div class="control-group">
                         <input type="text" class="form-control" name="email" id="add_user" placeholder="Email or Name">
                         <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i></button>

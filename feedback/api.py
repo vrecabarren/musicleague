@@ -1,5 +1,5 @@
 # flake8: noqa
-from feedback.season import create_season
-from feedback.season import get_season
+from feedback.league import create_league
+from feedback.league import get_league
 
 from feedback.submit import create_submission

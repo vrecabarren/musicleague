@@ -10,10 +10,10 @@
         <h1>Welcome to Your Profile, {{ user.name }}!</h1>
 
         <div style="margin: 30px 0px" class="col-lrg-12">
-            <form action="{{ url_for('post_create_season') }}" method="post">
+            <form action="{{ url_for('post_create_league') }}" method="post">
 
                 <div class="input-group">
-                  <input type="text" class="form-control" name="season_name" pattern="^[a-zA-Z0-9]+$">
+                  <input type="text" class="form-control" name="league_name" pattern="^[a-zA-Z0-9]+$">
                   <span class="input-group-btn">
                     <button class="btn btn-primary" type="submit">
                         <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Create
@@ -38,15 +38,15 @@
                 </tr>
             </thead>
             <tbody>
-                {% for season in seasons %}
+                {% for league in leagues %}
                     <tr>
-                        <td><a href="{{ url_for('view_season', season_name=season.name) }}">{{ season.name }}</a></td>
-                        <td><a href="{{ url_for('view_user', user_id=season.owner.id) }}">{{ season.owner.name }}</a></td>
-                        <td>{{ season.created.strftime('%m/%d/%Y') }}</td>
-                        <td>{{ season.locked }}</td>
+                        <td><a href="{{ url_for('view_league', league_name=league.name) }}">{{ league.name }}</a></td>
+                        <td><a href="{{ url_for('view_user', user_id=league.owner.id) }}">{{ league.owner.name }}</a></td>
+                        <td>{{ league.created.strftime('%m/%d/%Y') }}</td>
+                        <td>{{ league.locked }}</td>
                         <td>
-                            {% if season.owner == user %}
-                            <a href="{{ url_for('remove_season', season_name=season.name) }}"><i class="fa fa-times" aria-hidden="true" style="color: red"></i></a>
+                            {% if league.owner == user %}
+                            <a href="{{ url_for('remove_league', league_name=league.name) }}"><i class="fa fa-times" aria-hidden="true" style="color: red"></i></a>
                             {% endif %}
                         </td>
                     </tr>
