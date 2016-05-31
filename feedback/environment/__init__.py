@@ -68,7 +68,7 @@ def is_deployed():
 
 
 def is_production():
-    return get_setting(PRODUCTION)
+    return is_deployed() and get_setting(PRODUCTION)
 
 
 def get_port():
