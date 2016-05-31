@@ -6,13 +6,16 @@
 
 <div class="container">
     <div class="row">
+        <div class="col-md-12">
 
-        <h1>{{ submission_period.name }}</h1>
-        <h3><a href="{{ url_for('view_league', league_name=league.name )}}">{{ league.name }}</a></h3>
+            <h1>{{ submission_period.name }}</h1>
+            <h3><a href="{{ url_for('view_league', league_name=league.name )}}">{{ league.name }}</a></h3>
 
+        </div>
     </div>
 
     <div class="row" style="margin: 30px 0px">
+        <div class="col-md-12">
         {% if submission_period.playlist_created %}
             <!-- Anyone should see the playlist link if one has been created -->
             <a href="{{ submission_period.playlist_url }}" target="_blank" class="btn btn-primary"><i class="fa fa-spotify"></i>&nbsp;Playlist</a>
@@ -24,49 +27,52 @@
                 <a href="{{ url_for('create_spotify_playlist', league_name=league.name) }}" target="_blank" class="btn btn-primary"><i class="fa fa-spotify"></i>&nbsp;Create Playlist</a>
             {% endif %}
         {% endif %}
+        </div>
     </div>
 
     <div class="row">
+        <div class="col-md-12">
 
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Tracks</th>
-                    <th>User</th>
-                    <th>Created</th>
-                    <th>Confirmed</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for submission in submission_period.submissions|reverse %}
-                    {% if submission.confirmed %}
-                    <tr class="success">
-                    {% else %}
-                    <tr class="warning">
-                    {% endif %}
-                        <td>
-                            <ul>
-                            {% for track in tracks %}
-                            <li><a href="{{ track['external_urls']['spotify'] }}">{{ track['name'] }}</a></li>
-                            {% endfor %}
-                            </ul>
-                        </td>
-                        <td><a href="{{ url_for('view_user', user_id=submission.user.id) }}">{{ submission.user.name }}</a></td>
-                        <td>{{ submission.created.strftime('%m/%d/%Y') }}</td>
-                        <td>{{ submission.confirmed }}</td>
-                        <td>
-                            {% if user == submission.user  or user == league.owner %}
-                            <a href="{{ url_for('remove_submission', league_name=league.name, submission_period_id=submission_period.id, submission_id=submission.id) }}">
-                                <i class="fa fa-times" aria-hidden="true" style="color: red"></i>
-                            </a>
-                            {% endif %}
-                        </td>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Tracks</th>
+                        <th>User</th>
+                        <th>Created</th>
+                        <th>Confirmed</th>
+                        <th></th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for submission in submission_period.submissions|reverse %}
+                        {% if submission.confirmed %}
+                        <tr class="success">
+                        {% else %}
+                        <tr class="warning">
+                        {% endif %}
+                            <td>
+                                <ul>
+                                {% for track in tracks %}
+                                <li><a href="{{ track['external_urls']['spotify'] }}">{{ track['name'] }}</a></li>
+                                {% endfor %}
+                                </ul>
+                            </td>
+                            <td><a href="{{ url_for('view_user', user_id=submission.user.id) }}">{{ submission.user.name }}</a></td>
+                            <td>{{ submission.created.strftime('%m/%d/%Y') }}</td>
+                            <td>{{ submission.confirmed }}</td>
+                            <td>
+                                {% if user == submission.user  or user == league.owner %}
+                                <a href="{{ url_for('remove_submission', league_name=league.name, submission_period_id=submission_period.id, submission_id=submission.id) }}">
+                                    <i class="fa fa-times" aria-hidden="true" style="color: red"></i>
+                                </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
+        </div>
     </div>
 </div>
 
