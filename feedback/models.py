@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from mongoengine import BooleanField
 from mongoengine import DateTimeField
 from mongoengine import Document
