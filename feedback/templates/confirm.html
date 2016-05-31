@@ -7,7 +7,8 @@
 <div class="container text-center">
     <form method="post">
         <div class="row">
-            <div class="col-lg-6">
+
+            <div class="col-lg-6" style="padding-bottom: 30px">
                 <img src="{{ tracks[0].album.images[1].url }}" height="{{ tracks[0].album.images[1].height }}" width="{{ tracks[0].album.images[1].width }}" alt="" class="inline-block">
                 <div class="inline-block">
                     <h3>{{ tracks[0].name }}</h3>
@@ -15,7 +16,8 @@
                     <h5>{{ tracks[0].album.name }}</h5>
                 </div>
             </div>
-            <div class="col-lg-6">
+
+            <div class="col-lg-6" style="padding-bottom: 30px">
                 <img src="{{ tracks[1].album.images[1].url }}" height="{{ tracks[1].album.images[1].height }}" width="{{ tracks[1].album.images[1].width }}" alt="" class="inline-block">
                 <div class="inline-block">
                     <h3>{{ tracks[1].name }}</h3>
@@ -25,7 +27,6 @@
             </div>
 
         </div>
-        <div class="row" style="margin: 30px 0px"></div>
         <button type="submit" class="btn btn-success">Confirm</button>
     </form>
 </div>
