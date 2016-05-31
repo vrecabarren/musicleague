@@ -6,6 +6,7 @@ from feedback.environment.variables import DEBUG
 from feedback.environment.variables import DEPLOYED
 from feedback.environment.variables import MONGODB_URI
 from feedback.environment.variables import PORT
+from feedback.environment.variables import PRODUCTION
 from feedback.environment.variables import SECRET_KEY
 
 
@@ -64,6 +65,10 @@ def is_debug():
 
 def is_deployed():
     return get_setting(DEPLOYED)
+
+
+def is_production():
+    return get_setting(PRODUCTION)
 
 
 def get_port():
