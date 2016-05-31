@@ -37,8 +37,7 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Playlist</th>
-                                <th># Submissions</th>
-                                <th>Complete</th>
+                                <th>Submitted</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -65,8 +64,7 @@
                                         Pending
                                         {% endif %}
                                     </td>
-                                    <td>{{ submission_period.submissions|length }}</td>
-                                    <td>{{ submission_period.complete }}</td>
+                                    <td>{{ submission_period.submissions|length }} / {{ league.users|length }}</td>
                                     <td>
                                         {% if league.owner == user %}
                                         <a href="{{ url_for('view_league', league_name=league.name) }}?edit={{ submission_period.id }}">
