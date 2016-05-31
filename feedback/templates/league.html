@@ -49,7 +49,15 @@
                                 {% else %}
                                 <tr>
                                 {% endif %}
-                                    <td><a href="{{ url_for('view_submission_period', league_name=league.name, submission_period_id=submission_period.id) }}">{{ submission_period.name }}</a></td>
+                                    <td>
+                                        {% if submission_period.id|string == edit %}
+                                        <form method="post">
+                                            <input type="text" class="form-control" name="new_name" value="{{ submission_period.name }}">
+                                        </form>
+                                        {% else %}
+                                        <a href="{{ url_for('view_submission_period', league_name=league.name, submission_period_id=submission_period.id) }}">{{ submission_period.name }}</a>
+                                        {% endif %}
+                                    </td>
                                     <td>
                                         {% if submission_period.playlist_created %}
                                         <a href="{{ submission_period.playlist_url }}" target="_blank">Spotify</a>
@@ -61,6 +69,9 @@
                                     <td>{{ submission_period.complete }}</td>
                                     <td>
                                         {% if league.owner == user %}
+                                        <a href="{{ url_for('view_league', league_name=league.name) }}?edit={{ submission_period.id }}">
+                                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                                        </a>
                                         <a href="{{ url_for('remove_submission_period', league_name=league.name, submission_period_id=submission_period.id) }}">
                                             <i class="fa fa-times" aria-hidden="true" style="color: red"></i>
                                         </a>

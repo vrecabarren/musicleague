@@ -85,9 +85,25 @@ def view_league(league_name):
     league = get_league(league_name)
     kwargs = {
         'user': g.user,
-        'league': league
+        'league': league,
+        'edit': request.args.get('edit')
     }
     return render_template("league.html", **kwargs)
+
+
+@app.route(urls.VIEW_LEAGUE_URL, methods=['POST'])
+@login_required
+def rename_submission_period(league_name):
+    submission_period_id = request.args.get('edit')
+    new_name = request.form.get('new_name')
+    if not submission_period_id or not new_name:
+        return redirect(request.referrer)
+
+    submission_period = get_submission_period(submission_period_id)
+    submission_period.name = new_name
+    submission_period.save()
+
+    return redirect(url_for('view_league', league_name=league_name))
 
 
 @app.route(urls.VIEW_SUBMISSION_PERIOD_URL)
