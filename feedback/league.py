@@ -1,5 +1,6 @@
-from feedback.errors import LeagueExistsError
+from datetime import datetime
 
+from feedback.errors import LeagueExistsError
 from feedback.models import League
 
 
@@ -7,7 +8,8 @@ def create_league(name, user):
     if get_league(name):
         raise LeagueExistsError('League with name %s already exists' % name)
 
-    new_league = League(name=name, owner=user, users=[user])
+    new_league = League(
+        name=name, owner=user, users=[user], created=datetime.now())
     new_league.save()
     return new_league
 

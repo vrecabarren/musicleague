@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from feedback.models import Submission
 from feedback.models import SubmissionPeriod
 
@@ -19,7 +21,8 @@ def create_or_update_submission(tracks, submission_period, user):
 
 
 def create_submission(tracks, submission_period, user, persist=True):
-    new_submission = Submission(tracks=tracks, user=user)
+    new_submission = Submission(
+        tracks=tracks, user=user, created=datetime.now())
     if persist:
         new_submission.save()
         submission_period.submissions.append(new_submission)

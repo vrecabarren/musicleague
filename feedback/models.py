@@ -11,17 +11,17 @@ from mongoengine import StringField
 
 
 class User(Document):
-    id = IntField(primary_key=True)
-    name = StringField(max_length=255)
-    email = StringField(max_length=255)
-    image_url = StringField()
-    joined = DateTimeField()
+    id = IntField(primary_key=True, required=True)
+    name = StringField(required=True)
+    email = StringField(required=True)
+    image_url = StringField(required=True)
+    joined = DateTimeField(required=True)
 
 
 class Submission(Document):
     confirmed = BooleanField(default=False)
     count = IntField(default=1)
-    created = DateTimeField(default=datetime.now, required=True)
+    created = DateTimeField(required=True)
     tracks = ListField(default=[])
     user = ReferenceField(User)
 
@@ -41,7 +41,8 @@ class SubmissionPeriod(Document):
 
 
 class League(Document):
-    created = DateTimeField(default=datetime.now, required=True)
+    created = DateTimeField(required=True)
+    due_date = DateTimeField()
     locked = BooleanField(default=False)
     name = StringField(primary_key=True, required=True)
     owner = ReferenceField(User)
