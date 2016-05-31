@@ -48,7 +48,8 @@ def login():
             user = create_or_update_user(
                 id=spotify.current_user().get('id'),
                 email=spotify.current_user().get('email'),
-                name=spotify.current_user().get('display_name'))
+                name=spotify.current_user().get('display_name'),
+                image_url=spotify.current_user().get('images')[0].get('url'))
 
             session['current_user'] = user.id
 

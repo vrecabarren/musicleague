@@ -14,7 +14,8 @@ class User(Document):
     id = IntField(primary_key=True)
     name = StringField(max_length=255)
     email = StringField(max_length=255)
-    joined = DateTimeField(default=datetime.now())
+    image_url = StringField()
+    joined = DateTimeField()
 
 
 class Submission(Document):
