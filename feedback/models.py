@@ -46,7 +46,7 @@ class League(Document):
     owner = ReferenceField(User)
     submission_periods = ListField(
         ReferenceField(SubmissionPeriod, reverse_delete_rule=PULL))
-    users = ListField(ReferenceField(User))
+    users = ListField(ReferenceField(User, reverse_delete_rule=PULL))
 
     @property
     def current_submission_period(self):

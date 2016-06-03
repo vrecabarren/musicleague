@@ -91,6 +91,9 @@
             <p><a href="{{ url_for('view_user', user_id=user.id) }}">
                 <img src="{{ user.image_url }}" alt="" class="img img-circle" height="30" width="30" style="margin-right: 10px">
                 {{ user.name }}
+                <a href="{{ url_for('remove_user_for_league', league_name=league.name, user_id=user.id) }}">
+                    <i class="fa fa-times" aria-hidden="true" style="color: red"></i>
+                </a>
             </a></p>
             {% endfor %}
 

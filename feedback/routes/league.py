@@ -19,11 +19,23 @@ from feedback.user import get_user_by_email
 
 
 @app.route(urls.ADD_USER_FOR_LEAGUE_URL, methods=['POST'])
+@login_required
 def add_user_for_league(league_name):
     league = get_league(league_name)
     user = get_user_by_email(escape(request.form.get('email')))
     if user and user not in league.users and league.owner == g.user:
         league.users.append(user)
+        league.save()
+    return redirect(url_for('view_league', league_name=league_name))
+
+
+@app.route(urls.REMOVE_USER_FOR_LEAGUE_URL, methods=['GET'])
+@login_required
+def remove_user_for_league(league_name, user_id):
+    league = get_league(league_name)
+    if league.owner == g.user:
+        league.users = [u for u in league.users if str(u.id) != user_id]
+        logging.warning(len(league.users))
         league.save()
     return redirect(url_for('view_league', league_name=league_name))
 
