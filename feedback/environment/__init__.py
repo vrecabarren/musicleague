@@ -45,13 +45,13 @@ def get_local_setting(env_setting):
         typecast = type(env_setting.default)
         return typecast(setting)
     except AttributeError:
-        logging.warning('Attempt to get local setting %s failed because we '
-                        'could not find it in settingslocal.py. Default is %s',
-                        env_setting.key, env_setting.default)
+        logging.info('Attempt to get local setting %s failed because we '
+                     'could not find it in settingslocal.py. Default is %s',
+                     env_setting.key, env_setting.default)
     except ImportError:
-        logging.warning('Attempt to get local setting %s failed because we '
-                        'could not find settingslocal.py. Default is %s',
-                        env_setting.key, env_setting.default)
+        logging.info('Attempt to get local setting %s failed because we '
+                     'could not find settingslocal.py. Default is %s',
+                     env_setting.key, env_setting.default)
     return env_setting.default
 
 
