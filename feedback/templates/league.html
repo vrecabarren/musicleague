@@ -50,7 +50,7 @@
                                 {% endif %}
                                     <td>
                                         {% if submission_period.id|string == edit %}
-                                        <form method="post">
+                                        <form method="post" action="{{ url_for('rename_submission_period', league_name=league.name, submission_period_id=submission_period.id) }}">
                                             <input type="text" class="form-control" name="new_name" value="{{ submission_period.name }}">
                                         </form>
                                         {% else %}
