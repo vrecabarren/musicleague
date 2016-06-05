@@ -9,7 +9,7 @@ Music League let's you do just that! Create a league, invite your friends,
 and have everyone submit their favorite songs to be
 voted on by the entire group! Music League integrates with the Spotify API and will
 handle the playlists, email reminders, and voting - all you have to do is
-submit and listen!
+submit, listen, and vote!
 
 ## Using this Repo
 Music League relies on multiple other open source projects:
