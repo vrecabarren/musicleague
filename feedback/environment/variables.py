@@ -6,7 +6,10 @@ EnvironmentVariable = namedtuple('EnvironmentVariable', 'key, default')
 
 DEBUG = EnvironmentVariable(key='DEBUG', default=False)
 DEPLOYED = EnvironmentVariable(key='ON_HEROKU', default=False)
+MAILGUN_API_BASE_URL = EnvironmentVariable(key='MAILGUN_API_BASE_URL', default='')  # noqa
+MAILGUN_API_KEY = EnvironmentVariable(key='MAILGUN_API_KEY', default='')
 MONGODB_URI = EnvironmentVariable(key='MONGODB_URI', default='')
+NOTIFICATION_SENDER = EnvironmentVariable(key="NOTIFICATION_SENDER", default='')  # noqa
 PORT = EnvironmentVariable(key='PORT', default=5000)
 PRODUCTION = EnvironmentVariable(key='IS_PRODUCTION', default=False)
 SECRET_KEY = EnvironmentVariable(key='SECRET_KEY', default='')

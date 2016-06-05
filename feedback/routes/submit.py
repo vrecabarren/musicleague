@@ -5,6 +5,7 @@ from flask import request
 from flask import url_for
 
 from feedback import app
+from feedback.mail import submission_notification
 from feedback.models import Submission
 from feedback.models import SubmissionPeriod
 from feedback.routes.decorators import login_required
@@ -31,10 +32,13 @@ def view_confirm_submit(league_name, submission_id, **kwargs):
 
 @app.route(CONFIRM_SUBMIT_URL, methods=['POST'])
 @login_required
-def post_confirm_submit(league_name, submission_id):
+@league_required
+def post_confirm_submit(league_name, submission_id, **kwargs):
+    league = kwargs.get('league')
     submission = Submission.objects(id=submission_id).get()
     submission.confirmed = True
     submission.save()
+    submission_notification(league.owner.email, submission)
     return redirect(url_for('view_league', league_name=league_name))
 
 
