@@ -1,12 +1,12 @@
 from flask import g
 from flask import redirect
-from flask import render_template
 from flask import request
 from flask import url_for
 
 from feedback import app
 from feedback.league import get_league
 from feedback.routes.decorators import login_required
+from feedback.routes.decorators import templated
 from feedback.submit import create_submission_period
 from feedback.submit import get_submission_period
 
@@ -53,6 +53,7 @@ def rename_submission_period(league_name, submission_period_id):
 
 
 @app.route(VIEW_SUBMISSION_PERIOD_URL)
+@templated('submission_period.html')
 @login_required
 def view_submission_period(league_name, submission_period_id):
     league = get_league(league_name)
@@ -64,11 +65,9 @@ def view_submission_period(league_name, submission_period_id):
 
     tracks = g.spotify.tracks(all_tracks).get('tracks') if all_tracks else []
 
-    kwargs = {
+    return {
         'user': g.user,
         'league': league,
         'submission_period': submission_period,
         'tracks': tracks
-    }
-
-    return render_template("submission_period.html", **kwargs)
+        }

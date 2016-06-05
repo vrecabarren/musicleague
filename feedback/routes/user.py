@@ -1,12 +1,12 @@
 import json
 
 from flask import g
-from flask import render_template
 from flask import request
 
 from feedback import app
 from feedback.models import User
 from feedback.routes.decorators import login_required
+from feedback.routes.decorators import templated
 from feedback.league import get_leagues_for_user
 from feedback.user import get_user
 
@@ -26,22 +26,19 @@ def autocomplete():
 
 
 @app.route(PROFILE_URL)
+@templated('profile.html')
 @login_required
 def profile():
     leagues = get_leagues_for_user(g.user)
-    kwargs = {
-        'user': g.user,
-        'leagues': leagues
-    }
-    return render_template("profile.html", **kwargs)
+    return {'user': g.user, 'leagues': leagues}
 
 
 @app.route(VIEW_USER_URL)
+@templated('user.html')
 @login_required
 def view_user(user_id):
-    kwargs = {
+    return {
         'user': g.user,
         'page_user': get_user(user_id),
         'user_image': g.spotify.user(user_id).get('images')[0]
-    }
-    return render_template("user.html", **kwargs)
+        }
