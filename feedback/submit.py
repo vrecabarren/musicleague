@@ -13,6 +13,8 @@ def create_or_update_submission(tracks, submission_period, user):
 
     if s:
         s.tracks = tracks
+        s.count += 1
+        s.updated = datetime.now()
         s.save()
     else:
         s = create_submission(tracks, submission_period, user)

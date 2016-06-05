@@ -14,11 +14,22 @@ HTML_PATH = 'email/html/%s'
 TXT_PATH = 'email/txt/%s'
 
 
-def submission_notification(to, submission):
-    _send_mail(
-        to, 'Music League Submission',
-        render_template(TXT_PATH % 'submitted.txt', user=submission.user),
-        render_template(HTML_PATH % 'submitted.html', user=submission.user))
+def owner_user_submitted_notification(owner, submission):
+    if owner.preferences.owner_user_submitted_notifications:
+        _send_mail(
+            owner.email, 'Music League - User Submitted',
+            render_template(TXT_PATH % 'submitted.txt', user=submission.user),
+            render_template(HTML_PATH % 'submitted.html', user=submission.user)
+        )
+
+
+def user_submit_reminder_notification(user, league):
+    if user.preferences.user_submit_reminder_notifications:
+        _send_mail(
+            user.email, 'Music League - Submission Reminder',
+            render_template(TXT_PATH % 'reminder.txt', league=league),
+            render_template(HTML_PATH % 'reminder.html', league=league)
+        )
 
 
 def _send_mail(to, subject, text, html):
