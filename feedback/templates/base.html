@@ -35,12 +35,12 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="https://github.com/nathancoleman/feedback" target="_blank">GitHub</a></li>
+                    <li><a href="https://github.com/nathancoleman/feedback" target="_blank" title="Contribute on GitHub"><i class="fa fa-github"></i>&nbsp;Contribute</a></li>
                     {% if user %}
                     <li><a href="{{ url_for('profile') }}" title="Your Profile">{{ user.name }}</a></li>
                     <li><a href="{{ url_for('logout') }}">Log Out</a></li>
                     {% else %}
-                    <li><a href="{{ oauth_url }}">Log In</a></li>
+                    <li><a href="{{ oauth_url }}" title="Log In With Your Spotify Account"><i class="fa fa-spotify"></i>&nbsp;Log In</a></li>
                     {% endif %}
                 </ul>
             </div>
