@@ -5,8 +5,8 @@
 Have you ever wanted to battle it out with your friends and see who has the
 best taste in music?
 
-Music League let's you do just that! Create a session, invite your friends using
-just their email addresses, and have everyone submit their favorite songs to be
+Music League let's you do just that! Create a league, invite your friends,
+and have everyone submit their favorite songs to be
 voted on by the entire group! Music League integrates with the Spotify API and will
 handle the playlists, email reminders, and voting - all you have to do is
 submit and listen!
@@ -16,7 +16,6 @@ Music League relies on multiple other open source projects:
 - [Flask](http://flask.pocoo.org/)
 - [Mongo](https://www.mongodb.org/) (via [MongoEngine](http://mongoengine.org/))
 - [Spotipy](http://spotipy.readthedocs.io/en/latest/)
-- [HaikunatorPy](https://github.com/Atrox/haikunatorpy)
 
 I recommend using [virtualenv](http://www.virtualenv.org/en/latest/) along with
 [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/) for
