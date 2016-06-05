@@ -1,1 +1,1 @@
-{{ user.name }} just submitted!
+{{ submission.user.name }} just submitted!

@@ -11,7 +11,8 @@ from mongoengine import StringField
 
 
 class UserPreferences(EmbeddedDocument):
-    owner_user_submitted_notifications = BooleanField(default=False)
+    owner_user_submitted_notifications = BooleanField(default=True)
+    user_submit_reminder_notifications = BooleanField(default=True)
 
 
 class User(Document):
@@ -20,7 +21,8 @@ class User(Document):
     image_url = StringField(required=True)
     joined = DateTimeField(required=True)
     name = StringField(required=True)
-    preferences = EmbeddedDocumentField(UserPreferences)
+    preferences = EmbeddedDocumentField(
+        UserPreferences, default=UserPreferences())
 
 
 class Submission(Document):
@@ -36,6 +38,7 @@ class Submission(Document):
 
 class SubmissionPeriod(Document):
     complete = BooleanField(default=False)
+    due_date = DateTimeField()
     is_current = BooleanField(default=True)
     league = ReferenceField('League')
     name = StringField(max_length=255)
@@ -51,7 +54,6 @@ class SubmissionPeriod(Document):
 
 class League(Document):
     created = DateTimeField(required=True)
-    due_date = DateTimeField()
     locked = BooleanField(default=False)
     name = StringField(primary_key=True, required=True)
     owner = ReferenceField(User)

@@ -35,9 +35,10 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Playlist</th>
-                                <th>Submitted</th>
+                                <th><i class="fa fa-tag" aria-hidden="true"></i></th>
+                                <th><i class="fa fa-headphones" aria-hidden="true"></i></th>
+                                <th><i class="fa fa-calendar" aria-hidden="true"></i></th>
+                                <th><i class="fa fa-check-circle" aria-hidden="true"></i></th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -61,16 +62,27 @@
                                         {% if submission_period.playlist_created %}
                                         <a href="{{ submission_period.playlist_url }}" target="_blank">Spotify</a>
                                         {% else %}
-                                        Pending
+                                        No Playlist
                                         {% endif %}
                                     </td>
+                                    <td>
+                                        {% if submission_period.due_date %}
+                                        {{ submission_period.due_date.strftime('%m/%d/%Y') }}
+                                        {% else %}
+                                        No Due Date
+                                        {% endif %}</td>
                                     <td>{{ submission_period.submissions|length }} / {{ league.users|length }}</td>
                                     <td>
                                         {% if league.owner == user %}
-                                        <a href="{{ url_for('view_league', league_name=league.name) }}?edit={{ submission_period.id }}">
+                                        <a href="{{ url_for('view_league', league_name=league.name) }}?edit={{ submission_period.id }}" title="Change Name">
                                             <i class="fa fa-pencil" aria-hidden="true"></i>
                                         </a>
-                                        <a href="{{ url_for('remove_submission_period', league_name=league.name, submission_period_id=submission_period.id) }}">
+                                        &nbsp;
+                                        <a href="" title="Change Due Date">
+                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                        </a>
+                                        &nbsp;
+                                        <a href="{{ url_for('remove_submission_period', league_name=league.name, submission_period_id=submission_period.id) }}" title="Remove">
                                             <i class="fa fa-times" aria-hidden="true" style="color: red"></i>
                                         </a>
                                         {% endif %}
@@ -88,13 +100,16 @@
             <h3>Users</h3>
 
             {% for user in league.users %}
-            <p><a href="{{ url_for('view_user', user_id=user.id) }}">
-                <img src="{{ user.image_url }}" alt="" class="img img-circle" height="30" width="30" style="margin-right: 10px">
-                {{ user.name }}
+            <p>
+                <a href="{{ url_for('view_user', user_id=user.id) }}">
+                    <img src="{{ user.image_url }}" alt="" class="img img-circle" height="30" width="30" style="margin-right: 10px">
+                    {{ user.name }}
+                </a>
+                &nbsp;
                 <a href="{{ url_for('remove_user_for_league', league_name=league.name, user_id=user.id) }}">
                     <i class="fa fa-times" aria-hidden="true" style="color: red"></i>
                 </a>
-            </a></p>
+            </p>
             {% endfor %}
 
             <form action="{{ url_for('add_user_for_league', league_name=league.name) }}" method="post" class="">

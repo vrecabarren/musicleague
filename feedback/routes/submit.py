@@ -52,7 +52,9 @@ def view_submit(league_name, submission_period_id, **kwargs):
 
 @app.route(VIEW_SUBMIT_URL, methods=['POST'])
 @login_required
+@league_required
 def post_submit(league_name, submission_period_id, **kwargs):
+    league = kwargs.get('league')
     tracks = [
         escape(request.form.get('track1')),
         escape(request.form.get('track2'))
@@ -61,7 +63,7 @@ def post_submit(league_name, submission_period_id, **kwargs):
     submission_period = SubmissionPeriod.objects(id=submission_period_id).get()
     if submission_period and submission_period.is_current:
         submission = create_or_update_submission(
-            tracks, submission_period, g.user)
+            tracks, submission_period, league, g.user)
         return redirect(
             url_for('view_confirm_submit',
                     league_name=league_name, submission_id=submission.id))
