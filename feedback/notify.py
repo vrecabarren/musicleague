@@ -17,16 +17,20 @@ TXT_PATH = 'email/txt/%s'
 def owner_user_submitted_notification(owner, submission):
     if owner.preferences.owner_user_submitted_notifications:
         _send_mail(
-            owner.email, 'Music League - User Submitted',
-            render_template(TXT_PATH % 'submitted.txt', submission=submission),
-            render_template(HTML_PATH % 'submitted.html', submission=submission)
+            owner.email,
+            'Music League - User Submitted',
+            render_template(
+                TXT_PATH % 'submitted.txt', submission=submission),
+            render_template(
+                HTML_PATH % 'submitted.html', submission=submission)
         )
 
 
 def user_submit_reminder_notification(user, league):
     if user.preferences.user_submit_reminder_notifications:
         _send_mail(
-            user.email, 'Music League - Submission Reminder',
+            user.email,
+            'Music League - Submission Reminder',
             render_template(TXT_PATH % 'reminder.txt', league=league),
             render_template(HTML_PATH % 'reminder.html', league=league)
         )
