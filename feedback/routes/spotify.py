@@ -3,7 +3,6 @@ from flask import redirect
 from flask import url_for
 
 from feedback import app
-from feedback.routes import urls
 from feedback.routes.decorators import login_required
 from feedback.league import get_league
 from feedback.spotify import create_or_update_playlist
@@ -23,7 +22,7 @@ def create_spotify_playlist(league_name):
     return redirect(url_for('view_league', league_name=league_name))
 
 
-@app.route(urls.VIEW_PLAYLIST_URL)
+@app.route(VIEW_PLAYLIST_URL)
 def view_playlist(league_name):
     league = get_league(league_name)
     if league and league.playlist_url:
