@@ -114,10 +114,10 @@
 
             <form action="{{ url_for('add_user_for_league', league_name=league.name) }}" method="post" class="">
                 <div class="control-group input-group">
-                  <input type="text" class="form-control" name="email" id="add_user" placeholder="Email or Name">
-                  <span class="input-group-btn">
-                    <button class="btn btn-primary" type="submit"><i class="fa fa-plus"></i></button>
-                  </span>
+                    <input type="text" class="form-control" name="email" id="add_user" placeholder="Email or Name">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                    </span>
                 </div>
             </form>
 
@@ -141,7 +141,7 @@
                     success: function( data ) { response( data ); }
                 });
             },
-            minLength: 2,
+            minLength: 2
         });
     });
 </script>
