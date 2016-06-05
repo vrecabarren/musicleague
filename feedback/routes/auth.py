@@ -7,11 +7,14 @@ from flask import url_for
 from spotipy import Spotify
 
 from feedback import app
-from feedback.routes import urls
 from feedback.routes.decorators import login_required
 from feedback.spotify import get_spotify_oauth
 from feedback.user import create_or_update_user
 from feedback.user import get_user
+
+
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
 
 
 @app.before_request
@@ -32,7 +35,7 @@ def before_request():
         g.spotify = Spotify(access_token)
 
 
-@app.route(urls.LOGIN_URL)
+@app.route(LOGIN_URL)
 def login():
     if 'current_user' not in session:
         url = request.url
@@ -56,7 +59,7 @@ def login():
     return redirect(url_for('profile'))
 
 
-@app.route(urls.LOGOUT_URL)
+@app.route(LOGOUT_URL)
 @login_required
 def logout():
     session.pop('current_user')

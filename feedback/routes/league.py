@@ -8,7 +8,6 @@ from flask import request
 from flask import url_for
 
 from feedback import app
-from feedback.routes import urls
 from feedback.routes.decorators import login_required
 from feedback.league import create_league
 from feedback.league import get_league
@@ -18,7 +17,18 @@ from feedback.submit import get_submission_period
 from feedback.user import get_user_by_email
 
 
-@app.route(urls.ADD_USER_FOR_LEAGUE_URL, methods=['POST'])
+ADD_USER_FOR_LEAGUE_URL = '/l/<league_name>/users/add/'
+CREATE_LEAGUE_URL = '/l/create/'
+CREATE_SUBMISSION_PERIOD_URL = '/l/<league_name>/submission_period/create/'
+REMOVE_LEAGUE_URL = '/l/<league_name>/remove/'
+REMOVE_SUBMISSION_PERIOD_URL = '/l/<league_name>/<submission_period_id>/remove/'  # noqa
+REMOVE_SUBMISSION_URL = '/l/<league_name>/<submission_period_id>/<submission_id>/remove/'  # noqa
+REMOVE_USER_FOR_LEAGUE_URL = '/l/<league_name>/users/remove/<user_id>/'
+VIEW_LEAGUE_URL = '/l/<league_name>/'
+VIEW_SUBMISSION_PERIOD_URL = '/l/<league_name>/<submission_period_id>/'
+
+
+@app.route(ADD_USER_FOR_LEAGUE_URL, methods=['POST'])
 @login_required
 def add_user_for_league(league_name):
     league = get_league(league_name)
@@ -29,7 +39,7 @@ def add_user_for_league(league_name):
     return redirect(url_for('view_league', league_name=league_name))
 
 
-@app.route(urls.REMOVE_USER_FOR_LEAGUE_URL, methods=['GET'])
+@app.route(REMOVE_USER_FOR_LEAGUE_URL, methods=['GET'])
 @login_required
 def remove_user_for_league(league_name, user_id):
     league = get_league(league_name)
@@ -40,7 +50,7 @@ def remove_user_for_league(league_name, user_id):
     return redirect(url_for('view_league', league_name=league_name))
 
 
-@app.route(urls.CREATE_LEAGUE_URL, methods=['POST'])
+@app.route(CREATE_LEAGUE_URL, methods=['POST'])
 @login_required
 def post_create_league():
     try:
@@ -52,7 +62,7 @@ def post_create_league():
         logging.exception('There was an exception: %s', e)
 
 
-@app.route(urls.CREATE_SUBMISSION_PERIOD_URL)
+@app.route(CREATE_SUBMISSION_PERIOD_URL)
 @login_required
 def post_create_submission_period(league_name):
     league = get_league(league_name)
@@ -61,7 +71,7 @@ def post_create_submission_period(league_name):
     return redirect(url_for('view_league', league_name=league_name))
 
 
-@app.route(urls.REMOVE_LEAGUE_URL)
+@app.route(REMOVE_LEAGUE_URL)
 @login_required
 def remove_league(league_name):
     league = get_league(league_name)
@@ -70,7 +80,7 @@ def remove_league(league_name):
     return redirect(url_for('profile'))
 
 
-@app.route(urls.REMOVE_SUBMISSION_URL)
+@app.route(REMOVE_SUBMISSION_URL)
 @login_required
 def remove_submission(league_name, submission_period_id, submission_id):
     league = get_league(league_name)
@@ -81,7 +91,7 @@ def remove_submission(league_name, submission_period_id, submission_id):
                             submission_period_id=submission_period_id))
 
 
-@app.route(urls.REMOVE_SUBMISSION_PERIOD_URL)
+@app.route(REMOVE_SUBMISSION_PERIOD_URL)
 @login_required
 def remove_submission_period(league_name, submission_period_id):
     league = get_league(league_name)
@@ -91,7 +101,7 @@ def remove_submission_period(league_name, submission_period_id):
     return redirect(url_for('view_league', league_name=league_name))
 
 
-@app.route(urls.VIEW_LEAGUE_URL, methods=['GET'])
+@app.route(VIEW_LEAGUE_URL, methods=['GET'])
 @login_required
 def view_league(league_name):
     league = get_league(league_name)
@@ -103,7 +113,7 @@ def view_league(league_name):
     return render_template("league.html", **kwargs)
 
 
-@app.route(urls.VIEW_LEAGUE_URL, methods=['POST'])
+@app.route(VIEW_LEAGUE_URL, methods=['POST'])
 @login_required
 def rename_submission_period(league_name):
     league = get_league(league_name)
@@ -120,7 +130,7 @@ def rename_submission_period(league_name):
     return redirect(url_for('view_league', league_name=league_name))
 
 
-@app.route(urls.VIEW_SUBMISSION_PERIOD_URL)
+@app.route(VIEW_SUBMISSION_PERIOD_URL)
 @login_required
 def view_submission_period(league_name, submission_period_id):
     league = get_league(league_name)

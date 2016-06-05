@@ -29,7 +29,10 @@ from feedback.routes.user import view_user
 from feedback.spotify import get_spotify_oauth
 
 
-@app.route(urls.HELLO_URL)
+HELLO_URL = '/'
+
+
+@app.route(HELLO_URL)
 def hello():
     kwargs = {
         'user': g.user,

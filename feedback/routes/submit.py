@@ -14,6 +14,10 @@ from feedback.submit import create_or_update_submission
 from feedback.submit import create_submission_period
 
 
+CONFIRM_SUBMIT_URL = '/l/<league_name>/submit/<submission_id>/confirm/'
+VIEW_SUBMIT_URL = '/l/<league_name>/submit/'
+
+
 @app.route(urls.CONFIRM_SUBMIT_URL, methods=['GET'])
 @login_required
 def view_confirm_submit(league_name, submission_id):

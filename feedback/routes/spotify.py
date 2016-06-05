@@ -9,7 +9,11 @@ from feedback.league import get_league
 from feedback.spotify import create_or_update_playlist
 
 
-@app.route(urls.CREATE_PLAYLIST_URL)
+CREATE_PLAYLIST_URL = '/l/<league_name>/playlist/create/'
+VIEW_PLAYLIST_URL = '/l/<league_name>/playlist/'
+
+
+@app.route(CREATE_PLAYLIST_URL)
 @login_required
 def create_spotify_playlist(league_name):
     league = get_league(league_name)

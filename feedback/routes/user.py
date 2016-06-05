@@ -6,13 +6,17 @@ from flask import request
 
 from feedback import app
 from feedback.models import User
-from feedback.routes import urls
 from feedback.routes.decorators import login_required
 from feedback.league import get_leagues_for_user
 from feedback.user import get_user
 
 
-@app.route(urls.AUTOCOMPLETE)
+AUTOCOMPLETE = '/autocomplete/'
+PROFILE_URL = '/profile/'
+VIEW_USER_URL = '/user/<user_id>/'
+
+
+@app.route(AUTOCOMPLETE)
 @login_required
 def autocomplete():
     term = request.args.get('term')
@@ -21,7 +25,7 @@ def autocomplete():
     return json.dumps(results)
 
 
-@app.route(urls.PROFILE_URL)
+@app.route(PROFILE_URL)
 @login_required
 def profile():
     leagues = get_leagues_for_user(g.user)
@@ -32,7 +36,7 @@ def profile():
     return render_template("profile.html", **kwargs)
 
 
-@app.route(urls.VIEW_USER_URL)
+@app.route(VIEW_USER_URL)
 @login_required
 def view_user(user_id):
     kwargs = {
