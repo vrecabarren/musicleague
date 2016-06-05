@@ -28,5 +28,7 @@ else:
     db = connect(MONGO_DB_NAME)
     logging.basicConfig(format=logFormatStr, level=logging.DEBUG)
 
+app.logger.addHandler(logging.StreamHandler(sys.stdout))
+
 
 from feedback import routes
