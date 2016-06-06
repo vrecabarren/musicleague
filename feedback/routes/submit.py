@@ -11,7 +11,7 @@ from feedback.notify import owner_user_submitted_notification
 from feedback.routes.decorators import login_required
 from feedback.routes.decorators import league_required
 from feedback.routes.decorators import templated
-from feedback.submit import create_or_update_submission
+from feedback.submission import create_or_update_submission
 
 
 CONFIRM_SUBMIT_URL = '/l/<league_name>/<submission_id>/confirm/'

@@ -33,32 +33,8 @@ def create_submission(tracks, submission_period, user, league, persist=True):
     return new_submission
 
 
-def create_submission_period(league):
-    name = '%s - SP %s' % (league.name, len(league.submission_periods) + 1)
-    new_submission_period = SubmissionPeriod(name=name, league=league)
-    new_submission_period.save()
-
-    # Mark all other previous submission periods as not current
-    for submission_period in league.submission_periods:
-        if submission_period.is_current:
-            submission_period.is_current = False
-            submission_period.save()
-
-    league.submission_periods.append(new_submission_period)
-    league.save()
-
-    return new_submission_period
-
-
 def get_submission(submission_id):
     try:
         return Submission.objects(id=submission_id).get()
-    except SubmissionPeriod.DoesNotExist:
-        return None
-
-
-def get_submission_period(submission_period_id):
-    try:
-        return SubmissionPeriod.objects(id=submission_period_id).get()
     except SubmissionPeriod.DoesNotExist:
         return None

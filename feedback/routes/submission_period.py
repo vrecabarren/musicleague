@@ -7,8 +7,8 @@ from feedback import app
 from feedback.league import get_league
 from feedback.routes.decorators import login_required
 from feedback.routes.decorators import templated
-from feedback.submit import create_submission_period
-from feedback.submit import get_submission_period
+from feedback.submission_period import create_submission_period
+from feedback.submission_period import get_submission_period
 
 
 CREATE_SUBMISSION_PERIOD_URL = '/l/<league_name>/submission_period/create/'
