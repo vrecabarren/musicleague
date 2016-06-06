@@ -7,6 +7,7 @@ from feedback import app
 from feedback.models import User
 from feedback.routes.decorators import login_required
 from feedback.routes.decorators import templated
+from feedback.league import get_leagues_for_owner
 from feedback.league import get_leagues_for_user
 from feedback.user import get_user
 
@@ -37,8 +38,11 @@ def profile():
 @templated('user.html')
 @login_required
 def view_user(user_id):
+    page_user = get_user(user_id)
     return {
         'user': g.user,
-        'page_user': get_user(user_id),
-        'user_image': g.spotify.user(user_id).get('images')[0]
+        'page_user': page_user,
+        'user_image': g.spotify.user(user_id).get('images')[0],
+        'owner_leagues': len(get_leagues_for_owner(page_user)),
+        'contributor_leagues': len(get_leagues_for_user(page_user))
         }
