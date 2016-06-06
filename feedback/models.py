@@ -38,7 +38,8 @@ class Submission(Document):
 
 class SubmissionPeriod(Document):
     complete = BooleanField(default=False)
-    due_date = DateTimeField()
+    submission_due_date = DateTimeField()
+    vote_due_date = DateTimeField()
     is_current = BooleanField(default=True)
     league = ReferenceField('League')
     name = StringField(max_length=255)
