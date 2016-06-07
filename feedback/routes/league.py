@@ -11,7 +11,7 @@ from feedback.routes.decorators import league_required
 from feedback.routes.decorators import login_required
 from feedback.routes.decorators import templated
 from feedback.league import create_league
-from feedback.submit import get_submission
+from feedback.submission import get_submission
 from feedback.user import get_user_by_email
 
 

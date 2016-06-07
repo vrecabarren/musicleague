@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from mongoengine import BooleanField
 from mongoengine import DateTimeField
 from mongoengine import Document
@@ -38,7 +40,8 @@ class Submission(Document):
 
 class SubmissionPeriod(Document):
     complete = BooleanField(default=False)
-    due_date = DateTimeField()
+    submission_due_date = DateTimeField()
+    vote_due_date = DateTimeField()
     is_current = BooleanField(default=True)
     league = ReferenceField('League')
     name = StringField(max_length=255)
@@ -50,6 +53,14 @@ class SubmissionPeriod(Document):
     @property
     def playlist_created(self):
         return self.playlist_url != ''
+
+    @property
+    def accepting_submissions(self):
+        return self.submission_due_date > datetime.now()
+
+    @property
+    def accepting_votes(self):
+        return self.vote_due_date > datetime.now() > self.submission_due_date
 
 
 class League(Document):

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import g
 from flask import redirect
 from flask import request
@@ -7,13 +9,13 @@ from feedback import app
 from feedback.league import get_league
 from feedback.routes.decorators import login_required
 from feedback.routes.decorators import templated
-from feedback.submit import create_submission_period
-from feedback.submit import get_submission_period
+from feedback.submission_period import create_submission_period
+from feedback.submission_period import get_submission_period
 
 
 CREATE_SUBMISSION_PERIOD_URL = '/l/<league_name>/submission_period/create/'
+MODIFY_SUBMISSION_PERIOD_URL = '/l/<league_name>/<submission_period_id>/modify/'  # noqa
 REMOVE_SUBMISSION_PERIOD_URL = '/l/<league_name>/<submission_period_id>/remove/'  # noqa
-RENAME_SUBMISSION_PERIOD_URL = '/l/<league_name>/<submission_period_id>/rename/'  # noqa
 VIEW_SUBMISSION_PERIOD_URL = '/l/<league_name>/<submission_period_id>/'
 
 
@@ -36,17 +38,20 @@ def remove_submission_period(league_name, submission_period_id):
     return redirect(url_for('view_league', league_name=league_name))
 
 
-@app.route(RENAME_SUBMISSION_PERIOD_URL, methods=['POST'])
+@app.route(MODIFY_SUBMISSION_PERIOD_URL, methods=['POST'])
 @login_required
-def rename_submission_period(league_name, submission_period_id):
+def modify_submission_period(league_name, submission_period_id):
     league = get_league(league_name)
     if league and league.owner == g.user:
         new_name = request.form.get('new_name')
+        new_due_date = request.form.get('new_due_date')
         if not submission_period_id or not new_name:
             return redirect(request.referrer)
 
         submission_period = get_submission_period(submission_period_id)
         submission_period.name = new_name
+        submission_period.submission_due_date = datetime.strptime(
+            new_due_date, '%m/%d/%y %I%p')
         submission_period.save()
 
     return redirect(url_for('view_league', league_name=league_name))

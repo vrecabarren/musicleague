@@ -15,9 +15,9 @@ from feedback.routes.league import remove_league
 from feedback.routes.league import view_league
 from feedback.routes.spotify import create_spotify_playlist
 from feedback.routes.spotify import view_playlist
+from feedback.routes.submission_period import modify_submission_period
 from feedback.routes.submission_period import post_create_submission_period
 from feedback.routes.submission_period import remove_submission_period
-from feedback.routes.submission_period import rename_submission_period
 from feedback.routes.submission_period import view_submission_period
 from feedback.routes.submit import post_confirm_submit
 from feedback.routes.submit import post_submit

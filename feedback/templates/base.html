@@ -20,6 +20,10 @@
 
     <!-- Custom -->
     <link rel="stylesheet" href="/static/style.css">
+
+    <!-- Unique -->
+    {% block css %}
+    {% endblock %}
 </head>
 <body>
     <nav class="navbar navbar-default">
@@ -53,7 +57,7 @@
         {% endblock %}
     </div>
 
-    {% block jq %}
+    {% block js %}
     {% endblock %}
 </body>
 </html>

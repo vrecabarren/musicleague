@@ -26,7 +26,11 @@
                 <a href="{{ url_for('post_create_submission_period', league_name=league.name) }}" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Submission Period</a>
                 {% endif %}
                 {% if user in league.users and league.current_submission_period %}
-                <a href="{{ url_for('view_submit', league_name=league.name, submission_period_id=league.current_submission_period.id) }}" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp;Submit</a>
+                    {% if league.current_submission_period.accepting_submissions %}
+                    <a href="{{ url_for('view_submit', league_name=league.name, submission_period_id=league.current_submission_period.id) }}" class="btn btn-primary"><i class="fa fa-archive" aria-hidden="true"></i>&nbsp;Submit</a>
+                    {% elif league.current_submission_period.accepting_votes %}
+                    <a href="" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;Vote</a>
+                    {% endif %}
                 {% endif %}
             </div>
 
@@ -38,7 +42,7 @@
                                 <th><i class="fa fa-tag" aria-hidden="true"></i></th>
                                 <th><i class="fa fa-headphones" aria-hidden="true"></i></th>
                                 <th><i class="fa fa-calendar" aria-hidden="true"></i></th>
-                                <th><i class="fa fa-check-circle" aria-hidden="true"></i></th>
+                                <th><i class="fa fa-archive" aria-hidden="true"></i></th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -49,44 +53,45 @@
                                 {% else %}
                                 <tr>
                                 {% endif %}
-                                    <td>
-                                        {% if submission_period.id|string == edit %}
-                                        <form method="post" action="{{ url_for('rename_submission_period', league_name=league.name, submission_period_id=submission_period.id) }}">
+                                    <form method="post" action="{{ url_for('modify_submission_period', league_name=league.name, submission_period_id=submission_period.id) }}">
+                                        <td>
+                                            {% if submission_period.id|string == edit %}
                                             <input type="text" class="form-control" name="new_name" value="{{ submission_period.name }}">
-                                        </form>
-                                        {% else %}
-                                        <a href="{{ url_for('view_submission_period', league_name=league.name, submission_period_id=submission_period.id) }}">{{ submission_period.name }}</a>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if submission_period.playlist_created %}
-                                        <a href="{{ submission_period.playlist_url }}" target="_blank">Spotify</a>
-                                        {% else %}
-                                        No Playlist
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if submission_period.due_date %}
-                                        {{ submission_period.due_date.strftime('%m/%d/%Y') }}
-                                        {% else %}
-                                        No Due Date
-                                        {% endif %}</td>
-                                    <td>{{ submission_period.submissions|length }} / {{ league.users|length }}</td>
-                                    <td>
-                                        {% if league.owner == user %}
-                                        <a href="{{ url_for('view_league', league_name=league.name) }}?edit={{ submission_period.id }}" title="Change Name">
-                                            <i class="fa fa-pencil" aria-hidden="true"></i>
-                                        </a>
-                                        &nbsp;
-                                        <a href="" title="Change Due Date">
-                                            <i class="fa fa-calendar" aria-hidden="true"></i>
-                                        </a>
-                                        &nbsp;
-                                        <a href="{{ url_for('remove_submission_period', league_name=league.name, submission_period_id=submission_period.id) }}" title="Remove">
-                                            <i class="fa fa-times" aria-hidden="true" style="color: red"></i>
-                                        </a>
-                                        {% endif %}
-                                    </td>
+                                            {% else %}
+                                            <a href="{{ url_for('view_submission_period', league_name=league.name, submission_period_id=submission_period.id) }}">{{ submission_period.name }}</a>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if submission_period.playlist_created %}
+                                            <a href="{{ submission_period.playlist_url }}" target="_blank">Spotify</a>
+                                            {% else %}
+                                            No Playlist
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if submission_period.id|string == edit %}
+                                            <input type="text" class="form-control" id="new_due_date" name="new_due_date" value="{{ submission_period.submission_due_date.strftime('%m/%d/%y %I%p') }}">
+                                            {% else %}
+                                            {{ submission_period.submission_due_date.strftime('%m/%d/%y %I%p') }}
+                                            {% endif %}
+                                        <td>{{ submission_period.submissions|length }} / {{ league.users|length }}</td>
+                                        <td class="text-right">
+                                            {% if league.owner == user %}
+                                                {% if submission_period.id|string == edit %}
+                                                    <button type="submit" style="background: none; border: none; color:green" title="Submit"><i class="fa fa-check"></i></button>
+                                                    <a href="." title="Cancel" style="color:red"><i class="fa fa-ban"></i></a>
+                                                {% else %}
+                                                    <a href="{{ url_for('view_league', league_name=league.name) }}?edit={{ submission_period.id }}" title="Edit">
+                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                    </a>
+                                                    &nbsp;
+                                                    <a href="{{ url_for('remove_submission_period', league_name=league.name, submission_period_id=submission_period.id) }}" title="Remove">
+                                                        <i class="fa fa-times" aria-hidden="true" style="color: red"></i>
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                    </form>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -129,8 +134,18 @@
 
 {% endblock %}
 
-{% block jq %}
-<script type = "text/javascript">
+{% block css %}
+    <link rel="stylesheet" href="/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+<script type="text/javascript" src="/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#new_due_date').datetimepicker({sideBySide: true, format: 'MM/DD/YY hA', useStrict: true});
+    });
+
     $(function() {
         $( "#add_user" ).autocomplete({
             source: function( request, response ) {
