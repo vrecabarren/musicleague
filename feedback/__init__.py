@@ -8,8 +8,14 @@ from feedback.environment import get_secret_key
 from feedback.environment import is_debug
 from feedback.environment import is_deployed
 from feedback.environment import parse_mongolab_uri
+from feedback.environment import parse_rediscloud_url
 
 from mongoengine import connect
+
+from redis import Redis
+
+from rq import Connection
+from rq import Queue
 
 from settings import MONGO_DB_NAME
 
@@ -32,3 +38,9 @@ app.logger.addHandler(logging.StreamHandler(sys.stdout))
 
 
 from feedback import routes
+
+host, port, password = parse_rediscloud_url()
+redis_conn = Redis(host=host, port=port, db=0, password=password)
+
+with Connection(redis_conn):
+    q = Queue('default')
