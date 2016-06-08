@@ -8,7 +8,7 @@ lint:
 	flake8 feedback app.py
 
 run:
-	python app.py
+	heroku local
 
 unit:
 	nosetests --logging-level=ERROR

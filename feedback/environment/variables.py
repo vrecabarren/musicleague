@@ -12,6 +12,7 @@ MONGODB_URI = EnvironmentVariable(key='MONGODB_URI', default='')
 NOTIFICATION_SENDER = EnvironmentVariable(key="NOTIFICATION_SENDER", default='')  # noqa
 PORT = EnvironmentVariable(key='PORT', default=5000)
 PRODUCTION = EnvironmentVariable(key='IS_PRODUCTION', default=False)
+REDISCLOUD_URL = EnvironmentVariable(key='REDISCLOUD_URL', default='')
 SECRET_KEY = EnvironmentVariable(key='SECRET_KEY', default='')
 SPOTIFY_CLIENT_ID = EnvironmentVariable(key='SPOTIFY_CLIENT_ID', default='')
 SPOTIFY_CLIENT_SECRET = EnvironmentVariable(key='SPOTIFY_CLIENT_SECRET', default='')  # noqa

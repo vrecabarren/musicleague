@@ -1,4 +1,6 @@
 Flask
 mongoengine
+redis
 requests
+rq
 spotipy
