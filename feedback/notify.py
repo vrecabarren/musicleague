@@ -3,6 +3,7 @@ import requests
 
 from flask import render_template
 
+from feedback import notification_queue
 from feedback.environment import is_deployed
 from feedback.environment import get_setting
 from feedback.environment.variables import MAILGUN_API_BASE_URL
@@ -15,28 +16,32 @@ TXT_PATH = 'email/txt/%s'
 
 
 def owner_user_submitted_notification(owner, submission):
-    if owner.preferences.owner_user_submitted_notifications:
-        _send_mail(
-            owner.email,
-            'Music League - User Submitted',
-            render_template(
-                TXT_PATH % 'submitted.txt', submission=submission),
-            render_template(
-                HTML_PATH % 'submitted.html', submission=submission)
-        )
+    if not owner.preferences.owner_user_submitted_notifications:
+        return
+
+    # TODO Queue task one level above this method
+    notification_queue.enqueue_call(
+        func=_send_email,
+        args=(owner.email,
+              'Music League - User Submitted',
+              _txt_email('submitted.txt', submission=submission),
+              _html_email('submitted.html', submission=submission)))
 
 
 def user_submit_reminder_notification(user, league):
-    if user.preferences.user_submit_reminder_notifications:
-        _send_mail(
-            user.email,
-            'Music League - Submission Reminder',
-            render_template(TXT_PATH % 'reminder.txt', league=league),
-            render_template(HTML_PATH % 'reminder.html', league=league)
-        )
+    if not user.preferences.user_submit_reminder_notifications:
+        return
+
+    # TODO Queue task one level above this method
+    notification_queue.enqueue_call(
+        func=_send_email,
+        args=(user.email,
+              'Music League - Submission Reminder',
+              _txt_email('reminder.txt', league=league),
+              _html_email('reminder.html', league=league)))
 
 
-def _send_mail(to, subject, text, html):
+def _send_email(to, subject, text, html):
     if not is_deployed():
         logging.info(text)
         return
@@ -57,3 +62,12 @@ def _send_mail(to, subject, text, html):
         logging.warning(
             u'Mail send failed. Status: {}, Response: {}'.format(
                 request.status_code, request.text))
+        return
+
+
+def _txt_email(template, **kwargs):
+    return render_template(TXT_PATH % template, **kwargs)
+
+
+def _html_email(template, **kwargs):
+    return render_template(HTML_PATH % template, **kwargs)

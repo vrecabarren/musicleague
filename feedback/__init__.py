@@ -20,6 +20,7 @@ from rq import Queue
 from settings import MONGO_DB_NAME
 
 
+# Initialize Flask app
 app = Flask(__name__)
 app.secret_key = get_secret_key()
 
@@ -37,10 +38,13 @@ else:
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
 
 
-from feedback import routes
-
+# Initialize Redis queues
 host, port, password = parse_rediscloud_url()
 redis_conn = Redis(host=host, port=port, db=0, password=password)
-
 with Connection(redis_conn):
-    q = Queue('default')
+    default_queue = Queue('default')
+    notification_queue = Queue('notifications')
+    queues = [default_queue, notification_queue]
+
+
+from feedback import routes
