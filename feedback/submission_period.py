@@ -45,11 +45,11 @@ def update_submission_period(submission_period_id, name, submission_due_date):
         # TODO Remove any previously queued reminders for this period
         if submission_due_date != submission_period.submission_due_date:
             submission_period.submission_due_date = submission_due_date
-            notify_at = submission_period.submission_due_date - timedelta(hours=2)
+            notify = submission_period.submission_due_date - timedelta(hours=2)
             logging.warning('Inserting task to notify at %s. Currently: %s',
-                            notify_at, datetime.now())
+                            notify, datetime.now())
             default_scheduler.enqueue_at(
-                notify_at,
+                notify,
                 send_submission_reminders,
                 submission_period_id)
 
