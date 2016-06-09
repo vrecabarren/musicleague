@@ -1,5 +1,6 @@
 from datetime import datetime
 from datetime import timedelta
+import logging
 
 from flask import g
 from flask import redirect
@@ -31,8 +32,11 @@ def post_create_submission_period(league_name, **kwargs):
     league = kwargs.get('league')
     if league.owner == g.user:
         submission_period = create_submission_period(league)
+        notify_at = submission_period.submission_due_date - timedelta(hours=2)
+        logging.warning('Inserting task to notify at %s. Currently: %s',
+                        notify_at, datetime.now())
         default_scheduler.enqueue_at(
-            submission_period.submission_due_date - timedelta(hours=2),
+            notify_at,
             send_submission_reminders,
             submission_period.id)
     return redirect(url_for('view_league', league_name=league_name))
