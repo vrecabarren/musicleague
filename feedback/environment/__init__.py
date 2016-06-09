@@ -98,7 +98,6 @@ def parse_mongolab_uri():
 
 def parse_rediscloud_url():
     redis_url = get_setting(REDISCLOUD_URL)
-    logging.warning(redis_url)
     urlparse.uses_netloc.append('redis')
     url = urlparse.urlparse(redis_url)
     return url.hostname, url.port, url.password

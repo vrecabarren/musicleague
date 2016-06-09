@@ -28,5 +28,18 @@ def create_submission_period(league):
 def get_submission_period(submission_period_id):
     try:
         return SubmissionPeriod.objects(id=submission_period_id).get()
+
+    except SubmissionPeriod.DoesNotExist:
+        return None
+
+
+def update_submission_period(submission_period_id, name, submission_due_date):
+    try:
+        submission_period = get_submission_period(submission_period_id)
+        submission_period.name = name
+        submission_period.submission_due_date = submission_due_date
+        submission_period.save()
+        return submission_period
+
     except SubmissionPeriod.DoesNotExist:
         return None

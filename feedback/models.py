@@ -62,6 +62,13 @@ class SubmissionPeriod(Document):
     def accepting_votes(self):
         return self.vote_due_date > datetime.now() > self.submission_due_date
 
+    @property
+    def all_tracks(self):
+        all_tracks = []
+        for submission in self.submissions:
+            all_tracks.extend(submission.tracks)
+        return all_tracks
+
 
 class League(Document):
     created = DateTimeField(required=True)
