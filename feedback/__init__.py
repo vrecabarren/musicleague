@@ -17,6 +17,8 @@ from redis import Redis
 from rq import Connection
 from rq import Queue
 
+from rq_scheduler import Scheduler
+
 from settings import MONGO_DB_NAME
 
 
@@ -37,14 +39,19 @@ else:
 
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
 
-
-# Initialize Redis queues
+# Initialize Redis connection
 host, port, password = parse_rediscloud_url()
 redis_conn = Redis(host=host, port=port, db=0, password=password)
+
+# Initialize Redis queues
 with Connection(redis_conn):
     default_queue = Queue('default')
     notification_queue = Queue('notifications')
     queues = [default_queue, notification_queue]
+
+
+# Initialize Redis queue scheduler
+default_scheduler = Scheduler(default_queue.name, connection=redis_conn)
 
 
 from feedback import routes

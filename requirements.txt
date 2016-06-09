@@ -3,4 +3,5 @@ mongoengine
 redis
 requests
 rq
+rq-scheduler
 spotipy
