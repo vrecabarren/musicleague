@@ -16,8 +16,7 @@ def create_submission_period(league):
     schedule_submission_reminders(new_submission_period)
     new_submission_period.save()
 
-    logging.info('Submission period created: %s:%s', league.name,
-                 new_submission_period.id)
+    logging.info('Submission period created: %s', new_submission_period.id)
 
     # Mark all other previous submission periods as not current
     for submission_period in league.submission_periods:
@@ -37,6 +36,13 @@ def get_submission_period(submission_period_id):
 
     except SubmissionPeriod.DoesNotExist:
         return None
+
+
+def remove_submission_period(submission_period_id):
+    submission_period = get_submission_period(submission_period_id)
+    submission_period.delete()
+
+    logging.info('Submission period removed: %s', submission_period_id)
 
 
 def update_submission_period(submission_period_id, name, submission_due_date):

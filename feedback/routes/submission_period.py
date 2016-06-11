@@ -12,6 +12,7 @@ from feedback.routes.decorators import league_required
 from feedback.routes.decorators import login_required
 from feedback.submission_period import create_submission_period
 from feedback.submission_period import get_submission_period
+from feedback.submission_period import remove_submission_period
 from feedback.submission_period import update_submission_period
 
 
@@ -34,11 +35,10 @@ def post_create_submission_period(league_name, **kwargs):
 @app.route(REMOVE_SUBMISSION_PERIOD_URL)
 @login_required
 @league_required
-def remove_submission_period(league_name, submission_period_id, **kwargs):
+def r_remove_submission_period(league_name, submission_period_id, **kwargs):
     league = kwargs.get('league')
     if league.owner == g.user:
-        submission_period = get_submission_period(submission_period_id)
-        submission_period.delete()
+        remove_submission_period(submission_period_id)
     return redirect(url_for('view_league', league_name=league_name))
 
 
