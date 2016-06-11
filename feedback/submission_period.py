@@ -40,6 +40,11 @@ def get_submission_period(submission_period_id):
 
 def remove_submission_period(submission_period_id):
     submission_period = get_submission_period(submission_period_id)
+
+    # Cancel scheduled submission notification job if one exists
+    if submission_period.notify_job_id:
+        default_scheduler.cancel(submission_period.notify_job_id)
+
     submission_period.delete()
 
     logging.info('Submission period removed: %s', submission_period_id)
