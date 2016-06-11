@@ -1,6 +1,7 @@
 import json
 
 from flask import g
+from flask import redirect
 from flask import request
 
 from feedback import app
@@ -35,11 +36,24 @@ def profile():
     return {'user': g.user, 'leagues': leagues}
 
 
-@app.route(SETTINGS_URL)
+@app.route(SETTINGS_URL, methods=['GET'])
 @templated('settings.html')
 @login_required
-def settings():
+def view_settings():
     return {'user': g.user}
+
+
+@app.route(SETTINGS_URL, methods=['POST'])
+@login_required
+def save_settings():
+    user = g.user
+
+    for field_name in user.preferences._fields:
+        enabled = request.form.get(field_name) == 'on'
+        user.preferences[field_name] = enabled
+
+    user.save()
+    return redirect(request.referrer)
 
 
 @app.route(VIEW_USER_URL)
