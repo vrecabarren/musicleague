@@ -4,6 +4,7 @@ import logging
 
 from flask import g
 from flask import redirect
+from flask import render_template
 from flask import request
 from flask import url_for
 
@@ -12,7 +13,6 @@ from feedback import default_scheduler
 from feedback.league import get_league
 from feedback.routes.decorators import league_required
 from feedback.routes.decorators import login_required
-from feedback.routes.decorators import templated
 from feedback.submission_period import create_submission_period
 from feedback.submission_period import get_submission_period
 from feedback.submission_period import send_submission_reminders
@@ -68,7 +68,6 @@ def modify_submission_period(league_name, submission_period_id, **kwargs):
 
 
 @app.route(VIEW_SUBMISSION_PERIOD_URL)
-@templated('submission_period.html')
 @login_required
 def view_submission_period(league_name, submission_period_id):
     if submission_period_id is None:
@@ -80,9 +79,7 @@ def view_submission_period(league_name, submission_period_id):
     if tracks:
         tracks = g.spotify.tracks(submission_period.all_tracks).get('tracks')
 
-    return {
-        'user': g.user,
-        'league': league,
-        'submission_period': submission_period,
-        'tracks': tracks
-        }
+    return render_template(
+        'submission_period.html',
+        user=g.user, league=league, submission_period=submission_period,
+        tracks=tracks)
