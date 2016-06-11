@@ -14,6 +14,7 @@ from feedback.user import get_user
 
 AUTOCOMPLETE = '/autocomplete/'
 PROFILE_URL = '/profile/'
+SETTINGS_URL = '/settings/'
 VIEW_USER_URL = '/user/<user_id>/'
 
 
@@ -32,6 +33,13 @@ def autocomplete():
 def profile():
     leagues = get_leagues_for_user(g.user)
     return {'user': g.user, 'leagues': leagues}
+
+
+@app.route(SETTINGS_URL)
+@templated('settings.html')
+@login_required
+def settings():
+    return {'user': g.user}
 
 
 @app.route(VIEW_USER_URL)
