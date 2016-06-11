@@ -8,13 +8,16 @@ from feedback.notify import user_submit_reminder_notification
 
 
 def create_submission_period(league):
-    name = '%s - SP %s' % (league.name, len(league.submission_periods) + 1)
-    submission_due_date = datetime.utcnow() + timedelta(days=5)
-    vote_due_date = submission_due_date + timedelta(days=2)
     new_submission_period = SubmissionPeriod(
-        name=name, league=league, submission_due_date=submission_due_date,
-        vote_due_date=vote_due_date)
+        name='%s - SP %s' % (league.name, len(league.submission_periods) + 1),
+        league=league,
+        submission_due_date=datetime.utcnow() + timedelta(days=5),
+        vote_due_date=datetime.utcnow() + timedelta(days=7))
+    schedule_submission_reminders(new_submission_period)
     new_submission_period.save()
+
+    logging.info('Submission period created: %s:%s', league.name,
+                 new_submission_period.id)
 
     # Mark all other previous submission periods as not current
     for submission_period in league.submission_periods:
@@ -44,28 +47,30 @@ def update_submission_period(submission_period_id, name, submission_due_date):
         # Reschedule submission reminders if needed
         if submission_due_date != submission_period.submission_due_date:
             submission_period.submission_due_date = submission_due_date
-            notify = submission_period.submission_due_date - timedelta(hours=2)
-
-            # Cancel scheduled notification job if one exists
-            if submission_period.notify_job_id:
-                default_scheduler.cancel(submission_period.notify_job_id)
-
-            # Schedule new notification job
-            submission_period.notify_job_id = default_scheduler.enqueue_at(
-                notify,
-                send_submission_reminders,
-                submission_period_id,
-                id=submission_period_id).id
-
-            logging.warning(
-                'Notify at %s, Currently: %s, Job ID: %s',
-                notify, datetime.utcnow(), submission_period.notify_job_id)
+            schedule_submission_reminders(submission_period)
 
         submission_period.save()
         return submission_period
 
     except SubmissionPeriod.DoesNotExist:
         return None
+
+
+def schedule_submission_reminders(submission_period):
+    notify_time = submission_period.submission_due_date - timedelta(hours=2)
+
+    # Cancel scheduled notification job if one exists
+    if submission_period.notify_job_id:
+        default_scheduler.cancel(submission_period.notify_job_id)
+
+    # Schedule new notification job
+    submission_period.notify_job_id = default_scheduler.enqueue_at(
+        notify_time,
+        send_submission_reminders,
+        submission_period.id).id
+
+    logging.info('Submission reminders scheduled for %s. Job ID: %s.',
+                 notify_time, submission_period.notify_job_id)
 
 
 def send_submission_reminders(submission_period_id):
