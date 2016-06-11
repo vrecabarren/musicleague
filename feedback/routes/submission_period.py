@@ -71,6 +71,9 @@ def modify_submission_period(league_name, submission_period_id, **kwargs):
 @templated('submission_period.html')
 @login_required
 def view_submission_period(league_name, submission_period_id):
+    if submission_period_id is None:
+        raise Exception(request.referrer)
+        return redirect(request.referrer)
     league = get_league(league_name)
     submission_period = get_submission_period(submission_period_id)
     tracks = submission_period.all_tracks
