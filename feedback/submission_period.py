@@ -46,13 +46,13 @@ def update_submission_period(submission_period_id, name, submission_due_date):
         if submission_due_date != submission_period.submission_due_date:
             submission_period.submission_due_date = submission_due_date
             notify = submission_period.submission_due_date - timedelta(hours=2)
-            logging.warning('Inserting task to notify at %s. Currently: %s',
-                            notify, datetime.utcnow())
-            default_scheduler.enqueue_at(
+            job = default_scheduler.enqueue_at(
                 notify,
                 send_submission_reminders,
                 submission_period_id,
                 id=submission_period_id)
+            logging.warning('Notify at %s, Currently: %s, Job ID: %s',
+                            notify, datetime.utcnow(), job.id)
 
         submission_period.save()
         return submission_period
