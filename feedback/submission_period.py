@@ -41,18 +41,25 @@ def update_submission_period(submission_period_id, name, submission_due_date):
         submission_period = get_submission_period(submission_period_id)
         submission_period.name = name
 
-        # Reschedule notification reminders if needed
-        # TODO Remove any previously queued reminders for this period
+        # Reschedule submission reminders if needed
         if submission_due_date != submission_period.submission_due_date:
             submission_period.submission_due_date = submission_due_date
             notify = submission_period.submission_due_date - timedelta(hours=2)
-            job = default_scheduler.enqueue_at(
+
+            # Cancel scheduled notification job if one exists
+            if submission_period.notify_job_id:
+                default_scheduler.cancel(submission_period.notify_job_id)
+
+            # Schedule new notification job
+            submission_period.notify_job_id = default_scheduler.enqueue_at(
                 notify,
                 send_submission_reminders,
                 submission_period_id,
-                id=submission_period_id)
-            logging.warning('Notify at %s, Currently: %s, Job ID: %s',
-                            notify, datetime.utcnow(), job.id)
+                id=submission_period_id).id
+
+            logging.warning(
+                'Notify at %s, Currently: %s, Job ID: %s',
+                notify, datetime.utcnow(), submission_period.notify_job_id)
 
         submission_period.save()
         return submission_period

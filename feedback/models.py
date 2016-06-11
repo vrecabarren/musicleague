@@ -45,6 +45,7 @@ class SubmissionPeriod(Document):
     is_current = BooleanField(default=True)
     league = ReferenceField('League')
     name = StringField(max_length=255)
+    notify_job_id = StringField(default='')
     playlist_id = StringField()
     playlist_url = StringField(default='')
     submissions = ListField(
