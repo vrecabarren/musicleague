@@ -9,7 +9,7 @@ from feedback.notify import user_submit_reminder_notification
 
 def create_submission_period(league):
     name = '%s - SP %s' % (league.name, len(league.submission_periods) + 1)
-    submission_due_date = datetime.now() + timedelta(days=5)
+    submission_due_date = datetime.utcnow() + timedelta(days=5)
     vote_due_date = submission_due_date + timedelta(days=2)
     new_submission_period = SubmissionPeriod(
         name=name, league=league, submission_due_date=submission_due_date,
@@ -47,7 +47,7 @@ def update_submission_period(submission_period_id, name, submission_due_date):
             submission_period.submission_due_date = submission_due_date
             notify = submission_period.submission_due_date - timedelta(hours=2)
             logging.warning('Inserting task to notify at %s. Currently: %s',
-                            notify, datetime.now())
+                            notify, datetime.utcnow())
             default_scheduler.enqueue_at(
                 notify,
                 send_submission_reminders,

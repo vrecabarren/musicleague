@@ -9,7 +9,7 @@ def create_user(id, name, email, image_url):
         raise UserExistsError('User with id %s already exists' % name)
 
     new_user = User(
-        id=id, name=name, email=email, joined=datetime.now(),
+        id=id, name=name, email=email, joined=datetime.utcnow(),
         image_url=image_url)
     new_user.save()
     return new_user

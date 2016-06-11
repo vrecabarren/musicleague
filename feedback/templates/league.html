@@ -139,11 +139,11 @@
 {% endblock %}
 
 {% block js %}
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment-with-locales.min.js"></script>
 <script type="text/javascript" src="/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript">
     $(function () {
-        $('#new_due_date').datetimepicker({sideBySide: true, format: 'MM/DD/YY hA', useStrict: true});
+        $('#new_due_date').datetimepicker({sideBySide: true, format: 'MM/DD/YY hA Z', useStrict: true});
     });
 
     $(function() {
