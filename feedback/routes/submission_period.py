@@ -35,10 +35,11 @@ def post_create_submission_period(league_name, **kwargs):
         notify_at = submission_period.submission_due_date - timedelta(hours=2)
         logging.warning('Inserting task to notify at %s. Currently: %s',
                         notify_at, datetime.utcnow())
-        default_scheduler.enqueue_at(
+        submission_period.notify_job_id = default_scheduler.enqueue_at(
             notify_at,
             send_submission_reminders,
-            submission_period.id)
+            submission_period.id).id
+        submission_period.save()
     return redirect(url_for('view_league', league_name=league_name))
 
 
