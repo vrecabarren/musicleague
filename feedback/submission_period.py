@@ -51,7 +51,8 @@ def update_submission_period(submission_period_id, name, submission_due_date):
             default_scheduler.enqueue_at(
                 notify,
                 send_submission_reminders,
-                submission_period_id)
+                submission_period_id,
+                id=submission_period_id)
 
         submission_period.save()
         return submission_period
