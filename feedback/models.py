@@ -45,6 +45,7 @@ class SubmissionPeriod(Document):
     is_current = BooleanField(default=True)
     league = ReferenceField('League')
     name = StringField(max_length=255)
+    notify_job_id = StringField(default='')
     playlist_id = StringField()
     playlist_url = StringField(default='')
     submissions = ListField(
@@ -56,11 +57,19 @@ class SubmissionPeriod(Document):
 
     @property
     def accepting_submissions(self):
-        return self.submission_due_date > datetime.now()
+        return self.submission_due_date > datetime.utcnow()
 
     @property
     def accepting_votes(self):
-        return self.vote_due_date > datetime.now() > self.submission_due_date
+        return (
+            self.vote_due_date > datetime.utcnow() > self.submission_due_date)
+
+    @property
+    def all_tracks(self):
+        all_tracks = []
+        for submission in self.submissions:
+            all_tracks.extend(submission.tracks)
+        return all_tracks
 
 
 class League(Document):

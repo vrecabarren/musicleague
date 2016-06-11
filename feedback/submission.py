@@ -14,7 +14,7 @@ def create_or_update_submission(tracks, submission_period, league, user):
     if s:
         s.tracks = tracks
         s.count += 1
-        s.updated = datetime.now()
+        s.updated = datetime.utcnow()
         s.save()
     else:
         s = create_submission(tracks, submission_period, user, league)
@@ -24,7 +24,7 @@ def create_or_update_submission(tracks, submission_period, league, user):
 
 def create_submission(tracks, submission_period, user, league, persist=True):
     new_submission = Submission(
-        tracks=tracks, user=user, created=datetime.now(), league=league,
+        tracks=tracks, user=user, created=datetime.utcnow(), league=league,
         submission_period=submission_period)
     if persist:
         new_submission.save()

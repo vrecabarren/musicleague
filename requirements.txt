@@ -1,4 +1,8 @@
 Flask
+gunicorn
 mongoengine
+redis
 requests
+rq
+rq-scheduler
 spotipy

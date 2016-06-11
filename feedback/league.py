@@ -9,7 +9,7 @@ def create_league(name, user):
         raise LeagueExistsError('League with name %s already exists' % name)
 
     new_league = League(
-        name=name, owner=user, users=[user], created=datetime.now())
+        name=name, owner=user, users=[user], created=datetime.utcnow())
     new_league.save()
     return new_league
 

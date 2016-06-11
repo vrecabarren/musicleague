@@ -1,12 +1,14 @@
 import logging
 import os
 import re
+import urlparse
 
 from feedback.environment.variables import DEBUG
 from feedback.environment.variables import DEPLOYED
 from feedback.environment.variables import MONGODB_URI
 from feedback.environment.variables import PORT
 from feedback.environment.variables import PRODUCTION
+from feedback.environment.variables import REDISCLOUD_URL
 from feedback.environment.variables import SECRET_KEY
 
 
@@ -92,3 +94,10 @@ def parse_mongolab_uri():
 
     return (data['host'], int(data['port']), data['username'],
             data['password'], data['database'])
+
+
+def parse_rediscloud_url():
+    redis_url = get_setting(REDISCLOUD_URL)
+    urlparse.uses_netloc.append('redis')
+    url = urlparse.urlparse(redis_url)
+    return url.hostname, url.port, url.password
