@@ -13,16 +13,19 @@ from mongoengine import StringField
 
 
 class UserPreferences(EmbeddedDocument):
+    OWNER_PREFERENCE_ROLE = 'owner'
+    USER_PREFERENCE_ROLE = 'user'
+
     owner_user_submitted_notifications = BooleanField(
-        default=True, role="owner",
+        default=True, role=OWNER_PREFERENCE_ROLE,
         verbose_name='Receive a notification when a contributor submits')
 
     user_added_to_league_notifications = BooleanField(
-        default=True, role="user",
+        default=True, role=USER_PREFERENCE_ROLE,
         verbose_name='Receive a notification when added to a new league')
     user_submit_reminder_notifications = BooleanField(
-        default=True, role="user",
-        verbose_name='Receive reminder before the submission due date')
+        default=True, role=USER_PREFERENCE_ROLE,
+        verbose_name='Receive a reminder before the submission due date')
 
 
 class User(Document):

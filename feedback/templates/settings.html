@@ -20,7 +20,7 @@
                 </div>
 
                 {% for field_name in user.preferences._fields %}
-                    {% if user.preferences._fields[field_name].role == 'owner' %}
+                    {% if user.preferences._fields[field_name].role == user.preferences.OWNER_PREFERENCE_ROLE %}
                     <div class="form-group">
                         <div class="checkbox checkbox-slider--b-flat">
                             <label>
@@ -47,7 +47,7 @@
                 </div>
 
                 {% for field_name in user.preferences._fields %}
-                    {% if user.preferences._fields[field_name].role == 'user' %}
+                    {% if user.preferences._fields[field_name].role == user.preferences.USER_PREFERENCE_ROLE %}
                     <div class="form-group">
                         <div class="checkbox checkbox-slider--b-flat">
                             <label>
