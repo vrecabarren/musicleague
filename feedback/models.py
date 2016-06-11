@@ -60,7 +60,8 @@ class SubmissionPeriod(Document):
 
     @property
     def accepting_votes(self):
-        return self.vote_due_date > datetime.utcnow() > self.submission_due_date
+        return (
+            self.vote_due_date > datetime.utcnow() > self.submission_due_date)
 
     @property
     def all_tracks(self):
