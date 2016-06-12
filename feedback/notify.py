@@ -26,7 +26,6 @@ def owner_user_submitted_notification(owner, submission):
                                  logging.warning,
                                  'Sent email notification to owner for submit')
 
-    # TODO Queue task one level above this method
     notification_queue.enqueue_call(
         func=_send_email,
         args=(owner.email,
@@ -35,11 +34,22 @@ def owner_user_submitted_notification(owner, submission):
               _html_email('submitted.html', submission=submission)))
 
 
+def user_added_to_league_notification(user, league):
+    if not user.preferences.user_added_to_league_notifications:
+        return
+
+    notification_queue.enqueue_call(
+        func=_send_email,
+        args=(user.email,
+              'Music League - New League',
+              _txt_email('added.txt', league=league),
+              _html_email('added.html', league=league)))
+
+
 def user_submit_reminder_notification(user, league):
     if not user.preferences.user_submit_reminder_notifications:
         return
 
-    # TODO Queue task one level above this method
     notification_queue.enqueue_call(
         func=_send_email,
         args=(user.email,
