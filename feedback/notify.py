@@ -1,11 +1,8 @@
-from datetime import datetime
-from datetime import timedelta
 import logging
 import requests
 
 from flask import render_template
 
-from feedback import default_scheduler
 from feedback import notification_queue
 from feedback.environment import is_deployed
 from feedback.environment import get_setting
@@ -24,10 +21,6 @@ def owner_user_submitted_notification(owner, submission):
 
     if not owner.preferences.owner_user_submitted_notifications:
         return
-
-    default_scheduler.enqueue_at(datetime.utcnow() + timedelta(seconds=90),
-                                 logging.warning,
-                                 'Sent email notification to owner for submit')
 
     notification_queue.enqueue_call(
         func=_send_email,
