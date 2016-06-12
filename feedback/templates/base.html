@@ -44,8 +44,8 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.name }} <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{ url_for('profile') }}" title="Leagues"><i class="fa fa-th-list" aria-hidden="true"></i>&nbsp;Leagues</a></li>
-                            <li><a href="{{ url_for('view_user', user_id=user.id) }}" title="Profile"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;Profile</a></li>
+                            <li><a href="{{ url_for('leagues') }}" title="Leagues"><i class="fa fa-th-list" aria-hidden="true"></i>&nbsp;Leagues</a></li>
+                            <li><a href="{{ url_for('profile') }}" title="Profile"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;Profile</a></li>
                             <li><a href="{{ url_for('view_settings') }}" title="Settings"><i class="fa fa-cog" aria-hidden="true"></i>&nbsp;Settings</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="{{ url_for('logout') }}"><i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;Log Out</a></li>
