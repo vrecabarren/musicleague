@@ -1,1 +1,2 @@
-{{ submission.user.name }} just submitted!
+{{ submission.user.name }} just submitted for {{ submission.submission_period.name }}!
+This is submission #{{ submission.count }} for this user.
