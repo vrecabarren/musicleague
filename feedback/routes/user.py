@@ -1,6 +1,7 @@
 import json
 
 from flask import g
+from flask import redirect
 from flask import request
 
 from feedback import app
@@ -13,7 +14,9 @@ from feedback.user import get_user
 
 
 AUTOCOMPLETE = '/autocomplete/'
+LEAGUES_URL = '/leagues/'
 PROFILE_URL = '/profile/'
+SETTINGS_URL = '/settings/'
 VIEW_USER_URL = '/user/<user_id>/'
 
 
@@ -26,12 +29,46 @@ def autocomplete():
     return json.dumps(results)
 
 
-@app.route(PROFILE_URL)
-@templated('profile.html')
+@app.route(LEAGUES_URL)
+@templated('leagues.html')
 @login_required
-def profile():
+def leagues():
     leagues = get_leagues_for_user(g.user)
     return {'user': g.user, 'leagues': leagues}
+
+
+@app.route(PROFILE_URL)
+@templated('user.html')
+@login_required
+def profile():
+    page_user = g.user
+    return {
+        'user': g.user,
+        'page_user': page_user,
+        'user_image': g.spotify.user(str(page_user.id)).get('images')[0],
+        'owner_leagues': len(get_leagues_for_owner(page_user)),
+        'contributor_leagues': len(get_leagues_for_user(page_user))
+        }
+
+
+@app.route(SETTINGS_URL, methods=['GET'])
+@templated('settings.html')
+@login_required
+def view_settings():
+    return {'user': g.user}
+
+
+@app.route(SETTINGS_URL, methods=['POST'])
+@login_required
+def save_settings():
+    user = g.user
+
+    for field_name in user.preferences._fields:
+        enabled = request.form.get(field_name) == 'on'
+        user.preferences[field_name] = enabled
+
+    user.save()
+    return redirect(request.referrer)
 
 
 @app.route(VIEW_USER_URL)
