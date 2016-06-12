@@ -27,7 +27,7 @@ VIEW_SUBMISSION_PERIOD_URL = '/l/<league_name>/<submission_period_id>/'
 @league_required
 def post_create_submission_period(league_name, **kwargs):
     league = kwargs.get('league')
-    if league.owner == g.user:
+    if league.has_owner(g.user):
         create_submission_period(league)
     return redirect(url_for('view_league', league_name=league_name))
 
@@ -37,7 +37,7 @@ def post_create_submission_period(league_name, **kwargs):
 @league_required
 def r_remove_submission_period(league_name, submission_period_id, **kwargs):
     league = kwargs.get('league')
-    if league.owner == g.user:
+    if league.has_owner(g.user):
         remove_submission_period(submission_period_id)
     return redirect(url_for('view_league', league_name=league_name))
 
@@ -47,7 +47,7 @@ def r_remove_submission_period(league_name, submission_period_id, **kwargs):
 @league_required
 def modify_submission_period(league_name, submission_period_id, **kwargs):
     league = kwargs.get('league')
-    if league.owner == g.user:
+    if league.has_owner(g.user):
         new_name = request.form.get('new_name')
         new_due_date_str = request.form.get('new_due_date')
         new_due_date = datetime.strptime(new_due_date_str, '%m/%d/%y %I%p')

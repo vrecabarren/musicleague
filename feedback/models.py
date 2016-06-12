@@ -98,3 +98,6 @@ class League(Document):
             if submission_period.is_current:
                 return submission_period
         return None
+
+    def has_owner(self, user):
+        return self.owner == user

@@ -10,9 +10,9 @@ from feedback import app
 from feedback.routes.decorators import league_required
 from feedback.routes.decorators import login_required
 from feedback.routes.decorators import templated
+from feedback.league import add_user
 from feedback.league import create_league
 from feedback.submission import get_submission
-from feedback.user import get_user_by_email
 
 
 ADD_USER_FOR_LEAGUE_URL = '/l/<league_name>/users/add/'
@@ -28,10 +28,9 @@ VIEW_LEAGUE_URL = '/l/<league_name>/'
 @league_required
 def add_user_for_league(league_name, **kwargs):
     league = kwargs.get('league')
-    user = get_user_by_email(escape(request.form.get('email')))
-    if user and user not in league.users and league.owner == g.user:
-        league.users.append(user)
-        league.save()
+    user_email = request.form.get('email')
+    if league.has_owner(g.user):
+        add_user(league, user_email)
     return redirect(url_for('view_league', league_name=league_name))
 
 
@@ -40,7 +39,7 @@ def add_user_for_league(league_name, **kwargs):
 @league_required
 def remove_user_for_league(league_name, user_id, **kwargs):
     league = kwargs.get('league')
-    if league.owner == g.user:
+    if league.has_owner(g.user):
         league.users = [u for u in league.users if str(u.id) != user_id]
         logging.warning(len(league.users))
         league.save()
@@ -64,7 +63,7 @@ def post_create_league():
 @league_required
 def remove_league(league_name, **kwargs):
     league = kwargs.get('league')
-    if league and league.owner == g.user:
+    if league and league.has_owner(g.user):
         league.delete()
     return redirect(url_for('profile'))
 
@@ -74,7 +73,7 @@ def remove_league(league_name, **kwargs):
 def remove_submission(league_name, submission_period_id, submission_id,
                       **kwargs):
     league = kwargs.get('league')
-    if league and league.owner == g.user:
+    if league and league.has_owner(g.user):
         submission = get_submission(submission_id)
         submission.delete()
     return redirect(url_for('view_submission_period', league_name=league_name,

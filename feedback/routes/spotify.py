@@ -16,7 +16,7 @@ VIEW_PLAYLIST_URL = '/l/<league_name>/playlist/'
 @login_required
 def create_spotify_playlist(league_name):
     league = get_league(league_name)
-    if league.owner == g.user:
+    if league and league.has_owner(g.user):
         playlist = create_or_update_playlist(league.current_submission_period)
         return redirect(playlist.get('external_urls').get('spotify'))
     return redirect(url_for('view_league', league_name=league_name))

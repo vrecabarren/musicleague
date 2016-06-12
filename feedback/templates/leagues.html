@@ -48,7 +48,7 @@
                             <td>{{ league.created.strftime('%m/%d/%Y') }}</td>
                             <td>{{ league.locked }}</td>
                             <td>
-                                {% if league.owner == user %}
+                                {% if league.has_owner(user) %}
                                 <a href="{{ url_for('remove_league', league_name=league.name) }}"><i class="fa fa-times" aria-hidden="true" style="color: red"></i></a>
                                 {% endif %}
                             </td>

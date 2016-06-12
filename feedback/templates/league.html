@@ -76,7 +76,7 @@
                                             {% endif %}
                                         <td>{{ submission_period.submissions|length }} / {{ league.users|length }}</td>
                                         <td class="text-right">
-                                            {% if league.owner == user %}
+                                            {% if league.has_owner(user) %}
                                                 {% if submission_period.id|string == edit %}
                                                     <button type="submit" style="background: none; border: none; color:green" title="Submit"><i class="fa fa-check"></i></button>
                                                     <a href="." title="Cancel" style="color:red"><i class="fa fa-ban"></i></a>
