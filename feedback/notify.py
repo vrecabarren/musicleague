@@ -19,6 +19,9 @@ TXT_PATH = 'email/txt/%s'
 
 
 def owner_user_submitted_notification(owner, submission):
+    if not owner or not submission:
+        return
+
     if not owner.preferences.owner_user_submitted_notifications:
         return
 
@@ -35,6 +38,9 @@ def owner_user_submitted_notification(owner, submission):
 
 
 def user_added_to_league_notification(user, league):
+    if not user or not league:
+        return
+
     if not user.preferences.user_added_to_league_notifications:
         return
 
@@ -47,6 +53,9 @@ def user_added_to_league_notification(user, league):
 
 
 def user_removed_from_league_notification(user, league):
+    if not user or not league:
+        return
+
     if not user.preferences.user_removed_from_league_notifications:
         return
 
@@ -59,6 +68,9 @@ def user_removed_from_league_notification(user, league):
 
 
 def user_submit_reminder_notification(user, league):
+    if not user or not league:
+        return
+
     if not user.preferences.user_submit_reminder_notifications:
         return
 

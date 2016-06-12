@@ -3,6 +3,7 @@ from datetime import datetime
 from feedback.errors import LeagueExistsError
 from feedback.models import League
 from feedback.notify import user_added_to_league_notification
+from feedback.notify import user_removed_from_league_notification
 from feedback.user import get_user_by_email
 
 
@@ -12,6 +13,20 @@ def add_user(league, user_email):
         league.users.append(user)
         league.save()
         user_added_to_league_notification(user, league)
+
+
+def remove_user(league, user_id):
+    remaining_users = []
+    removed_user = None
+    for user in league.users:
+        if str(user.id) == user_id:
+            removed_user = user
+        else:
+            remaining_users.append(user)
+    league.save()
+
+    if removed_user:
+        user_removed_from_league_notification(removed_user, league)
 
 
 def create_league(name, user):

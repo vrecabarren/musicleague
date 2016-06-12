@@ -16,6 +16,9 @@ class UserPreferences(EmbeddedDocument):
     OWNER_PREFERENCE_ROLE = 'owner'
     USER_PREFERENCE_ROLE = 'user'
 
+    owner_user_left_notifications = BooleanField(
+        default=True, role=OWNER_PREFERENCE_ROLE,
+        verbose_name='Receive a notification when a contributor leaves')
     owner_user_submitted_notifications = BooleanField(
         default=True, role=OWNER_PREFERENCE_ROLE,
         verbose_name='Receive a notification when a contributor submits')

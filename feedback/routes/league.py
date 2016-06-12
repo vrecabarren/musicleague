@@ -12,6 +12,7 @@ from feedback.routes.decorators import login_required
 from feedback.routes.decorators import templated
 from feedback.league import add_user
 from feedback.league import create_league
+from feedback.league import remove_user
 from feedback.submission import get_submission
 
 
@@ -40,8 +41,7 @@ def add_user_for_league(league_name, **kwargs):
 def remove_user_for_league(league_name, user_id, **kwargs):
     league = kwargs.get('league')
     if league.has_owner(g.user):
-        league.users = [u for u in league.users if str(u.id) != user_id]
-        league.save()
+        remove_user(league, user_id)
     return redirect(url_for('view_league', league_name=league_name))
 
 
