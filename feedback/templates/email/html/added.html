@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+
+                <h1>{{ league.owner.name }} has added you to <a href="{{ url_for('view_league', league_name=league.name) }}">{{ league.name }}</a>!</h1>
+                <p>There are now {{ league.users|length }} users contributing to this league.</p>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

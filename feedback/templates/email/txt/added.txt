@@ -1,0 +1,2 @@
+{{ league.owner.name }} has added you to {{ league.name }}!
+There are now {{ league.users|length }} users contributing to this league.
