@@ -11,4 +11,4 @@ run:
 	heroku local
 
 unit:
-	nosetests --logging-level=ERROR
+	nosetests --with-coverage --logging-level=ERROR
