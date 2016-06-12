@@ -2,6 +2,7 @@ from datetime import datetime
 
 from feedback.errors import LeagueExistsError
 from feedback.models import League
+from feedback.notify import user_added_to_league_notification
 from feedback.user import get_user_by_email
 
 
@@ -10,6 +11,7 @@ def add_user(league, user_email):
     if user and user not in league.users:
         league.users.append(user)
         league.save()
+        user_added_to_league_notification(user, league)
 
 
 def create_league(name, user):
