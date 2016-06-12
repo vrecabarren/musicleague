@@ -41,7 +41,6 @@ def remove_user_for_league(league_name, user_id, **kwargs):
     league = kwargs.get('league')
     if league.has_owner(g.user):
         league.users = [u for u in league.users if str(u.id) != user_id]
-        logging.warning(len(league.users))
         league.save()
     return redirect(url_for('view_league', league_name=league_name))
 
