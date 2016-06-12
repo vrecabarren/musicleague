@@ -41,8 +41,16 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="https://github.com/nathancoleman/feedback" target="_blank" title="Contribute on GitHub"><i class="fa fa-github"></i>&nbsp;Contribute</a></li>
                     {% if user %}
-                    <li><a href="{{ url_for('profile') }}" title="Your Profile">{{ user.name }}</a></li>
-                    <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.name }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('profile') }}" title="Leagues"><i class="fa fa-th-list" aria-hidden="true"></i>&nbsp;Leagues</a></li>
+                            <li><a href="{{ url_for('view_user', user_id=user.id) }}" title="Profile"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;Profile</a></li>
+                            <li><a href="{{ url_for('view_settings') }}" title="Settings"><i class="fa fa-cog" aria-hidden="true"></i>&nbsp;Settings</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{{ url_for('logout') }}"><i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;Log Out</a></li>
+                        </ul>
+                    </li>
                     {% else %}
                     <li><a href="{{ oauth_url }}" title="Log In With Your Spotify Account"><i class="fa fa-spotify"></i>&nbsp;Log In</a></li>
                     {% endif %}
