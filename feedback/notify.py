@@ -46,6 +46,18 @@ def user_added_to_league_notification(user, league):
               _html_email('added.html', league=league)))
 
 
+def user_removed_from_league_notification(user, league):
+    if not user.preferences.user_removed_from_league_notifications:
+        return
+
+    notification_queue.enqueue_call(
+        func=_send_email,
+        args=(user.email,
+              'Music League - New League',
+              _txt_email('removed.txt', league=league),
+              _html_email('removed.html', league=league)))
+
+
 def user_submit_reminder_notification(user, league):
     if not user.preferences.user_submit_reminder_notifications:
         return
