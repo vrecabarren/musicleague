@@ -14,7 +14,6 @@ from feedback.user import get_user
 
 
 AUTOCOMPLETE = '/autocomplete/'
-LEAGUES_URL = '/leagues/'
 PROFILE_URL = '/profile/'
 SETTINGS_URL = '/settings/'
 VIEW_USER_URL = '/user/<user_id>/'
@@ -27,14 +26,6 @@ def autocomplete():
     results = User.objects(name__istartswith=term).all()
     results = [{'label': user.name, 'value': user.email} for user in results]
     return json.dumps(results)
-
-
-@app.route(LEAGUES_URL)
-@templated('leagues.html')
-@login_required
-def leagues():
-    leagues = get_leagues_for_user(g.user)
-    return {'user': g.user, 'leagues': leagues}
 
 
 @app.route(PROFILE_URL)
