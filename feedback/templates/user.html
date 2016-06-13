@@ -16,9 +16,24 @@
         </div>
     </div>
 
-    <div class="row spacer"></div>
+    <div class="row spacer" style="display: flex; align-items: center">
+        <div class="col-md-6">
+            <h2>Your Leagues</h2>
+        </div>
+        <div class="col-md-6">
+            <form action="{{ url_for('post_create_league') }}" method="post">
 
-    <h3>Your Leagues</h3>
+                <div class="input-group">
+                  <input type="text" class="form-control" name="league_name" pattern="^[a-zA-Z0-9]+$">
+                  <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Create
+                    </button>
+                  </span>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-md-12">
