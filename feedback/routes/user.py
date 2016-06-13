@@ -3,6 +3,7 @@ import json
 from flask import g
 from flask import redirect
 from flask import request
+from flask import url_for
 
 from feedback import app
 from feedback.models import User
@@ -68,6 +69,8 @@ def save_settings():
 @templated('user.html')
 @login_required
 def view_user(user_id):
+    if user_id == str(g.user.id):
+        return redirect(url_for('profile'))
     page_user = get_user(user_id)
     leagues = get_leagues_for_user(g.user)
     return {
