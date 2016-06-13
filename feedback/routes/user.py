@@ -42,10 +42,12 @@ def leagues():
 @login_required
 def profile():
     page_user = g.user
+    leagues = get_leagues_for_user(g.user)
     return {
         'user': g.user,
         'page_user': page_user,
         'user_image': g.spotify.user(str(page_user.id)).get('images')[0],
+        'leagues': leagues,
         'owner_leagues': len(get_leagues_for_owner(page_user)),
         'contributor_leagues': len(get_leagues_for_user(page_user))
         }
@@ -76,10 +78,12 @@ def save_settings():
 @login_required
 def view_user(user_id):
     page_user = get_user(user_id)
+    leagues = get_leagues_for_user(g.user)
     return {
         'user': g.user,
         'page_user': page_user,
         'user_image': g.spotify.user(user_id).get('images')[0],
+        'leagues': leagues,
         'owner_leagues': len(get_leagues_for_owner(page_user)),
         'contributor_leagues': len(get_leagues_for_user(page_user))
         }
