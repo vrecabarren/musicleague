@@ -73,4 +73,6 @@ def login():
 def logout():
     session.pop('current_user')
     session.pop('access_token')
+    session.pop('expires_at')
+    session.pop('refresh_token')
     return redirect(url_for("hello"))
