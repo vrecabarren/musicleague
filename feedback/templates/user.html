@@ -15,6 +15,60 @@
             <p>Contributes to {{ contributor_leagues }} league(s)</p>
         </div>
     </div>
+
+    <div class="row spacer" style="display: flex; align-items: center">
+        <div class="col-md-6">
+            <h2>Your Leagues</h2>
+        </div>
+        <div class="col-md-6">
+            {% if page_user == user %}
+            <form action="{{ url_for('post_create_league') }}" method="post">
+
+                <div class="input-group">
+                  <input type="text" class="form-control" name="league_name" pattern="^[a-zA-Z0-9]+$">
+                  <span class="input-group-btn">
+                    <button class="btn btn-success" type="submit">
+                        <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Create
+                    </button>
+                  </span>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Owner</th>
+                        <th>Created</th>
+                        <th>Locked</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for league in leagues %}
+                        <tr>
+                            <td><a href="{{ url_for('view_league', league_name=league.name) }}">{{ league.name }}</a></td>
+                            <td><a href="{{ url_for('view_user', user_id=league.owner.id) }}">{{ league.owner.name }}</a></td>
+                            <td>{{ league.created.strftime('%m/%d/%Y') }}</td>
+                            <td>{{ league.locked }}</td>
+                            <td>
+                                {% if league.has_owner(user) %}
+                                <a href="{{ url_for('remove_league', league_name=league.name) }}"><i class="fa fa-times" aria-hidden="true" style="color: red"></i></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
 </div>
 
 {% endblock %}

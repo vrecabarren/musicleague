@@ -3,6 +3,7 @@ import json
 from flask import g
 from flask import redirect
 from flask import request
+from flask import url_for
 
 from feedback import app
 from feedback.models import User
@@ -14,7 +15,6 @@ from feedback.user import get_user
 
 
 AUTOCOMPLETE = '/autocomplete/'
-LEAGUES_URL = '/leagues/'
 PROFILE_URL = '/profile/'
 SETTINGS_URL = '/settings/'
 VIEW_USER_URL = '/user/<user_id>/'
@@ -29,23 +29,17 @@ def autocomplete():
     return json.dumps(results)
 
 
-@app.route(LEAGUES_URL)
-@templated('leagues.html')
-@login_required
-def leagues():
-    leagues = get_leagues_for_user(g.user)
-    return {'user': g.user, 'leagues': leagues}
-
-
 @app.route(PROFILE_URL)
 @templated('user.html')
 @login_required
 def profile():
     page_user = g.user
+    leagues = get_leagues_for_user(g.user)
     return {
         'user': g.user,
         'page_user': page_user,
         'user_image': g.spotify.user(str(page_user.id)).get('images')[0],
+        'leagues': leagues,
         'owner_leagues': len(get_leagues_for_owner(page_user)),
         'contributor_leagues': len(get_leagues_for_user(page_user))
         }
@@ -75,11 +69,15 @@ def save_settings():
 @templated('user.html')
 @login_required
 def view_user(user_id):
+    if user_id == str(g.user.id):
+        return redirect(url_for('profile'))
     page_user = get_user(user_id)
+    leagues = get_leagues_for_user(g.user)
     return {
         'user': g.user,
         'page_user': page_user,
         'user_image': g.spotify.user(user_id).get('images')[0],
+        'leagues': leagues,
         'owner_leagues': len(get_leagues_for_owner(page_user)),
         'contributor_leagues': len(get_leagues_for_user(page_user))
         }
