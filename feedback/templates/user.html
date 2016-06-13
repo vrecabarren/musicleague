@@ -21,6 +21,7 @@
             <h2>Your Leagues</h2>
         </div>
         <div class="col-md-6">
+            {% if page_user == user %}
             <form action="{{ url_for('post_create_league') }}" method="post">
 
                 <div class="input-group">
@@ -32,6 +33,7 @@
                   </span>
                 </div>
             </form>
+            {% endif %}
         </div>
     </div>
 
