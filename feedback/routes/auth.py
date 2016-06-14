@@ -1,3 +1,5 @@
+from time import time
+
 from flask import g
 from flask import redirect
 from flask import request
@@ -27,11 +29,17 @@ def before_request():
     access_token = session['access_token'] if 'access_token' in session else ''
     g.spotify = None
     if access_token:
-        cached_token = get_spotify_oauth().get_cached_token()
-        if cached_token:
-            # This will retrieve a new token if current token has expired
-            access_token = cached_token.get('access_token')
-            session['access_token'] = access_token
+        expiration = session['expires_at']
+
+        # If auth token has expired, refresh it
+        if int(expiration) < int(time()):
+            refresh_token = session['refresh_token']
+            oauth = get_spotify_oauth()
+            token_info = oauth._refresh_access_token(refresh_token)
+            session['access_token'] = token_info['access_token']
+            session['expires_at'] = token_info['expires_at']
+            session['refresh_token'] = token_info['refresh_token']
+
         g.spotify = Spotify(access_token)
 
 
@@ -45,6 +53,7 @@ def login():
             token_info = oauth.get_access_token(code)
             access_token = token_info['access_token']
             session['access_token'] = access_token
+            session['expires_at'] = token_info['expires_at']
             session['refresh_token'] = token_info['refresh_token']
 
             spotify = Spotify(access_token)
@@ -64,4 +73,6 @@ def login():
 def logout():
     session.pop('current_user')
     session.pop('access_token')
+    session.pop('expires_at')
+    session.pop('refresh_token')
     return redirect(url_for("hello"))
