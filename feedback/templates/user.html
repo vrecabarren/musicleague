@@ -21,7 +21,7 @@
             <h2>Your Leagues</h2>
         </div>
         <div class="col-md-6">
-            {% if page_user == user %}
+            {% if request.url_rule.endpoint == 'profile' %}
             <form action="{{ url_for('post_create_league') }}" method="post">
 
                 <div class="input-group">
@@ -47,7 +47,9 @@
                         <th>Owner</th>
                         <th>Created</th>
                         <th>Locked</th>
+                        {% if request.url_rule.endpoint == 'profile' %}
                         <th></th>
+                        {% endif %}
                     </tr>
                 </thead>
                 <tbody>
@@ -58,7 +60,7 @@
                             <td>{{ league.created.strftime('%m/%d/%Y') }}</td>
                             <td>{{ league.locked }}</td>
                             <td>
-                                {% if league.has_owner(user) %}
+                                {% if league.has_owner(user) and request.url_rule.endpoint == 'profile' %}
                                 <a href="{{ url_for('remove_league', league_name=league.name) }}"><i class="fa fa-times" aria-hidden="true" style="color: red"></i></a>
                                 {% endif %}
                             </td>
