@@ -72,7 +72,7 @@ def view_user(user_id):
     if user_id == str(g.user.id):
         return redirect(url_for('profile'))
     page_user = get_user(user_id)
-    leagues = get_leagues_for_user(g.user)
+    leagues = get_leagues_for_user(page_user)
     return {
         'user': g.user,
         'page_user': page_user,
