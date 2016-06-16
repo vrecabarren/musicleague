@@ -75,4 +75,4 @@ def logout():
     session.pop('access_token')
     session.pop('expires_at')
     session.pop('refresh_token')
-    return redirect(url_for("hello"))
+    return redirect(url_for("hello", action='logout'))

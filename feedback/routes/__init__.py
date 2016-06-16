@@ -1,5 +1,6 @@
 # flake8: noqa
 from flask import g
+from flask import request
 
 from feedback import app
 from feedback.models import League
@@ -39,5 +40,6 @@ def hello():
         'oauth_url': get_spotify_oauth().get_authorize_url(),
         'leagues': League.objects().count(),
         'submissions': Submission.objects().count(),
-        'users': User.objects().count()
+        'users': User.objects().count(),
+        'action': request.args.get('action')
         }
