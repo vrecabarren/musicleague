@@ -9,17 +9,12 @@
         <div class="well col-md-4 col-md-offset-4">
             <h1 class=text-center>Submit</h1>
             <form method="post" action="">
-
+                {% for i in range(1, league.preferences.track_count + 1) %}
                 <div class="form-group">
-                    <label for="track1">Track #1:</label>
-                    <input type="text" class="form-control" name="track1" id="track1" placeholder="Spotify Link or URI">
+                    <label for="track{{ i }}">Track #{{ i }}:</label>
+                    <input type="text" class="form-control" name="track{{ i }}" id="track{{ i }}" placeholder="Spotify Link or URI">
                 </div>
-
-                <div class="form-group">
-                    <label for="track2">Track #2:</label>
-                    <input type="text" class="form-control" name="track2" placeholder="Spotify Link or URI">
-                </div>
-
+                {% endfor %}
                 <div class="form-group text-center">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>

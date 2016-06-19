@@ -56,9 +56,8 @@ def view_submit(league_name, submission_period_id, **kwargs):
 def post_submit(league_name, submission_period_id, **kwargs):
     league = kwargs.get('league')
     tracks = [
-        escape(request.form.get('track1')),
-        escape(request.form.get('track2'))
-    ]
+        escape(request.form.get('track' + str(i)))
+        for i in range(1, league.preferences.track_count + 1)]
 
     submission_period = SubmissionPeriod.objects(id=submission_period_id).get()
     if submission_period and submission_period.is_current:
