@@ -2,7 +2,6 @@ from datetime import datetime
 
 from haikunator import Haikunator
 
-from feedback.errors import LeagueExistsError
 from feedback.models import League
 from feedback.notify import user_added_to_league_notification
 from feedback.notify import user_removed_from_league_notification
