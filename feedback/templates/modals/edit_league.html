@@ -1,0 +1,30 @@
+    <div class="modal fade" role="dialog" id="edit-modal" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{{ url_for('save_league_settings', league_name=league.name) }}" method="post">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Edit League</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" name="name" class="form-control" value="{{ league.name }}">
+                        </div>
+                        {% for field_name in league.preferences._fields  %}
+                        <div class="checkbox">
+                            <label><input type="checkbox" name="{{ field_name }}" {% if league.preferences[field_name] %}checked{% endif %}>
+                                <strong>{{ league.preferences._fields[field_name].display_name }}</strong>
+                                {% if league.preferences._fields[field_name].new %}<span class="label label-warning">NEW</span>{% endif %}
+                                <p class="help-block">{{ league.preferences._fields[field_name].verbose_name }}</p></label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <button class="btn btn-link" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

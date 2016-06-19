@@ -23,6 +23,7 @@
 
             <div class="row" style="margin: 20px 0px">
                 {% if user == league.owner %}
+                <a href="#edit-modal" data-toggle="modal" data-target="#edit-modal" class="btn btn-primary"><i class="fa fa-pencil"></i>&nbsp;Edit</a>
                 <a href="{{ url_for('post_create_submission_period', league_name=league.name) }}" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Submission Period</a>
                 {% endif %}
                 {% if user in league.users and league.current_submission_period %}
@@ -131,6 +132,8 @@
     </div>
 
 </div>
+
+{% include "modals/edit_league.html" %}
 
 {% endblock %}
 

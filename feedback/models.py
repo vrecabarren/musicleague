@@ -89,14 +89,24 @@ class SubmissionPeriod(Document):
         return all_tracks
 
 
+class LeaguePreferences(EmbeddedDocument):
+    auto_submission_periods = BooleanField(
+        default=True, display_name='Auto Submission Periods', new=True,
+        verbose_name='When voting ends, the next period will be created.')
+    locked = BooleanField(
+        default=False, display_name='Locked',
+        verbose_name='Submitting and voting are disabled.')
+
+
 class League(Document):
     created = DateTimeField(required=True)
-    locked = BooleanField(default=False)
     name = StringField(primary_key=True, required=True)
     owner = ReferenceField(User)
     submission_periods = ListField(
         ReferenceField(SubmissionPeriod, reverse_delete_rule=PULL))
     users = ListField(ReferenceField(User, reverse_delete_rule=PULL))
+    preferences = EmbeddedDocumentField(
+        LeaguePreferences, default=LeaguePreferences())
 
     @property
     def current_submission_period(self):

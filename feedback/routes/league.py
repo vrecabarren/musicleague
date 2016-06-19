@@ -1,6 +1,5 @@
 import logging
 
-from flask import escape
 from flask import g
 from flask import redirect
 from flask import request
@@ -21,6 +20,7 @@ CREATE_LEAGUE_URL = '/l/create/'
 REMOVE_LEAGUE_URL = '/l/<league_name>/remove/'
 REMOVE_SUBMISSION_URL = '/l/<league_name>/<submission_period_id>/<submission_id>/remove/'  # noqa
 REMOVE_USER_FOR_LEAGUE_URL = '/l/<league_name>/users/remove/<user_id>/'
+SETTINGS_URL = '/l/<league_name>/settings/'
 VIEW_LEAGUE_URL = '/l/<league_name>/'
 
 
@@ -78,6 +78,22 @@ def remove_submission(league_name, submission_period_id, submission_id,
                             submission_period_id=submission_period_id))
 
 
+@app.route(SETTINGS_URL, methods=['POST'])
+@login_required
+@league_required
+def save_league_settings(league_name, **kwargs):
+    league = kwargs.get('league')
+
+    league.name = request.form.get('name')
+
+    for field_name in league.preferences._fields:
+        enabled = request.form.get(field_name) == 'on'
+        league.preferences[field_name] = enabled
+
+    league.save()
+    return redirect(request.referrer)
+
+
 @app.route(VIEW_LEAGUE_URL, methods=['GET'])
 @templated('league.html')
 @login_required
@@ -86,5 +102,6 @@ def view_league(league_name, **kwargs):
     return {
         'user': g.user,
         'league': kwargs.get('league'),
-        'edit': request.args.get('edit')
+        'edit': request.args.get('edit'),
+        'action': request.args.get('action')
     }
