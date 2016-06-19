@@ -9,7 +9,7 @@ from feedback.notify import user_submit_reminder_notification
 
 def create_submission_period(league):
     new_submission_period = SubmissionPeriod(
-        name='%s - SP %s' % (league.name, len(league.submission_periods) + 1),
+        name='Submission Period %s' % (len(league.submission_periods) + 1),
         league=league,
         submission_due_date=datetime.utcnow() + timedelta(days=5),
         vote_due_date=datetime.utcnow() + timedelta(days=7))
