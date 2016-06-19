@@ -8,16 +8,29 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="name">Name:</label>
-                            <input type="text" name="name" class="form-control" value="{{ league.name }}">
+                            <label for="name">Name</label>
+                            <a href="#" data-toggle="popover" data-trigger="hover" data-content="League names are not currently editable"><i class="fa fa-question-circle"></i></a>
+                            <input type="text" name="name" class="form-control" value="{{ league.name }}" disabled>
                         </div>
-                        {% for field_name in league.preferences._fields  %}
+                        {% for field_name, field in league.preferences._fields.iteritems()  %}
+                        {% if field.input_type == 'number' %}
+                        <div class="form-group">
+                            <label for="{{ field_name }}">{{ league.preferences._fields[field_name].display_name }}</label>
+                            <a href="#" data-toggle="popover" data-trigger="hover" data-content="{{ field.verbose_name }}"><i class="fa fa-question-circle"></i></a>
+                            <input type="number" name="{{ field_name }}" class="form-control" value="{{ league.preferences[field_name] }}">
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        <hr>
+                        {% for field_name, field in league.preferences._fields.iteritems()  %}
+                        {% if field.input_type == 'checkbox' %}
                         <div class="checkbox">
                             <label><input type="checkbox" name="{{ field_name }}" {% if league.preferences[field_name] %}checked{% endif %}>
-                                <strong>{{ league.preferences._fields[field_name].display_name }}</strong>
-                                {% if league.preferences._fields[field_name].new %}<span class="label label-warning">NEW</span>{% endif %}
-                                <p class="help-block">{{ league.preferences._fields[field_name].verbose_name }}</p></label>
+                                <strong>{{ field.display_name }}</strong>
+                                {% if field.new %}<span class="label label-warning">NEW</span>{% endif %}
+                                <p class="help-block">{{ field.verbose_name }}</p></label>
                         </div>
+                        {% endif %}
                         {% endfor %}
                     </div>
                     <div class="modal-footer">

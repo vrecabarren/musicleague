@@ -84,11 +84,14 @@ def remove_submission(league_name, submission_period_id, submission_id,
 def save_league_settings(league_name, **kwargs):
     league = kwargs.get('league')
 
-    league.name = request.form.get('name')
+    league.preferences.track_count = request.form.get('track_count')
+    league.preferences.auto_submission_periods = request.form.get(
+        'auto_submission_periods') == 'on'
+    league.preferences.locked = request.form.get('locked') == 'on'
 
-    for field_name in league.preferences._fields:
-        enabled = request.form.get(field_name) == 'on'
-        league.preferences[field_name] = enabled
+    # for field_name in league.preferences._fields:
+    #     enabled = request.form.get(field_name) == 'on'
+    #     league.preferences[field_name] = enabled
 
     league.save()
     return redirect(request.referrer)

@@ -90,12 +90,19 @@ class SubmissionPeriod(Document):
 
 
 class LeaguePreferences(EmbeddedDocument):
+    CHECKBOX = "checkbox"
+    NUMBER = "number"
+
     auto_submission_periods = BooleanField(
         default=True, display_name='Auto Submission Periods', new=True,
+        input_type=CHECKBOX,
         verbose_name='When voting ends, the next period will be created.')
     locked = BooleanField(
-        default=False, display_name='Locked',
+        default=False, display_name='Locked', input_type=CHECKBOX,
         verbose_name='Submitting and voting are disabled.')
+    track_count = IntField(
+        default=2, display_name='# Tracks', input_type=NUMBER,
+        verbose_name='How many songs should each submission include?')
 
 
 class League(Document):
