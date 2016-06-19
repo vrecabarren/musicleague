@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from haikunator import Haikunator
+
 from feedback.errors import LeagueExistsError
 from feedback.models import League
 from feedback.notify import user_added_to_league_notification
@@ -29,9 +31,13 @@ def remove_user(league, user_id):
         user_removed_from_league_notification(removed_user, league)
 
 
-def create_league(name, user):
-    if get_league(name):
-        raise LeagueExistsError('League with name %s already exists' % name)
+def create_league(user):
+    haikunator = Haikunator()
+
+    # Find a league name that is not in use
+    name = haikunator.haikunate()
+    while League.objects(name=name).count():
+        name = haikunator.haikunate()
 
     new_league = League(
         name=name, owner=user, users=[user], created=datetime.utcnow())

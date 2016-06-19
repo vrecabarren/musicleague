@@ -49,8 +49,7 @@ def remove_user_for_league(league_name, user_id, **kwargs):
 @login_required
 def post_create_league():
     try:
-        league_name = escape(request.form.get('league_name'))
-        league = create_league(league_name, g.user)
+        league = create_league(g.user)
         return redirect(
             url_for(view_league.__name__, league_name=league.name))
     except Exception as e:

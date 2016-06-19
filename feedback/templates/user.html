@@ -20,18 +20,12 @@
         <div class="col-md-6">
             <h2>Your Leagues</h2>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 text-right">
             {% if request.url_rule.endpoint == 'profile' %}
             <form action="{{ url_for('post_create_league') }}" method="post">
-
-                <div class="input-group">
-                  <input type="text" class="form-control" name="league_name" pattern="^[a-zA-Z0-9]+$">
-                  <span class="input-group-btn">
-                    <button class="btn btn-success" type="submit">
-                        <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Create
-                    </button>
-                  </span>
-                </div>
+                <button class="btn btn-success" type="submit">
+                    <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Create
+                </button>
             </form>
             {% endif %}
         </div>
