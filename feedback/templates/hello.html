@@ -2,95 +2,51 @@
 
 {% block title %}Music League | Hello{% endblock %}
 
-{% block css %}
-{% if not user and action != logout %}
-    <style>
-        .modal {
-        text-align: center;
-        padding: 0!important;
-        }
-
-        .modal:before {
-        content: '';
-        display: inline-block;
-        height: 100%;
-        vertical-align: middle;
-        margin-right: -4px;
-        }
-
-        .modal-dialog {
-        display: inline-block;
-        text-align: left;
-        vertical-align: middle;
-        }
-    </style>
-{% endif %}
-{% endblock %}
-
 {% block content %}
 
-<div class="container">
-    {% if action == 'logout' %}
-    <div class="alert alert-info alert-dismissable" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <strong>Success!</strong> You have been logged out of Music League.
-    </div>
-    {% endif %}
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4 text-center">
-            <h1 style="color: #2dbe60">Welcome to Music League</h1>
+    <div class="container">
+        {% if action == 'logout' %}
+        <div class="alert alert-info alert-dismissable" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Success!</strong> You have been logged out of Music League.
         </div>
-    </div>
-    <div class="row" style="margin: 50px 0px"></div>
-    <div class="row">
-        <div class="well col-md-3 text-center">
-            <h1>Users</h1>
-            <h1 style="font-size: 10em">{{ users }}</h1>
+        {% endif %}
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 text-center">
+                <h1 style="color: #2dbe60">Welcome to Music League</h1>
+            </div>
         </div>
+        <div class="row" style="margin: 50px 0px"></div>
+        <div class="row">
+            <div class="well col-md-3 text-center">
+                <h1>Users</h1>
+                <h1 style="font-size: 10em">{{ users }}</h1>
+            </div>
 
-        <div class="well col-md-4 col-md-offset-1 text-center">
-            <h1>Leagues</h1>
-            <h1 style="font-size: 10em">{{ leagues }}</h1>
-        </div>
+            <div class="well col-md-4 col-md-offset-1 text-center">
+                <h1>Leagues</h1>
+                <h1 style="font-size: 10em">{{ leagues }}</h1>
+            </div>
 
-        <div class="well col-md-3 col-md-offset-1 text-center">
-            <h1>Submissions</h1>
-            <h1 style="font-size: 10em">{{ submissions }}</h1>
+            <div class="well col-md-3 col-md-offset-1 text-center">
+                <h1>Submissions</h1>
+                <h1 style="font-size: 10em">{{ submissions }}</h1>
+            </div>
         </div>
     </div>
-</div>
 
 {% if not user and action != 'logout' %}
-<div class="modal fade" role="dialog" id="spotify-login-modal" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Log In</h4>
-            </div>
-            <div class="modal-body text-center">
-                <h1>Welcome to Music League!</h1>
-                <div class="spacer"></div>
-                <p>Please log in with your Spotify account to get started</p>
-                <div class="spacer"></div>
-                <div class="spacer"></div>
-                <div class="text-center">
-                    <a href="{{ oauth_url }}" class="btn btn-lg btn-success"><i class="fa fa-spotify" style="margin-right: 10px"></i>Log In</a>
-                </div>
-                <div class="spacer"></div>
-            </div>
-        </div>
-    </div>
-</div>
+{% include "modals/spotify_login.html" %}
 {% endif %}
+
 {% endblock %}
 
 {% block js %}
-{% if not user and action != 'logout' %}
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('#spotify-login-modal').modal('show');
-    });
-</script>
-{% endif %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            // If we imported the spootify login modal, show it
+            if ( $('#spotify-login-modal').length )
+                $('#spotify-login-modal').modal('show');
+        });
+    </script>
 {% endblock %}
