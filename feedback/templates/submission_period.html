@@ -16,6 +16,9 @@
 
     <div class="row" style="margin: 30px 0px">
         <div class="col-md-12">
+        {% if user == league.owner %}
+        <a href="#" data-toggle="modal" data-target="#edit-modal" class="btn btn-primary"><i class="fa fa-pencil"></i>&nbsp;Edit</a>
+        {% endif %}
         {% if submission_period.playlist_created %}
             <!-- Anyone should see the playlist link if one has been created -->
             <a href="{{ submission_period.playlist_url }}" target="_blank" class="btn btn-primary"><i class="fa fa-spotify"></i>&nbsp;Playlist</a>
@@ -72,4 +75,50 @@
     </div>
 </div>
 
+{% include "modals/edit_submission_period.html" %}
+
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment-with-locales.min.js"></script>
+<script type="text/javascript" src="/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#submission_due_date').val(moment('{{ submission_period.submission_due_date }}').toDate());
+        $('#submission_due_date').datetimepicker({
+            sideBySide: false,
+            format: 'dddd MM/DD/YY hA',
+            useStrict: true,
+            showClose: true
+        }).on("dp.change", function(e) {
+            $('#submission_due_date_utc').val(moment(e.date.utc()).format('MM/DD/YY hA'));
+        });
+
+        $('#voting_due_date').val(moment('{{ submission_period.vote_due_date }}').toDate());
+        $('#voting_due_date').datetimepicker({
+            sideBySide: false,
+            format: 'dddd MM/DD/YY hA',
+            useStrict: true,
+            showClose: true
+        }).on("dp.change", function(e) {
+            $('#voting_due_date_utc').val(moment(e.date.utc()).format('MM/DD/YY hA'));
+        });
+    });
+
+    $(document).ready(function(){
+        var localSubmissionDueDate = moment.utc('{{ submission_period.submission_due_date }}').toDate();
+        $('#submission_due_date').val(moment(localSubmissionDueDate).format('dddd MM/DD/YY hA'));
+        $('#submission_due_date_utc').val(moment(moment.utc('{{ submission_period.submission_due_date }}')).format('MM/DD/YY hA'));
+
+        var localVotingDueDate = moment.utc('{{ submission_period.vote_due_date }}').toDate();
+        $('#voting_due_date').val(moment(localVotingDueDate).format('dddd MM/DD/YY hA'));
+        $('#voting_due_date_utc').val(moment(moment.utc('{{ submission_period.vote_due_date }}')).format('MM/DD/YY hA'));
+
+        $('[data-toggle="popover"]').popover();
+    });
+</script>
 {% endblock %}

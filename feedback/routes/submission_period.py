@@ -1,4 +1,5 @@
 from datetime import datetime
+from pytz import utc
 
 from flask import g
 from flask import redirect
@@ -19,6 +20,7 @@ from feedback.submission_period import update_submission_period
 CREATE_SUBMISSION_PERIOD_URL = '/l/<league_name>/submission_period/create/'
 MODIFY_SUBMISSION_PERIOD_URL = '/l/<league_name>/<submission_period_id>/modify/'  # noqa
 REMOVE_SUBMISSION_PERIOD_URL = '/l/<league_name>/<submission_period_id>/remove/'  # noqa
+SETTINGS_URL = '/l/<league_name>/<submission_period_id>/settings/'
 VIEW_SUBMISSION_PERIOD_URL = '/l/<league_name>/<submission_period_id>/'
 
 
@@ -42,18 +44,25 @@ def r_remove_submission_period(league_name, submission_period_id, **kwargs):
     return redirect(url_for('view_league', league_name=league_name))
 
 
-@app.route(MODIFY_SUBMISSION_PERIOD_URL, methods=['POST'])
+@app.route(SETTINGS_URL, methods=['POST'])
 @login_required
 @league_required
-def modify_submission_period(league_name, submission_period_id, **kwargs):
-    league = kwargs.get('league')
-    if league.has_owner(g.user):
-        new_name = request.form.get('new_name')
-        new_due_date_str = request.form.get('new_due_date')
-        new_due_date = datetime.strptime(new_due_date_str, '%m/%d/%y %I%p')
-        update_submission_period(submission_period_id, new_name, new_due_date)
+def save_submission_period_settings(league_name, submission_period_id,
+                                    **kwargs):
+    name = request.form.get('name')
 
-    return redirect(url_for('view_league', league_name=league_name))
+    submission_due_date_str = request.form.get('submission_due_date_utc')
+    submission_due_date = utc.localize(
+        datetime.strptime(submission_due_date_str, '%m/%d/%y %I%p'))
+
+    vote_due_date_str = request.form.get('voting_due_date_utc')
+    vote_due_date = utc.localize(
+        datetime.strptime(vote_due_date_str, '%m/%d/%y %I%p'))
+
+    update_submission_period(submission_period_id, name, submission_due_date,
+                             vote_due_date)
+
+    return redirect(request.referrer)
 
 
 @app.route(VIEW_SUBMISSION_PERIOD_URL)

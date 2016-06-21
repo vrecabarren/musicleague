@@ -50,15 +50,16 @@ def remove_submission_period(submission_period_id):
     logging.info('Submission period removed: %s', submission_period_id)
 
 
-def update_submission_period(submission_period_id, name, submission_due_date):
+def update_submission_period(submission_period_id, name, submission_due_date,
+                             vote_due_date):
     try:
         submission_period = get_submission_period(submission_period_id)
         submission_period.name = name
+        submission_period.submission_due_date = submission_due_date
+        submission_period.vote_due_date = vote_due_date
 
         # Reschedule submission reminders if needed
-        if submission_due_date != submission_period.submission_due_date:
-            submission_period.submission_due_date = submission_due_date
-            schedule_submission_reminders(submission_period)
+        schedule_submission_reminders(submission_period)
 
         submission_period.save()
         return submission_period
