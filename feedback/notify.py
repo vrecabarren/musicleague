@@ -3,6 +3,7 @@ import requests
 
 from flask import render_template
 
+from feedback import app
 from feedback import notification_queue
 from feedback.environment import is_deployed
 from feedback.environment import get_setting
@@ -100,8 +101,10 @@ def _send_email(to, subject, text, html):
 
 
 def _txt_email(template, **kwargs):
-    return render_template(TXT_PATH % template, **kwargs)
+    with app.app_context():
+        return render_template(TXT_PATH % template, **kwargs)
 
 
 def _html_email(template, **kwargs):
-    return render_template(HTML_PATH % template, **kwargs)
+    with app.app_context():
+        return render_template(HTML_PATH % template, **kwargs)
