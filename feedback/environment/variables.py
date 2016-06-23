@@ -14,6 +14,7 @@ PORT = EnvironmentVariable(key='PORT', default=5000)
 PRODUCTION = EnvironmentVariable(key='IS_PRODUCTION', default=False)
 REDISCLOUD_URL = EnvironmentVariable(key='REDISCLOUD_URL', default='')
 SECRET_KEY = EnvironmentVariable(key='SECRET_KEY', default='')
+SERVER_NAME = EnvironmentVariable(key='SERVER_NAME', default='')
 SPOTIFY_CLIENT_ID = EnvironmentVariable(key='SPOTIFY_CLIENT_ID', default='')
 SPOTIFY_CLIENT_SECRET = EnvironmentVariable(key='SPOTIFY_CLIENT_SECRET', default='')  # noqa
 SPOTIFY_REDIRECT_URI = EnvironmentVariable(key='SPOTIFY_REDIRECT_URI', default='')  # noqa

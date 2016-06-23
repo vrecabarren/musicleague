@@ -5,6 +5,7 @@ import sys
 from flask import Flask
 
 from feedback.environment import get_secret_key
+from feedback.environment import get_server_name
 from feedback.environment import is_debug
 from feedback.environment import is_deployed
 from feedback.environment import parse_mongolab_uri
@@ -25,6 +26,7 @@ from settings import MONGO_DB_NAME
 # Initialize Flask app
 app = Flask(__name__)
 app.secret_key = get_secret_key()
+app.config['SERVER_NAME'] = get_server_name()
 
 if is_deployed():
     host, port, username, password, db = parse_mongolab_uri()

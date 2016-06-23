@@ -10,6 +10,7 @@ from feedback.environment.variables import PORT
 from feedback.environment.variables import PRODUCTION
 from feedback.environment.variables import REDISCLOUD_URL
 from feedback.environment.variables import SECRET_KEY
+from feedback.environment.variables import SERVER_NAME
 
 
 def get_setting(env_setting):
@@ -79,6 +80,10 @@ def get_port():
 
 def get_secret_key():
     return get_setting(SECRET_KEY)
+
+
+def get_server_name():
+    return get_setting(SERVER_NAME)
 
 
 def parse_mongolab_uri():
