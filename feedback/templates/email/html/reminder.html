@@ -16,7 +16,7 @@
 
                 <h1>Music League</h1>
 
-                <h3>Submissions for {{ url_for('view_league', league_name=league.name) }} are due in approximately 2 hours.</h3>
+                <h3>Submissions for <a href="{{ url_for('view_league', league_name=league.name) }}">{{ league.name }}</a> are due in approximately 2 hours.</h3>
 
                 <a href="{{ url_for('view_league', league_name=league.name) }}?action=submit" class="btn btn-lg btn-success">Submit</a>
 
