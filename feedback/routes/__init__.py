@@ -20,10 +20,7 @@ from feedback.routes.submission_period import post_create_submission_period
 from feedback.routes.submission_period import remove_submission_period
 from feedback.routes.submission_period import save_submission_period_settings
 from feedback.routes.submission_period import view_submission_period
-from feedback.routes.submit import post_confirm_submit
-from feedback.routes.submit import post_submit
-from feedback.routes.submit import view_confirm_submit
-from feedback.routes.submit import view_submit
+from feedback.routes.submit import submit
 from feedback.routes.user import profile
 from feedback.routes.user import view_user
 from feedback.spotify import get_spotify_oauth

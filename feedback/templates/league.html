@@ -28,7 +28,7 @@
                 {% endif %}
                 {% if user in league.users and league.current_submission_period %}
                     {% if league.current_submission_period.accepting_submissions %}
-                    <a href="{{ url_for('view_submit', league_name=league.name, submission_period_id=league.current_submission_period.id) }}" class="btn btn-primary"><i class="fa fa-archive" aria-hidden="true"></i>&nbsp;Submit</a>
+                    <a href="#submit-modal" data-toggle="modal" data-target="#submit-modal" class="btn btn-primary"><i class="fa fa-archive" aria-hidden="true"></i>&nbsp;Submit</a>
                     {% elif league.current_submission_period.accepting_votes %}
                     <a href="" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;Vote</a>
                     {% endif %}
@@ -113,6 +113,7 @@
 </div>
 
 {% include "modals/edit_league.html" %}
+{% include "modals/submit.html" %}
 
 {% endblock %}
 
@@ -133,6 +134,10 @@
     });
     $(document).ready(function(){
         $('[data-toggle="popover"]').popover();
+        {% if action == 'submit' %}$('#submit-modal').modal('show');{% endif %}
     });
+</script>
+<script type="text/javascript">
+    {% include "modals/submit.js" %}
 </script>
 {% endblock %}

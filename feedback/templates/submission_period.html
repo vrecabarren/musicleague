@@ -48,11 +48,7 @@
                 </thead>
                 <tbody>
                     {% for submission in submission_period.submissions|reverse %}
-                        {% if submission.confirmed %}
-                        <tr class="success">
-                        {% else %}
-                        <tr class="warning">
-                        {% endif %}
+                        <tr>
                             <td>
                                 <ul>
                                 {% for track in tracks %}
