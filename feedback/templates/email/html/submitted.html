@@ -7,13 +7,17 @@
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 jumbotron text-center">
 
-                <h1>{{ submission.user.name }} just submitted for <a href="{{ url_for('view_submission_period', _external=True, league_id=submission.league.id, submission_period_id=submission.submission_period.id) }}">{{ submission.submission_period.name }}</a>!</h1>
-                <p>This is submission #{{ submission.count }} for this user.</p>
+                <h1>Music League</h1>
+
+                <h3>{{ submission.user.name }} just submitted for <a href="{{ url_for('view_submission_period', _external=True, league_id=submission.league.id, submission_period_id=submission.submission_period.id) }}">{{ submission.submission_period.name }}</a>!</h3>
+
+                 <p>This is submission #{{ submission.count }} for this user.</p>
 
             </div>
         </div>
     </div>
 </body>
 </html>
+
