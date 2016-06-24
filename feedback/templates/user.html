@@ -49,13 +49,13 @@
                 <tbody>
                     {% for league in leagues %}
                         <tr>
-                            <td><a href="{{ url_for('view_league', league_name=league.name) }}">{{ league.name }}</a></td>
+                            <td><a href="{{ url_for('view_league', league_id=league.id) }}">{{ league.name }}</a></td>
                             <td><a href="{{ url_for('view_user', user_id=league.owner.id) }}">{{ league.owner.name }}</a></td>
                             <td>{{ league.created.strftime('%m/%d/%Y') }}</td>
                             <td>{{ league.locked }}</td>
                             <td>
                                 {% if league.has_owner(user) and request.url_rule.endpoint == 'profile' %}
-                                <a href="{{ url_for('remove_league', league_name=league.name) }}"><i class="fa fa-times" aria-hidden="true" style="color: red"></i></a>
+                                <a href="{{ url_for('remove_league', league_id=league.id) }}"><i class="fa fa-times" aria-hidden="true" style="color: red"></i></a>
                                 {% endif %}
                             </td>
                         </tr>

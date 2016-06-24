@@ -24,7 +24,7 @@
             <div class="row" style="margin: 20px 0px">
                 {% if user == league.owner %}
                 <a href="#edit-modal" data-toggle="modal" data-target="#edit-modal" class="btn btn-primary"><i class="fa fa-pencil"></i>&nbsp;Edit</a>
-                <a href="{{ url_for('post_create_submission_period', league_name=league.name) }}" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Submission Period</a>
+                <a href="{{ url_for('post_create_submission_period', league_id=league.id) }}" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Submission Period</a>
                 {% endif %}
                 {% if user in league.users and league.current_submission_period %}
                     {% if league.current_submission_period.accepting_submissions %}
@@ -55,7 +55,7 @@
                                 <tr>
                                 {% endif %}
                                     <td>
-                                        <a href="{{ url_for('view_submission_period', league_name=league.name, submission_period_id=submission_period.id) }}">{{ submission_period.name }}</a>
+                                        <a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}">{{ submission_period.name }}</a>
                                     </td>
                                     <td>
                                         {% if submission_period.playlist_created %}
@@ -68,7 +68,7 @@
                                     <td>{{ submission_period.submissions|length }} / {{ league.users|length }}</td>
                                     <td class="text-right">
                                         {% if league.has_owner(user) %}
-                                        <a href="{{ url_for('r_remove_submission_period', league_name=league.name, submission_period_id=submission_period.id) }}" title="Remove">
+                                        <a href="{{ url_for('r_remove_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}" title="Remove">
                                             <i class="fa fa-times" aria-hidden="true" style="color: red"></i>
                                         </a>
                                         {% endif %}
@@ -92,13 +92,13 @@
                     {{ user.name }}
                 </a>
                 &nbsp;
-                <a href="{{ url_for('remove_user_for_league', league_name=league.name, user_id=user.id) }}">
+                <a href="{{ url_for('remove_user_for_league', league_id=league.id, user_id=user.id) }}">
                     <i class="fa fa-times" aria-hidden="true" style="color: red"></i>
                 </a>
             </p>
             {% endfor %}
 
-            <form action="{{ url_for('add_user_for_league', league_name=league.name) }}" method="post" class="">
+            <form action="{{ url_for('add_user_for_league', league_id=league.id) }}" method="post" class="">
                 <div class="control-group input-group">
                     <input type="text" class="form-control" name="email" id="add_user" placeholder="Email or Name">
                     <span class="input-group-btn">

@@ -21,9 +21,9 @@ def login_required(func):
 def league_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        if 'league_name' not in kwargs:
+        if 'league_id' not in kwargs:
             return redirect(url_for('hello'))
-        league = get_league(kwargs.get('league_name'))
+        league = get_league(kwargs.get('league_id'))
         if not league:
             return redirect(url_for('hello'))
         kwargs['league'] = league

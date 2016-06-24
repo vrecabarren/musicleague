@@ -1,7 +1,7 @@
     <div class="modal fade" role="dialog" id="edit-modal" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="{{ url_for('save_submission_period_settings', league_name=submission_period.league.name, submission_period_id=submission_period.id) }}" method="post">
+                <form action="{{ url_for('save_submission_period_settings', league_id=submission_period.league.id, submission_period_id=submission_period.id) }}" method="post">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title" id="myModalLabel">Edit Submission Period</h4>
@@ -26,7 +26,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <div class="pull-left"><a href="{{ url_for('r_remove_submission_period', league_name=league.name, submission_period_id=submission_period.id) }}" class="btn btn-danger">Delete</a></div>
+                        <div class="pull-left"><a href="{{ url_for('r_remove_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}" class="btn btn-danger">Delete</a></div>
                         <button type="submit" class="btn btn-success">Save</button>
                         <button class="btn btn-link" data-dismiss="modal">Cancel</button>
                     </div>

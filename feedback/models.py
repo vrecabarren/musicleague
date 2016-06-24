@@ -93,6 +93,8 @@ class LeaguePreferences(EmbeddedDocument):
     CHECKBOX = "checkbox"
     NUMBER = "number"
 
+    name = StringField()
+
     auto_submission_periods = BooleanField(
         default=True, display_name='Auto Submission Periods', new=True,
         input_type=CHECKBOX,
@@ -107,13 +109,16 @@ class LeaguePreferences(EmbeddedDocument):
 
 class League(Document):
     created = DateTimeField(required=True)
-    name = StringField(primary_key=True, required=True)
     owner = ReferenceField(User)
     submission_periods = ListField(
         ReferenceField(SubmissionPeriod, reverse_delete_rule=PULL))
     users = ListField(ReferenceField(User, reverse_delete_rule=PULL))
     preferences = EmbeddedDocumentField(
         LeaguePreferences, default=LeaguePreferences())
+
+    @property
+    def name(self):
+        return self.preferences.name
 
     @property
     def current_submission_period(self):

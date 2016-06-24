@@ -3,6 +3,7 @@ from datetime import datetime
 from haikunator import Haikunator
 
 from feedback.models import League
+from feedback.models import LeaguePreferences
 from feedback.notify import user_added_to_league_notification
 from feedback.notify import user_removed_from_league_notification
 from feedback.user import get_user_by_email
@@ -33,20 +34,17 @@ def remove_user(league, user_id):
 def create_league(user):
     haikunator = Haikunator()
 
-    # Find a league name that is not in use
     name = haikunator.haikunate()
-    while League.objects(name=name).count():
-        name = haikunator.haikunate()
 
-    new_league = League(
-        name=name, owner=user, users=[user], created=datetime.utcnow())
+    new_league = League(owner=user, users=[user], created=datetime.utcnow())
+    new_league.preferences.name = name
     new_league.save()
     return new_league
 
 
-def get_league(name):
+def get_league(league_id):
     try:
-        league = League.objects.get(name=name)
+        league = League.objects.get(id=league_id)
         return league
     except League.DoesNotExist:
         return None

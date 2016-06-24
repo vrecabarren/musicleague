@@ -10,13 +10,13 @@ from feedback.routes.decorators import league_required
 from feedback.submission import create_or_update_submission
 
 
-SUBMIT_URL = '/l/<league_name>/submit/'
+SUBMIT_URL = '/l/<league_id>/submit/'
 
 
 @app.route(SUBMIT_URL, methods=['POST'])
 @login_required
 @league_required
-def submit(league_name, **kwargs):
+def submit(league_id, **kwargs):
     league = kwargs.get('league')
     tracks = [
         escape(request.form.get('track' + str(i)))
@@ -26,4 +26,4 @@ def submit(league_name, **kwargs):
     if submission_period and submission_period.is_current:
         create_or_update_submission(tracks, submission_period, league, g.user)
 
-    return redirect(url_for('view_league', league_name=league_name))
+    return redirect(url_for('view_league', league_id=league_id))
