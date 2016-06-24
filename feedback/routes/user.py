@@ -14,10 +14,24 @@ from feedback.league import get_leagues_for_user
 from feedback.user import get_user
 
 
+ADMIN_URL = '/admin/'
 AUTOCOMPLETE = '/autocomplete/'
 PROFILE_URL = '/profile/'
 SETTINGS_URL = '/settings/'
 VIEW_USER_URL = '/user/<user_id>/'
+
+
+@app.route(ADMIN_URL)
+@templated('admin.html')
+@login_required
+def admin():
+    if g.user.email == 'nathandanielcoleman@gmail.com':
+        users = User.objects().all()
+        return {
+            'user': g.user,
+            'users': users
+        }
+    return redirect(request.referrer)
 
 
 @app.route(AUTOCOMPLETE)

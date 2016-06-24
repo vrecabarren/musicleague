@@ -55,7 +55,11 @@
                                 <tr>
                                 {% endif %}
                                     <td>
+                                        {% if user == league.owner %}
                                         <a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}">{{ submission_period.name }}</a>
+                                        {% else %}
+                                        {{ submission_period.name }}
+                                        {% endif %}
                                     </td>
                                     <td>
                                         {% if submission_period.playlist_created %}
