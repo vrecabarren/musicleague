@@ -46,6 +46,9 @@
                         <ul class="dropdown-menu">
                             <li><a href="{{ url_for('profile') }}" title="Profile"><i class="fa fa-user" style="margin-right: 10px"></i>&nbsp;Profile</a></li>
                             <li role="separator" class="divider"></li>
+                            {% if user.email == 'nathandanielcoleman@gmail.com' %}
+                            <li><a href="{{ url_for('admin') }}" title="Admin"><i class="fa fa-key" style="margin-right: 10px"></i>Admin</a></li>
+                            {% endif %}
                             <li><a href="{{ url_for('view_settings') }}" title="Settings"><i class="fa fa-cog" style="margin-right: 10px"></i>Settings</a></li>
                             <li><a href="{{ url_for('logout') }}"><i class="fa fa-sign-out" style="margin-right: 10px"></i>&nbsp;Log Out</a></li>
                         </ul>
