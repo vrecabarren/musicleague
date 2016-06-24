@@ -24,6 +24,7 @@ def remove_user(league, user_id):
             removed_user = user
         else:
             remaining_users.append(user)
+    league.users = remaining_users
     league.save()
 
     if removed_user:
