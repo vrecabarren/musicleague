@@ -6,6 +6,7 @@ from mongoengine import Document
 from mongoengine import EmbeddedDocument
 from mongoengine import EmbeddedDocumentField
 from mongoengine import IntField
+from mongoengine import DictField
 from mongoengine import ListField
 from mongoengine import PULL
 from mongoengine import ReferenceField
@@ -56,13 +57,15 @@ class Submission(Document):
 
 
 class SubmissionPeriod(Document):
+    TASK_SEND_SUBMISSION_REMINDERS = 'tssr'
+
     complete = BooleanField(default=False)
     submission_due_date = DateTimeField()
     vote_due_date = DateTimeField()
     is_current = BooleanField(default=True)
     league = ReferenceField('League')
     name = StringField(max_length=255)
-    notify_job_id = StringField(default='')
+    pending_tasks = DictField()
     playlist_id = StringField()
     playlist_url = StringField(default='')
     submissions = ListField(

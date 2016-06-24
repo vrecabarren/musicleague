@@ -41,9 +41,11 @@ def get_submission_period(submission_period_id):
 def remove_submission_period(submission_period_id):
     submission_period = get_submission_period(submission_period_id)
 
-    # Cancel scheduled submission notification job if one exists
-    if submission_period.notify_job_id:
-        default_scheduler.cancel(submission_period.notify_job_id)
+    # Cancel scheduled submission reminder job if one exists
+    reminder_task_id = submission_period.pending_tasks.get(
+        SubmissionPeriod.TASK_SEND_SUBMISSION_REMINDERS)
+    if reminder_task_id:
+        default_scheduler.cancel(reminder_task_id)
 
     submission_period.delete()
 
@@ -72,17 +74,22 @@ def schedule_submission_reminders(submission_period):
     notify_time = submission_period.submission_due_date - timedelta(hours=2)
 
     # Cancel scheduled notification job if one exists
-    if submission_period.notify_job_id:
-        default_scheduler.cancel(submission_period.notify_job_id)
+    reminder_task_id = submission_period.pending_tasks.get(
+        SubmissionPeriod.TASK_SEND_SUBMISSION_REMINDERS)
+    if reminder_task_id:
+        default_scheduler.cancel(reminder_task_id)
 
     # Schedule new notification job
-    submission_period.notify_job_id = default_scheduler.enqueue_at(
+    reminder_task_id = default_scheduler.enqueue_at(
         notify_time,
         send_submission_reminders,
         submission_period.id).id
 
+    submission_period.pending_tasks.update(
+        {SubmissionPeriod.TASK_SEND_SUBMISSION_REMINDERS: reminder_task_id})
+
     logging.info('Submission reminders scheduled for %s. Job ID: %s.',
-                 notify_time, submission_period.notify_job_id)
+                 notify_time, reminder_task_id)
 
 
 def send_submission_reminders(submission_period_id):
