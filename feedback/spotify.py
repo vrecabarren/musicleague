@@ -1,3 +1,5 @@
+from random import shuffle
+
 from flask import g
 
 from spotipy import oauth2
@@ -29,6 +31,7 @@ def create_or_update_playlist(submission_period):
     tracks = []
     for submission in submission_period.submissions:
         tracks.extend(submission.tracks)
+    shuffle(tracks)
 
     # Create new playlist and link to this submission period
     if not submission_period.playlist_created:
