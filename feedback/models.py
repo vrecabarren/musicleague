@@ -96,6 +96,10 @@ class LeaguePreferences(EmbeddedDocument):
 
     name = StringField()
 
+    auto_playlist_creation = BooleanField(
+        default=True, display_name='Auto Playlist Creation', new=True,
+        input_type=CHECKBOX,
+        verbose_name='When submitting ends, the playlist will be created.')
     auto_submission_periods = BooleanField(
         default=True, display_name='Auto Submission Periods', new=True,
         input_type=CHECKBOX,
@@ -106,6 +110,9 @@ class LeaguePreferences(EmbeddedDocument):
     track_count = IntField(
         default=2, display_name='# Tracks', input_type=NUMBER,
         verbose_name='How many songs should each submission include?')
+
+    checkbox_display_order = ['auto_playlist_creation',
+                              'locked']
 
 
 class League(Document):

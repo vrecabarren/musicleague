@@ -22,15 +22,13 @@
                         {% endif %}
                         {% endfor %}
                         <hr>
-                        {% for field_name, field in league.preferences._fields.iteritems()  %}
-                        {% if field.input_type == 'checkbox' %}
+                        {% for field_name in league.preferences.checkbox_display_order  %}
                         <div class="checkbox">
                             <label><input type="checkbox" name="{{ field_name }}" {% if league.preferences[field_name] %}checked{% endif %}>
-                                <strong>{{ field.display_name }}</strong>
-                                {% if field.new %}<span class="label label-warning">NEW</span>{% endif %}
-                                <p class="help-block">{{ field.verbose_name }}</p></label>
+                                <strong>{{ league.preferences._fields[field_name].display_name }}</strong>
+                                {% if league.preferences._fields[field_name].new %}<span class="label label-warning">NEW</span>{% endif %}
+                                <p class="help-block">{{ league.preferences._fields[field_name].verbose_name }}</p></label>
                         </div>
-                        {% endif %}
                         {% endfor %}
                     </div>
                     <div class="modal-footer">
