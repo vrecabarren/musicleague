@@ -8,7 +8,7 @@ from feedback.environment import get_setting
 from feedback.environment.variables import SPOTIFY_CLIENT_ID
 from feedback.environment.variables import SPOTIFY_CLIENT_SECRET
 from feedback.environment.variables import SPOTIFY_REDIRECT_URI
-from feedback.routes.decorators import login_required
+from feedback.notify import user_playlist_created_notification
 
 
 OAUTH_SCOPES = ['user-read-email',
@@ -26,7 +26,6 @@ def get_spotify_oauth():
     return spotify_oauth
 
 
-@login_required
 def create_or_update_playlist(submission_period):
     tracks = []
     for submission in submission_period.submissions:
@@ -45,6 +44,8 @@ def create_or_update_playlist(submission_period):
         submission_period.playlist_id = playlist.get('id')
         submission_period.playlist_url = external_urls.get('spotify')
         submission_period.save()
+
+        user_playlist_created_notification(submission_period)
 
     # Update existing playlist for this submission period
     else:

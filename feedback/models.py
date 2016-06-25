@@ -27,6 +27,9 @@ class UserPreferences(EmbeddedDocument):
     user_added_to_league_notifications = BooleanField(
         default=True, role=USER_PREFERENCE_ROLE,
         verbose_name='Receive a notification when added to a new league')
+    user_playlist_created_notifications = BooleanField(
+        default=True, role=USER_PREFERENCE_ROLE,
+        verbose_name='Receive a notification when a new playlist is created')
     user_removed_from_league_notifications = BooleanField(
         default=True, role=USER_PREFERENCE_ROLE,
         verbose_name='Receive a notification when removed from a league')

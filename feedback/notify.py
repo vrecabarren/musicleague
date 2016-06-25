@@ -46,6 +46,24 @@ def user_added_to_league_notification(user, league):
               _html_email('added.html', league=league)))
 
 
+def user_playlist_created_notification(submission_period):
+    if not submission_period:
+        return
+
+    to_list = ','.join(
+        u.email for u in submission_period.league.users
+        if u.preferences.user_playlist_created_notifications)
+
+    notification_queue.enqueue_call(
+        func=_send_email,
+        args=(to_list,
+              'Music League - New Playlist',
+              _txt_email('playlist.txt', submission_period=submission_period),
+              _html_email('playlist.html', submission_period=submission_period)
+              )
+    )
+
+
 def user_removed_from_league_notification(user, league):
     if not user or not league:
         return
