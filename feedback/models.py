@@ -107,7 +107,7 @@ class LeaguePreferences(EmbeddedDocument):
         input_type=CHECKBOX,
         verbose_name='When voting ends, the next period will be created.')
     locked = BooleanField(
-        default=False, display_name='Locked', input_type=CHECKBOX,
+        default=False, display_name='Locked', new=True, input_type=CHECKBOX,
         verbose_name='Submitting and voting are disabled.')
     track_count = IntField(
         default=2, display_name='# Tracks', input_type=NUMBER,
