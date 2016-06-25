@@ -50,7 +50,7 @@ with Connection(redis_conn):
 
 
 # Initialize Redis queue scheduler
-default_scheduler = Scheduler(default_queue.name, connection=redis_conn)
+scheduler = Scheduler(default_queue.name, connection=redis_conn)
 
 
 from feedback import routes

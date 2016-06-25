@@ -57,8 +57,6 @@ class Submission(Document):
 
 
 class SubmissionPeriod(Document):
-    TASK_SEND_SUBMISSION_REMINDERS = 'tssr'
-
     complete = BooleanField(default=False)
     submission_due_date = DateTimeField()
     vote_due_date = DateTimeField()
