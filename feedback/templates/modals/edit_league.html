@@ -8,16 +8,15 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="name">Name</label>
-                            <a href="#" data-toggle="popover" data-trigger="hover" data-content="League names are not currently editable"><i class="fa fa-question-circle"></i></a>
-                            <input type="text" name="name" class="form-control" value="{{ league.name }}" disabled>
+                            <label class="control-label" for="name">Name</label>
+                            <input type="text" name="name" id="name" class="form-control" value="{{ league.name }}" autofocus="true">
                         </div>
                         {% for field_name, field in league.preferences._fields.iteritems()  %}
                         {% if field.input_type == 'number' %}
                         <div class="form-group">
-                            <label for="{{ field_name }}">{{ league.preferences._fields[field_name].display_name }}</label>
-                            <a href="#" data-toggle="popover" data-trigger="hover" data-content="{{ field.verbose_name }}"><i class="fa fa-question-circle"></i></a>
-                            <input type="number" inputmode="numeric" pattern="[0-9]*" min="0" name="{{ field_name }}" class="form-control" value="{{ league.preferences[field_name] }}">
+                            <label class="control-label" for="{{ field_name }}">{{ league.preferences._fields[field_name].display_name }}</label>
+                            <a href="#" tabindex="-1" data-toggle="popover" data-trigger="hover" data-content="{{ field.verbose_name }}"><i class="fa fa-question-circle"></i></a>
+                            <input type="number" inputmode="numeric" pattern="[0-9]*" min="0" name="{{ field_name }}" id="{{ field_name }}" class="form-control" value="{{ league.preferences[field_name] }}">
                         </div>
                         {% endif %}
                         {% endfor %}

@@ -84,7 +84,7 @@ def remove_submission(league_id, submission_period_id, submission_id,
 def save_league_settings(league_id, **kwargs):
     league = kwargs.get('league')
 
-    # league.preferences.name = request.form.get('name')
+    league.preferences.name = request.form.get('name')
     league.preferences.track_count = request.form.get('track_count')
     league.preferences.auto_submission_periods = request.form.get(
         'auto_submission_periods') == 'on'
