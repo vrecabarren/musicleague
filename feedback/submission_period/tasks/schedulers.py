@@ -27,7 +27,8 @@ def schedule_complete_submission_period(submission_period):
 
 
 def schedule_playlist_creation(submission_period):
-    # TODO Check preferences
+    if not submission_period.league.preferences.auto_playlist_creation:
+        return
 
     creation_time = submission_period.submission_due_date
 
@@ -49,7 +50,6 @@ def schedule_playlist_creation(submission_period):
 
 
 def schedule_submission_reminders(submission_period):
-    # TODO Check preferences
     notify_time = submission_period.submission_due_date - timedelta(hours=2)
 
     # Cancel scheduled notification job if one exists
