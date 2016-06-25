@@ -1,5 +1,6 @@
 import logging
 
+from feedback import app
 from feedback.notify import user_submit_reminder_notification
 from feedback.spotify import create_or_update_playlist
 
@@ -23,10 +24,11 @@ def complete_submission_period(submission_period_id):
 
 def create_playlist(submission_period_id):
     try:
-        from feedback.submission_period import get_submission_period
+        with app.app_context():
+            from feedback.submission_period import get_submission_period
 
-        submission_period = get_submission_period(submission_period_id)
-        create_or_update_playlist(submission_period)
+            submission_period = get_submission_period(submission_period_id)
+            create_or_update_playlist(submission_period)
     except:
         logging.exception('Error occurred while creating playlist!')
 
