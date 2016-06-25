@@ -27,6 +27,9 @@ def schedule_complete_submission_period(submission_period):
 
 
 def schedule_playlist_creation(submission_period):
+    # FIXME Need spotify oauth instance to create playlist outside of request
+    return
+
     if not submission_period.league.preferences.auto_playlist_creation:
         return
 

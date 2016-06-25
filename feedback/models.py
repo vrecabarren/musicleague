@@ -113,8 +113,7 @@ class LeaguePreferences(EmbeddedDocument):
         default=2, display_name='# Tracks', input_type=NUMBER,
         verbose_name='How many songs should each submission include?')
 
-    checkbox_display_order = ['auto_playlist_creation',
-                              'locked']
+    checkbox_display_order = ['locked']
 
 
 class League(Document):
