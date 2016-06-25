@@ -2,6 +2,7 @@ from datetime import datetime
 
 from feedback.errors import UserExistsError
 from feedback.models import User
+from feedback.models import UserPreferences
 
 
 def create_user(id, name, email, image_url):
@@ -10,7 +11,7 @@ def create_user(id, name, email, image_url):
 
     new_user = User(
         id=id, name=name, email=email, joined=datetime.utcnow(),
-        image_url=image_url)
+        image_url=image_url, preferences=UserPreferences())
     new_user.save()
     return new_user
 

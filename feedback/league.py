@@ -3,6 +3,7 @@ from datetime import datetime
 from haikunator import Haikunator
 
 from feedback.models import League
+from feedback.models import LeaguePreferences
 from feedback.notify import user_added_to_league_notification
 from feedback.notify import user_removed_from_league_notification
 from feedback.user import get_user_by_email
@@ -37,7 +38,7 @@ def create_league(user):
     name = haikunator.haikunate()
 
     new_league = League(owner=user, users=[user], created=datetime.utcnow())
-    new_league.preferences.name = name
+    new_league.preferences = LeaguePreferences(name=name)
     new_league.save()
     return new_league
 

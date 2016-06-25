@@ -41,8 +41,7 @@ class User(Document):
     image_url = StringField(required=True)
     joined = DateTimeField(required=True)
     name = StringField(required=True)
-    preferences = EmbeddedDocumentField(
-        UserPreferences, default=UserPreferences())
+    preferences = EmbeddedDocumentField(UserPreferences)
 
 
 class Submission(Document):
@@ -121,8 +120,7 @@ class League(Document):
     submission_periods = ListField(
         ReferenceField(SubmissionPeriod, reverse_delete_rule=PULL))
     users = ListField(ReferenceField(User, reverse_delete_rule=PULL))
-    preferences = EmbeddedDocumentField(
-        LeaguePreferences, default=LeaguePreferences())
+    preferences = EmbeddedDocumentField(LeaguePreferences)
 
     @property
     def name(self):
