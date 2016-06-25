@@ -3,6 +3,7 @@ import logging
 import sys
 
 from flask import Flask
+from flask.ext.moment import Moment
 
 from feedback.environment import get_secret_key
 from feedback.environment import get_server_name
@@ -25,6 +26,7 @@ from settings import MONGO_DB_NAME
 
 # Initialize Flask app
 app = Flask(__name__)
+moment = Moment(app)
 app.secret_key = get_secret_key()
 app.config['SERVER_NAME'] = get_server_name()
 
