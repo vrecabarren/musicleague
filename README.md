@@ -16,6 +16,7 @@ submit, listen, and vote!
 ## Using this Repo
 Music League relies on multiple other open source projects:
 - [Flask](http://flask.pocoo.org/)
+- [HaikunatorPY](https://github.com/Atrox/haikunatorpy)
 - [Mongo](https://www.mongodb.org/) (via [MongoEngine](http://mongoengine.org/))
 - [Spotipy](http://spotipy.readthedocs.io/en/latest/)
 
