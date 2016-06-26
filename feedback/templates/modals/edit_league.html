@@ -11,25 +11,23 @@
                             <label class="control-label" for="name">Name</label>
                             <input type="text" name="name" id="name" class="form-control" value="{{ league.name }}" autofocus="true">
                         </div>
-                        {% for field_name, field in league.preferences._fields.iteritems()  %}
-                        {% if field.input_type == 'number' %}
                         <div class="form-group">
-                            <label class="control-label" for="{{ field_name }}">{{ league.preferences._fields[field_name].display_name }}
-                            {% if league.preferences._fields[field_name].new %}<span class="label label-warning">NEW</span>{% endif %}</label>
-                            <a href="#" tabindex="-1" data-toggle="popover" data-trigger="hover" data-content="{{ field.verbose_name }}"><i class="fa fa-question-circle"></i></a>
-                            <input type="number" inputmode="numeric" pattern="[0-9]*" min="0" name="{{ field_name }}" id="{{ field_name }}" class="form-control" value="{{ league.preferences[field_name] }}">
+                            <label for="track_count" class="control-label">{{ league.preferences._fields['track_count'].display_name }}</label>
+                            <a href="#" tabindex="-1" data-toggle="popover" data-trigger="hover" data-content="{{ league.preferences._fields['track_count'].verbose_name }}"><i class="fa fa-question-circle"></i></a>
+                            <input type="number" inputmode="numeric" pattern="[0-9]*" min="0" name="track_count" id="track_count" class="form-control" value="{{ league.preferences.track_count }}">
                         </div>
-                        {% endif %}
-                        {% endfor %}
+                        <div class="form-group">
+                            <label for="submission_reminder_time" class="control-label">{{ league.preferences._fields['submission_reminder_time'].display_name }}</label>
+                            <a href="#" tabindex="-1" data-toggle="popover" data-trigger="hover" data-content="{{ league.preferences._fields['submission_reminder_time'].verbose_name }}"><i class="fa fa-question-circle"></i></a>
+                            <input type="number" inputmode="numeric" pattern="[0-9]*" min="0" name="submission_reminder_time" id="submission_reminder_time" class="form-control" value="{{ league.preferences.submission_reminder_time }}">
+                        </div>
                         <hr>
-                        {% for field_name in league.preferences.checkbox_display_order  %}
                         <div class="checkbox">
-                            <label><input type="checkbox" name="{{ field_name }}" {% if league.preferences[field_name] %}checked{% endif %}>
-                                <strong>{{ league.preferences._fields[field_name].display_name }}</strong>
-                                {% if league.preferences._fields[field_name].new %}<span class="label label-warning">NEW</span>{% endif %}
-                                <p class="help-block">{{ league.preferences._fields[field_name].verbose_name }}</p></label>
+                            <label><input type="checkbox" name="locked" {% if league.preferences.locked %}checked{% endif %}>
+                                <strong>{{ league.preferences._fields['locked'].display_name }}</strong>
+                                {% if league.preferences._fields['locked'].new %}<span class="label label-warning">NEW</span>{% endif %}
+                                <p class="help-block">{{ league.preferences._fields['locked'].verbose_name }}</p></label>
                         </div>
-                        {% endfor %}
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success">Save</button>
