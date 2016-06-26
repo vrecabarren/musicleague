@@ -65,6 +65,11 @@ def login():
 
             session['current_user'] = user.id
 
+            if 'next_url' in session:
+                next_url = session['next_url'].decode('base64', 'strict')
+                session.pop('next_url')
+                return redirect(next_url)
+
     return redirect(url_for('profile'))
 
 
