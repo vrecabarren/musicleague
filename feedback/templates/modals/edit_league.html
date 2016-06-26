@@ -25,7 +25,6 @@
                         <div class="checkbox">
                             <label><input type="checkbox" name="locked" {% if league.preferences.locked %}checked{% endif %}>
                                 <strong>{{ league.preferences._fields['locked'].display_name }}</strong>
-                                {% if league.preferences._fields['locked'].new %}<span class="label label-warning">NEW</span>{% endif %}
                                 <p class="help-block">{{ league.preferences._fields['locked'].verbose_name }}</p></label>
                         </div>
                     </div>
