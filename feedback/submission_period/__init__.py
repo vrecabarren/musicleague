@@ -44,12 +44,21 @@ def get_submission_period(submission_period_id):
 
 def remove_submission_period(submission_period_id):
     submission_period = get_submission_period(submission_period_id)
+    league = submission_period.league
+    removing_current = submission_period.is_current
 
     # Cancel scheduled submission reminder job if one exists
     _cancel_pending_task(
         submission_period.pending_tasks.get(TYPES.SEND_SUBMISSION_REMINDERS))
 
     submission_period.delete()
+
+    league.reload('submission_periods')
+
+    if removing_current and league.submission_periods:
+        new_current = league.submission_periods[-1]
+        new_current.is_current = True
+        new_current.save()
 
     logging.info('Submission period removed: %s', submission_period_id)
 
