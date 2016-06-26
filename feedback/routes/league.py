@@ -85,6 +85,8 @@ def save_league_settings(league_id, **kwargs):
     league = kwargs.get('league')
 
     league.preferences.name = request.form.get('name')
+    league.preferences.submission_reminder_time = request.form.get(
+        'submission_reminder_time')
     league.preferences.track_count = request.form.get('track_count')
     league.preferences.auto_submission_periods = request.form.get(
         'auto_submission_periods') == 'on'

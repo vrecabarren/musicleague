@@ -109,6 +109,10 @@ class LeaguePreferences(EmbeddedDocument):
     locked = BooleanField(
         default=False, display_name='Locked', new=True, input_type=CHECKBOX,
         verbose_name='Submitting and voting are disabled.')
+    submission_reminder_time = IntField(
+        default=2, display_name='Submission Reminder Time', input_type=NUMBER,
+        verbose_name=('How many hours prior to the due date should submission '
+                      'reminders be sent?'), new=True)
     track_count = IntField(
         default=2, display_name='# Tracks', input_type=NUMBER,
         verbose_name='How many songs should each submission include?')

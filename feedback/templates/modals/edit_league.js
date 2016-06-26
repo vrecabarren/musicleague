@@ -29,7 +29,7 @@ $('#name').on('input', function () {
     }
 });
 
-$('#track_count').on('input', function () {
+$('#track_count,#submission_reminder_time').on('input', function () {
     var input = $(this);
     var isNumber = input.val().match(/[0-9 -()+]+$/);
     if (isNumber) {

@@ -14,7 +14,8 @@
                         {% for field_name, field in league.preferences._fields.iteritems()  %}
                         {% if field.input_type == 'number' %}
                         <div class="form-group">
-                            <label class="control-label" for="{{ field_name }}">{{ league.preferences._fields[field_name].display_name }}</label>
+                            <label class="control-label" for="{{ field_name }}">{{ league.preferences._fields[field_name].display_name }}
+                            {% if league.preferences._fields[field_name].new %}<span class="label label-warning">NEW</span>{% endif %}</label>
                             <a href="#" tabindex="-1" data-toggle="popover" data-trigger="hover" data-content="{{ field.verbose_name }}"><i class="fa fa-question-circle"></i></a>
                             <input type="number" inputmode="numeric" pattern="[0-9]*" min="0" name="{{ field_name }}" id="{{ field_name }}" class="form-control" value="{{ league.preferences[field_name] }}">
                         </div>

@@ -2,6 +2,7 @@ from datetime import timedelta
 import logging
 
 from feedback import scheduler
+from feedback.environment import is_deployed
 from feedback.submission_period.tasks import complete_submission_period
 from feedback.submission_period.tasks import create_playlist
 from feedback.submission_period.tasks import send_submission_reminders
@@ -9,6 +10,9 @@ from feedback.submission_period.tasks import TYPES
 
 
 def schedule_complete_submission_period(submission_period):
+    if not is_deployed():
+        return
+
     completion_time = submission_period.vote_due_date
 
     _cancel_pending_task(
@@ -53,7 +57,11 @@ def schedule_playlist_creation(submission_period):
 
 
 def schedule_submission_reminders(submission_period):
-    notify_time = submission_period.submission_due_date - timedelta(hours=2)
+    if not is_deployed():
+        return
+
+    diff = submission_period.league.preferences.submission_reminder_time
+    notify_time = submission_period.submission_due_date - timedelta(hours=diff)
 
     # Cancel scheduled notification job if one exists
     _cancel_pending_task(
