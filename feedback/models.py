@@ -39,7 +39,7 @@ class UserPreferences(EmbeddedDocument):
 
 
 class User(Document):
-    id = IntField(primary_key=True, required=True)
+    id = StringField(primary_key=True, required=True)
     email = StringField(required=True)
     image_url = StringField(required=True)
     joined = DateTimeField(required=True)
