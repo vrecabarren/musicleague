@@ -3,7 +3,7 @@ import logging
 import sys
 
 from flask import Flask
-from flask.ext.moment import Moment
+from flask_moment import Moment
 
 from feedback.environment import get_secret_key
 from feedback.environment import get_server_name
