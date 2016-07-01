@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-md-12">
             <h1>{{ league.name }}</h1>
-            <p>Public League <i class="text-muted">Created on {{ moment(league.created).format('MM/DD/YY') }}</i></p>
+            <p>Public League <em class="text-muted">Created on {{ moment(league.created).format('MM/DD/YY') }}</em></p>
         </div>
     </div>
 
@@ -21,46 +21,46 @@
                 <a href="#edit-modal" data-toggle="modal" data-target="#edit-modal" class="btn btn-primary"><i class="fa fa-pencil"></i>&nbsp;Edit</a>
                 <a href="{{ url_for('post_create_submission_period', league_id=league.id) }}" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Submission Period</a>
                 {% endif %}
-                {% if user in league.users and league.current_submission_period and not league.preferences.locked %}
-                    {% if league.current_submission_period.accepting_submissions %}
-                    <a href="#submit-modal" data-toggle="modal" data-target="#submit-modal" class="btn btn-primary"><i class="fa fa-archive" aria-hidden="true"></i>&nbsp;Submit</a>
-                    {% elif league.current_submission_period.accepting_votes %}
-                    <a href="" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;Vote</a>
-                    {% endif %}
-                {% endif %}
             </div>
 
             <div class="row">
                 <div class="col-md-12">
-                    <table class="table table-hover">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th>Weekly Playlist</i></th>
-                                <th>Deadline</th>
+                                <th>Next Deadline</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for submission_period in league.submission_periods|reverse %}
-                                {% if submission_period.playlist_created %}
-                                <a href="{{ submission_period.playlist_url }}" target="_blank">
-                                {% endif %}
                                 <tr>
-                                    <td>{{ submission_period.name }}</td>
                                     <td>
-                                        {% if submission_period.accepting_submissions %}
-                                        {{ moment(submission_period.submission_due_date).format('MM/DD/YY hA') }}
-                                        {% elif submission_period.accepting_votes %}
-                                        {{ moment(submission_period.vote_due_date).format('MM/DD/YY hA') }}
+                                        {% if submission_period.playlist_created %}
+                                        <a href="{{ submission_period.playlist_url }}">{{ submission_period.name }}</a>
                                         {% else %}
-                                        <i class="text-muted">Completed on {{ moment(submission_period.vote_due_date).format('MM/DD/YY') }}</i>
+                                        {{ submission_period.name }}
                                         {% endif %}
                                     </td>
-                                    <td></td>
+                                    <td>
+                                        {% if submission_period.accepting_submissions %}
+                                        {{ moment(submission_period.submission_due_date).format('MMM D [at] ha') }}
+                                        {% elif submission_period.accepting_votes %}
+                                        {{ moment(submission_period.vote_due_date).format('MMM D [at] ha') }}
+                                        {% else %}
+                                        <i class="text-muted">Completed {{ moment(submission_period.vote_due_date).format('MMM D') }}</i>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-right">
+                                        {% if league.has_owner(user) %}
+                                        <a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}" class="btn btn-sm btn-default">View</a>
+                                        {% endif %}
+                                        {% if user in league.users and submission_period.accepting_submissions %}
+                                        <a href="#submit-modal" data-toggle="modal" data-target="#submit-modal" class="btn btn-sm btn-success">Select Songs</a>
+                                        {% endif %}
+                                    </td>
                                 </tr>
-                                {% if submission_period.playlist_created %}
-                                </a>
-                                {% endif %}
                             {% endfor %}
                         </tbody>
                     </table>
