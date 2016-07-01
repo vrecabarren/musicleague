@@ -18,8 +18,10 @@
 
             <div class="row" style="margin: 20px 0px">
                 {% if league.has_owner(user) %}
-                <a href="#edit-modal" data-toggle="modal" data-target="#edit-modal" class="btn btn-primary"><i class="fa fa-pencil"></i>&nbsp;Edit</a>
-                <a href="{{ url_for('post_create_submission_period', league_id=league.id) }}" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Submission Period</a>
+                <span data-toggle="modal" data-target="#edit-modal">
+                    <a href="#edit-modal" data-toggle="tooltip" data-placement="top" class="btn btn-default" title="Edit League Preferences"><i class="fa fa-gear"></i></a>
+                </span>
+                <a href="{{ url_for('post_create_submission_period', league_id=league.id) }}" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Create New Submission Period"><i class="fa fa-plus"></i></a>
                 {% endif %}
             </div>
 
@@ -127,6 +129,7 @@
     });
     $(document).ready(function(){
         $('[data-toggle="popover"]').popover();
+        $('[data-toggle="tooltip"]').tooltip();
         {% if action == 'submit' %}$('#submit-modal').modal('show');{% endif %}
     });
 </script>
