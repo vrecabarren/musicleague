@@ -8,12 +8,7 @@
     <div class="row">
         <div class="col-md-12">
             <h1>{{ league.name }}</h1>
-
-            <table>
-                <tr><td>Owner:</td><td><a href="{{ url_for('view_user', user_id=league.owner.id) }}">{{ league.owner.name }}</a></td></tr>
-                <tr><td>Created:</td><td>{{ moment(league.created).format('MM/DD/YYYY') }}</td></tr>
-                <tr><td>Locked:</td><td>{{ league.preferences.locked }}</td></tr>
-            </table>
+            <p>Public League <i class="text-muted">Created on {{ moment(league.created).format('MM/DD/YY') }}</i></p>
         </div>
     </div>
 
@@ -40,44 +35,32 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th><i class="fa fa-tag" aria-hidden="true"></i></th>
-                                <th><i class="fa fa-headphones" aria-hidden="true"></i></th>
-                                <th><i class="fa fa-calendar" aria-hidden="true"></i></th>
-                                <th><i class="fa fa-archive" aria-hidden="true"></i></th>
+                                <th>Weekly Playlist</i></th>
+                                <th>Deadline</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for submission_period in league.submission_periods|reverse %}
-                                {% if submission_period.is_current %}
-                                <tr class="info">
-                                {% else %}
-                                <tr>
+                                {% if submission_period.playlist_created %}
+                                <a href="{{ submission_period.playlist_url }}" target="_blank">
                                 {% endif %}
+                                <tr>
+                                    <td>{{ submission_period.name }}</td>
                                     <td>
-                                        {% if league.has_owner(user) %}
-                                        <a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}">{{ submission_period.name }}</a>
+                                        {% if submission_period.accepting_submissions %}
+                                        {{ moment(submission_period.submission_due_date).format('MM/DD/YY hA') }}
+                                        {% elif submission_period.accepting_votes %}
+                                        {{ moment(submission_period.vote_due_date).format('MM/DD/YY hA') }}
                                         {% else %}
-                                        {{ submission_period.name }}
+                                        <i class="text-muted">Completed on {{ moment(submission_period.vote_due_date).format('MM/DD/YY') }}</i>
                                         {% endif %}
                                     </td>
-                                    <td>
-                                        {% if submission_period.playlist_created %}
-                                        <a href="{{ submission_period.playlist_url }}" target="_blank">Spotify</a>
-                                        {% else %}
-                                        No Playlist
-                                        {% endif %}
-                                    </td>
-                                    <td>{{ moment(submission_period.submission_due_date).format('MM/DD/YY hA') }}</td>
-                                    <td>{{ submission_period.submissions|length }} / {{ league.users|length }}</td>
-                                    <td class="text-right">
-                                        {% if league.has_owner(user) %}
-                                        <a href="{{ url_for('r_remove_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}" title="Remove">
-                                            <i class="fa fa-times" aria-hidden="true" style="color: red"></i>
-                                        </a>
-                                        {% endif %}
-                                    </td>
+                                    <td></td>
                                 </tr>
+                                {% if submission_period.playlist_created %}
+                                </a>
+                                {% endif %}
                             {% endfor %}
                         </tbody>
                     </table>
@@ -95,6 +78,9 @@
                     <img src="{{ league_user.image_url }}" alt="" class="img img-circle" height="30" width="30" style="margin-right: 10px">
                     {{ league_user.name }}
                 </a>
+                {% if league.has_owner(league_user) %}
+                <span class="text-muted">(Owner)</span>
+                {% endif %}
                 {% if league.has_owner(user) %}
                 &nbsp;
                 <a href="{{ url_for('remove_user_for_league', league_id=league.id, user_id=league_user.id) }}">
