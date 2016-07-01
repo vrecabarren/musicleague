@@ -12,6 +12,8 @@ div.spacer {
 
 .table > tbody > .clickable-row { cursor: pointer; }
 
+#league-created { margin-left: 5px; }
+
 .modal {
 text-align: center;
 padding: 0!important;
