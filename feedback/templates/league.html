@@ -31,7 +31,7 @@
                         <thead>
                             <tr>
                                 <th>Weekly Playlist</i></th>
-                                <th>Next Deadline</th>
+                                <th>Deadline</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -40,7 +40,7 @@
                                 <tr>
                                     <td>
                                         {% if submission_period.playlist_created %}
-                                        <a href="{{ submission_period.playlist_url }}">{{ submission_period.name }}</a>
+                                        <a href="{{ submission_period.playlist_url }}" target="_blank">{{ submission_period.name }}</a>
                                         {% else %}
                                         {{ submission_period.name }}
                                         {% endif %}
@@ -55,11 +55,25 @@
                                         {% endif %}
                                     </td>
                                     <td class="text-right">
-                                        {% if league.has_owner(user) %}
-                                        <a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}" class="btn btn-sm btn-default">View</a>
-                                        {% endif %}
                                         {% if user in league.users and submission_period.accepting_submissions %}
                                         <a href="#submit-modal" data-toggle="modal" data-target="#submit-modal" class="btn btn-sm btn-success">Select Songs</a>
+                                        {% elif user in league.users and submission_period.accepting_votes %}
+                                        <a href="#vote-modal" data-toggle="modal" data-target="#vote-modal" class="btn btn-sm btn-primary disabled">Submit Votes</a>
+                                        {% else %}
+                                        <a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}" class="btn btn-sm btn-default">View Results</a>
+                                        {% endif %}
+                                        {% if league.has_owner(user) %}
+                                        <div style="display: inline-block" class="dropdown">
+                                            <span data-toggle="tooltip" data-placement="right" title="more&nbsp;options">
+                                                <button style="border: none" type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" id="options-dropdown"><i class="fa fa-ellipsis-v"></i></button>
+                                                <ul class="dropdown-menu" aria-labelledby="options-dropdown">
+                                                    <li><a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id, action='edit') }}">Edit Preferences</a></li>
+                                                    <li><a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}">View Submitted Songs</a></li>
+                                                    <li role="separator" class="divider"></li>
+                                                    <li class="bg-danger"><a href="{{ url_for('r_remove_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}"><span class="text-danger">Delete</span></a></li>
+                                                </ul>
+                                            </span>
+                                        </div>
                                         {% endif %}
                                     </td>
                                 </tr>
@@ -96,7 +110,7 @@
                 <div class="control-group input-group">
                     <input type="text" class="form-control" name="email" id="add_user" placeholder="Email or Name">
                     <span class="input-group-btn">
-                        <button class="btn btn-primary" type="submit"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                        <button class="btn btn-default" type="submit"><i class="fa fa-plus" aria-hidden="true"></i></button>
                     </span>
                 </div>
             </form>
@@ -130,7 +144,11 @@
     $(document).ready(function(){
         $('[data-toggle="popover"]').popover();
         $('[data-toggle="tooltip"]').tooltip();
-        {% if action == 'submit' %}$('#submit-modal').modal('show');{% endif %}
+        {% if request.args.get('action') == 'submit' %}
+        $('#submit-modal').modal('show');
+        {% elif request.args.get('action') == 'edit' %}
+        $('#edit-modal').modal('show');
+        {% endif %}
     });
 </script>
 <script type="text/javascript">

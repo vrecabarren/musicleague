@@ -30,4 +30,8 @@ $(document).ready(function(){
     $('#voting_due_date_utc').val(moment(moment.utc('{{ submission_period.vote_due_date }}')).format('MM/DD/YY hA'));
 
     $('[data-toggle="popover"]').popover();
+
+    {% if request.args.get('action') == 'edit' %}
+    $('#edit-modal').modal('show');
+    {% endif %}
 });
