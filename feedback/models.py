@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from mongoengine import BooleanField
+from mongoengine import CASCADE
 from mongoengine import DateTimeField
 from mongoengine import Document
 from mongoengine import EmbeddedDocument
@@ -140,3 +141,7 @@ class League(Document):
 
     def has_owner(self, user):
         return self.owner == user
+
+
+SubmissionPeriod.register_delete_rule(League, 'league', CASCADE)
+Submission.register_delete_rule(SubmissionPeriod, 'submission_period', CASCADE)
