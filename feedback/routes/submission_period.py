@@ -77,7 +77,11 @@ def view_submission_period(league_id, submission_period_id):
     if tracks:
         tracks = g.spotify.tracks(submission_period.all_tracks).get('tracks')
 
+    tracks_by_uri = {track.get('uri'): track for track in tracks}
+    tracks_by_url = {track.get('external_urls').get('spotify'): track
+                     for track in tracks}
+
     return render_template(
         'submission_period.html',
         user=g.user, league=league, submission_period=submission_period,
-        tracks=tracks)
+        tracks_by_uri=tracks_by_uri, tracks_by_url=tracks_by_url)

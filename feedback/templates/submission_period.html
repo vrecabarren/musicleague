@@ -8,28 +8,30 @@
     <div class="row">
         <div class="col-md-12">
             <h1>{{ submission_period.name }}</h1>
-            <h3><a href="{{ url_for('view_league', league_id=league.id )}}">{{ league.name }}</a></h3>
+            <p>{{ league.name }} <em id="submission-period-created" class="text-muted">Created on {{ moment(submission_period.created).format('MMM D, YYYY') }}</em></p>
         </div>
     </div>
 
-    <div class="spacer"></div>
-
     <div class="row">
         <div class="col-md-12">
-        {% if league.has_owner(user) %}
-            <a href="#" data-toggle="modal" data-target="#edit-modal" class="btn btn-primary"><i class="fa fa-pencil"></i>&nbsp;Edit</a>
-        {% endif %}
-        {% if submission_period.playlist_created %}
+            <div class="spacer"></div>
+
+            {% if league.has_owner(user) %}
+            <span data-toggle="modal" data-target="#edit-modal">
+                <a href="#edit-modal" data-toggle="tooltip" data-placement="top" class="btn btn-default" title="Edit Submission Period Preferences"><i class="fa fa-gear"></i></a>
+            </span>
+            {% endif %}
+            {% if submission_period.playlist_created %}
             <!-- Anyone should see the playlist link if one has been created -->
-            <a href="{{ submission_period.playlist_url }}" target="_blank" class="btn btn-primary"><i class="fa fa-spotify"></i>&nbsp;Playlist</a>
+            <a href="{{ submission_period.playlist_url }}" target="_blank" class="btn btn-default" data-toggle="tooltip" title="View Spotify Playlist"><i class="fa fa-spotify"></i></a>
             {% if league.has_owner(user) %}
             <!-- Owners should be able to regenerate the playlist from current submission period state -->
-            <a href="{{ url_for('create_spotify_playlist', league_id=league.id) }}" target="_blank" class="btn btn-primary"><i class="fa fa-spotify"></i>&nbsp; Regenerate Playlist</a>
+            <a href="{{ url_for('create_spotify_playlist', league_id=league.id) }}" target="_blank" class="btn btn-default" data-toggle="tooltip" title="Regenerate Spotify Playlist"><i class="fa fa-repeat"></i></a>
             {% endif %}
-        {% else %}
+            {% else %}
             <!-- If no playlist has been created, owners should be able to create one -->
             {% if user == league.owner and submission_period == league.current_submission_period %}
-            <a href="{{ url_for('create_spotify_playlist', league_id=league.id) }}" target="_blank" class="btn btn-primary"><i class="fa fa-spotify"></i>&nbsp;Create Playlist</a>
+            <a href="{{ url_for('create_spotify_playlist', league_id=league.id) }}" target="_blank" class="btn btn-default" data-toggle="tooltip" title="Create Spotify Playlist"><i class="fa fa-spotify"></i></a>
             {% endif %}
         {% endif %}
         </div>
@@ -40,13 +42,12 @@
     <div class="row">
         <div class="col-md-12">
 
-            <table class="table table-hover">
+            <table class="table">
                 <thead>
                     <tr>
                         <th>Tracks</th>
                         <th>Submitter</th>
                         <th>Created</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,8 +55,9 @@
                         <tr>
                             <td>
                                 <ul>
-                                {% for track in tracks %}
-                                <li><a href="{{ track['external_urls']['spotify'] }}">{{ track['name'] }} - {{track.artists[0].name }}</a></li>
+                                {% for uri_or_url in submission.tracks %}
+                                    {% set track = tracks_by_uri.get(uri_or_url) or tracks_by_url.get(uri_or_url) %}
+                                    <li><a href="{{ track.get('external_urls').get('spotify') }}" target="_blank">{{ track.get('name') }}</a> by <a href="{{ track.get('artists')[0].get('external_urls').get('spotify') }}" target="_blank">{{ track.get('artists')[0].get('name') }}</a></li>
                                 {% endfor %}
                                 </ul>
                             </td>
@@ -63,13 +65,6 @@
                                 <a href="{{ url_for('view_user', user_id=submission.user.id) }}">{{ submission.user.name }}</a>
                             </td>
                             <td>{{ submission.created.strftime('%m/%d/%Y') }}</td>
-                            <td>
-                                {% if user == submission.user  or user == league.owner %}
-                                <a href="{{ url_for('remove_submission', league_id=league.id, submission_period_id=submission_period.id, submission_id=submission.id) }}">
-                                    <i class="fa fa-times" aria-hidden="true" style="color: red"></i>
-                                </a>
-                                {% endif %}
-                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -91,5 +86,8 @@
 <script type="text/javascript" src="/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript">
 {% include "modals/edit_submission_period.js" %}
+$(document).ready(function() {
+    $('[data-toggle="tooltip"]').tooltip();
+});
 </script>
 {% endblock %}

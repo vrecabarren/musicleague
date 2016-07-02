@@ -13,6 +13,7 @@ from feedback.submission_period.tasks.schedulers import schedule_submission_remi
 def create_submission_period(league):
     new_submission_period = SubmissionPeriod(
         name='Submission Period %s' % (len(league.submission_periods) + 1),
+        created=datetime.utcnow(),
         league=league,
         submission_due_date=datetime.utcnow() + timedelta(days=5),
         vote_due_date=datetime.utcnow() + timedelta(days=7))

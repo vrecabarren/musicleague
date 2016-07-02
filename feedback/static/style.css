@@ -12,7 +12,7 @@ div.spacer {
 
 .table > tbody > .clickable-row { cursor: pointer; }
 
-#league-created { margin-left: 5px; }
+#league-created, #submission-period-created { margin-left: 5px; }
 
 .modal {
 text-align: center;
