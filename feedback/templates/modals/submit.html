@@ -4,7 +4,7 @@
                 <form action="{{ url_for('submit', league_id=league.id) }}" method="post">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">Submit</h4>
+                        <h4 class="modal-title" id="myModalLabel">Select Songs</h4>
                     </div>
                     <div class="modal-body">
                     {% for i in range(1, league.preferences.track_count + 1) %}
