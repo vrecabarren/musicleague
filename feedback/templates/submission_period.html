@@ -30,7 +30,7 @@
             {% endif %}
             {% else %}
             <!-- If no playlist has been created, owners should be able to create one -->
-            {% if user == league.owner and submission_period == league.current_submission_period %}
+            {% if user == league.owner and submission_period == league.current_submission_period and league.current_submission_period.submissions %}
             <a href="{{ url_for('create_spotify_playlist', league_id=league.id) }}" target="_blank" class="btn btn-default" data-toggle="tooltip" title="Create Spotify Playlist"><i class="fa fa-spotify"></i></a>
             {% endif %}
         {% endif %}
@@ -57,7 +57,9 @@
                                 <ul>
                                 {% for uri_or_url in submission.tracks %}
                                     {% set track = tracks_by_uri.get(uri_or_url) or tracks_by_url.get(uri_or_url) %}
+                                    {% if track %}
                                     <li><a href="{{ track.get('external_urls').get('spotify') }}" target="_blank">{{ track.get('name') }}</a> by <a href="{{ track.get('artists')[0].get('external_urls').get('spotify') }}" target="_blank">{{ track.get('artists')[0].get('name') }}</a></li>
+                                    {% endif %}
                                 {% endfor %}
                                 </ul>
                             </td>
