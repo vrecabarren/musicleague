@@ -16,6 +16,9 @@
         <div class="col-md-12">
             <div class="spacer"></div>
 
+            <span data-toggle="collapse" data-target=".td-tracks">
+                <a href="#" data-toggle="tooltip" data-placement="top" class="btn btn-default" title="Show/Hide Track Info"><i class="fa fa-eye"></i></a>
+            </span>
             {% if league.has_owner(user) %}
             <span data-toggle="modal" data-target="#edit-modal">
                 <a href="#edit-modal" data-toggle="tooltip" data-placement="top" class="btn btn-default" title="Edit Submission Period Preferences"><i class="fa fa-gear"></i></a>
@@ -45,7 +48,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Tracks</th>
+                        <th class="td-tracks collapse">Tracks</th>
                         <th>Submitter</th>
                         <th>Created</th>
                     </tr>
@@ -53,7 +56,7 @@
                 <tbody>
                     {% for submission in submission_period.submissions|reverse %}
                         <tr>
-                            <td>
+                            <td class="td-tracks collapse">
                                 <ul>
                                 {% for uri_or_url in submission.tracks %}
                                     {% set track = tracks_by_uri.get(uri_or_url) or tracks_by_url.get(uri_or_url) %}
