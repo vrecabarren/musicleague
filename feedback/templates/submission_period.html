@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-md-12">
             <h1>{{ submission_period.name }}</h1>
-            <p>{{ league.name }} <em id="submission-period-created" class="text-muted">Created on {{ moment(submission_period.created).format('MMM D, YYYY') }}</em></p>
+            <p><a href="{{ url_for('view_league', league_id=league.id) }}">{{ league.name }}</a> <em id="submission-period-created" class="text-muted">Created on {{ moment(submission_period.created).format('MMM D, YYYY') }}</em></p>
         </div>
     </div>
 
