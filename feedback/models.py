@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from mongoengine import BooleanField
-from mongoengine import CASCADE
 from mongoengine import DateTimeField
 from mongoengine import Document
 from mongoengine import EmbeddedDocument
@@ -108,6 +107,9 @@ class LeaguePreferences(EmbeddedDocument):
         default=True, display_name='Auto Submission Periods', new=True,
         input_type=CHECKBOX,
         verbose_name='When voting ends, the next period will be created.')
+    late_submissions = BooleanField(
+        default=True, display_name='Late Submissions', input_type=CHECKBOX,
+        verbose_name='Allow submissions after the deadline has passed.')
     locked = BooleanField(
         default=False, display_name='Locked', new=True, input_type=CHECKBOX,
         verbose_name='Submitting and voting are disabled.')
