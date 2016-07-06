@@ -141,7 +141,3 @@ class League(Document):
 
     def has_owner(self, user):
         return self.owner == user
-
-
-SubmissionPeriod.register_delete_rule(League, 'league', CASCADE)
-Submission.register_delete_rule(SubmissionPeriod, 'submission_period', CASCADE)
