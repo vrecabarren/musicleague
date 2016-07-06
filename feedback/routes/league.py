@@ -89,6 +89,8 @@ def save_league_settings(league_id, **kwargs):
         'submission_reminder_time')
     league.preferences.track_count = request.form.get('track_count')
     league.preferences.locked = request.form.get('locked') == 'on'
+    league.preferences.late_submissions = (
+        request.form.get('late_submissions') == 'on')
 
     league.save()
     return redirect(request.referrer)
@@ -99,9 +101,18 @@ def save_league_settings(league_id, **kwargs):
 @login_required
 @league_required
 def view_league(league_id, **kwargs):
+    league = kwargs.get('league')
+    late_submitter = False
+    if (league and league.current_submission_period and
+            not league.current_submission_period.accepting_submissions):
+        sub = next((s for s in league.current_submission_period.submissions
+                    if s.user == g.user), None)
+        late_submitter = sub is None
+
     return {
         'user': g.user,
         'league': kwargs.get('league'),
         'edit': request.args.get('edit'),
-        'action': request.args.get('action')
+        'action': request.args.get('action'),
+        'late_submitter': late_submitter
     }

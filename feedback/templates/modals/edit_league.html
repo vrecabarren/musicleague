@@ -27,6 +27,11 @@
                                 <strong>{{ league.preferences._fields['locked'].display_name }}</strong>
                                 <p class="help-block">{{ league.preferences._fields['locked'].verbose_name }}</p></label>
                         </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" name="late_submissions" {% if league.preferences.late_submissions %}checked{% endif %}>
+                                <strong>{{ league.preferences._fields['late_submissions'].display_name }}</strong>
+                                <p class="help-block">{{ league.preferences._fields['late_submissions'].verbose_name }}</p></label>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success">Save</button>
