@@ -1,3 +1,5 @@
+import re
+
 from flask import escape
 from flask import g
 from flask import redirect
@@ -18,8 +20,20 @@ SUBMIT_URL = '/l/<league_id>/submit/'
 @league_required
 def submit(league_id, **kwargs):
     league = kwargs.get('league')
+
+    def to_uri(url_or_uri):
+        uri_regex = 'spotify:track:[A-Za-z0-9]{22}'
+        url_regex = ('(?:http|https):\/\/(?:open|play)\.spotify\.com\/track\/'
+                     '(?P<id>[A-Za-z0-9]{22})')
+
+        if (re.match(uri_regex, url_or_uri) or
+                not re.match(url_regex, url_or_uri)):
+            return url_or_uri
+
+        return 'spotify:track:%s' % re.match(url_regex, url_or_uri).group('id')
+
     tracks = [
-        escape(request.form.get('track' + str(i)))
+        to_uri(escape(request.form.get('track' + str(i))))
         for i in range(1, league.preferences.track_count + 1)]
 
     submission_period = league.current_submission_period
