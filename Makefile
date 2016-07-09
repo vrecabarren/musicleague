@@ -7,6 +7,9 @@ install:
 lint:
 	flake8 feedback app.py
 
+logs:
+	heroku logs -n 1500
+
 run:
 	heroku local
 
