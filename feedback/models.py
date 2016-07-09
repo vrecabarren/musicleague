@@ -92,10 +92,17 @@ class SubmissionPeriod(Document):
             all_tracks.extend(submission.tracks)
         return all_tracks
 
+    @property
+    def is_complete(self):
+        if not self.is_current:
+            return True
+        return not (self.accepting_submissions or self.accepting_votes)
+
 
 class LeaguePreferences(EmbeddedDocument):
     CHECKBOX = "checkbox"
     NUMBER = "number"
+    POINT_BANK = "pb"
 
     name = StringField()
 
@@ -120,6 +127,7 @@ class LeaguePreferences(EmbeddedDocument):
     track_count = IntField(
         default=2, display_name='# Tracks', input_type=NUMBER,
         verbose_name='How many songs should each submission include?')
+    voting_style = StringField(choices=(POINT_BANK,))
 
 
 class League(Document):

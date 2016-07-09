@@ -102,17 +102,22 @@ def save_league_settings(league_id, **kwargs):
 @league_required
 def view_league(league_id, **kwargs):
     league = kwargs.get('league')
-    late_submitter = False
-    if (league and league.current_submission_period and
-            not league.current_submission_period.accepting_submissions):
-        sub = next((s for s in league.current_submission_period.submissions
-                    if s.user == g.user), None)
-        late_submitter = sub is None
+
+    tracks = league.current_submission_period.all_tracks
+    if tracks:
+        tracks = g.spotify.tracks(tracks).get('tracks')
+
+    tracks_by_uri = {track.get('uri'): track for track in tracks}
+
+    my_submission = next(
+        (sub for sub in league.current_submission_period.submissions
+         if sub.user == g.user), None)
 
     return {
         'user': g.user,
         'league': kwargs.get('league'),
         'edit': request.args.get('edit'),
         'action': request.args.get('action'),
-        'late_submitter': late_submitter
+        'tracks_by_uri': tracks_by_uri,
+        'my_submission': my_submission
     }

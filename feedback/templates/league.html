@@ -5,7 +5,7 @@
 {% block content %}
 
 <div class="container">
-    {% if late_submitter and league.preferences.late_submissions %}
+    {% if league.preferences.late_submissions and not league.current_submission_period.accepting_submissions and not my_submission %}
     <div class="alert alert-info alert-dismissable" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         The deadline for song selection has passed, but it looks like you haven't submitted! You may still do so <strong><a href="?action=submit">here</a></strong>.
@@ -53,18 +53,18 @@
                                         {% endif %}
                                     </td>
                                     <td>
-                                        {% if submission_period.accepting_submissions %}
+                                        {% if submission_period.is_complete %}
+                                        <i class="text-muted">Completed {{ moment(submission_period.vote_due_date).format('MMM D') }}</i>
+                                        {% elif submission_period.accepting_submissions %}
                                         {{ moment(submission_period.submission_due_date).format('MMM D [at] ha') }}
                                         {% elif submission_period.accepting_votes %}
                                         {{ moment(submission_period.vote_due_date).format('MMM D [at] ha') }}
-                                        {% else %}
-                                        <i class="text-muted">Completed {{ moment(submission_period.vote_due_date).format('MMM D') }}</i>
                                         {% endif %}
                                     </td>
                                     <td class="text-right">
-                                        {% if user in league.users and submission_period.accepting_submissions %}
+                                        {% if user in league.users and submission_period.accepting_submissions and submission_period.is_current %}
                                         <a href="#submit-modal" data-toggle="modal" data-target="#submit-modal" class="btn btn-sm btn-success">Select Songs</a>
-                                        {% elif user in league.users and submission_period.accepting_votes %}
+                                        {% elif user in league.users and submission_period.accepting_votes and submission_period.is_current %}
                                         <a href="#vote-modal" data-toggle="modal" data-target="#vote-modal" class="btn btn-sm btn-primary disabled">Submit Votes</a>
                                         {% else %}
                                         <a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}" class="btn btn-sm btn-default">View Results</a>
@@ -130,6 +130,7 @@
 
 {% include "modals/edit_league.html" %}
 {% include "modals/submit.html" %}
+{% include "modals/vote.html" %}
 
 {% endblock %}
 
@@ -153,6 +154,8 @@
         $('[data-toggle="tooltip"]').tooltip();
         {% if request.args.get('action') == 'submit' %}
         $('#submit-modal').modal('show');
+        {% elif request.args.get('action') == 'vote' %}
+        $('#vote-modal').modal('show');
         {% elif request.args.get('action') == 'edit' %}
         $('#edit-modal').modal('show');
         {% endif %}
