@@ -48,7 +48,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th class="td-tracks collapse">Tracks</th>
+                        <th class="td-tracks collapse {% if submission_period.is_complete %}in{% endif %}">Tracks</th>
                         <th>Submitter</th>
                         <th>Created</th>
                     </tr>
@@ -56,7 +56,7 @@
                 <tbody>
                     {% for submission in submission_period.submissions|reverse %}
                         <tr>
-                            <td class="td-tracks collapse">
+                            <td class="td-tracks collapse {% if submission_period.is_complete %}in{% endif %}">
                                 <ul>
                                 {% for uri_or_url in submission.tracks %}
                                     {% set track = tracks_by_uri.get(uri_or_url) or tracks_by_url.get(uri_or_url) %}
