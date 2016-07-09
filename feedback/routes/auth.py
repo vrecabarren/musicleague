@@ -57,11 +57,13 @@ def login():
             session['refresh_token'] = token_info['refresh_token']
 
             spotify = Spotify(access_token)
+            images = spotify.current_user().get('images')
+            image_url = images[0].get('url') if images else ''
             user = create_or_update_user(
                 id=spotify.current_user().get('id'),
                 email=spotify.current_user().get('email'),
                 name=spotify.current_user().get('display_name'),
-                image_url=spotify.current_user().get('images')[0].get('url'))
+                image_url=image_url)
 
             session['current_user'] = user.id
 
