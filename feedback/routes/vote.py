@@ -18,7 +18,7 @@ VOTE_URL = '/l/<league_id>/vote/'
 def vote(league_id, **kwargs):
     league = kwargs.get('league')
 
-    votes = {uri: int(votes) for uri, votes in request.form.iteritems()}
+    votes = {uri: int(votes or 0) for uri, votes in request.form.iteritems()}
 
     submission_period = league.current_submission_period
     if submission_period and submission_period.is_current:
