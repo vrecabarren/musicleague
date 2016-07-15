@@ -9,13 +9,14 @@
                     <div class="modal-body">
                         {% for uri, track in tracks_by_uri.iteritems() %}
                         <div class="row">
-                            <div class="col-md-10">
-                                <strong>{{ track['name'] }}</strong><span class="badge" id="{{ uri }}" style="margin-left: 10px">0</span>
+                            <div class="col-md-10 form-group">
+                                <strong>{{ track['name'] }}</strong>
                                 <br>
                                 <span class="text-muted">{{ track['artists'][0]['name'] }}</span>
                             </div>
                             <div class="col-md-2 text-center form-group">
-                                <input type="number" class="form-control" name="{{ uri }}">
+                                <input type="number" class="form-control" name="{{ uri }}"
+                                    value="{% if my_vote %}{{ my_vote.votes.get(uri) }}{% else %}0{% endif %}">
                             </div>
                         </div>
                         <hr>

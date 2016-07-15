@@ -117,11 +117,16 @@ def view_league(league_id, **kwargs):
             (sub for sub in league.current_submission_period.submissions
              if sub.user == g.user), None)
 
+        my_vote = next(
+            (vote for vote in league.current_submission_period.votes
+             if vote.user == g.user), None)
+
     return {
         'user': g.user,
         'league': kwargs.get('league'),
         'edit': request.args.get('edit'),
         'action': request.args.get('action'),
         'tracks_by_uri': tracks_by_uri,
-        'my_submission': my_submission
+        'my_submission': my_submission,
+        'my_vote': my_vote
     }
