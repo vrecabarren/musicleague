@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from feedback.models import Submission
-from feedback.models import SubmissionPeriod
 
 
 def create_or_update_submission(tracks, submission_period, league, user):
@@ -36,5 +35,5 @@ def create_submission(tracks, submission_period, user, league, persist=True):
 def get_submission(submission_id):
     try:
         return Submission.objects(id=submission_id).get()
-    except SubmissionPeriod.DoesNotExist:
+    except Submission.DoesNotExist:
         return None
