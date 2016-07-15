@@ -23,6 +23,7 @@ from feedback.routes.submission_period import view_submission_period
 from feedback.routes.submit import submit
 from feedback.routes.user import profile
 from feedback.routes.user import view_user
+from feedback.routes.vote import vote
 from feedback.spotify import get_spotify_oauth
 
 

@@ -2,11 +2,11 @@ from datetime import datetime
 
 from mongoengine import BooleanField
 from mongoengine import DateTimeField
+from mongoengine import DictField
 from mongoengine import Document
 from mongoengine import EmbeddedDocument
 from mongoengine import EmbeddedDocumentField
 from mongoengine import IntField
-from mongoengine import DictField
 from mongoengine import ListField
 from mongoengine import PULL
 from mongoengine import ReferenceField
@@ -58,6 +58,16 @@ class Submission(Document):
     user = ReferenceField(User)
 
 
+class Vote(Document):
+    count = IntField(default=1)
+    created = DateTimeField(required=True)
+    league = ReferenceField('League')
+    submission_period = ReferenceField('SubmissionPeriod')
+    updated = DateTimeField()
+    user = ReferenceField(User)
+    votes = DictField()
+
+
 class SubmissionPeriod(Document):
     created = DateTimeField()
     complete = BooleanField(default=False)
@@ -71,6 +81,7 @@ class SubmissionPeriod(Document):
     playlist_url = StringField(default='')
     submissions = ListField(
         ReferenceField(Submission, reverse_delete_rule=PULL))
+    votes = ListField(ReferenceField(Vote, reverse_delete_rule=PULL))
 
     @property
     def playlist_created(self):

@@ -50,27 +50,29 @@
                     <tr>
                         <th class="td-tracks collapse {% if submission_period.is_complete %}in{% endif %}">Tracks</th>
                         <th>Submitter</th>
-                        <th>Created</th>
+                        {% for vote in submission_period.votes %}
+                        <th class="td-tracks collapse {% if submission_period.is_complete %}in{% endif %}">{{ vote.user.name }}</th>
+                        {% endfor %}
                     </tr>
                 </thead>
                 <tbody>
                     {% for submission in submission_period.submissions|reverse %}
+                        {% for uri_or_url in submission.tracks %}
+                        {% set track = tracks_by_uri.get(uri_or_url) or tracks_by_url.get(uri_or_url) %}
                         <tr>
                             <td class="td-tracks collapse {% if submission_period.is_complete %}in{% endif %}">
-                                <ul>
-                                {% for uri_or_url in submission.tracks %}
-                                    {% set track = tracks_by_uri.get(uri_or_url) or tracks_by_url.get(uri_or_url) %}
-                                    {% if track %}
-                                    <li><a href="{{ track.get('external_urls').get('spotify') }}" target="_blank">{{ track.get('name') }}</a> by <a href="{{ track.get('artists')[0].get('external_urls').get('spotify') }}" target="_blank">{{ track.get('artists')[0].get('name') }}</a></li>
-                                    {% endif %}
-                                {% endfor %}
-                                </ul>
+                                {% if track %}
+                                <a href="{{ track.get('external_urls').get('spotify') }}" target="_blank">{{ track.get('name') }}</a> by <a href="{{ track.get('artists')[0].get('external_urls').get('spotify') }}" target="_blank">{{ track.get('artists')[0].get('name') }}</a>
+                                {% endif %}
                             </td>
                             <td>
                                 <a href="{{ url_for('view_user', user_id=submission.user.id) }}">{{ submission.user.name }}</a>
                             </td>
-                            <td>{{ moment(submission.created).format('MMM D, YYYY') }}</td>
+                            {% for vote in submission_period.votes %}
+                            <td class="td-tracks collapse {% if submission_period.is_complete %}in{% endif %}">{{ vote.votes.get(track['uri']) }}</td>
+                            {% endfor %}
                         </tr>
+                        {% endfor %}
                     {% endfor %}
                 </tbody>
             </table>
