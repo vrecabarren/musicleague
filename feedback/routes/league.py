@@ -105,6 +105,7 @@ def view_league(league_id, **kwargs):
 
     tracks_by_uri = {}
     my_submission = None
+    my_vote = None
 
     if league.current_submission_period:
         tracks = league.current_submission_period.all_tracks
