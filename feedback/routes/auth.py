@@ -36,7 +36,8 @@ def before_request():
             refresh_token = session['refresh_token']
             oauth = get_spotify_oauth()
             token_info = oauth._refresh_access_token(refresh_token)
-            session['access_token'] = token_info['access_token']
+            access_token = token_info['access_token']
+            session['access_token'] = access_token
             session['expires_at'] = token_info['expires_at']
             session['refresh_token'] = token_info['refresh_token']
 
