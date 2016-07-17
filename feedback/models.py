@@ -100,7 +100,7 @@ class SubmissionPeriod(Document):
     def all_tracks(self):
         all_tracks = []
         for submission in self.submissions:
-            all_tracks.extend(submission.tracks)
+            all_tracks.extend(filter(len, submission.tracks))
         return all_tracks
 
     @property
