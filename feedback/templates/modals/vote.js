@@ -1,11 +1,3 @@
-$('.upvote').click(function(e) {
-    e.preventDefault();
-    var upvote_btn = $(this);
-    var upvote_uri = upvote_btn.attr('target');
-    var upvote_target = $('#' + upvote_uri);
-    alert(upvote_target.attr('class'));
-});
-
 var _enableVoteForm = function() {
     var modal = $('#vote-modal');
     var form = modal.find('form');
@@ -27,7 +19,8 @@ var _disableVoteForm = function() {
 $('input[type=number]').on('input', function() {
     var input = $(this);
     var isNumber = input.val().match(/[0-9 -()+]+$/);
-    if (isNumber) {
+    var isPositive = Number(input.val()) >= 0;
+    if (isNumber && isPositive) {
         input.parent('.form-group').removeClass('has-error');
         _enableVoteForm();
     }
