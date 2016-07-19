@@ -10,16 +10,25 @@
                         {% for uri, track in tracks_by_uri.iteritems() %}
                         <div class="row">
                             <div class="col-md-10 form-group">
-                                <strong>{{ track['name'] }}</strong>
-                                <br>
-                                <span class="text-muted">{{ track['artists'][0]['name'] }}</span>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <img src="{{ track['album']['images'][2]['url'] }}" alt="" class="img img-rounded" width="100%">
+                                    </div>
+                                    <div class="col-md-10">
+                                        <strong>{{ track['name'] }}</strong>
+                                        <br>
+                                        <span class="text-muted">{{ track['artists'][0]['name'] }}</span>
+                                        <br>
+                                        <span class="text-muted">{{ track['album']['name'] }}</span>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-2 text-center form-group">
-                                <input type="number" class="form-control" name="{{ uri }}"
+                                <input type="number" class="form-control{% if my_vote and my_submission and uri in my_submission.tracks %} disabled{% endif %}" name="{{ uri }}"
                                     value="{% if my_vote %}{{ my_vote.votes.get(uri) }}{% else %}0{% endif %}">
                             </div>
                         </div>
-                        <hr>
+                        <!-- <hr> -->
                         {% endfor %}
                     </div>
                     <div class="modal-footer">
