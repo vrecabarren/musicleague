@@ -21,11 +21,19 @@ $('input[type=number]').on('input', function() {
     var isNumber = input.val().match(/[0-9 -()+]+$/);
     var isPositive = Number(input.val()) >= 0;
     if (isNumber && isPositive) {
-        input.parent('.form-group').removeClass('has-error');
-        _enableVoteForm();
+        var sum = 0;
+        $('#vote-modal input[type=number]').each(function() {
+            sum += Number($(this).val());
+        });
+
+        if (sum == {{ league.preferences.point_bank_size }})
+        {
+            $('#vote-modal .form-group').removeClass('has-error');
+            _enableVoteForm();
+            return;
+        }
     }
-    else {
-        input.parent('.form-group').addClass('has-error');
-        _disableVoteForm();
-    }
+
+    input.parent('.form-group').addClass('has-error');
+    _disableVoteForm();
 });
