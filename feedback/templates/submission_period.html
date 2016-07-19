@@ -16,9 +16,7 @@
         <div class="col-md-12">
             <div class="spacer"></div>
 
-            <span data-toggle="collapse" data-target=".td-tracks">
-                <a href="#" data-toggle="tooltip" data-placement="top" class="btn btn-default" title="Show/Hide Track Info"><i class="fa fa-eye"></i></a>
-            </span>
+            <a href="#" id="show-hide" data-toggle="tooltip" data-placement="top" class="btn btn-default" title="Show/Hide Track Info"><i class="fa fa-eye"></i></a>
             {% if league.has_owner(user) %}
             <span data-toggle="modal" data-target="#edit-modal">
                 <a href="#edit-modal" data-toggle="tooltip" data-placement="top" class="btn btn-default" title="Edit Submission Period Preferences"><i class="fa fa-gear"></i></a>
@@ -48,10 +46,10 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th class="td-tracks collapse {% if submission_period.is_complete %}in{% endif %}">Tracks</th>
+                        <th class="track {% if not submission_period.is_complete %}hidden{% endif %}">Tracks</th>
                         <th>Submitter</th>
                         {% for vote in submission_period.votes %}
-                        <th class="td-tracks collapse {% if submission_period.is_complete %}in{% endif %}">{{ vote.user.name }}</th>
+                        <th class="vote {% if not submission_period.is_complete %}hidden{% endif %}">{{ vote.user.name }}</th>
                         {% endfor %}
                     </tr>
                 </thead>
@@ -59,8 +57,8 @@
                     {% for submission in submission_period.submissions|reverse %}
                         {% for uri_or_url in submission.tracks %}
                         {% set track = tracks_by_uri.get(uri_or_url) or tracks_by_url.get(uri_or_url) %}
-                        <tr{% if loop.index > 1 %} class="td-tracks collapse {% if submission_period.is_complete %}in{% endif %}"{% endif %}>
-                            <td class="td-tracks collapse {% if submission_period.is_complete %}in{% endif %}">
+                        <tr{% if loop.index > 1 %} class="multirow {% if not submission_period.is_complete %}hidden{% endif %}"{% endif %}>
+                            <td class="track {% if not submission_period.is_complete %}hidden{% endif %}">
                                 {% if track %}
                                 <a href="{{ track.get('external_urls').get('spotify') }}" target="_blank">{{ track.get('name') }}</a> by <a href="{{ track.get('artists')[0].get('external_urls').get('spotify') }}" target="_blank">{{ track.get('artists')[0].get('name') }}</a>
                                 {% endif %}
@@ -69,7 +67,7 @@
                                 <a href="{{ url_for('view_user', user_id=submission.user.id) }}">{{ submission.user.name }}</a>
                             </td>
                             {% for vote in submission_period.votes %}
-                            <td class="td-tracks collapse {% if submission_period.is_complete %}in{% endif %}">{{ vote.votes.get(track['uri']) }}</td>
+                            <td class="vote {% if not submission_period.is_complete %}hidden{% endif %}">{{ vote.votes.get(track['uri']) }}</td>
                             {% endfor %}
                         </tr>
                         {% endfor %}
@@ -95,6 +93,10 @@
 {% include "modals/edit_submission_period.js" %}
 $(document).ready(function() {
     $('[data-toggle="tooltip"]').tooltip();
+
+    $('#show-hide').click(function() {
+        $('.vote,.track,.multirow').toggleClass('hidden');
+    });
 });
 </script>
 {% endblock %}
