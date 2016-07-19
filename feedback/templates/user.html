@@ -18,7 +18,11 @@
 
     <div class="row spacer" style="display: flex; align-items: center">
         <div class="col-md-6">
+            {% if page_user == user %}
             <h2>Your Leagues</h2>
+            {% else %}
+            <h2>{{ page_user.first_name }}&rsquo;s Leagues</h2>
+            {% endif %}
         </div>
         <div class="col-md-6 text-right">
             {% if request.url_rule.endpoint == 'profile' %}

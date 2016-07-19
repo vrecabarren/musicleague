@@ -46,6 +46,10 @@ class User(Document):
     name = StringField(required=True)
     preferences = EmbeddedDocumentField(UserPreferences)
 
+    @property
+    def first_name(self):
+        return self.name.split(' ')[0]
+
 
 class Submission(Document):
     confirmed = BooleanField(default=False)
