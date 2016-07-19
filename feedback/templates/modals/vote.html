@@ -4,7 +4,7 @@
                 <form action="{{ url_for('vote', league_id=league.id) }}" method="post">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">Submit Votes</h4>
+                        <h4 class="modal-title" id="myModalLabel">Submit Votes</h4> <span class="text-muted">(<span id="remaining"></span> points remaining)</span>
                     </div>
                     <div class="modal-body">
                         {% for uri, track in tracks_by_uri.iteritems() %}

@@ -16,22 +16,30 @@ var _disableVoteForm = function() {
     form.submit(function(e) { e.preventDefault(); });
 };
 
+var sumPoints = function() {
+    var sum = 0;
+    $('#vote-modal input[type=number]').each(function() {
+        sum += Number($(this).val());
+    });
+    $('#remaining').html({{ league.preferences.point_bank_size }} - sum);
+    return sum;
+};
+
+$(document).ready(function() {
+    sum = sumPoints();
+    if (sum != {{ league.preferences.point_bank_size }})
+        _disableVoteForm();
+});
+
 $('input[type=number]').on('input', function() {
     var input = $(this);
     var isNumber = input.val().match(/[0-9 -()+]+$/);
     var isPositive = Number(input.val()) >= 0;
-    if (isNumber && isPositive) {
-        var sum = 0;
-        $('#vote-modal input[type=number]').each(function() {
-            sum += Number($(this).val());
-        });
-
-        if (sum == {{ league.preferences.point_bank_size }})
-        {
-            $('#vote-modal .form-group').removeClass('has-error');
-            _enableVoteForm();
-            return;
-        }
+    var sum = sumPoints();
+    if (isNumber && isPositive && sum == {{ league.preferences.point_bank_size }}) {
+        $('#vote-modal .form-group').removeClass('has-error');
+        _enableVoteForm();
+        return;
     }
 
     input.parent('.form-group').addClass('has-error');
