@@ -139,6 +139,9 @@ class LeaguePreferences(EmbeddedDocument):
         default=2, display_name='# Tracks', input_type=NUMBER,
         verbose_name='How many songs should each submission include?')
     voting_style = StringField(choices=(POINT_BANK,))
+    point_bank_size = IntField(
+        default=8, display_name='Point Bank Size', input_type=NUMBER,
+        verbose_name='How many points should each user have to vote with?')
 
 
 class League(Document):

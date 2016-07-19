@@ -88,6 +88,7 @@ def save_league_settings(league_id, **kwargs):
     league.preferences.submission_reminder_time = request.form.get(
         'submission_reminder_time')
     league.preferences.track_count = request.form.get('track_count')
+    league.preferences.point_bank_size = request.form.get('point_bank_size')
     league.preferences.locked = request.form.get('locked') == 'on'
     league.preferences.late_submissions = (
         request.form.get('late_submissions') == 'on')
