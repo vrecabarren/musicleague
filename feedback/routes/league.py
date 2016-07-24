@@ -113,7 +113,7 @@ def view_league(league_id, **kwargs):
         if tracks:
             tracks = g.spotify.tracks(tracks).get('tracks')
 
-        tracks_by_uri = {track.get('uri'): track for track in tracks}
+        tracks_by_uri = {track.get('uri'): track for track in tracks if track}
 
         my_submission = next(
             (sub for sub in league.current_submission_period.submissions
