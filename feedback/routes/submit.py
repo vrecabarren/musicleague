@@ -26,15 +26,22 @@ def submit(league_id, **kwargs):
         url_regex = ('(?:http|https):\/\/(?:open|play)\.spotify\.com\/track\/'
                      '(?P<id>[A-Za-z0-9]{22})')
 
-        if (re.match(uri_regex, url_or_uri) or
-                not re.match(url_regex, url_or_uri)):
+        # If valid URI, no need to modify
+        if re.match(uri_regex, url_or_uri):
             return url_or_uri
+
+        # Has to be a valid track URL to mutate. If not, return None.
+        if not re.match(url_regex, url_or_uri):
+            return None
 
         return 'spotify:track:%s' % re.match(url_regex, url_or_uri).group('id')
 
     tracks = [
         to_uri(escape(request.form.get('track' + str(i))))
         for i in range(1, league.preferences.track_count + 1)]
+
+    # Filter out any invalid URL or URI that we received
+    tracks = filter(None, tracks)
 
     submission_period = league.current_submission_period
     if submission_period and submission_period.is_current:
