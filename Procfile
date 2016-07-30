@@ -1,3 +1,2 @@
-web: gunicorn feedback:app
-scheduler: python -u scheduler.py
-worker: python -u worker.py
+web: python app.py
+worker: celery worker --app=feedback.celery --loglevel=DEBUG

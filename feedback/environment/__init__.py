@@ -78,6 +78,10 @@ def get_port():
     return get_setting(PORT)
 
 
+def get_redis_url():
+    return get_setting(REDISCLOUD_URL)
+
+
 def get_secret_key():
     return get_setting(SECRET_KEY)
 

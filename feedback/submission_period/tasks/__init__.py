@@ -1,6 +1,7 @@
 import logging
 
 from feedback import app
+from feedback import celery
 from feedback.notify import user_submit_reminder_notification
 from feedback.spotify import create_or_update_playlist
 
@@ -11,6 +12,7 @@ class TYPES:
     SEND_SUBMISSION_REMINDERS = 'ssr'
 
 
+@celery.task
 def complete_submission_period(submission_period_id):
     try:
         from feedback.submission_period import get_submission_period
@@ -22,6 +24,7 @@ def complete_submission_period(submission_period_id):
         logging.exception('Error occurred while completing submission period!')
 
 
+@celery.task
 def create_playlist(submission_period_id):
     try:
         with app.app_context():
@@ -33,6 +36,7 @@ def create_playlist(submission_period_id):
         logging.exception('Error occurred while creating playlist!')
 
 
+@celery.task
 def send_submission_reminders(submission_period_id):
     try:
         from feedback.submission_period import get_submission_period

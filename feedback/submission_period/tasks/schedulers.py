@@ -1,7 +1,7 @@
 from datetime import timedelta
 import logging
 
-from feedback import scheduler
+from feedback import celery
 from feedback.environment import is_deployed
 from feedback.submission_period.tasks import complete_submission_period
 from feedback.submission_period.tasks import create_playlist
@@ -18,16 +18,14 @@ def schedule_complete_submission_period(submission_period):
     _cancel_pending_task(
         submission_period.pending_tasks.get(TYPES.COMPLETE_SUBMISSION_PERIOD))
 
-    completion_task_id = scheduler.enqueue_at(
-        completion_time,
-        complete_submission_period,
-        submission_period.id).id
+    task = complete_submission_period.apply_async(
+        args=[str(submission_period.id)], eta=completion_time)
 
     submission_period.pending_tasks.update(
-        {TYPES.COMPLETE_SUBMISSION_PERIOD: completion_task_id})
+        {TYPES.COMPLETE_SUBMISSION_PERIOD: task.task_id})
 
     logging.info('Submission period completion scheduled for %s. Job ID: %s.',
-                 completion_time, completion_task_id)
+                 completion_time, task.task_id)
 
 
 def schedule_playlist_creation(submission_period):
@@ -44,16 +42,14 @@ def schedule_playlist_creation(submission_period):
         submission_period.pending_tasks.get(TYPES.CREATE_PLAYLIST))
 
     # Schedule new playlist creation task
-    creation_task_id = scheduler.enqueue_at(
-        creation_time,
-        create_playlist,
-        submission_period.id).id
+    task = create_playlist.apply_async(
+        args=[str(submission_period.id)], eta=creation_time)
 
     submission_period.pending_tasks.update(
-        {TYPES.CREATE_PLAYLIST: creation_task_id})
+        {TYPES.CREATE_PLAYLIST: task.task_id})
 
     logging.info('Playlist creation scheduled for %s. Job ID: %s.',
-                 creation_time, creation_task_id)
+                 creation_time, task.task_id)
 
 
 def schedule_submission_reminders(submission_period):
@@ -68,20 +64,18 @@ def schedule_submission_reminders(submission_period):
         submission_period.pending_tasks.get(TYPES.SEND_SUBMISSION_REMINDERS))
 
     # Schedule new submission reminder task
-    reminder_task_id = scheduler.enqueue_at(
-        notify_time,
-        send_submission_reminders,
-        submission_period.id).id
+    task = send_submission_reminders.apply_async(
+        args=[str(submission_period.id)], eta=notify_time)
 
     submission_period.pending_tasks.update(
-        {TYPES.SEND_SUBMISSION_REMINDERS: reminder_task_id})
+        {TYPES.SEND_SUBMISSION_REMINDERS: task.task_id})
 
     logging.info('Submission reminders scheduled for %s. Job ID: %s.',
-                 notify_time, reminder_task_id)
+                 notify_time, task.task_id)
 
 
 def _cancel_pending_task(task_id):
     if not task_id:
         return
 
-    scheduler.cancel(task_id)
+    celery.control.revoke(task_id)
