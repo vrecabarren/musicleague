@@ -16,6 +16,23 @@ HTML_PATH = 'email/html/%s'
 TXT_PATH = 'email/txt/%s'
 
 
+def owner_all_users_submitted_notification(owner, submission_period):
+    if not owner or not submission_period:
+        return
+
+    if not owner.preferences.owner_all_users_submitted_notifications:
+        return
+
+    _send_email.apply_async(
+        args=[owner.email,
+              'Music League - All Users Submitted',
+              _txt_email('all_submitted.txt',
+                         submission_period=submission_period),
+              _html_email('all_submitted.html',
+                          submission_period=submission_period)]
+    )
+
+
 def owner_user_submitted_notification(owner, submission):
     if not owner or not submission:
         return

@@ -7,6 +7,8 @@ from flask import request
 from flask import url_for
 
 from feedback import app
+from feedback.notify import owner_all_users_submitted_notification
+from feedback.notify import owner_user_submitted_notification
 from feedback.routes.decorators import login_required
 from feedback.routes.decorators import league_required
 from feedback.submission import create_or_update_submission
@@ -45,6 +47,15 @@ def submit(league_id, **kwargs):
 
     submission_period = league.current_submission_period
     if submission_period and submission_period.is_current:
-        create_or_update_submission(tracks, submission_period, league, g.user)
+        submission = create_or_update_submission(
+            tracks, submission_period, league, g.user)
+
+        owner_user_submitted_notification(league.owner, submission)
+
+        submitted_users = set([s.user for s in submission_period.submissions])
+        remaining = set(league.users) - submitted_users
+        if not remaining or remaining == set([league.owner]):
+            owner_all_users_submitted_notification(
+                league.owner, submission_period)
 
     return redirect(url_for('view_league', league_id=league_id))

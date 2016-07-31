@@ -1,0 +1,1 @@
+All other users have submitted for {{ submission_period.name }}!
