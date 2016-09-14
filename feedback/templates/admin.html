@@ -15,8 +15,8 @@
         <tbody>
             {% for u in users %}
             <tr>
-                <td>{{ u.name }}</td>
-                <td>{{ u.email }}</td>
+                <td><a href="{{ url_for('view_user', user_id=u.id) }}">{{ u.name }}</a></td>
+                <td><a href="mailto:{{ u.email }}">{{ u.email }}</a></td>
             </tr>
             {% endfor %}
         </tbody>
