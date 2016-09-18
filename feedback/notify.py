@@ -17,7 +17,7 @@ TXT_PATH = 'email/txt/%s'
 
 
 def owner_all_users_submitted_notification(owner, submission_period):
-    if not owner or not submission_period:
+    if not submission_period or not owner or not owner.email:
         return
 
     if not owner.preferences.owner_all_users_submitted_notifications:
@@ -34,7 +34,7 @@ def owner_all_users_submitted_notification(owner, submission_period):
 
 
 def owner_user_submitted_notification(owner, submission):
-    if not owner or not submission:
+    if not submission or not owner or not owner.email:
         return
 
     if not owner.preferences.owner_user_submitted_notifications:
@@ -49,7 +49,7 @@ def owner_user_submitted_notification(owner, submission):
 
 
 def user_added_to_league_notification(user, league):
-    if not user or not league:
+    if not league or not user or not user.email:
         return
 
     if not user.preferences.user_added_to_league_notifications:
@@ -69,7 +69,7 @@ def user_playlist_created_notification(submission_period):
 
     to_list = ','.join(
         u.email for u in submission_period.league.users
-        if u.preferences.user_playlist_created_notifications)
+        if u.email and u.preferences.user_playlist_created_notifications)
 
     _send_email.apply_async(
         args=[to_list,
@@ -81,7 +81,7 @@ def user_playlist_created_notification(submission_period):
 
 
 def user_removed_from_league_notification(user, league):
-    if not user or not league:
+    if league or not user or not user.email:
         return
 
     if not user.preferences.user_removed_from_league_notifications:
@@ -96,7 +96,7 @@ def user_removed_from_league_notification(user, league):
 
 
 def user_submit_reminder_notification(user, league):
-    if not user or not league:
+    if not league or not user or not user.email:
         return
 
     if not user.preferences.user_submit_reminder_notifications:
