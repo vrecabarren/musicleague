@@ -6,6 +6,7 @@ from flask import request
 from flask import url_for
 
 from feedback import app
+from feedback.models import League
 from feedback.models import User
 from feedback.routes.decorators import login_required
 from feedback.routes.decorators import templated
@@ -27,9 +28,11 @@ VIEW_USER_URL = '/user/<user_id>/'
 def admin():
     if g.user.email == 'nathandanielcoleman@gmail.com':
         users = User.objects().all()
+        leagues = League.objects().all()
         return {
             'user': g.user,
-            'users': users
+            'users': users,
+            'leagues': leagues
         }
     return redirect(request.referrer)
 
