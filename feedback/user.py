@@ -22,10 +22,10 @@ def create_or_update_user(id, name, email, image_url):
     if not user:
         user = create_user(id, name, email, image_url)
     else:
-        user.id = id
-        user.name = name
-        user.email = email
-        user.image_url = image_url
+        user.id = id if id else user.id
+        user.name = name if name else user.name
+        user.email = email if email else user.email
+        user.image_url = image_url if image_url else user.image_url
 
     user.save()
     return user
