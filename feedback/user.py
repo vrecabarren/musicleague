@@ -7,7 +7,7 @@ from feedback.models import UserPreferences
 
 def create_user(id, name, email, image_url):
     if get_user(id):
-        raise UserExistsError('User with id %s already exists' % name)
+        raise UserExistsError('User with id %s already exists' % id)
 
     new_user = User(
         id=id, name=name, email=email, joined=datetime.utcnow(),
