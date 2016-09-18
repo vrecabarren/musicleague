@@ -54,6 +54,10 @@ class User(Document):
         return self.name.split(' ')[0]
 
 
+class InvitedUser(Document):
+    email = StringField(required=True)
+
+
 class Submission(Document):
     confirmed = BooleanField(default=False)
     count = IntField(default=1)
@@ -157,6 +161,8 @@ class League(Document):
     submission_periods = ListField(
         ReferenceField(SubmissionPeriod, reverse_delete_rule=PULL))
     users = ListField(ReferenceField(User, reverse_delete_rule=PULL))
+    invited_users = ListField(ReferenceField(InvitedUser,
+                                             reverse_delete_rule=PULL))
     preferences = EmbeddedDocumentField(LeaguePreferences)
 
     @property
