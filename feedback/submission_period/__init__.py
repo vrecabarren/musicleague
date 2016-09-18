@@ -37,7 +37,7 @@ def create_submission_period(league):
 
 def get_submission_period(submission_period_id):
     try:
-        return SubmissionPeriod.objects(id=submission_period_id).get()
+        return SubmissionPeriod.objects().get(id=submission_period_id)
 
     except SubmissionPeriod.DoesNotExist:
         return None
@@ -45,6 +45,9 @@ def get_submission_period(submission_period_id):
 
 def remove_submission_period(submission_period_id):
     submission_period = get_submission_period(submission_period_id)
+    if not submission_period:
+        return
+
     league = submission_period.league
     removing_current = submission_period.is_current
 
@@ -66,18 +69,17 @@ def remove_submission_period(submission_period_id):
 
 def update_submission_period(submission_period_id, name, submission_due_date,
                              vote_due_date):
-    try:
-        submission_period = get_submission_period(submission_period_id)
-        submission_period.name = name
-        submission_period.submission_due_date = submission_due_date
-        submission_period.vote_due_date = vote_due_date
+    submission_period = get_submission_period(submission_period_id)
+    if not submission_period:
+        return
 
-        # Reschedule playlist creation and submission reminders if needed
-        schedule_playlist_creation(submission_period)
-        schedule_submission_reminders(submission_period)
+    submission_period.name = name
+    submission_period.submission_due_date = submission_due_date
+    submission_period.vote_due_date = vote_due_date
 
-        submission_period.save()
-        return submission_period
+    # Reschedule playlist creation and submission reminders if needed
+    schedule_playlist_creation(submission_period)
+    schedule_submission_reminders(submission_period)
 
-    except SubmissionPeriod.DoesNotExist:
-        return None
+    submission_period.save()
+    return submission_period

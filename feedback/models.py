@@ -172,3 +172,7 @@ class League(Document):
 
     def has_owner(self, user):
         return self.owner == user
+
+
+ALL_MODELS = [UserPreferences, User, InvitedUser, Submission, Vote,
+              SubmissionPeriod, LeaguePreferences, League]

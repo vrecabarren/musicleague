@@ -3,6 +3,7 @@ from unittest import TestCase
 
 from feedback.errors import UserExistsError
 from feedback.models import User
+from feedback.tests.utils.data import clean_data
 from feedback.user import create_or_update_user
 from feedback.user import create_user
 from feedback.user import get_user
@@ -18,10 +19,7 @@ class CreateUserTestCase(TestCase):
         self.image_url = 'http://test.com/test_img.jpg'
 
     def tearDown(self):
-        # Ensure user from previous test is removed
-        existing_user = get_user(self.id)
-        if existing_user:
-            existing_user.delete()
+        clean_data()
 
     def test_create_user_existing_id(self):
         User(id=self.id, name=self.name, email=self.email,
@@ -55,10 +53,7 @@ class CreateOrUpdateUserTestCase(TestCase):
         self.image_url = 'http://test.com/test_img.jpg'
 
     def tearDown(self):
-        # Ensure user from previous test is removed
-        existing_user = get_user(self.id)
-        if existing_user:
-            existing_user.delete()
+        clean_data()
 
     def test_none_existing(self):
         self.assertIsNone(get_user(self.id))
@@ -100,10 +95,7 @@ class GetUserTestCase(TestCase):
         self.image_url = 'http://test.com/test_img.jpg'
 
     def tearDown(self):
-        # Ensure user from previous test is removed
-        existing_user = get_user(self.id)
-        if existing_user:
-            existing_user.delete()
+        clean_data()
 
     def test_none_existing(self):
         self.assertRaises(User.DoesNotExist, User.objects.get, id=self.id)
@@ -130,10 +122,7 @@ class GetUserByEmailTestCase(TestCase):
         self.image_url = 'http://test.com/test_img.jpg'
 
     def tearDown(self):
-        # Ensure user from previous test is removed
-        existing_user = get_user_by_email(self.email)
-        if existing_user:
-            existing_user.delete()
+        clean_data()
 
     def test_none_existing(self):
         self.assertRaises(User.DoesNotExist, User.objects.get, id=self.id)
