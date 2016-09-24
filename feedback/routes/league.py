@@ -17,6 +17,7 @@ from feedback.submission import get_submission
 
 ADD_USER_FOR_LEAGUE_URL = '/l/<league_id>/users/add/'
 CREATE_LEAGUE_URL = '/l/create/'
+JOIN_LEAGUE_URL = '/l/<league_id>/join/'
 REMOVE_LEAGUE_URL = '/l/<league_id>/remove/'
 REMOVE_SUBMISSION_URL = '/l/<league_id>/<submission_period_id>/<submission_id>/remove/'  # noqa
 REMOVE_USER_FOR_LEAGUE_URL = '/l/<league_id>/users/remove/<user_id>/'
@@ -54,6 +55,22 @@ def post_create_league():
             url_for(view_league.__name__, league_id=league.id))
     except Exception as e:
         logging.exception('There was an exception: %s', e)
+
+
+@app.route(JOIN_LEAGUE_URL, methods=['GET'])
+@login_required
+@league_required
+def join_league(league_id, **kwargs):
+    league = kwargs.get('league')
+    add_user(league, g.user.email)
+
+    if 'invite_id' in request.args:
+        invited_user = next((iu for iu in league.invited_users
+                             if iu.id == request.args.get('invite_id')), None)
+        if invited_user:
+            invited_user.delete()
+
+    return redirect(url_for('view_league', league_id=league_id))
 
 
 @app.route(REMOVE_LEAGUE_URL)

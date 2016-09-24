@@ -30,6 +30,10 @@
             <a href="{{ url_for('post_create_submission_period', league_id=league.id) }}" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Create New Submission Period"><i class="fa fa-plus"></i></a>
             {% endif %}
 
+            {% if not league.has_user(user) %}
+            <a href="{{ url_for('join_league', league_id=league.id) }}" class="btn btn-default" title="Join League">Join League</a>
+            {% endif %}
+
             <div class="spacer"></div>
 
             <div class="row">
