@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 </head>
 <body>
@@ -11,9 +13,11 @@
 
                 <h1>Music League</h1>
 
-                <h3>{{ league.owner.name }} has invited you to <a href="{{ url_for('join_league', _external=True, league_id=league.id, invite_id=user.id) }}">{{ league.name }}</a>!</h3>
+                <h3>{{ league.owner.name }} has invited you to <a href="{{ url_for('view_league', _external=True, league_id=league.id) }}">{{ league.name }}</a>!</h3>
 
                 <p>There are now {{ league.users|length }} user(s) contributing to this league.</p>
+
+                <a href="{{ url_for('join_league', _external=True, league_id=league.id, invite_id=user.id) }}" class="btn btn-lg btn-success">Join the Fun</a>
 
             </div>
         </div>

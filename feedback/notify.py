@@ -69,7 +69,7 @@ def user_invited_to_league_notification(invited_user, league):
 
     _send_email.apply_async(
         args=[invited_user.email,
-              'Music League - Join the Fun',
+              'Music League - You Are Invited',
               _txt_email('invited.txt', user=invited_user, league=league),
               _html_email('invited.html', user=invited_user, league=league)]
     )
