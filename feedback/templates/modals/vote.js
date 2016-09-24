@@ -45,3 +45,17 @@ $('input[type=number]').on('input', function() {
     input.parent('.form-group').addClass('has-error');
     _disableVoteForm();
 });
+
+var drag = function(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+
+var allowDrop = function(ev) {
+    ev.preventDefault();
+};
+
+var drop = function(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+};
