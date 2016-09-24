@@ -54,8 +54,14 @@ var allowDrop = function(ev) {
     ev.preventDefault();
 };
 
-var drop = function(ev) {
+var dropSelection = function(ev) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
-    ev.target.appendChild(document.getElementById(data));
+    document.getElementById("selection").appendChild(document.getElementById(data));
+};
+
+var dropStaging = function(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    document.getElementById("staging").appendChild(document.getElementById(data));
 };

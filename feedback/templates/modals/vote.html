@@ -8,9 +8,9 @@
                         <p class="text-muted">Drag songs to right column to add votes</p>
                     </div>
                     <div class="modal-body row" style="display: flex">
-                        <div id="selection" class="col-md-6" style="border-right: 1px solid #e5e5e5; mouseover: pointer;" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        <div id="selection" class="col-md-6" style="border-right: 1px solid #e5e5e5; mouseover: pointer;" ondrop="dropSelection(event)" ondragover="allowDrop(event)">
                             {% for uri, track in tracks_by_uri.iteritems() %}
-                                <div class="row" id="track-{{ uri }}" style="margin-bottom: 20px" draggable="true" ondragstart="drag(event)">
+                                <div class="row" id="{{ uri }}" style="margin-bottom: 20px" draggable="true" ondragstart="drag(event)">
                                     <div class="col-xs-4 col-sm-2">
                                         <img src="{{ track['album']['images'][0]['url'] }}" alt="" class="img img-rounded" width="100%" draggable="false">
                                     </div>
@@ -24,7 +24,7 @@
                                 </div>
                             {% endfor %}
                         </div>
-                        <div id="staging" class="col-md-6" style="align-items: stretch" ondrop="drop(event)" ondragover="allowDrop(event)">
+                        <div id="staging" class="col-md-6" style="align-items: stretch" ondrop="dropStaging(event)" ondragover="allowDrop(event)">
 
                         </div>
                     </div>
