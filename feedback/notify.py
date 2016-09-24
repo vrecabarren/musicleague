@@ -64,7 +64,7 @@ def user_added_to_league_notification(user, league):
 
 
 def user_invited_to_league_notification(invited_user, league):
-    if league or not invited_user or not invited_user.email:
+    if not league or not invited_user or not invited_user.email:
         return
 
     _send_email.apply_async(
