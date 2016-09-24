@@ -62,7 +62,7 @@ def post_create_league():
 @league_required
 def join_league(league_id, **kwargs):
     league = kwargs.get('league')
-    add_user(league, g.user.email)
+    add_user(league, g.user.email, notify=False)
 
     if 'invite_id' in request.args:
         invited_user = next((iu for iu in league.invited_users
