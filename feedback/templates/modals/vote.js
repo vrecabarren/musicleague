@@ -2,10 +2,8 @@ var _enableVoteForm = function() {
     var modal = $('#vote-modal');
     var form = modal.find('form');
     var submitButton = modal.find('button[type="submit"]');
-    if (!modal.find('.has-error').length) {
-        submitButton.removeClass('disabled');
-        form.unbind('submit');
-    }
+    submitButton.removeClass('disabled');
+    form.unbind('submit');
 };
 
 var _disableVoteForm = function() {
@@ -18,11 +16,16 @@ var _disableVoteForm = function() {
 
 var sumPoints = function() {
     var sum = 0;
-    $('#vote-modal input[type=number]').each(function() {
-        sum += Number($(this).val());
+    $('#staging .vote-count').each(function() {
+        sum += Number($(this).text());
     });
     $('#remaining').html({{ league.preferences.point_bank_size }} - sum);
     return sum;
+};
+
+var allPointsAssigned = function() {
+    var pointsRemaining = parseInt($('#remaining').text());
+    return pointsRemaining == 0;
 };
 
 $(document).ready(function() {
@@ -31,19 +34,30 @@ $(document).ready(function() {
         _disableVoteForm();
 });
 
-$('input[type=number]').on('input', function() {
-    var input = $(this);
-    var isNumber = input.val().match(/[0-9 -()+]+$/);
-    var isPositive = Number(input.val()) >= 0;
-    var sum = sumPoints();
-    if (isNumber && isPositive && sum == {{ league.preferences.point_bank_size }}) {
-        $('#vote-modal .form-group').removeClass('has-error');
-        _enableVoteForm();
-        return;
-    }
+$('.vote-up').on("click", function() {
+    var voteCountSpan = $(this).parent().parent().find($('.vote-count')).first();
+    var voteCount = parseInt(voteCountSpan.text());
+    voteCount += 1;
+    voteCountSpan.text(voteCount);
+    sumPoints();
 
-    input.parent('.form-group').addClass('has-error');
-    _disableVoteForm();
+    if (allPointsAssigned())
+        _enableVoteForm();
+    else
+        _disableVoteForm();
+});
+
+$('.vote-down').on("click", function() {
+    var voteCountSpan = $(this).parent().parent().find($('.vote-count')).first();
+    var voteCount = parseInt(voteCountSpan.text());
+    voteCount -= 1;
+    voteCountSpan.text(voteCount);
+    sumPoints();
+
+    if (allPointsAssigned())
+        _enableVoteForm();
+    else
+        _disableVoteForm();
 });
 
 var drag = function(ev) {
