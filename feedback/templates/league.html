@@ -112,6 +112,16 @@
                 {% endif %}
             </p>
             {% endfor %}
+
+            <h3>Invited</h3>
+            {% for invited_user in league.invited_users %}
+            <p>
+                <span class="text-muted">
+                    {{ invited_user.email }}
+                </span>
+            </p>
+            {% endfor %}
+
             {% if league.has_owner(user) %}
             <form action="{{ url_for('add_user_for_league', league_id=league.id) }}" method="post" class="">
                 <div class="control-group input-group">
