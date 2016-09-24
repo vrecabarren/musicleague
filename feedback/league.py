@@ -2,9 +2,11 @@ from datetime import datetime
 
 from haikunator import Haikunator
 
+from feedback.models import InvitedUser
 from feedback.models import League
 from feedback.models import LeaguePreferences
 from feedback.notify import user_added_to_league_notification
+from feedback.notify import user_invited_to_league_notification
 from feedback.notify import user_removed_from_league_notification
 from feedback.user import get_user_by_email
 
@@ -15,6 +17,13 @@ def add_user(league, user_email):
         league.users.append(user)
         league.save()
         user_added_to_league_notification(user, league)
+
+    elif user is None:
+        invited_user = InvitedUser(email=user_email)
+        invited_user.save()
+        league.invited_users.append(invited_user)
+        league.save()
+        user_invited_to_league_notification(invited_user, league)
 
 
 def remove_user(league, user_id):
