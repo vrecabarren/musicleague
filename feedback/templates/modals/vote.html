@@ -8,18 +8,31 @@
                         <p class="text-muted">Drag songs to right column to add votes</p>
                     </div>
                     <div class="modal-body row" style="display: flex">
-                        <div id="selection" class="col-md-6" style="border-right: 1px solid #e5e5e5; mouseover: pointer;" ondrop="dropSelection(event)" ondragover="allowDrop(event)">
+                        <div id="selection" class="col-md-6" style="border-right: 1px solid #e5e5e5" ondrop="dropSelection(event)" ondragover="allowDrop(event)">
                             {% for uri, track in tracks_by_uri.iteritems() %}
-                                <div class="row" id="{{ uri }}" style="margin-bottom: 20px" draggable="true" ondragstart="drag(event)">
+                                <div class="row" id="{{ uri }}" style="margin-bottom: 20px; cursor: pointer;" draggable="true" ondragstart="drag(event)">
                                     <div class="col-xs-4 col-sm-2">
                                         <img src="{{ track['album']['images'][0]['url'] }}" alt="" class="img img-rounded" width="100%" draggable="false">
                                     </div>
-                                    <div class="col-xs-8 col-sm-10">
+                                    <div class="col-xs-6 col-sm-8">
                                         <strong>{{ track['name'] }}</strong>
                                         <br>
                                         <span class="text-muted">{{ track['artists'][0]['name'] }}</span>
                                         <br>
                                         <span class="text-muted">{{ track['album']['name'] }}</span>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2 voting-controls" style="display: none; cursor: default">
+                                        <div class="text-center" style="border: 1px solid #b7b7b7; border-radius: 5px; padding: 0px 10px">
+                                            <div class="text-center vote-up">
+                                                <i class="fa fa-caret-up" style="cursor: pointer"></i>
+                                            </div>
+                                            <div class="text-center vote-count">
+                                                0
+                                            </div>
+                                            <div class="text-center vote-down">
+                                                <i class="fa fa-caret-down" style="cursor: pointer"></i>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             {% endfor %}

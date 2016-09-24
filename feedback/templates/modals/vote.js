@@ -57,11 +57,15 @@ var allowDrop = function(ev) {
 var dropSelection = function(ev) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
-    document.getElementById("selection").appendChild(document.getElementById(data));
+    var track = $(document.getElementById(data));
+    $('#selection').append(track);
+    track.find('.voting-controls').css('display', 'none');
 };
 
 var dropStaging = function(ev) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
-    document.getElementById("staging").appendChild(document.getElementById(data));
+    var track = $(document.getElementById(data));
+    $('#staging').append(track);
+    track.find('.voting-controls').css('display', 'flex');
 };
