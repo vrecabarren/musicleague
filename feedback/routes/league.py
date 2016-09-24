@@ -64,9 +64,11 @@ def join_league(league_id, **kwargs):
     league = kwargs.get('league')
     add_user(league, g.user.email, notify=False)
 
-    if 'invite_id' in request.args:
+    # If this URL is from an invitation email, delete the placeholder
+    invite_id = request.args.get('invite_id')
+    if invite_id:
         invited_user = next((iu for iu in league.invited_users
-                             if iu.id == request.args.get('invite_id')), None)
+                             if str(iu.id) == invite_id), None)
         if invited_user:
             invited_user.delete()
 
