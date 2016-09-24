@@ -1,0 +1,2 @@
+{{ league.owner.name }} has invited you to {{ league.name }}!
+There are now {{ league.users|length }} user(s) contributing to this league.

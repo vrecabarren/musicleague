@@ -63,6 +63,18 @@ def user_added_to_league_notification(user, league):
     )
 
 
+def user_invited_to_league_notification(invited_user, league):
+    if league or not invited_user or not invited_user.email:
+        return
+
+    _send_email.apply_async(
+        args=[invited_user.email,
+              'Music League - Join the Fun',
+              _txt_email('invited.txt', league=league),
+              _html_email('invited.html', league=league)]
+    )
+
+
 def user_playlist_created_notification(submission_period):
     if not submission_period:
         return
