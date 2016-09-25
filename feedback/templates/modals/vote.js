@@ -32,9 +32,7 @@ var setLoadState = function() {
         var voteCount = parseInt($(this).find($('.vote-count')).first().text());
         if (voteCount > 0)
         {
-            $('#staging').append($(this));
-            $(this).find('.voting-controls').css('display', 'flex');
-            $(this).off("click");
+            moveToStaging($(this));
         }
     });
 };
@@ -95,31 +93,39 @@ var allowDrop = function(ev) {
     ev.preventDefault();
 };
 
+var moveToSelection = function(track) {
+    $('#selection').append(track);
+    track.find('.voting-controls').css('display', 'none');
+    track.off("click");
+    track.on("click", function() { moveToStaging($(this)); });
+    sumPoints();
+    setFormState();
+};
+
+var moveToStaging = function(track) {
+    $('#staging').append(track);
+    track.find('.voting-controls').css('display', 'flex');
+    track.off("click");
+    track.on("click", function() { moveToSelection($(this)); });
+    track.attr('')
+    sumPoints();
+    setFormState();
+};
+
 var dropSelection = function(ev) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     var track = $(document.getElementById(data));
-    $('#selection').append(track);
-    track.find('.voting-controls').css('display', 'none');
-    sumPoints();
-    setFormState();
+    moveToSelection(track);
 };
 
 var dropStaging = function(ev) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     var track = $(document.getElementById(data));
-    $('#staging').append(track);
-    track.find('.voting-controls').css('display', 'flex');
-    track.off("click");
-    sumPoints();
-    setFormState();
+    moveToStaging(track);
 };
 
 $('#selection .track').on("click", function() {
-    $('#staging').append($(this));
-    $(this).find('.voting-controls').css('display', 'flex');
-    $(this).off("click");
-    sumPoints();
-    setFormState();
+    moveToStaging($(this));
 });
