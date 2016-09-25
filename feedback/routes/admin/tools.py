@@ -44,5 +44,6 @@ def clean_submissions():
         for sub in Submission.objects().all():
             if sub.id not in valid_submissions:
                 logging.warning('Removing Submission %s', sub.id)
+                sub.delete()
 
     return redirect(request.referrer)
