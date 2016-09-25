@@ -25,5 +25,6 @@ def clean_submission_periods():
         for sp in SubmissionPeriod.objects().all():
             if sp.id not in valid_periods:
                 logging.warning('Removing %s', sp.id)
+                sp.delete()
 
     return redirect(request.referrer)
