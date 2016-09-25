@@ -36,9 +36,10 @@ var allPointsAssigned = function() {
 };
 
 $(document).ready(function() {
-    sum = sumPoints();
-    if (sum != {{ league.preferences.point_bank_size }})
-        _disableVoteForm();
+    sumPoints();
+    setFormState();
+
+    $('#staging .voting-controls').css('display', 'flex');
 });
 
 $('.vote-up').on("click", function() {
@@ -86,3 +87,18 @@ var dropStaging = function(ev) {
     sumPoints();
     setFormState();
 };
+
+$('#staging .track').on("click", function() {
+    $('#selection').append($(this));
+    alert('hi');
+    $(this).find('.voting-controls').css('display', 'none');
+    sumPoints();
+    setFormState();
+});
+
+$('#selection .track').on("click", function() {
+    $('#staging').append($(this));
+    $(this).find('.voting-controls').css('display', 'flex');
+    sumPoints();
+    setFormState();
+});
