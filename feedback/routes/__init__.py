@@ -13,6 +13,7 @@ from feedback.routes.admin import admin_leagues
 from feedback.routes.admin import admin_tools
 from feedback.routes.admin import admin_users
 from feedback.routes.admin.tools import clean_submission_periods
+from feedback.routes.admin.tools import clean_submissions
 from feedback.routes.auth import before_request
 from feedback.routes.auth import login
 from feedback.routes.auth import logout
