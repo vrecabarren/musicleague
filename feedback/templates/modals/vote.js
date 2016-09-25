@@ -62,11 +62,10 @@ $(document).ready(function() {
     setLoadState();
     sumPoints();
     setFormState();
-
-    $('#staging .voting-controls').css('display', 'flex');
 });
 
-$('.vote-up').on("click", function() {
+$('.vote-up').on("click", function(ev) {
+    ev.stopPropagation();
     var voteCountSpan = $(this).parent().parent().find($('.vote-count')).first();
     var voteCount = parseInt(voteCountSpan.text());
     voteCount += 1;
@@ -75,7 +74,8 @@ $('.vote-up').on("click", function() {
     setFormState();
 });
 
-$('.vote-down').on("click", function() {
+$('.vote-down').on("click", function(ev) {
+    ev.stopPropagation();
     var voteCountSpan = $(this).parent().parent().find($('.vote-count')).first();
     var voteCount = parseInt(voteCountSpan.text());
     if (voteCount > 0)
