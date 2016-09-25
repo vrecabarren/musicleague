@@ -14,6 +14,13 @@ var _disableVoteForm = function() {
     form.submit(function(e) { e.preventDefault(); });
 };
 
+var setFormState = function() {
+    if (allPointsAssigned())
+        _enableVoteForm();
+    else
+        _disableVoteForm();
+};
+
 var sumPoints = function() {
     var sum = 0;
     $('#staging .vote-count').each(function() {
@@ -40,11 +47,7 @@ $('.vote-up').on("click", function() {
     voteCount += 1;
     voteCountSpan.text(voteCount);
     sumPoints();
-
-    if (allPointsAssigned())
-        _enableVoteForm();
-    else
-        _disableVoteForm();
+    setFormState();
 });
 
 $('.vote-down').on("click", function() {
@@ -53,11 +56,7 @@ $('.vote-down').on("click", function() {
     voteCount -= 1;
     voteCountSpan.text(voteCount);
     sumPoints();
-
-    if (allPointsAssigned())
-        _enableVoteForm();
-    else
-        _disableVoteForm();
+    setFormState();
 });
 
 var drag = function(ev) {
@@ -74,6 +73,8 @@ var dropSelection = function(ev) {
     var track = $(document.getElementById(data));
     $('#selection').append(track);
     track.find('.voting-controls').css('display', 'none');
+    sumPoints();
+    setFormState();
 };
 
 var dropStaging = function(ev) {
@@ -82,4 +83,6 @@ var dropStaging = function(ev) {
     var track = $(document.getElementById(data));
     $('#staging').append(track);
     track.find('.voting-controls').css('display', 'flex');
+    sumPoints();
+    setFormState();
 };
