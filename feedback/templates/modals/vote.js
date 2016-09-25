@@ -54,7 +54,8 @@ $('.vote-up').on("click", function() {
 $('.vote-down').on("click", function() {
     var voteCountSpan = $(this).parent().parent().find($('.vote-count')).first();
     var voteCount = parseInt(voteCountSpan.text());
-    voteCount -= 1;
+    if (voteCount > 0)
+        voteCount -= 1;
     voteCountSpan.text(voteCount);
     sumPoints();
     setFormState();
@@ -84,21 +85,15 @@ var dropStaging = function(ev) {
     var track = $(document.getElementById(data));
     $('#staging').append(track);
     track.find('.voting-controls').css('display', 'flex');
+    track.off("click");
     sumPoints();
     setFormState();
 };
 
-$('#staging .track').on("click", function() {
-    $('#selection').append($(this));
-    alert('hi');
-    $(this).find('.voting-controls').css('display', 'none');
-    sumPoints();
-    setFormState();
-});
-
 $('#selection .track').on("click", function() {
     $('#staging').append($(this));
     $(this).find('.voting-controls').css('display', 'flex');
+    $(this).off("click");
     sumPoints();
     setFormState();
 });
