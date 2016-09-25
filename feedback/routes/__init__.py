@@ -8,6 +8,10 @@ from feedback import app
 from feedback.models import League
 from feedback.models import Submission
 from feedback.models import User
+from feedback.routes.admin import admin
+from feedback.routes.admin import admin_leagues
+from feedback.routes.admin import admin_tools
+from feedback.routes.admin import admin_users
 from feedback.routes.auth import before_request
 from feedback.routes.auth import login
 from feedback.routes.auth import logout

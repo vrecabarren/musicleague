@@ -6,7 +6,6 @@ from flask import request
 from flask import url_for
 
 from feedback import app
-from feedback.models import League
 from feedback.models import User
 from feedback.routes.decorators import login_required
 from feedback.routes.decorators import templated
@@ -15,44 +14,10 @@ from feedback.league import get_leagues_for_user
 from feedback.user import get_user
 
 
-ADMIN_URL = '/admin/'
-ADMIN_LEAGUES_URL = '/admin/leagues/'
-ADMIN_USERS_URL = '/admin/users/'
 AUTOCOMPLETE = '/autocomplete/'
 PROFILE_URL = '/profile/'
 SETTINGS_URL = '/settings/'
 VIEW_USER_URL = '/user/<user_id>/'
-
-
-@app.route(ADMIN_URL)
-def admin():
-    return redirect(url_for('admin_users'))
-
-
-@app.route(ADMIN_LEAGUES_URL)
-@templated('admin/leagues.html')
-@login_required
-def admin_leagues():
-    if g.user.email == 'nathandanielcoleman@gmail.com':
-        leagues = League.objects().all()
-        return {
-            'user': g.user,
-            'leagues': leagues
-        }
-    return redirect(request.referrer)
-
-
-@app.route(ADMIN_USERS_URL)
-@templated('admin/users.html')
-@login_required
-def admin_users():
-    if g.user.email == 'nathandanielcoleman@gmail.com':
-        users = User.objects().all()
-        return {
-            'user': g.user,
-            'users': users
-        }
-    return redirect(request.referrer)
 
 
 @app.route(AUTOCOMPLETE)
