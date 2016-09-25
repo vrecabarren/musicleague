@@ -4,6 +4,19 @@ var _enableVoteForm = function() {
     var submitButton = modal.find('button[type="submit"]');
     submitButton.removeClass('disabled');
     form.unbind('submit');
+    form.submit(function(e) {
+        var votes = {};
+        $('#staging .vote-count').each(function() {
+            var voteCount = parseInt($(this).text());
+            var uri = $(this).parents('.track').first().attr('id');
+            var inputField = $(document.getElementById(uri));
+            inputField.val(voteCount);
+        });
+
+        var modal = $('#vote-modal');
+        var form = modal.find('form').first();
+        return true;
+    });
 };
 
 var _disableVoteForm = function() {
@@ -36,6 +49,7 @@ var allPointsAssigned = function() {
 };
 
 $(document).ready(function() {
+    setLoadState();
     sumPoints();
     setFormState();
 
