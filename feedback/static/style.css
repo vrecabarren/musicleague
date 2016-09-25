@@ -35,3 +35,28 @@ vertical-align: middle;
 
 .modal-header { border-bottom: none; }
 .modal-footer { border-top: none; }
+
+.fade-wrapper.border-left {
+    border-left: 1px solid #e5e5e5;
+}
+
+.fade-wrapper > .fade-inner {
+    overflow: scroll;
+    padding-bottom: 50px;
+}
+
+.fade-wrapper > .fade-gradient {
+  position: absolute;
+  z-index  : 1;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  pointer-events   : none;
+  background-image : linear-gradient(to bottom, rgba(255,255,255, 0), rgba(255 ,255 ,255 , 1) 75%);
+  /*width    : 100%;*/
+  height   : 100px;
+}
+
+#staging, #selection {
+    height: 400px;
+}
