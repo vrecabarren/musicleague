@@ -27,6 +27,18 @@ var _disableVoteForm = function() {
     form.submit(function(e) { e.preventDefault(); });
 };
 
+var setLoadState = function() {
+    $('#selection .track').each(function() {
+        var voteCount = parseInt($(this).find($('.vote-count')).first().text());
+        if (voteCount > 0)
+        {
+            $('#staging').append($(this));
+            $(this).find('.voting-controls').css('display', 'flex');
+            $(this).off("click");
+        }
+    });
+};
+
 var setFormState = function() {
     if (allPointsAssigned())
         _enableVoteForm();
