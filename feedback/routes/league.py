@@ -46,9 +46,9 @@ def remove_user_for_league(league_id, user_id, **kwargs):
     return redirect(url_for('view_league', league_id=league_id))
 
 
-@app.route(CREATE_LEAGUE_URL, methods=['POST'])
+@app.route(CREATE_LEAGUE_URL, methods=['GET'])
 @login_required
-def post_create_league():
+def get_create_league():
     try:
         league = create_league(g.user)
         return redirect(

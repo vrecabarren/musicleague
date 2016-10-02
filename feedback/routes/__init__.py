@@ -19,7 +19,7 @@ from feedback.routes.auth import login
 from feedback.routes.auth import logout
 from feedback.routes.decorators import templated
 from feedback.routes.league import add_user_for_league
-from feedback.routes.league import post_create_league
+from feedback.routes.league import get_create_league
 from feedback.routes.league import remove_league
 from feedback.routes.league import view_league
 from feedback.routes.spotify import create_spotify_playlist

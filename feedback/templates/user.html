@@ -26,10 +26,7 @@
         </div>
         <div class="col-md-6 text-right">
             {% if request.url_rule.endpoint == 'profile' %}
-            <form action="{{ url_for('post_create_league') }}" method="post">
-                <button class="btn btn-success" type="submit">
-                    <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Create
-                </button>
+            <a href="{{ url_for('get_create_league') }}" class="btn btn-success">Add New League</a>
             </form>
             {% endif %}
         </div>
