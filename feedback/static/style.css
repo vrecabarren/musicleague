@@ -60,3 +60,5 @@ vertical-align: middle;
 #staging, #selection {
     height: 400px;
 }
+
+.linked { cursor: pointer; }
