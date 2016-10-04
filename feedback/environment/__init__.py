@@ -1,7 +1,6 @@
 import logging
 import os
 import re
-import urlparse
 
 from feedback.environment.variables import DEBUG
 from feedback.environment.variables import DEPLOYED
@@ -103,10 +102,3 @@ def parse_mongolab_uri():
 
     return (data['host'], int(data['port']), data['username'],
             data['password'], data['database'])
-
-
-def parse_rediscloud_url():
-    redis_url = get_setting(REDISCLOUD_URL)
-    urlparse.uses_netloc.append('redis')
-    url = urlparse.urlparse(redis_url)
-    return url.hostname, url.port, url.password
