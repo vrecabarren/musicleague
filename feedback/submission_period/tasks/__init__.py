@@ -14,6 +14,10 @@ class TYPES:
 
 @celery.task
 def complete_submission_period(submission_period_id):
+    if not submission_period_id:
+        logging.error('No submission period id for completion!')
+        return
+
     try:
         from feedback.submission_period import get_submission_period
 
@@ -26,6 +30,10 @@ def complete_submission_period(submission_period_id):
 
 @celery.task
 def create_playlist(submission_period_id):
+    if not submission_period_id:
+        logging.error('No submission period id for playlist creation!')
+        return
+
     try:
         with app.app_context():
             from feedback.submission_period import get_submission_period
@@ -38,6 +46,10 @@ def create_playlist(submission_period_id):
 
 @celery.task
 def send_submission_reminders(submission_period_id):
+    if not submission_period_id:
+        logging.error('No submission period id for reminders!')
+        return
+
     try:
         from feedback.submission_period import get_submission_period
 
