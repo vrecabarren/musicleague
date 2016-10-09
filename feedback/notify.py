@@ -79,16 +79,17 @@ def user_playlist_created_notification(submission_period):
     if not submission_period:
         return
 
-    to_list = ','.join(
+    bcc_list = ','.join(
         u.email for u in submission_period.league.users
         if u.email and u.preferences.user_playlist_created_notifications)
 
     _send_email.apply_async(
-        args=[to_list,
+        args=['',
               'Music League - New Playlist',
               _txt_email('playlist.txt', submission_period=submission_period),
               _html_email('playlist.html', submission_period=submission_period)
-              ]
+              ],
+        kwargs={'additional_data': {'bcc': bcc_list}}
     )
 
 
@@ -123,7 +124,7 @@ def user_submit_reminder_notification(user, league):
 
 
 @celery.task
-def _send_email(to, subject, text, html):
+def _send_email(to, subject, text, html, additional_data=None):
     if not is_deployed():
         logging.info(text)
         return
@@ -132,13 +133,19 @@ def _send_email(to, subject, text, html):
     api_base_url = get_setting(MAILGUN_API_BASE_URL)
     request_url = '{}/messages'.format(api_base_url)
     sender = get_setting(NOTIFICATION_SENDER)
-    request = requests.post(request_url,
-                            auth=("api", api_key),
-                            data={"from": sender,
-                                  "to": to,
-                                  "subject": subject,
-                                  "text": text,
-                                  "html": html})
+
+    data = {
+        "from": sender,
+        "to": to,
+        "subject": subject,
+        "text": text,
+        "html": html
+    }
+
+    if isinstance(additional_data, dict):
+        data.update(additional_data)
+
+    request = requests.post(request_url, auth=("api", api_key), data=data)
 
     if request.status_code != 200:
         logging.warning(
