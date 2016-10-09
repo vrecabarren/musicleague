@@ -76,6 +76,8 @@ def schedule_submission_reminders(submission_period):
 
 def _cancel_pending_task(task_id):
     if not task_id:
+        logging.warning('No task_id for _cancel_pending_task')
         return
 
-    celery.control.revoke(task_id)
+    logging.info('Revoking celery task %s', task_id)
+    celery.control.revoke(task_id, terminate=True)
