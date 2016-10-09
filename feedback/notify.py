@@ -76,15 +76,16 @@ def user_invited_to_league_notification(invited_user, league):
 
 
 def user_playlist_created_notification(submission_period):
-    if not submission_period:
+    if not submission_period or not submission_period.league.users:
         return
 
+    to = submission_period.league.users[0].email
     bcc_list = ','.join(
-        u.email for u in submission_period.league.users
+        u.email for u in submission_period.league.users[1:]
         if u.email and u.preferences.user_playlist_created_notifications)
 
     _send_email.apply_async(
-        args=['',
+        args=[to,
               'Music League - New Playlist',
               _txt_email('playlist.txt', submission_period=submission_period),
               _html_email('playlist.html', submission_period=submission_period)
