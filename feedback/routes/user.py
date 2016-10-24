@@ -35,10 +35,11 @@ def autocomplete():
 def profile():
     page_user = g.user
     leagues = get_leagues_for_user(g.user)
+    images = g.spotify.user(str(page_user.id)).get('images')
     return {
         'user': g.user,
         'page_user': page_user,
-        'user_image': g.spotify.user(str(page_user.id)).get('images')[0],
+        'user_image': images[0] if images else '',
         'leagues': leagues,
         'owner_leagues': len(get_leagues_for_owner(page_user)),
         'contributor_leagues': len(get_leagues_for_user(page_user))
@@ -73,10 +74,11 @@ def view_user(user_id):
         return redirect(url_for('profile'))
     page_user = get_user(user_id)
     leagues = get_leagues_for_user(page_user)
+    images = g.spotify.user(user_id).get('images')
     return {
         'user': g.user,
         'page_user': page_user,
-        'user_image': g.spotify.user(user_id).get('images')[0],
+        'user_image': images[0] if images else '',
         'leagues': leagues,
         'owner_leagues': len(get_leagues_for_owner(page_user)),
         'contributor_leagues': len(get_leagues_for_user(page_user))
