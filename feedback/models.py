@@ -44,9 +44,9 @@ class UserPreferences(EmbeddedDocument):
 class User(Document):
     id = StringField(primary_key=True, required=True)
     email = StringField(required=True)
-    image_url = StringField(required=True)
+    image_url = StringField(required=False, default='')
     joined = DateTimeField(required=True)
-    name = StringField(required=True)
+    name = StringField(required=False, default='')
     preferences = EmbeddedDocumentField(UserPreferences)
 
     @property

@@ -63,7 +63,9 @@ def login():
             user_email = spotify_user.get('email')
             user_display_name = spotify_user.get('display_name', str(user_id))
             user_images = spotify_user.get('images')
-            user_image_url = user_images[0].get('url') if user_images else ''
+            user_image_url = ''
+            if user_images:
+                user_image_url = user_images[0].get('url', user_image_url)
 
             user = create_or_update_user(
                 id=user_id,
