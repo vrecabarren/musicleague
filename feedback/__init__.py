@@ -22,7 +22,10 @@ from settings import MONGO_DB_NAME
 app = Flask(__name__)
 moment = Moment(app)
 app.secret_key = get_secret_key()
-app.config['BROKER_TRANSPORT_OPTIONS'] = {'max_connections': 20}
+app.config['BROKER_TRANSPORT_OPTIONS'] = {
+    'max_connections': 20,
+    'visibility_timeout': 2678400}  # 1 month
+
 app.config['CELERY_ACCEPT_CONTENT'] = ['json']
 app.config['CELERY_BROKER_URL'] = get_redis_url()
 app.config['CELERY_TASK_SERIALIZER'] = 'json'
