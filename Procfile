@@ -1,2 +1,2 @@
 web: python app.py
-worker: celery worker --app=feedback.celery
+# worker: celery worker --app=musicleague.celery
