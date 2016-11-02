@@ -1,5 +1,5 @@
 # Music League
-[![Build Status](https://travis-ci.org/nathancoleman/feedback.svg?branch=master)](https://travis-ci.org/nathancoleman/feedback)
+[![Build Status](https://travis-ci.org/nathancoleman/musicleague.svg?branch=master)](https://travis-ci.org/nathancoleman/musicleague)
 [![Coverage Status](https://coveralls.io/repos/github/nathancoleman/feedback/badge.svg?branch=master)](https://coveralls.io/github/nathancoleman/feedback?branch=master)
 [![Project Status: WIP - Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
 <a href="https://zenhub.io"><img src="https://raw.githubusercontent.com/ZenHubIO/support/master/zenhub-badge.png"></a>
