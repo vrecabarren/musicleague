@@ -26,6 +26,11 @@
                             <a href="#" tabindex="-1" data-toggle="popover" data-trigger="hover" data-content="{{ league.preferences._fields['submission_reminder_time'].verbose_name }}"><i class="fa fa-question-circle"></i></a>
                             <input type="number" inputmode="numeric" min="0" name="submission_reminder_time" id="submission_reminder_time" class="form-control" value="{{ league.preferences.submission_reminder_time }}">
                         </div>
+                        <div class="form-group">
+                            <label for="vote_reminder_time" class="control-label">{{ league.preferences._fields['vote_reminder_time'].display_name }}</label>
+                            <a href="#" tabindex="-1" data-toggle="popover" data-trigger="hover" data-content="{{ league.preferences._fields['vote_reminder_time'].verbose_name }}"><i class="fa fa-question-circle"></i></a>
+                            <input type="number" inputmode="numeric" min="0" name="vote_reminder_time" id="vote_reminder_time" class="form-control" value="{{ league.preferences.vote_reminder_time }}">
+                        </div>
                         <hr>
                         <div class="checkbox">
                             <label><input type="checkbox" name="locked" {% if league.preferences.locked %}checked{% endif %}>

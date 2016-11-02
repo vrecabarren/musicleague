@@ -39,6 +39,9 @@ class UserPreferences(EmbeddedDocument):
     user_submit_reminder_notifications = BooleanField(
         default=True, role=USER_PREFERENCE_ROLE,
         verbose_name='Receive a reminder before the submission due date')
+    user_vote_reminder_notifications = BooleanField(
+        default=True, role=USER_PREFERENCE_ROLE,
+        verbose_name='Receive a reminder before the vote due date')
 
 
 class User(Document):
@@ -145,6 +148,10 @@ class LeaguePreferences(EmbeddedDocument):
     submission_reminder_time = IntField(
         default=2, display_name='Submission Reminder Time', input_type=NUMBER,
         verbose_name=('How many hours prior to the due date should submission '
+                      'reminders be sent?'), new=True)
+    vote_reminder_time = IntField(
+        default=2, display_name='Vote Reminder Time', input_type=NUMBER,
+        verbose_name=('How many hours prior to the due data should vote '
                       'reminders be sent?'), new=True)
     track_count = IntField(
         default=2, display_name='# Tracks', input_type=NUMBER,

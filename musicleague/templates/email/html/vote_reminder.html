@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <style>
+        body { margin: 50px 0px; }
+        h1, h3 { margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 jumbotron text-center">
+
+                <h1>Music League</h1>
+
+                <h3>Votes for <a href="{{ url_for('view_league', _external=True, league_id=league.id) }}">{{ league.name }}</a> are due in approximately {{ league.preferences.submission_reminder_time }} hours.</h3>
+
+                <p>You're late! You're late! For a very important date!</p>
+
+                <a href="{{ url_for('view_league', league_id=league.id) }}?action=vote" class="btn btn-lg btn-success">Vote</a>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

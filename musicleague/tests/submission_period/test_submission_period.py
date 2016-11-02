@@ -23,9 +23,11 @@ class CreateSubmissionPeriodTestCase(TestCase):
     def tearDown(self):
         clean_data()
 
+    @patch('musicleague.submission_period.schedule_vote_reminders')
     @patch('musicleague.submission_period.schedule_submission_reminders')
     @patch('musicleague.submission_period.schedule_playlist_creation')
-    def test_create(self, schedule_playlist, schedule_reminders):
+    def test_create(self, schedule_playlist, schedule_submission_reminders,
+                    schedule_vote_reminders):
         created = create_submission_period(self.league)
 
         self.assertEqual('Submission Period 2', created.name)
@@ -41,7 +43,8 @@ class CreateSubmissionPeriodTestCase(TestCase):
         self.assertTrue(self.league.submission_periods[1].is_current)
 
         schedule_playlist.assert_called_once_with(created)
-        schedule_reminders.assert_called_once_with(created)
+        schedule_submission_reminders.assert_called_once_with(created)
+        schedule_vote_reminders.assert_called_once_with(created)
 
 
 class GetSubmissionPeriodTestCase(TestCase):
@@ -97,7 +100,7 @@ class RemoveSubmissionPeriodTestCase(TestCase):
 
         remove_submission_period(sp2.id)
 
-        self.assertTrue(cancel_task.called)
+        self.assertEqual(2, cancel_task.call_count)
         self.assertTrue(get_submission_period(sp1.id).is_current)
         self.assertIsNone(get_submission_period(sp2.id))
 

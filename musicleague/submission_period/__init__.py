@@ -8,6 +8,7 @@ from musicleague.submission_period.tasks.schedulers import _cancel_pending_task
 from musicleague.submission_period.tasks.schedulers import schedule_complete_submission_period  # noqa
 from musicleague.submission_period.tasks.schedulers import schedule_playlist_creation  # noqa
 from musicleague.submission_period.tasks.schedulers import schedule_submission_reminders  # noqa
+from musicleague.submission_period.tasks.schedulers import schedule_vote_reminders  # noqa
 
 
 def create_submission_period(league):
@@ -19,6 +20,7 @@ def create_submission_period(league):
         vote_due_date=datetime.utcnow() + timedelta(days=7))
     schedule_playlist_creation(new_submission_period)
     schedule_submission_reminders(new_submission_period)
+    schedule_vote_reminders(new_submission_period)
     new_submission_period.save()
 
     logging.info('Submission period created: %s', new_submission_period.id)
@@ -51,9 +53,11 @@ def remove_submission_period(submission_period_id):
     league = submission_period.league
     removing_current = submission_period.is_current
 
-    # Cancel scheduled submission reminder job if one exists
+    # Cancel scheduled submission and vote reminder jobs if they exist
     _cancel_pending_task(
         submission_period.pending_tasks.get(TYPES.SEND_SUBMISSION_REMINDERS))
+    _cancel_pending_task(
+        submission_period.pending_tasks.get(TYPES.SEND_VOTE_REMINDERS))
 
     submission_period.delete()
 
@@ -77,9 +81,10 @@ def update_submission_period(submission_period_id, name, submission_due_date,
     submission_period.submission_due_date = submission_due_date
     submission_period.vote_due_date = vote_due_date
 
-    # Reschedule playlist creation and submission reminders if needed
+    # Reschedule playlist creation and submission/vote reminders if needed
     schedule_playlist_creation(submission_period)
     schedule_submission_reminders(submission_period)
+    schedule_vote_reminders(submission_period)
 
     submission_period.save()
     return submission_period

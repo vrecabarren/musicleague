@@ -119,8 +119,23 @@ def user_submit_reminder_notification(user, league):
     _send_email.apply_async(
         args=[user.email,
               'Music League - Submission Reminder',
-              _txt_email('reminder.txt', league=league),
-              _html_email('reminder.html', league=league)]
+              _txt_email('submit_reminder.txt', league=league),
+              _html_email('submit_reminder.html', league=league)]
+    )
+
+
+def user_vote_reminder_notification(user, league):
+    if not league or not user or not user.email:
+        return
+
+    if not user.preferences.user_vote_reminder_notifications:
+        return
+
+    _send_email.apply_async(
+        args=[user.email,
+              'Music League - Vote Reminder',
+              _txt_email('vote_reminder.txt', league=league),
+              _html_email('vote_reminder.html', league=league)]
     )
 
 

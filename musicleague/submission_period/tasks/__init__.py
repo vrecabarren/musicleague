@@ -3,13 +3,16 @@ import logging
 from musicleague import app
 from musicleague import celery
 from musicleague.notify import user_submit_reminder_notification
+from musicleague.notify import user_vote_reminder_notification
 from musicleague.spotify import create_or_update_playlist
 
 
 class TYPES:
+    """ Keys used to store ETA in entity for tasks below. Must be unique. """
     COMPLETE_SUBMISSION_PERIOD = 'csp'
     CREATE_PLAYLIST = 'cp'
     SEND_SUBMISSION_REMINDERS = 'ssr'
+    SEND_VOTE_REMINDERS = 'svr'
 
 
 @celery.task
@@ -47,7 +50,7 @@ def create_playlist(submission_period_id):
 @celery.task
 def send_submission_reminders(submission_period_id):
     if not submission_period_id:
-        logging.error('No submission period id for reminders!')
+        logging.error('No submission period id for submission reminders!')
         return
 
     try:
@@ -63,3 +66,24 @@ def send_submission_reminders(submission_period_id):
 
     except:
         logging.exception('Error occurred while sending submission reminders!')
+
+
+@celery.task
+def send_vote_reminders(submission_period_id):
+    if not submission_period_id:
+        logging.error('No submission period id for vote reminders!')
+        return
+
+    try:
+        from musicleague.submission_period import get_submission_period
+
+        submission_period = get_submission_period(submission_period_id)
+        league = submission_period.league
+        users_voted = set([v.user for v in submission_period.votes])
+        to_notify = set(league.users) - users_voted
+        for user in to_notify:
+            logging.warning('%s has not submitted! Notifying.', user.name)
+            user_vote_reminder_notification(user, league)
+
+    except:
+        logging.exception('Error occurred while sending vote reminders!')

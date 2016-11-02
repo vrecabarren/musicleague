@@ -6,6 +6,7 @@ from musicleague.environment import is_deployed
 from musicleague.submission_period.tasks import complete_submission_period
 from musicleague.submission_period.tasks import create_playlist
 from musicleague.submission_period.tasks import send_submission_reminders
+from musicleague.submission_period.tasks import send_vote_reminders
 from musicleague.submission_period.tasks import TYPES
 
 
@@ -71,6 +72,28 @@ def schedule_submission_reminders(submission_period):
         {TYPES.SEND_SUBMISSION_REMINDERS: task.task_id})
 
     logging.info('Submission reminders scheduled for %s. Job ID: %s.',
+                 notify_time, task.task_id)
+
+
+def schedule_vote_reminders(submission_period):
+    if not is_deployed():
+        return
+
+    diff = submission_period.league.preferences.vote_reminder_time
+    notify_time = submission_period.vote_due_date - timedelta(hours=diff)
+
+    # Cancel scheduled notification job if one exists
+    _cancel_pending_task(
+        submission_period.pending_tasks.get(TYPES.SEND_VOTE_REMINDERS))
+
+    # Schedule new vote reminder task
+    task = send_vote_reminders.apply_async(
+        args=[str(submission_period.id)], eta=notify_time)
+
+    submission_period.pending_tasks.update(
+        {TYPES.SEND_VOTE_REMINDERS: task.task_id})
+
+    logging.info('Vote reminders scheduled for %s. Job ID: %s.',
                  notify_time, task.task_id)
 
 
