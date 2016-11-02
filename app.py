@@ -1,6 +1,6 @@
-from feedback import app
-from feedback.environment import get_port
-from feedback.environment import is_debug
+from musicleague import app
+from musicleague.environment import get_port
+from musicleague.environment import is_debug
 
 
 if __name__ == "__main__":

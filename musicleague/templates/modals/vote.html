@@ -1,0 +1,60 @@
+    <div class="modal fade" role="dialog" id="vote-modal" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form action="{{ url_for('vote', league_id=league.id) }}" method="post">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Submit Votes</h4>
+                        <p class="text-muted">Click or drag songs to right column to add votes</p>
+                    </div>
+                    <div class="modal-body row">
+                        <div class="col-md-6 fade-wrapper">
+                            <div id="selection" class="fade-inner">
+                            {% for uri, track in tracks_by_uri.iteritems() %}
+                                <div class="row track" id="{{ uri }}" style="margin-bottom: 20px; cursor: pointer;" draggable="true" ondragstart="drag(event)">
+                                    <div class="col-xs-4 col-sm-2">
+                                        <img src="{{ track['album']['images'][0]['url'] }}" alt="" class="img img-rounded" width="100%" draggable="false">
+                                    </div>
+                                    <div class="col-xs-6 col-sm-8">
+                                        <strong>{{ track['name'] }}</strong>
+                                        <br>
+                                        <span class="text-muted">{{ track['artists'][0]['name'] }}</span>
+                                        <br>
+                                        <span class="text-muted">{{ track['album']['name'] }}</span>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2 voting-controls" style="display: none; cursor: default">
+                                        <div class="text-center" style="border: 1px solid #b7b7b7; border-radius: 5px; padding: 0px 10px">
+                                            <div class="text-center">
+                                                <i class="fa fa-caret-up vote-up" style="cursor: pointer"></i>
+                                            </div>
+                                            <div class="text-center vote-count">
+                                                {% if my_vote %}{{ my_vote.votes.get(uri) }}{% else %}0{% endif %}
+                                            </div>
+                                            <div class="text-center">
+                                                <i class="fa fa-caret-down vote-down" style="cursor: pointer"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            </div>
+                            <div class="fade-gradient"></div>
+                        </div>
+                        <div class="col-md-6 fade-wrapper border-left">
+                            <div id="staging" class="fade-inner" ondrop="dropStaging(event)" ondragover="allowDrop(event)">
+                                {% for uri in tracks_by_uri %}
+                                <input type="hidden" name="{{ uri }}" id="{{ uri }}">
+                                {% endfor %}
+                            </div>
+                            <div class="fade-gradient"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="pull-left"><span class="text-muted"><span id="remaining"></span> Votes Left to Give</span></div>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                        <button class="btn btn-link" id="cancel" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

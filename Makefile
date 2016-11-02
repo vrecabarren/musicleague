@@ -5,7 +5,7 @@ install:
 	pip install -r requirements.txt
 
 lint:
-	flake8 feedback app.py
+	flake8 musicleague app.py
 
 logs:
 	heroku logs -n 1500
