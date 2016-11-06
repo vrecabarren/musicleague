@@ -46,6 +46,8 @@ def before_request():
 
 @app.route(LOGIN_URL)
 def login():
+    # If no current login, send user through Spotify OAuth process.
+    # If current login, send user to his/her profile.
     if 'current_user' not in session:
         url = request.url
         oauth = get_spotify_oauth()
@@ -62,6 +64,8 @@ def login():
             user_id = spotify_user.get('id')
 
             user = get_user(user_id)
+
+            # If user logging in w/ Spotify does not yet exist, create it
             if not user:
                 user_email = spotify_user.get('email')
                 user_display_name = spotify_user.get('display_name')
@@ -76,6 +80,8 @@ def login():
 
             session['current_user'] = user.id
 
+            # If user was going to a particular destination before logging in,
+            # send them there after login.
             if 'next_url' in session:
                 next_url = session['next_url'].decode('base64', 'strict')
                 session.pop('next_url')
