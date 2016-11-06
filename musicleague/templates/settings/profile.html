@@ -17,6 +17,7 @@
             </ul>
         </div>
         <div class="col-md-10">
+
             <form method="post" class="form">
                 <div class="row">
                     <div class="col-md-6 col-md-offset-1">
@@ -43,9 +44,10 @@
                 <div class="spacer"></div>
 
                 <div class="row">
-                    <div class="col-md-11 col-md-offset-1">
+                    <div class="col-md-6 col-md-offset-1">
                         <button type="submit" class="btn btn-success">Save</button>
                         <a href="." class="btn btn-link">Cancel</a>
+                        <a href="{{ url_for('sync_profile_settings')}}" class="btn btn-default pull-right">Sync w&#47; Spotify</a>
                     </div>
                 </div>
             </form>

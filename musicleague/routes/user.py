@@ -20,6 +20,7 @@ PROFILE_URL = '/profile/'
 SETTINGS_URL = '/settings/'
 NOTIFICATIONS_SETTINGS_URL = '/settings/notifications/'
 PROFILE_SETTINGS_URL = '/settings/profile/'
+SYNC_PROFILE_SETTINGS_URL = '/settings/profile/sync/'
 VIEW_USER_URL = '/user/<user_id>/'
 
 
@@ -64,6 +65,23 @@ def save_profile_settings():
     email = request.form.get('email')
     image_url = request.form.get('image_url')
     create_or_update_user(g.user.id, name, email, image_url)
+    return redirect(request.referrer)
+
+
+@app.route(SYNC_PROFILE_SETTINGS_URL, methods=['GET'])
+@login_required
+def sync_profile_settings():
+    spotify_user = g.spotify.current_user()
+    user_email = spotify_user.get('email')
+    user_display_name = spotify_user.get('display_name')
+    user_images = spotify_user.get('images')
+    user_image_url = ''
+    if user_images:
+        user_image_url = user_images[0].get('url', user_image_url)
+
+    user = create_or_update_user(g.user.id, user_display_name, user_email,
+                                 user_image_url)
+
     return redirect(request.referrer)
 
 
