@@ -11,12 +11,15 @@ from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 from musicleague.league import get_leagues_for_owner
 from musicleague.league import get_leagues_for_user
+from musicleague.user import create_or_update_user
 from musicleague.user import get_user
 
 
 AUTOCOMPLETE = '/autocomplete/'
 PROFILE_URL = '/profile/'
 SETTINGS_URL = '/settings/'
+NOTIFICATIONS_SETTINGS_URL = '/settings/notifications/'
+PROFILE_SETTINGS_URL = '/settings/profile/'
 VIEW_USER_URL = '/user/<user_id>/'
 
 
@@ -47,15 +50,33 @@ def profile():
 
 
 @app.route(SETTINGS_URL, methods=['GET'])
-@templated('settings.html')
+@app.route(PROFILE_SETTINGS_URL, methods=['GET'])
+@templated('settings/profile.html')
 @login_required
-def view_settings():
+def view_profile_settings():
     return {'user': g.user}
 
 
-@app.route(SETTINGS_URL, methods=['POST'])
+@app.route(PROFILE_SETTINGS_URL, methods=['POST'])
 @login_required
-def save_settings():
+def save_profile_settings():
+    name = request.form.get('name')
+    email = request.form.get('email')
+    image_url = request.form.get('image_url')
+    create_or_update_user(g.user.id, name, email, image_url)
+    return redirect(request.referrer)
+
+
+@app.route(NOTIFICATIONS_SETTINGS_URL, methods=['GET'])
+@templated('settings/notifications.html')
+@login_required
+def view_notification_settings():
+    return {'user': g.user}
+
+
+@app.route(NOTIFICATIONS_SETTINGS_URL, methods=['POST'])
+@login_required
+def save_notification_settings():
     user = g.user
 
     for field_name in user.preferences._fields:

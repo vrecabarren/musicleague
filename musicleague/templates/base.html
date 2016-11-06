@@ -49,7 +49,7 @@
                             {% if user.email == 'nathandanielcoleman@gmail.com' %}
                             <li><a href="{{ url_for('admin') }}" title="Admin"><i class="fa fa-key" style="margin-right: 10px"></i>Admin</a></li>
                             {% endif %}
-                            <li><a href="{{ url_for('view_settings') }}" title="Settings"><i class="fa fa-cog" style="margin-right: 10px"></i>Settings</a></li>
+                            <li><a href="{{ url_for('view_profile_settings') }}" title="Settings"><i class="fa fa-cog" style="margin-right: 10px"></i>Settings</a></li>
                             <li><a href="{{ url_for('logout') }}"><i class="fa fa-sign-out" style="margin-right: 10px"></i>&nbsp;Log Out</a></li>
                         </ul>
                     </li>
