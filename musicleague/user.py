@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from musicleague.errors import UserDoesNotExistError
 from musicleague.errors import UserExistsError
 from musicleague.models import User
 from musicleague.models import UserPreferences
@@ -16,18 +17,28 @@ def create_user(id, name, email, image_url):
     return new_user
 
 
+def update_user(id, name, email, image_url):
+    user = get_user(id)
+
+    if not user:
+        raise UserDoesNotExistError('User with id %s does not exist' % id)
+
+    user.id = id if id else user.id
+    user.name = name if name else user.name
+    user.email = email if email else user.email
+    user.image_url = image_url if image_url else user.image_url
+    user.save()
+    return user
+
+
 def create_or_update_user(id, name, email, image_url):
     user = get_user(id)
 
     if not user:
         user = create_user(id, name, email, image_url)
     else:
-        user.id = id if id else user.id
-        user.name = name if name else user.name
-        user.email = email if email else user.email
-        user.image_url = image_url if image_url else user.image_url
+        user = update_user(id, name, email, image_url)
 
-    user.save()
     return user
 
 
