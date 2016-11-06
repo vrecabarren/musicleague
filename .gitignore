@@ -1,3 +1,4 @@
 *.pyc
 settingslocal.py
 .idea
+/dump.rdb
