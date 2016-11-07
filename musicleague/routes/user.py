@@ -51,6 +51,11 @@ def profile():
 
 
 @app.route(SETTINGS_URL, methods=['GET'])
+@login_required
+def forward_settings():
+    return redirect(PROFILE_SETTINGS_URL)
+
+
 @app.route(PROFILE_SETTINGS_URL, methods=['GET'])
 @templated('settings/profile.html')
 @login_required
