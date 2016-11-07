@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Music League | Settings{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/toggle.min.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+            <ul class="nav nav-pills nav-stacked">
+                <li role="presentation" class="active"><a href="{{ url_for('view_profile_settings') }}">Profile</a></li>
+                <li role="presentation"><a href="{{ url_for('view_notification_settings') }}">Notifications</a></li>
+            </ul>
+        </div>
+        <div class="col-md-10">
+
+            <form method="post" class="form">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-1">
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name" value="{{ user.name }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="text" class="form-control" id="email" name="email" value="{{ user.email }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="image_url">Image URL:</label>
+                            <input type="text" class="form-control" id="image_url" name="image_url" value="{{ user.image_url }}">
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <img class="img img-rounded" src="{{ user.image_url }}" alt="{{ user.name }}" height="200">
+                    </div>
+                </div>
+
+                <div class="spacer"></div>
+
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-1">
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <a href="." class="btn btn-link">Cancel</a>
+                        <a href="{{ url_for('sync_profile_settings')}}" class="btn btn-default pull-right">Sync w&#47; Spotify</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

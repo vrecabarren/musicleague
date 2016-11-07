@@ -11,7 +11,7 @@ from spotipy import Spotify
 from musicleague import app
 from musicleague.routes.decorators import login_required
 from musicleague.spotify import get_spotify_oauth
-from musicleague.user import create_or_update_user
+from musicleague.user import create_user
 from musicleague.user import get_user
 
 
@@ -46,6 +46,8 @@ def before_request():
 
 @app.route(LOGIN_URL)
 def login():
+    # If no current login, send user through Spotify OAuth process.
+    # If current login, send user to his/her profile.
     if 'current_user' not in session:
         url = request.url
         oauth = get_spotify_oauth()
@@ -60,21 +62,26 @@ def login():
             spotify = Spotify(access_token)
             spotify_user = spotify.current_user()
             user_id = spotify_user.get('id')
-            user_email = spotify_user.get('email')
-            user_display_name = spotify_user.get('display_name', str(user_id))
-            user_images = spotify_user.get('images')
-            user_image_url = ''
-            if user_images:
-                user_image_url = user_images[0].get('url', user_image_url)
 
-            user = create_or_update_user(
-                id=user_id,
-                email=user_email,
-                name=user_display_name,
-                image_url=user_image_url)
+            user = get_user(user_id)
+
+            # If user logging in w/ Spotify does not yet exist, create it
+            if not user:
+                user_email = spotify_user.get('email')
+                user_display_name = spotify_user.get('display_name')
+                user_images = spotify_user.get('images')
+                user_image_url = ''
+                if user_images:
+                    user_image_url = user_images[0].get('url', user_image_url)
+
+                user = create_user(id=user_id, email=user_email,
+                                   name=(user_display_name or user_id),
+                                   image_url=user_image_url)
 
             session['current_user'] = user.id
 
+            # If user was going to a particular destination before logging in,
+            # send them there after login.
             if 'next_url' in session:
                 next_url = session['next_url'].decode('base64', 'strict')
                 session.pop('next_url')
