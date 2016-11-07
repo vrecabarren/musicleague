@@ -84,8 +84,8 @@ def sync_profile_settings():
     if user_images:
         user_image_url = user_images[0].get('url', user_image_url)
 
-    user = create_or_update_user(g.user.id, user_display_name, user_email,
-                                 user_image_url)
+    create_or_update_user(g.user.id, user_display_name, user_email,
+                          user_image_url)
 
     return redirect(request.referrer)
 
