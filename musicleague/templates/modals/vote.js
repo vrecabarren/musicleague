@@ -98,6 +98,7 @@ var moveToSelection = function(track) {
     track.find('.voting-controls').css('display', 'none');
     track.off("click");
     track.on("click", function() { moveToStaging($(this)); });
+    track.find($('.vote-count')).first().text("0");
     sumPoints();
     setFormState();
 };
