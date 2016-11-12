@@ -135,7 +135,6 @@ def view_votes(league_id, submission_period_id):
         'user': g.user,
         'league': league,
         'submission_period': submission_period,
-        'tracks_by_uri': tracks_by_uri,
         'results': results,
         'total_points': total_points
     }
