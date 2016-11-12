@@ -119,6 +119,7 @@ def view_votes(league_id, submission_period_id):
             points_by_uri[uri] += points
             if points:
                 votes_by_uri[uri].append(vote)
+    votes_by_uri
 
     tracks_by_uri = {track.get('uri'): track for track in tracks}
 
@@ -126,7 +127,8 @@ def view_votes(league_id, submission_period_id):
         {
             'track': tracks_by_uri.get(uri),
             'submission': submission,
-            'votes': votes_by_uri.get(uri) or [],
+            'votes': sorted(votes_by_uri[uri] or [],
+                            key=lambda v: v.votes[uri], reverse=True),
             'points': points_by_uri.get(uri) or 0
         } for uri, submission in submissions_by_uri.iteritems()]
 
