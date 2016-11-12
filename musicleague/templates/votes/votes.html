@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Music League | {{ submission_period.name }}{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    {% include "votes/header.html" %}
+
+    <div class="spacer"></div>
+
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            {% for result in results %}
+                {% set track = result['track'] %}
+                {% set uri = track['uri'] %}
+                {% set track_id = track['id'] %}
+                {% set submission = result['submission'] %}
+                {% set votes = result['votes'] %}
+                {% set points = result['points'] %}
+
+                <div class="row track">
+                    <div class="col-md-3">
+                        <img src="{{ track['album']['images'][0]['url'] }}" alt="" class="img img-rounded" height="75">
+                    </div>
+                    <div class="col-md-6">
+                        <strong>{{ track['name'] }}</strong>
+                        <br>
+                        <span class="text-muted">by {{ track['artists'][0]['name'] }}</span>
+                        <br>
+                        <span class="text-muted">Submitted by {{ submission.user.name }}</span>
+                        <br>
+                        <span style="color: #49d6ae">{{ votes|length }} user(s) voted for this</span>
+                    </div>
+                    <div class="col-md-3">
+                        <h3 style="color: #49d6ae">{{ points }} / {{ total_points }}
+                            <a style="color: inherit" role="button" data-toggle="collapse" href="#{{ track_id }}" aria-expanded="false" aria-controls="collapseExample">
+                                <i class="fa fa-chevron-down"></i>
+                            </a>
+                        </h3>
+                    </div>
+                </div>
+                <div id="{{ track_id }}" class="collapse">
+                    <div class="spacer"></div>
+                    {% for vote in votes %}
+                    <div class="row">
+                        <div class="col-md-7 col-md-offset-2"><h4>{{ vote.user.name }}</h4></div>
+                        <div class="col-md-3 text-center">
+                            <h4 style="color: #49d6ae">{{ vote.votes[uri] }}</h4>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <hr>
+
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% include "modals/edit_submission_period/edit_submission_period.html" %}
+
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript">
+{% include "modals/edit_submission_period/edit_submission_period.js" %}
+$(document).ready(function() {
+    $('[data-toggle="tooltip"]').tooltip();
+});
+</script>
+{% endblock %}

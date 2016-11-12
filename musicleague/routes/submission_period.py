@@ -1,3 +1,4 @@
+from collections import defaultdict
 from datetime import datetime
 from pytz import utc
 
@@ -22,6 +23,7 @@ MODIFY_SUBMISSION_PERIOD_URL = '/l/<league_id>/<submission_period_id>/modify/'  
 REMOVE_SUBMISSION_PERIOD_URL = '/l/<league_id>/<submission_period_id>/remove/'  # noqa
 SETTINGS_URL = '/l/<league_id>/<submission_period_id>/settings/'
 VIEW_SUBMISSION_PERIOD_URL = '/l/<league_id>/<submission_period_id>/'
+VOTES_URL = '/l/<league_id>/<submission_period_id>/votes/'
 
 
 @app.route(CREATE_SUBMISSION_PERIOD_URL)
@@ -68,7 +70,7 @@ def save_submission_period_settings(league_id, submission_period_id,
 
 
 @app.route(VIEW_SUBMISSION_PERIOD_URL)
-@templated('submission_period.html')
+@templated('submission_period/submission_period.html')
 @login_required
 def view_submission_period(league_id, submission_period_id):
     if submission_period_id is None:
@@ -87,4 +89,53 @@ def view_submission_period(league_id, submission_period_id):
         'league': league,
         'submission_period': submission_period,
         'tracks_by_uri': tracks_by_uri
+    }
+
+
+@app.route(VOTES_URL)
+@templated('votes/votes.html')
+@login_required
+def view_votes(league_id, submission_period_id):
+    if submission_period_id is None:
+        raise Exception(request.referrer)
+        return redirect(request.referrer)
+    league = get_league(league_id)
+    submission_period = get_submission_period(submission_period_id)
+    tracks = submission_period.all_tracks
+    if tracks:
+        tracks = g.spotify.tracks(submission_period.all_tracks).get('tracks')
+
+    submissions_by_uri = {}
+    for submission in submission_period.submissions:
+        for uri in submission.tracks:
+            submissions_by_uri[uri] = submission
+
+    total_points = 0
+    points_by_uri = defaultdict(int)
+    votes_by_uri = defaultdict(list)
+    for vote in submission_period.votes:
+        total_points += sum(vote.votes.values())
+        for uri, points in vote.votes.iteritems():
+            points_by_uri[uri] += points
+            votes_by_uri[uri].append(vote)
+
+    tracks_by_uri = {track.get('uri'): track for track in tracks}
+
+    results = [
+        {
+            'track': tracks_by_uri.get(uri),
+            'submission': submission,
+            'votes': votes_by_uri.get(uri) or [],
+            'points': points_by_uri.get(uri) or 0
+        } for uri, submission in submissions_by_uri.iteritems()]
+
+    results = sorted(results, key=(lambda r: r['points']), reverse=True)
+
+    return {
+        'user': g.user,
+        'league': league,
+        'submission_period': submission_period,
+        'tracks_by_uri': tracks_by_uri,
+        'results': results,
+        'total_points': total_points
     }
