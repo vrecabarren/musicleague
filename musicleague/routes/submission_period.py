@@ -3,7 +3,6 @@ from pytz import utc
 
 from flask import g
 from flask import redirect
-from flask import render_template
 from flask import request
 from flask import url_for
 
@@ -11,6 +10,7 @@ from musicleague import app
 from musicleague.league import get_league
 from musicleague.routes.decorators import league_required
 from musicleague.routes.decorators import login_required
+from musicleague.routes.decorators import templated
 from musicleague.submission_period import create_submission_period
 from musicleague.submission_period import get_submission_period
 from musicleague.submission_period import remove_submission_period
@@ -68,6 +68,7 @@ def save_submission_period_settings(league_id, submission_period_id,
 
 
 @app.route(VIEW_SUBMISSION_PERIOD_URL)
+@templated('submission_period.html')
 @login_required
 def view_submission_period(league_id, submission_period_id):
     if submission_period_id is None:
@@ -80,10 +81,10 @@ def view_submission_period(league_id, submission_period_id):
         tracks = g.spotify.tracks(submission_period.all_tracks).get('tracks')
 
     tracks_by_uri = {track.get('uri'): track for track in tracks}
-    tracks_by_url = {track.get('external_urls').get('spotify'): track
-                     for track in tracks}
 
-    return render_template(
-        'submission_period.html',
-        user=g.user, league=league, submission_period=submission_period,
-        tracks_by_uri=tracks_by_uri, tracks_by_url=tracks_by_url)
+    return {
+        'user': g.user,
+        'league': league,
+        'submission_period': submission_period,
+        'tracks_by_uri': tracks_by_uri
+    }
