@@ -117,7 +117,8 @@ def view_votes(league_id, submission_period_id):
         total_points += sum(vote.votes.values())
         for uri, points in vote.votes.iteritems():
             points_by_uri[uri] += points
-            votes_by_uri[uri].append(vote)
+            if points:
+                votes_by_uri[uri].append(vote)
 
     tracks_by_uri = {track.get('uri'): track for track in tracks}
 

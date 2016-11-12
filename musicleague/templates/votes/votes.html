@@ -35,9 +35,11 @@
                     </div>
                     <div class="col-md-3">
                         <h3 style="color: #49d6ae">{{ points }} / {{ total_points }}
+                            {% if points %}
                             <a style="color: inherit" role="button" data-toggle="collapse" href="#{{ track_id }}" aria-expanded="false" aria-controls="collapseExample">
                                 <i class="fa fa-chevron-down"></i>
                             </a>
+                            {% endif %}
                         </h3>
                     </div>
                 </div>
