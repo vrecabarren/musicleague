@@ -55,6 +55,7 @@
                         </h3>
                     </div>
                 </div>
+                {% if points %}
                 <div id="{{ track_id }}" class="votes collapse">
                     <div class="spacer"></div>
                     {% for vote in votes %}
@@ -66,6 +67,7 @@
                     </div>
                     {% endfor %}
                 </div>
+                {% endif %}
 
                 <hr>
 
