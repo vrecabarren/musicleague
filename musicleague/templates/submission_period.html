@@ -79,7 +79,7 @@
     </div>
 </div>
 
-{% include "modals/edit_submission_period.html" %}
+{% include "modals/edit_submission_period/edit_submission_period.html" %}
 
 {% endblock %}
 
@@ -90,7 +90,7 @@
 {% block js %}
 <script type="text/javascript" src="/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript">
-{% include "modals/edit_submission_period.js" %}
+{% include "modals/edit_submission_period/edit_submission_period.js" %}
 $(document).ready(function() {
     $('[data-toggle="tooltip"]').tooltip();
 

@@ -144,9 +144,9 @@
 
 </div>
 
-{% include "modals/edit_league.html" %}
-{% include "modals/submit.html" %}
-{% include "modals/vote.html" %}
+{% include "modals/edit_league/edit_league.html" %}
+{% include "modals/submit/submit.html" %}
+{% include "modals/vote/vote.html" %}
 
 {% endblock %}
 
@@ -178,12 +178,12 @@
     });
 </script>
 <script type="text/javascript">
-{% include "modals/submit.js" %}
+{% include "modals/submit/submit.js" %}
 </script>
 <script type="text/javascript">
-{% include "modals/vote.js" %}
+{% include "modals/vote/vote.js" %}
 </script>
 <script type="text/javascript">
-{% include "modals/edit_league.js" %}
+{% include "modals/edit_league/edit_league.js" %}
 </script>
 {% endblock %}
