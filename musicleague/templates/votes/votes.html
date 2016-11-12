@@ -8,8 +8,6 @@
 
     {% include "votes/header.html" %}
 
-    <!-- <div class="spacer"></div> -->
-
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <h5>
@@ -76,20 +74,4 @@
     </div>
 </div>
 
-{% include "modals/edit_submission_period/edit_submission_period.html" %}
-
-{% endblock %}
-
-{% block css %}
-    <link rel="stylesheet" href="/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
-{% endblock %}
-
-{% block js %}
-<script type="text/javascript" src="/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
-<script type="text/javascript">
-{% include "modals/edit_submission_period/edit_submission_period.js" %}
-$(document).ready(function() {
-    $('[data-toggle="tooltip"]').tooltip();
-});
-</script>
 {% endblock %}
