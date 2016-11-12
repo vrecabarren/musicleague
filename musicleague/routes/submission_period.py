@@ -23,7 +23,7 @@ MODIFY_SUBMISSION_PERIOD_URL = '/l/<league_id>/<submission_period_id>/modify/'  
 REMOVE_SUBMISSION_PERIOD_URL = '/l/<league_id>/<submission_period_id>/remove/'  # noqa
 SETTINGS_URL = '/l/<league_id>/<submission_period_id>/settings/'
 VIEW_SUBMISSION_PERIOD_URL = '/l/<league_id>/<submission_period_id>/'
-VOTES_URL = '/l/<league_id>/<submission_period_id>/votes/'
+VIEW_RESULTS_URL = '/l/<league_id>/<submission_period_id>/results/'
 
 
 @app.route(CREATE_SUBMISSION_PERIOD_URL)
@@ -92,7 +92,7 @@ def view_submission_period(league_id, submission_period_id):
     }
 
 
-@app.route(VOTES_URL)
+@app.route(VIEW_RESULTS_URL)
 @templated('votes/votes.html')
 @login_required
 def view_votes(league_id, submission_period_id):
