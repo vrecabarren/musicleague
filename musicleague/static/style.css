@@ -3,6 +3,7 @@ body {
 }
 
 .text-muted { color: #b8b8b8; }
+.text-green { color: #49d6ae; }
 
 div.spacer {
     margin: 30px 0px;
