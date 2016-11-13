@@ -58,7 +58,7 @@
             <div id="users" class="collapse well">
                 <div class="row">
                     {% for league_user in league.users %}
-                    <div class="col-xs-6 col-sm-4 text-left" style="margin-bottom: 10px">
+                    <div class="col-sm-6 col-sm-4 text-left" style="margin-bottom: 10px">
                         <a href="{{ url_for('view_user', user_id=league_user.id) }}">
                             {% if league_user.image_url|length %}
                             <img src="{{ league_user.image_url }}" alt="" class="img img-circle" height="32" width="32" style="margin-right: 10px">
