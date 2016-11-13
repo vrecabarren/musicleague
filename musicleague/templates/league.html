@@ -19,8 +19,51 @@
     </div>
 
     <div class="row">
+        <div class="col-md-8 col-md-offset-2 text-center">
+            <div class="row">
+                {% for league_user in league.users %}
+                <img src="{{ league_user.image_url }}" alt="" class="img img-circle" height="25" width="25" style="margin-right: -15px">
+                {% endfor %}
+            </div>
+            <h5 style="font-weight: inherit">
+                <a href="#users" data-toggle="collapse" class="text-muted" role="button">{{ league.users|length }} contributor(s) <i class="fa fa-chevron-down"></i></a>
+            </h5>
+            <div id="users" class="collapse well">
+                {% for league_user_row in league.users | batch(3) %}
+                <div class="row">
+                    {% for league_user in league_user_row %}
+                    <div class="col-xs-6 col-sm-4 text-left" style="margin-bottom: 10px">
+                        <a href="{{ url_for('view_user', user_id=league_user.id) }}">
+                            <img src="{{ league_user.image_url }}" alt="" class="img img-circle" height="30" width="30" style="margin-right: 10px">
+                            {{ league_user.name }}
+                        </a>
+                        {% if league.has_owner(league_user) %}
+                        <span class="text-muted">(Owner)</span>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+                <!-- {% for league_user in league.users %}
+                <div class="row">
+                    <div class="col-md-6 text-left">
+                        <a href="{{ url_for('view_user', user_id=league_user.id) }}">
+                            <img src="{{ league_user.image_url }}" alt="" class="img img-circle" height="30" style="margin-right: 10px">
+                            {{ league_user.name }}
+                        </a>
+                        {% if league.has_owner(league_user) %}
+                        <span class="text-muted">(Owner)</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %} -->
+            </div>
+        </div>
+    </div>
 
-        <div class="col-md-9">
+    <div class="row">
+
+        <div class="col-md-8 col-md-offset-2">
             <div class="spacer"></div>
 
             {% if league.has_owner(user) %}
@@ -93,55 +136,8 @@
                     </table>
                 </div>
             </div>
-
         </div>
-
-        <div class="col-xs-12 col-md-3">
-            <h3>Users</h3>
-
-            {% for league_user in league.users %}
-            <p>
-                <a href="{{ url_for('view_user', user_id=league_user.id) }}">
-                    <img src="{{ league_user.image_url }}" alt="" class="img img-circle" height="30" width="30" style="margin-right: 10px">
-                    {{ league_user.name }}
-                </a>
-                {% if league.has_owner(league_user) %}
-                <span class="text-muted">(Owner)</span>
-                {% endif %}
-                {% if league.has_owner(user) %}
-                &nbsp;
-                <a href="{{ url_for('remove_user_for_league', league_id=league.id, user_id=league_user.id) }}">
-                    <i class="fa fa-times" aria-hidden="true" style="color: red"></i>
-                </a>
-                {% endif %}
-            </p>
-            {% endfor %}
-
-            {% if league.has_owner(user) and league.invited_users %}
-                <h3>Invited</h3>
-                {% for invited_user in league.invited_users %}
-                <p>
-                    <span class="text-muted">
-                        {{ invited_user.email }}
-                    </span>
-                </p>
-                {% endfor %}
-            {% endif %}
-
-            {% if league.has_owner(user) %}
-            <form action="{{ url_for('add_user_for_league', league_id=league.id) }}" method="post" class="">
-                <div class="control-group input-group">
-                    <input type="text" class="form-control" name="email" id="add_user" placeholder="Email or Name">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                    </span>
-                </div>
-            </form>
-            {% endif %}
-        </div>
-
     </div>
-
 </div>
 
 {% include "modals/edit_league/edit_league.html" %}
