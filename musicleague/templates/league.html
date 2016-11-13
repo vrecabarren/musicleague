@@ -45,16 +45,16 @@
 
     <div class="row">
         <div class="col-md-8 col-md-offset-2 text-center">
-            <div class="row">
-                {% for league_user in league.users %}
-                {% if league_user.image_url %}
-                <img src="{{ league_user.image_url }}" alt="" class="img img-circle" height="25" width="25" style="margin-right: -15px">
-                {% endif %}
-                {% endfor %}
-            </div>
-            <h5 style="font-weight: inherit">
-                <a href="#users" data-toggle="collapse" class="text-muted" role="button">{{ league.users|length }} contributor(s) <i class="fa fa-chevron-down"></i></a>
-            </h5>
+            <a href="#users" data-toggle="collapse" class="text-muted" role="button">
+                <div class="row">
+                    {% for league_user in league.users %}
+                    {% if league_user.image_url %}
+                    <img src="{{ league_user.image_url }}" alt="" class="img img-circle" height="25" width="25" style="margin-right: -15px">
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <h5 style="font-weight: inherit">{{ league.users|length }} contributor(s) <i class="fa fa-chevron-down"></i></h5>
+            </a>
             <div id="users" class="collapse well">
                 <div class="row">
                     {% for league_user in league.users %}
