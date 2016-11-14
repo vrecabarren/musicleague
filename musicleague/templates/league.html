@@ -31,13 +31,17 @@
 
 <div class="container">
     {% if league.preferences.late_submissions and league.current_submission_period and not league.current_submission_period.accepting_submissions and not my_submission %}
-    <div class="alert alert-info alert-dismissable" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        The deadline for song selection has passed, but it looks like you haven't submitted! You may still do so <strong><a href="?action=submit">here</a></strong>.
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="alert alert-info alert-dismissable" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                The deadline for song selection has passed, but it looks like you haven't submitted! You may still do so <strong><a href="?action=submit">here</a></strong>.
+            </div>
+        </div>
     </div>
     {% endif %}
     <div class="row">
-        <div class="col-md-12 text-center">
+        <div class="col-md-8 col-md-offset-2 text-center">
             <h1>{{ league.name }}</h1>
             <p>Public League <em id="league-created" class="text-muted">Created on {{ moment(league.created).format('MMM D, YYYY') }}</em></p>
         </div>
@@ -70,7 +74,7 @@
                             {{ league_user.name }}
                         </a>
                         {% if league.has_owner(league_user) %}
-                        <span style="color: #B29600"><i class="fa fa-legal"></i></span>
+                        <span style="color: #B29600; margin-left: 5px"><i class="fa fa-legal"></i></span>
                         {% endif %}
                     </div>
                     {% endfor %}

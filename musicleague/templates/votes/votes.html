@@ -9,9 +9,9 @@
     {% include "votes/header.html" %}
 
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-8 col-md-offset-2">
             <h5>
-                <a href=".votes" class="pull-right text-green" role="button" data-toggle="collapse" aria-expanded="false">
+                <a href=".votes" class="pull-right text-primary" role="button" data-toggle="collapse" aria-expanded="false">
                     <i class="fa fa-chevron-down"></i> All
                 </a>
             </h5>
@@ -21,7 +21,7 @@
     <div class="spacer"></div>
 
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-8 col-md-offset-2">
             {% for result in results %}
                 {% set track = result['track'] %}
                 {% set uri = track['uri'] %}
@@ -41,10 +41,10 @@
                         <br>
                         <span class="text-muted">Submitted by {{ submission.user.name }}</span>
                         <br>
-                        <span class="text-green">{{ votes|length }} {% if votes|length == 1 %}person{% else %}people{% endif %} voted for this</span>
+                        <span class="text-primary">{{ votes|length }} {% if votes|length == 1 %}person{% else %}people{% endif %} voted for this</span>
                     </div>
                     <div class="col-xs-2 col-md-2 text-center">
-                        <h3 class="text-green">
+                        <h3 class="text-primary">
                             {% if points %}
                             <a style="color: inherit" role="button" data-toggle="collapse" href="#{{ track_id }}" aria-expanded="false" aria-controls="{{ track_id }}">
                                 {{ points }}<br><i class="fa fa-chevron-down"></i>
@@ -62,7 +62,7 @@
                     <div class="row">
                         <div class="col-xs-offset-3 col-xs-7 col-md-offset-3 col-md-7"><h4 style="font-weight: inherit">{{ vote.user.name }}</h4></div>
                         <div class="col-xs-2 col-md-2 text-center">
-                            <h4 class="text-green">{{ vote.votes[uri] }}</h4>
+                            <h4 class="text-primary">{{ vote.votes[uri] }}</h4>
                         </div>
                     </div>
                     {% endfor %}

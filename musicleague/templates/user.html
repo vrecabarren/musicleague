@@ -6,10 +6,10 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-3 text-center">
+        <div class="col-md-3 col-md-offset-2 text-left">
             <img class="img img-rounded" src="{{ page_user.image_url }}" alt="{{ page_user.name }}" height="200">
         </div>
-        <div class="col-md-9">
+        <div class="col-md-5">
             <h1>{{ page_user.name }}</h1>
             <p>Owns {{ owner_leagues }} league(s)</p>
             <p>Contributes to {{ contributor_leagues }} league(s)</p>
@@ -17,14 +17,14 @@
     </div>
 
     <div class="row spacer" style="display: flex; align-items: center">
-        <div class="col-md-6">
+        <div class="col-md-4 col-md-offset-2">
             {% if page_user == user %}
             <h2>Your Leagues</h2>
             {% else %}
             <h2>{{ page_user.first_name }}&rsquo;s Leagues</h2>
             {% endif %}
         </div>
-        <div class="col-md-6 text-right">
+        <div class="col-md-4 text-right">
             {% if request.url_rule.endpoint == 'profile' %}
             <a href="{{ url_for('get_create_league') }}" class="btn btn-success">Add New League</a>
             </form>
@@ -33,7 +33,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-8 col-md-offset-2">
 
             <table class="table table-hover">
                 <thead>
