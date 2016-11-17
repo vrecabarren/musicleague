@@ -23,7 +23,7 @@
         <a href="{{ url_for('create_spotify_playlist', league_id=league.id) }}" target="_blank" class="btn btn-default" data-toggle="tooltip" title="Regenerate Spotify Playlist"><i class="fa fa-repeat"></i></a>
         {% endif %}
         {% else %}
-        {% if user == league.owner and submission_period == league.current_submission_period and league.current_submission_period.submissions %}
+        {% if league.has_owner(user) and submission_period.is_current and league.current_submission_period.submissions|length %}
         <!-- If no playlist has been created, owners should be able to create one -->
         <a href="{{ url_for('create_spotify_playlist', league_id=league.id) }}" target="_blank" class="btn btn-default" data-toggle="tooltip" title="Create Spotify Playlist"><i class="fa fa-spotify"></i></a>
         {% endif %}

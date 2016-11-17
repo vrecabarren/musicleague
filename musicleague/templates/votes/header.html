@@ -1,6 +1,31 @@
 <div class="row">
-    <div class="col-md-12 text-center">
+    <div class="col-md-8 col-md-offset-2 text-center">
         <h1>{{ submission_period.name }}</h1>
         <p><a href="{{ url_for('view_league', league_id=league.id) }}">{{ league.name }}</a> <em id="submission-period-created" class="text-muted">Created on {{ moment(submission_period.created).format('MMM D, YYYY') }}</em></p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 col-md-offset-2 text-center">
+        <!-- <div class="spacer"></div> -->
+
+        {% if league.has_owner(user) %}
+        <span data-toggle="modal" data-target="#edit-modal">
+            <a href="#edit-modal" data-toggle="tooltip" data-placement="top" class="btn btn-default" title="Edit Submission Period Preferences"><i class="fa fa-gear"></i></a>
+        </span>
+        {% endif %}
+        {% if submission_period.playlist_created %}
+        <!-- Anyone should see the playlist link if one has been created -->
+        <a href="{{ submission_period.playlist_url }}" target="_blank" class="btn btn-default" data-toggle="tooltip" title="View Spotify Playlist"><i class="fa fa-spotify"></i></a>
+        {% if league.has_owner(user) %}
+        <!-- Owners should be able to regenerate the playlist from current submission period state -->
+        <a href="{{ url_for('create_spotify_playlist', league_id=league.id) }}" target="_blank" class="btn btn-default" data-toggle="tooltip" title="Regenerate Spotify Playlist"><i class="fa fa-repeat"></i></a>
+        {% endif %}
+        {% else %}
+        {% if league.has_owner(user) and submission_period.is_current and league.current_submission_period.submissions|length %}
+        <!-- If no playlist has been created, owners should be able to create one -->
+        <a href="{{ url_for('create_spotify_playlist', league_id=league.id) }}" target="_blank" class="btn btn-default" data-toggle="tooltip" title="Create Spotify Playlist"><i class="fa fa-spotify"></i></a>
+        {% endif %}
+    {% endif %}
     </div>
 </div>
