@@ -64,7 +64,7 @@ def save_submission_period_settings(league_id, submission_period_id,
     update_submission_period(submission_period_id, name, submission_due_date,
                              vote_due_date)
 
-    return redirect(url_for('view_submission_period',
+    return redirect(url_for('view_votes',
                             league_id=league_id,
                             submission_period_id=submission_period_id))
 
