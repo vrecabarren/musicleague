@@ -8,43 +8,70 @@
 
     {% include "submission_period/header.html" %}
 
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h5>
+                <a href=".votes" class="pull-right text-primary" role="button" data-toggle="collapse" aria-expanded="false">
+                    <i class="fa fa-chevron-down"></i> All
+                </a>
+            </h5>
+        </div>
+    </div>
+
     <div class="spacer"></div>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-8 col-md-offset-2">
+            {% for result in results %}
+                {% set track = result['track'] %}
+                {% set uri = track['uri'] %}
+                {% set track_id = track['id'] %}
+                {% set submission = result['submission'] %}
+                {% set votes = result['votes'] %}
+                {% set points = result['points'] %}
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th class="track {% if not submission_period.is_complete %}hidden{% endif %}">Tracks</th>
-                        <th>Submitter</th>
-                        {% for vote in submission_period.votes %}
-                        <th class="vote {% if not submission_period.is_complete %}hidden{% endif %}">{{ vote.user.name }}</th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for submission in submission_period.submissions|reverse %}
-                        {% for uri_or_url in submission.tracks %}
-                        {% set track = tracks_by_uri.get(uri_or_url) or tracks_by_url.get(uri_or_url) %}
-                        <tr{% if loop.index > 1 %} class="multirow {% if not submission_period.is_complete %}hidden{% endif %}"{% endif %}>
-                            <td class="track {% if not submission_period.is_complete %}hidden{% endif %}">
-                                {% if track %}
-                                <a href="{{ track.get('external_urls').get('spotify') }}" target="_blank">{{ track.get('name') }}</a> by <a href="{{ track.get('artists')[0].get('external_urls').get('spotify') }}" target="_blank">{{ track.get('artists')[0].get('name') }}</a>
-                                {% endif %}
-                            </td>
-                            <td>
-                                <a href="{{ url_for('view_user', user_id=submission.user.id) }}">{{ submission.user.name }}</a>
-                            </td>
-                            {% for vote in submission_period.votes %}
-                            <td class="vote {% if not submission_period.is_complete %}hidden{% endif %}">{{ vote.votes.get(track['uri']) }}</td>
-                            {% endfor %}
-                        </tr>
-                        {% endfor %}
+                <div class="row track">
+                    <div class="col-xs-3 col-md-3 text-center">
+                        <img src="{{ track['album']['images'][0]['url'] }}" alt="" class="img img-rounded" height="75">
+                    </div>
+                    <div class="col-xs-7 col-md-7">
+                        <strong>{{ track['name'] }}</strong>
+                        <br>
+                        <span class="text-muted">by {{ track['artists'][0]['name'] }}</span>
+                        <br>
+                        <span class="text-muted">Submitted by {{ submission.user.name }}</span>
+                        <br>
+                        <span class="text-primary">{{ votes|length }} {% if votes|length == 1 %}person{% else %}people{% endif %} voted for this</span>
+                    </div>
+                    <div class="col-xs-2 col-md-2 text-center">
+                        <h3 class="text-primary">
+                            {% if points %}
+                            <a style="color: inherit" role="button" data-toggle="collapse" href="#{{ track_id }}" aria-expanded="false" aria-controls="{{ track_id }}">
+                                {{ points }}<br><i class="fa fa-chevron-down"></i>
+                            </a>
+                            {% else %}
+                            {{ points }}
+                            {% endif %}
+                        </h3>
+                    </div>
+                </div>
+                {% if points %}
+                <div id="{{ track_id }}" class="votes collapse">
+                    <div class="spacer"></div>
+                    {% for vote in votes %}
+                    <div class="row">
+                        <div class="col-xs-offset-3 col-xs-7 col-md-offset-3 col-md-7"><h4 style="font-weight: inherit">{{ vote.user.name }}</h4></div>
+                        <div class="col-xs-2 col-md-2 text-center">
+                            <h4 class="text-primary">{{ vote.votes[uri] }}</h4>
+                        </div>
+                    </div>
                     {% endfor %}
-                </tbody>
-            </table>
+                </div>
+                {% endif %}
 
+                <hr>
+
+            {% endfor %}
         </div>
     </div>
 </div>

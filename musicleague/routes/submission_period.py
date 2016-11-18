@@ -23,7 +23,6 @@ MODIFY_SUBMISSION_PERIOD_URL = '/l/<league_id>/<submission_period_id>/modify/'  
 REMOVE_SUBMISSION_PERIOD_URL = '/l/<league_id>/<submission_period_id>/remove/'  # noqa
 SETTINGS_URL = '/l/<league_id>/<submission_period_id>/settings/'
 VIEW_SUBMISSION_PERIOD_URL = '/l/<league_id>/<submission_period_id>/'
-VIEW_RESULTS_URL = '/l/<league_id>/<submission_period_id>/results/'
 
 
 @app.route(CREATE_SUBMISSION_PERIOD_URL)
@@ -64,7 +63,7 @@ def save_submission_period_settings(league_id, submission_period_id,
     update_submission_period(submission_period_id, name, submission_due_date,
                              vote_due_date)
 
-    return redirect(url_for('view_votes',
+    return redirect(url_for('view_submission_period',
                             league_id=league_id,
                             submission_period_id=submission_period_id))
 
@@ -73,29 +72,6 @@ def save_submission_period_settings(league_id, submission_period_id,
 @templated('submission_period/submission_period.html')
 @login_required
 def view_submission_period(league_id, submission_period_id):
-    if submission_period_id is None:
-        raise Exception(request.referrer)
-        return redirect(request.referrer)
-    league = get_league(league_id)
-    submission_period = get_submission_period(submission_period_id)
-    tracks = submission_period.all_tracks
-    if tracks:
-        tracks = g.spotify.tracks(submission_period.all_tracks).get('tracks')
-
-    tracks_by_uri = {track.get('uri'): track for track in tracks}
-
-    return {
-        'user': g.user,
-        'league': league,
-        'submission_period': submission_period,
-        'tracks_by_uri': tracks_by_uri
-    }
-
-
-@app.route(VIEW_RESULTS_URL)
-@templated('votes/votes.html')
-@login_required
-def view_votes(league_id, submission_period_id):
     if submission_period_id is None:
         raise Exception(request.referrer)
         return redirect(request.referrer)

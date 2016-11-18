@@ -136,15 +136,15 @@
                                         {% elif user in league.users and submission_period.accepting_votes and submission_period.is_current %}
                                         <a href="#vote-modal" data-toggle="modal" data-target="#vote-modal" class="btn btn-sm btn-primary {% if league.preferences.locked %}disabled{% endif %}">Submit Votes</a>
                                         {% else %}
-                                        <a href="{{ url_for('view_votes', league_id=league.id, submission_period_id=submission_period.id) }}" class="btn btn-sm btn-default">View Results</a>
+                                        <a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}" class="btn btn-sm btn-default">View Results</a>
                                         {% endif %}
                                         {% if league.has_owner(user) %}
                                         <div style="display: inline-block" class="dropdown">
                                             <span data-toggle="tooltip" data-placement="right" title="more&nbsp;options">
                                                 <button style="border: none" type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" id="options-dropdown"><i class="fa fa-ellipsis-v"></i></button>
                                                 <ul class="dropdown-menu" aria-labelledby="options-dropdown">
-                                                    <li><a href="{{ url_for('view_votes', league_id=league.id, submission_period_id=submission_period.id, action='edit') }}">Edit Preferences</a></li>
-                                                    <li><a href="{{ url_for('view_votes', league_id=league.id, submission_period_id=submission_period.id) }}">View Submitted Songs</a></li>
+                                                    <li><a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id, action='edit') }}">Edit Preferences</a></li>
+                                                    <li><a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}">View Submission Period</a></li>
                                                     <li role="separator" class="divider"></li>
                                                     <li class="bg-danger"><a href="{{ url_for('r_remove_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}"><span class="text-danger">Delete</span></a></li>
                                                 </ul>
