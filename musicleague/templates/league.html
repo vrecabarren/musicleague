@@ -101,63 +101,74 @@
 
             <div class="spacer"></div>
 
+            {% for submission_period in league.submission_periods|reverse %}
+            {% set needs_to_submit = submission_period.acceptiong_submissions and not my_submission %}
+            {% set needs_to_vote = submission_period.accepting_votes and not my_vote %}
             <div class="row">
-                <div class="col-md-12">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Weekly Playlist</i></th>
-                                <th>Deadline</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for submission_period in league.submission_periods|reverse %}
-                                <tr>
-                                    <td>
-                                        {% if submission_period.playlist_created %}
-                                        <a href="{{ submission_period.playlist_url }}" target="_blank">{{ submission_period.name }}</a>
-                                        {% else %}
-                                        {{ submission_period.name }}
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if submission_period.is_complete %}
-                                        <i class="text-muted">Completed {{ moment(submission_period.vote_due_date).format('MMM D') }}</i>
-                                        {% elif submission_period.accepting_submissions %}
-                                        {{ moment(submission_period.submission_due_date).format('MMM D [at] ha') }}
-                                        {% elif submission_period.accepting_votes %}
-                                        {{ moment(submission_period.vote_due_date).format('MMM D [at] ha') }}
-                                        {% endif %}
-                                    </td>
-                                    <td class="text-right">
-                                        {% if user in league.users and submission_period.accepting_submissions and submission_period.is_current %}
-                                        <a href="#submit-modal" data-toggle="modal" data-target="#submit-modal" class="btn btn-sm btn-success {% if league.preferences.locked %}disabled{% endif %}">Select Songs</a>
-                                        {% elif user in league.users and submission_period.accepting_votes and submission_period.is_current %}
-                                        <a href="#vote-modal" data-toggle="modal" data-target="#vote-modal" class="btn btn-sm btn-primary {% if league.preferences.locked %}disabled{% endif %}">Submit Votes</a>
-                                        {% else %}
-                                        <a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}" class="btn btn-sm btn-default">View Results</a>
-                                        {% endif %}
-                                        {% if league.has_owner(user) %}
-                                        <div style="display: inline-block" class="dropdown">
-                                            <span data-toggle="tooltip" data-placement="right" title="more&nbsp;options">
-                                                <button style="border: none" type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" id="options-dropdown"><i class="fa fa-ellipsis-v"></i></button>
-                                                <ul class="dropdown-menu" aria-labelledby="options-dropdown">
-                                                    <li><a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id, action='edit') }}">Edit Preferences</a></li>
-                                                    <li><a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}">View Submission Period</a></li>
-                                                    <li role="separator" class="divider"></li>
-                                                    <li class="bg-danger"><a href="{{ url_for('r_remove_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}"><span class="text-danger">Delete</span></a></li>
-                                                </ul>
-                                            </span>
-                                        </div>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                <div class="col-md-1 text-right">
+                    {% if needs_to_submit or needs_to_vote %}
+                    <h1 style="color: #f0ad4e; display: inline-block; margin-top: 10px"><i class="fa fa-exclamation-circle"></i></h1>
+                    {% else %}
+                    <h1 style="color: #5cb85c; display: inline-block; margin-top: 10px"><i class="fa fa-check-circle-o"></i></h1>
+                    {% endif %}
                 </div>
+                <div class="col-md-8">
+                    <h4 style="margin-top: 10px">{{ submission_period.name }}</h4>
+                    {% if submission_period.accepting_submissions %}
+                    <h5 class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;Submissions due by {{ moment(submission_period.submission_due_date).format('dddd, MMMM D') }}</h5>
+                    <h5 class="text-muted">{{ submission_period.submissions|length }} of {{ league.users|length }} have submitted</h5>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="{{ (submission_period.submissions|length / league.users|length * 100)|int }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ (submission_period.submissions|length / league.users|length * 100)|int }}%">
+                            <span class="sr-only">{{ (submission_period.submissions|length / league.users|length * 100)|int }}% Complete (success)</span>
+                        </div>
+                    </div>
+                    {% elif submission_period.accepting_votes %}
+                    <h5 class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;Votes due by {{ moment(submission_period.vote_due_date).format('dddd, MMMM D') }}</h5>
+                    <h5 class="text-muted">{{ submission_period.votes|length }} of {{ league.users|length }} have voted</h5>
+                    <div class="progress">
+                        {{ progress_per }}
+                        <div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="{{ (submission_period.submissions|length / league.users|length * 100)|int }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ (submission_period.votes|length / league.users|length * 100)|int }}%">
+                            <span class="sr-only">{{ (submission_period.submissions|length / league.users|length * 100)|int }}% Complete (success)</span>
+                        </div>
+                    </div>
+                    {% else %}
+                    <h5 class="text-muted"><i class="fa fa-clock-o"></i>&nbsp;Completed on {{ moment(submission_period.vote_due_date).format('dddd, MMMM D') }}</h5>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                            <span class="sr-only">100% Complete (success)</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-3 text-right">
+                    {% if submission_period.accepting_submissions %}
+                    <a href="#submit-modal" data-toggle="modal" data-target="#submit-modal" class="btn btn-success">Select Songs</a>
+                    {% elif submission_period.accepting_votes %}
+                    <a href="#vote-modal" data-toggle="modal" data-target="#vote-modal" class="btn btn-primary">Submit Votes</a>
+                    <br>
+                    <a href="{{ submission_period.playlist_url }}" class="btn btn-link text-muted">View Playlist</a>
+                    {% else %}
+                    <a href="{{ url_for('view_submission_period', league_id=submission_period.league.id, submission_period_id=submission_period.id) }}" class="btn btn-default">View Results</a>
+                    <br>
+                    <a href="{{ submission_period.playlist_url }}" class="btn btn-link text-muted">View Playlist</a>
+                    {% endif %}
+                    {% if league.has_owner(user) %}
+                    <br>
+                    <a class="btn btn-link text-muted dropdown-toggle" data-toggle="dropdown" id="options-dropdown">Admin</a>
+                    <ul class="dropdown-menu" aria-labelledby="options-dropdown">
+                        <li><a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id, action='edit') }}">Edit Preferences</a></li>
+                        <li><a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}">View Submission Period</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li class="bg-danger"><a href="{{ url_for('r_remove_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}"><span class="text-danger">Delete</span></a></li>
+                    </ul>
+                    {% endif %}
+                </div>
+
             </div>
+
+            <hr>
+
+            {% endfor %}
         </div>
     </div>
 </div>
