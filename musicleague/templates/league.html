@@ -102,7 +102,7 @@
             <div class="spacer"></div>
 
             {% for submission_period in league.submission_periods|reverse %}
-            {% set needs_to_submit = submission_period.acceptiong_submissions and not my_submission %}
+            {% set needs_to_submit = submission_period.accepting_submissions and not my_submission %}
             {% set needs_to_vote = submission_period.accepting_votes and not my_vote %}
             <div class="row">
                 <div class="col-xs-2 col-md-1 text-right">
