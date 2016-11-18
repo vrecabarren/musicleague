@@ -105,14 +105,14 @@
             {% set needs_to_submit = submission_period.acceptiong_submissions and not my_submission %}
             {% set needs_to_vote = submission_period.accepting_votes and not my_vote %}
             <div class="row">
-                <div class="col-md-1 text-right">
+                <div class="col-xs-2 col-md-1 text-right">
                     {% if needs_to_submit or needs_to_vote %}
                     <h1 style="color: #f0ad4e; display: inline-block; margin-top: 10px"><i class="fa fa-exclamation-circle"></i></h1>
                     {% else %}
                     <h1 style="color: #5cb85c; display: inline-block; margin-top: 10px"><i class="fa fa-check-circle-o"></i></h1>
                     {% endif %}
                 </div>
-                <div class="col-md-8">
+                <div class="col-xs-10 col-md-8">
                     <h4 style="margin-top: 10px">{{ submission_period.name }}</h4>
                     {% if submission_period.accepting_submissions %}
                     <h5 class="text-muted" style="font-weight: inherit"><i class="fa fa-clock-o"></i>&nbsp;Submissions due by {{ moment(submission_period.submission_due_date).format('dddd, MMMM D') }}</h5>
@@ -140,7 +140,7 @@
                     </div>
                     {% endif %}
                 </div>
-                <div class="col-md-3 text-right">
+                <div class="col-xs-2 col-xs-offset-2 col-md-3 col-md-offset-0 text-right">
                     {% if submission_period.accepting_submissions %}
                     <a href="#submit-modal" data-toggle="modal" data-target="#submit-modal" class="btn btn-success">Select Songs</a>
                     {% elif submission_period.accepting_votes %}
