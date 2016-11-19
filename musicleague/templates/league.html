@@ -86,9 +86,11 @@
     <div class="row">
 
         <div class="col-md-8 col-md-offset-2">
-            <div class="spacer"></div>
 
             {% if league.has_owner(user) %}
+            <span data-toggle="modal" data-target="#add-user-modal">
+                <a href="#add-user-modal" data-toggle="tooltip" data-placement="top" class="btn btn-default" title="Edit League Members"><i class="fa fa-user"></i></a>
+            </span>
             <span data-toggle="modal" data-target="#edit-modal">
                 <a href="#edit-modal" data-toggle="tooltip" data-placement="top" class="btn btn-default" title="Edit League Preferences"><i class="fa fa-gear"></i></a>
             </span>
@@ -173,7 +175,10 @@
     </div>
 </div>
 
+{% if league.has_owner(user) %}
+{% include "modals/add_user/add_user.html" %}
 {% include "modals/edit_league/edit_league.html" %}
+{% endif %}
 {% include "modals/submit/submit.html" %}
 {% include "modals/vote/vote.html" %}
 
@@ -206,13 +211,13 @@
         {% endif %}
     });
 </script>
+
 <script type="text/javascript">
-{% include "modals/submit/submit.js" %}
-</script>
-<script type="text/javascript">
-{% include "modals/vote/vote.js" %}
-</script>
-<script type="text/javascript">
+{% if league.has_owner(user) %}
+{% include "modals/add_user/add_user.js" %}
 {% include "modals/edit_league/edit_league.js" %}
+{% endif %}
+{% include "modals/submit/submit.js" %}
+{% include "modals/vote/vote.js" %}
 </script>
 {% endblock %}

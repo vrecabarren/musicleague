@@ -1,0 +1,56 @@
+<div class="modal fade" role="dialog" id="add-user-modal" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title text-center" id="myModalLabel">Edit League Members</h4>
+                <div class="spacer"></div>
+                <div class="col-md-8 col-md-offset-2">
+                    <input type="text" id="add_user" class="form-control" style="border-radius: 30px" placeholder="Search users by name">
+                </div>
+            </div>
+            <div class="modal-body">
+                {% for league_user in league.users %}
+                <div class="row">
+                    <div class="col-md-1 col-md-offset-1 text-right">
+                        <img src="{{ league_user.image_url }}" alt="{{ league_user.name }}" class="img img-circle" height="30" width="30">
+                    </div>
+                    <div class="col-md-8">
+                        <span class="lead">{{ league_user.name }}</span>
+                    </div>
+                    <div class="col-md-1 text-right">
+                        {% if league.has_owner(league_user) %}
+                        <span class="lead"><i class="fa fa-legal" style="color: #B29600"></i></span>
+                        {% else %}
+                        <a href="{{ url_for('remove_user_for_league', league_id=league.id, user_id=league_user.id) }}" class="lead"><i class="fa fa-times text-danger"></i></a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if not loop.last or (loop.last and league.invited_users|length) %}<hr class="col-md-10 col-md-offset-1">{% endif %}
+                {% endfor %}
+                {% for invited_user in league.invited_users %}
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <span class="lead text-muted">{{ invited_user.email }}</span>
+                    </div>
+                    <div class="col-md-1 text-right">
+                        <span class="lead text-muted"><i class="fa fa-envelope-o"></i></span>
+                    </div>
+                </div>
+                {% if not loop.last %}<hr class="col-md-10 col-md-offset-1">{% endif %}
+                {% endfor %}
+                <div class="spacer"></div>
+            </div>
+            <div class="modal-footer text-center" style="background-color: #ececec">
+                <form action="{{ url_for('add_user_for_league', league_id=league.id) }}" method="post" class="text-center">
+                    <div class="form-group col-md-10 col-md-offset-1">
+                        <input type="text" name="email" class="form-control" placeholder="Not listed above? Invite by email address...">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Invite New Member</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
