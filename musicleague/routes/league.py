@@ -33,7 +33,8 @@ def add_user_for_league(league_id, **kwargs):
     user_email = request.form.get('email')
     if league.has_owner(g.user):
         add_user(league, user_email)
-    return redirect(url_for('view_league', league_id=league_id))
+    return redirect(
+        url_for('view_league', league_id=league_id, action='users'))
 
 
 @app.route(REMOVE_USER_FOR_LEAGUE_URL, methods=['GET'])

@@ -42,7 +42,8 @@ vertical-align: middle;
 }
 
 .fade-wrapper > .fade-inner {
-    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: scroll;
     padding-bottom: 50px;
 }
 

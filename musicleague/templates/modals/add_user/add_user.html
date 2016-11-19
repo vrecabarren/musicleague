@@ -5,21 +5,23 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title text-center" id="myModalLabel">Edit League Members</h4>
                 <div class="spacer"></div>
-                <div class="col-md-8 col-md-offset-2">
-                    <input type="text" id="add_user" class="form-control" style="border-radius: 30px" placeholder="Search users by name">
+                <div class="row">
+                    <div class="col-xs-8 col-xs-offset-2">
+                        <input type="text" id="add_user" class="form-control" style="border-radius: 30px" placeholder="Add users by name">
+                    </div>
                 </div>
             </div>
             <div class="modal-body fade-wrapper">
                 <div class="fade-inner" style="height: 400px">
                     {% for league_user in league.users %}
                     <div class="row">
-                        <div class="col-md-1 col-md-offset-1 text-right">
+                        <div class="hidden-xs col-sm-1 col-sm-offset-1">
                             <img src="{{ league_user.image_url }}" alt="{{ league_user.name }}" class="img img-circle" height="30" width="30">
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-xs-10 col-sm-7">
                             <span class="lead">{{ league_user.name }}</span>
                         </div>
-                        <div class="col-md-1 text-right">
+                        <div class="col-xs-2 text-right">
                             {% if league.has_owner(league_user) %}
                             <span class="lead"><i class="fa fa-legal" style="color: #B29600"></i></span>
                             {% else %}
@@ -27,18 +29,18 @@
                             {% endif %}
                         </div>
                     </div>
-                    {% if not loop.last or (loop.last and league.invited_users|length) %}<hr class="col-md-10 col-md-offset-1">{% endif %}
+                    {% if not loop.last or (loop.last and league.invited_users|length) %}<div class="row"><div class="col-xs-12 col-sm-10 col-sm-offset-1"><hr></div></div>{% endif %}
                     {% endfor %}
                     {% for invited_user in league.invited_users %}
                     <div class="row">
-                        <div class="col-md-8 col-md-offset-2">
+                        <div class="col-xs-10 col-sm-7 col-sm-offset-2">
                             <span class="lead text-muted">{{ invited_user.email }}</span>
                         </div>
-                        <div class="col-md-1 text-right">
+                        <div class="col-xs-2 text-right">
                             <span class="lead text-muted"><i class="fa fa-envelope-o"></i></span>
                         </div>
                     </div>
-                    {% if not loop.last %}<hr class="col-md-10 col-md-offset-1">{% endif %}
+                    {% if not loop.last %}<div class="row"><div class="col-xs-12 col-sm-10 col-sm-offset-1"><hr></div></div>{% endif %}
                     {% endfor %}
                     <div class="spacer"></div>
                 </div>
