@@ -57,7 +57,7 @@
                     {% endif %}
                     {% endfor %}
                 </div>
-                <h5 style="font-weight: inherit">{{ league.users|length }} contributor(s) <i class="fa fa-chevron-down"></i></h5>
+                <h5 style="font-weight: inherit">{{ league.users|length }} member(s) <i class="fa fa-chevron-down"></i></h5>
             </a>
             <div id="users" class="collapse well">
                 <div class="row">
@@ -88,8 +88,8 @@
         <div class="col-md-8 col-md-offset-2">
 
             {% if league.has_owner(user) %}
-            <span data-toggle="modal" data-target="#add-user-modal">
-                <a href="#add-user-modal" data-toggle="tooltip" data-placement="top" class="btn btn-default" title="Edit League Members"><i class="fa fa-user"></i></a>
+            <span data-toggle="modal" data-target="#members-modal">
+                <a href="#members-modal" data-toggle="tooltip" data-placement="top" class="btn btn-default" title="Edit League Members"><i class="fa fa-user"></i></a>
             </span>
             <span data-toggle="modal" data-target="#edit-modal">
                 <a href="#edit-modal" data-toggle="tooltip" data-placement="top" class="btn btn-default" title="Edit League Preferences"><i class="fa fa-gear"></i></a>
@@ -175,7 +175,7 @@
     </div>
 </div>
 
-{% include "modals/add_user/add_user.html" %}
+{% include "modals/members/members.html" %}
 {% include "modals/edit_league/edit_league.html" %}
 {% include "modals/submit/submit.html" %}
 {% include "modals/vote/vote.html" %}
@@ -193,13 +193,13 @@
         $('#vote-modal').modal('show');
         {% elif request.args.get('action') == 'edit' %}
         $('#edit-modal').modal('show');
-        {% elif request.args.get('action') == 'users' %}
-        $('#add-user-modal').modal('show');
+        {% elif request.args.get('action') == 'members' %}
+        $('#members-modal').modal('show');
         {% endif %}
     });
 </script>
 <script type="text/javascript">
-{% include "modals/add_user/add_user.js" %}
+{% include "modals/members/members.js" %}
 {% include "modals/edit_league/edit_league.js" %}
 {% include "modals/submit/submit.js" %}
 {% include "modals/vote/vote.js" %}
