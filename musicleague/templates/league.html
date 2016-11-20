@@ -137,7 +137,7 @@
                     {% if submission_period.is_complete %}
                         {% set progress_bar_type = "progress-bar-success" %}
                         {% set due_date_text = "Completed on " %}
-                        {% set due_date = moment(submission_period.submission_due_date).format('dddd, MMMM D') %}
+                        {% set due_date = moment(submission_period.vote_due_date).format('dddd, MMMM D') %}
                         {% set progress = 100 %}
                     {% elif submission_period.accepting_submissions %}
                         {% set progress_bar_type = "progress-bar-success" %}
