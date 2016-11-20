@@ -29,7 +29,10 @@ VIEW_USER_URL = '/user/<user_id>/'
 def autocomplete():
     term = request.args.get('term')
     results = User.objects(name__istartswith=term).all()
-    results = [{'label': user.name, 'value': user.email} for user in results]
+    results = [{'name': user.name,
+                'id': user.id,
+                'email': user.email,
+                'image_url': user.image_url} for user in results]
     return json.dumps(results)
 
 
