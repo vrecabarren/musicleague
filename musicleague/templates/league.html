@@ -108,11 +108,22 @@
             {% set needs_to_vote = submission_period.accepting_votes and not my_vote %}
             <div class="row">
                 <div class="col-xs-2 col-md-1 text-right">
-                    {% if needs_to_submit or needs_to_vote %}
-                    <h1 style="color: #f0ad4e; display: inline-block; margin-top: 10px"><i class="fa fa-exclamation-circle"></i></h1>
-                    {% else %}
-                    <h1 style="color: #5cb85c; display: inline-block; margin-top: 10px"><i class="fa fa-check-circle-o"></i></h1>
+                    {% if not needs_to_submit and not needs_to_vote %}
+                        {% set message = "No action required" %}
+                        {% set color = "#5cb85c" %}
+                        {% set icon = "fa-check-circle-o" %}
+                    {% elif needs_to_submit %}
+                        {% set message = "Please select your songs" %}
+                        {% set color = "#f0ad4e" %}
+                        {% set icon = "fa-exclamation-circle" %}
+                    {% elif needs_to_vote %}
+                        {% set message = "Please submit your votes" %}
+                        {% set color = "#f0ad4e" %}
+                        {% set icon = "fa-exclamation-circle" %}
                     {% endif %}
+
+                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="{{ message }}"><h1 style="color: {{ color }}; display: inline-block; margin-top: 10px"><i class="fa {{ icon }}"></i></h1><a>
+
                 </div>
                 <div class="col-xs-10 col-md-8">
                     <h4 style="margin-top: 10px">{{ submission_period.name }}</h4>
@@ -144,7 +155,12 @@
                 </div>
                 <div class="col-xs-2 col-xs-offset-2 col-md-3 col-md-offset-0 text-right">
                     {% if submission_period.accepting_submissions %}
-                    <a href="#submit-modal" data-toggle="modal" data-target="#submit-modal" class="btn btn-success">Select Songs</a>
+                        {% if my_submission %}
+                            {% set message = "Change Selection" %}
+                        {% else %}
+                            {% set message = "Select Songs" %}
+                        {% endif %}
+                    <a href="#submit-modal" data-toggle="modal" data-target="#submit-modal" class="btn btn-success">{{ message }}</a>
                     {% elif submission_period.accepting_votes %}
                     <a href="#vote-modal" data-toggle="modal" data-target="#vote-modal" class="btn btn-primary">Submit Votes</a>
                     <br>
