@@ -104,8 +104,8 @@
             <div class="spacer"></div>
 
             {% for submission_period in league.submission_periods|reverse %}
-            {% set needs_to_submit = submission_period.accepting_submissions and not my_submission %}
-            {% set needs_to_vote = submission_period.accepting_votes and not my_vote %}
+            {% set needs_to_submit = league.has_user(user) and submission_period.accepting_submissions and not my_submission %}
+            {% set needs_to_vote = league.has_user(user) and submission_period.accepting_votes and not my_vote %}
             <div class="row">
                 <div class="col-xs-2 col-md-1 text-right">
                     {% if not needs_to_submit and not needs_to_vote %}
@@ -154,14 +154,14 @@
                     {% endif %}
                 </div>
                 <div class="col-xs-2 col-xs-offset-2 col-md-3 col-md-offset-0 text-right">
-                    {% if submission_period.accepting_submissions %}
+                    {% if league.has_user(user) and submission_period.accepting_submissions %}
                         {% if my_submission %}
                             {% set message = "Change Selection" %}
                         {% else %}
                             {% set message = "Select Songs" %}
                         {% endif %}
                     <a href="#submit-modal" data-toggle="modal" data-target="#submit-modal" class="btn btn-success">{{ message }}</a>
-                    {% elif submission_period.accepting_votes %}
+                    {% elif league.has_user(user) and submission_period.accepting_votes %}
                     <a href="#vote-modal" data-toggle="modal" data-target="#vote-modal" class="btn btn-primary">Submit Votes</a>
                     <br>
                     <a href="{{ submission_period.playlist_url }}" class="btn btn-link text-muted" target="_blank">View Playlist</a>
