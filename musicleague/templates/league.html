@@ -104,8 +104,8 @@
             <div class="spacer"></div>
 
             {% for submission_period in league.submission_periods|reverse %}
-            {% set needs_to_submit = submission_period.accepting_submissions and not my_submission %}
-            {% set needs_to_vote = submission_period.accepting_votes and not my_vote %}
+            {% set needs_to_submit = league.has_user(user) and submission_period.accepting_submissions and not my_submission %}
+            {% set needs_to_vote = league.has_user(user) and submission_period.accepting_votes and not my_vote %}
             <div class="row">
                 <div class="col-xs-2 col-md-1 text-right">
                     {% if not league.has_user(user) %}
@@ -134,39 +134,46 @@
 
                 </div>
                 <div class="col-xs-10 col-md-8">
-                    <h4 style="margin-top: 10px">{{ submission_period.name }}</h4>
-                    {% if submission_period.accepting_submissions %}
-                    <h5 class="text-muted" style="font-weight: inherit"><i class="fa fa-clock-o"></i>&nbsp;Submissions due by {{ moment(submission_period.submission_due_date).format('dddd, MMMM D') }}</h5>
-                    <h5 class="text-muted" style="font-weight: inherit">{{ submission_period.submissions|length }} of {{ league.users|length }} have submitted</h5>
-                    <div class="progress">
-                        <div class="progress-bar {% if needs_to_submit %}progress-bar-warning{% else %}progress-bar-success{% endif %} progress-bar-striped" role="progressbar" aria-valuenow="{{ (submission_period.submissions|length / league.users|length * 100)|int }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ (submission_period.submissions|length / league.users|length * 100)|int }}%">
-                            <span class="sr-only">{{ (submission_period.submissions|length / league.users|length * 100)|int }}% Complete (success)</span>
-                        </div>
-                    </div>
+                    {% if submission_period.is_complete %}
+                        {% set progress_bar_type = "progress-bar-success" %}
+                        {% set due_date_text = "Completed on " %}
+                        {% set due_date = moment(submission_period.submission_due_date).format('dddd, MMMM D') %}
+                        {% set progress = 100 %}
+                    {% elif submission_period.accepting_submissions %}
+                        {% set progress_bar_type = "progress-bar-success" %}
+                        {% if needs_to_submit %}
+                            {% set progress_bar_type = "progress-bar-warning" %}
+                        {% endif %}
+                        {% set due_date_text = "Submissions due by " %}
+                        {% set due_date = moment(submission_period.submission_due_date).format('dddd, MMMM D') %}
+                        {% set progress_perc = (submission_period.submissions|length / league.users|length * 100)|int %}
+                        {% set progress_count = submission_period.submissions|length %}
+                        {% set progress_action = "submitted" %}
                     {% elif submission_period.accepting_votes %}
-                    <h5 class="text-muted" style="font-weight: inherit"><i class="fa fa-clock-o"></i>&nbsp;Votes due by {{ moment(submission_period.vote_due_date).format('dddd, MMMM D') }}</h5>
-                    <h5 class="text-muted" style="font-weight: inherit">{{ submission_period.votes|length }} of {{ league.users|length }} have voted</h5>
-                    <div class="progress">
-                        {{ progress_per }}
-                        <div class="progress-bar {% if needs_to_vote %}progress-bar-warning{% else %}progress-bar-success{% endif %} progress-bar-striped" role="progressbar" aria-valuenow="{{ (submission_period.submissions|length / league.users|length * 100)|int }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ (submission_period.votes|length / league.users|length * 100)|int }}%">
-                            <span class="sr-only">{{ (submission_period.submissions|length / league.users|length * 100)|int }}% Complete (success)</span>
-                        </div>
-                    </div>
-                    {% else %}
-                    <h5 class="text-muted" style="font-weight: inherit"><i class="fa fa-clock-o"></i>&nbsp;Completed on {{ moment(submission_period.vote_due_date).format('dddd, MMMM D') }}</h5>
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                            <span class="sr-only">100% Complete (success)</span>
-                        </div>
-                    </div>
+                        {% set progress_bar_type = "progress-bar-success" %}
+                        {% if needs_to_vote %}
+                            {% set progress_bar_type = "progress-bar-warning" %}
+                        {% endif %}
+                        {% set due_date_text = "Votes due by " %}
+                        {% set due_date = moment(submission_period.vote_due_date).format('dddd, MMMM D') %}
+                        {% set progress_perc = (submission_period.votes|length / league.users|length * 100)|int %}
+                        {% set progress_count = submission_period.votes|length %}
+                        {% set progress_action = "voted" %}
                     {% endif %}
+                    <h4 style="margin-top: 10px">{{ submission_period.name }}</h4>
+                    <h5 class="text-muted" style="font-weight: inherit"><i class="fa fa-clock-o"></i>&nbsp;{{ due_date_text + due_date }}</h5>
+                    {% if not submission_period.is_complete %}<h5 class="text-muted" style="font-weight: inherit">{{ progress_count }} of {{ league.users|length }} have {{ progress_action}}</h5>{% endif %}
+                    <div class="progress">
+                        <div class="progress-bar {{ progress_bar_type }} progress-bar-striped" role="progressbar" aria-valuenow="{{ progress_perc }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress_perc }}%">
+                            <span class="sr-only">{{ progress_perc }}% Complete</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-xs-2 col-xs-offset-2 col-md-3 col-md-offset-0 text-right">
                     {% if league.has_user(user) and submission_period.accepting_submissions %}
+                        {% set message = "Select Songs" %}
                         {% if my_submission %}
                             {% set message = "Change Selection" %}
-                        {% else %}
-                            {% set message = "Select Songs" %}
                         {% endif %}
                     <a href="#submit-modal" data-toggle="modal" data-target="#submit-modal" class="btn btn-success">{{ message }}</a>
                     {% elif league.has_user(user) and submission_period.accepting_votes %}
