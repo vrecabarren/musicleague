@@ -103,7 +103,7 @@
 
             <div class="spacer"></div>
 
-            {% if not league.submission_periods|length %}
+            {% if league.has_owner(user) and not league.submission_periods|length %}
             <div class="text-muted text-center" style="border: 3px dashed #b8b8b8; border-radius: 10px; padding: 30px;">
                 <span class="lead text-center">You don't have any submission periods.</span>
                 <hr>
