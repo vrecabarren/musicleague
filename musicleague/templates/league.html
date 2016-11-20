@@ -164,11 +164,11 @@
                     {% elif submission_period.accepting_votes %}
                     <a href="#vote-modal" data-toggle="modal" data-target="#vote-modal" class="btn btn-primary">Submit Votes</a>
                     <br>
-                    <a href="{{ submission_period.playlist_url }}" class="btn btn-link text-muted">View Playlist</a>
+                    <a href="{{ submission_period.playlist_url }}" class="btn btn-link text-muted" target="_blank">View Playlist</a>
                     {% else %}
                     <a href="{{ url_for('view_submission_period', league_id=submission_period.league.id, submission_period_id=submission_period.id) }}" class="btn btn-default">View Results</a>
                     <br>
-                    <a href="{{ submission_period.playlist_url }}" class="btn btn-link text-muted">View Playlist</a>
+                    <a href="{{ submission_period.playlist_url }}" class="btn btn-link text-muted" target="_blank">View Playlist</a>
                     {% endif %}
                     {% if league.has_owner(user) %}
                     <br>
