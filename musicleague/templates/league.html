@@ -30,7 +30,7 @@
 {% block content %}
 
 <div class="container">
-    {% if league.preferences.late_submissions and league.current_submission_period and not league.current_submission_period.accepting_submissions and not my_submission and league.current_submission_period.accepting_votes %}
+    {% if league.has_user(user) and league.preferences.late_submissions and league.current_submission_period and not league.current_submission_period.accepting_submissions and not my_submission and league.current_submission_period.accepting_votes %}
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="alert alert-info alert-dismissable" role="alert">
