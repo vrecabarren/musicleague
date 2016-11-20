@@ -208,7 +208,7 @@
                 $.post("{{ url_for('add_user_for_league', league_id=league.id) }}",
                     {email: ui.item.value},
                     function(data, textStatus, xhr){
-                        window.location.href = window.location.href;
+                        location.reload();
                     }
                 );
                 return false;
