@@ -109,24 +109,28 @@
             <div class="row">
                 <div class="col-xs-2 col-md-1 text-right">
                     {% if not league.has_user(user) %}
-                        {% set message = "You are only viewing" %}
+                        {% set title = "Viewing Only" %}
+                        {% set content = "You are not currently a contributor to this league." %}
                         {% set color = "#b8b8b8" %}
                         {% set icon = "fa-eye" %}
                     {% elif not needs_to_submit and not needs_to_vote %}
-                        {% set message = "No action required" %}
+                        {% set title = "Complete" %}
+                        {% set content = "No action required at this time." %}
                         {% set color = "#5cb85c" %}
                         {% set icon = "fa-check-circle-o" %}
                     {% elif needs_to_submit %}
-                        {% set message = "Please select your songs" %}
+                        {% set title = "Submission Needed" %}
+                        {% set content = "Please select your songs by the due date shown." %}
                         {% set color = "#f0ad4e" %}
                         {% set icon = "fa-exclamation-circle" %}
                     {% elif needs_to_vote %}
-                        {% set message = "Please submit your votes" %}
+                        {% set title = "Votes Needed" %}
+                        {% set content = "Please submit your votes by the due date shown." %}
                         {% set color = "#f0ad4e" %}
                         {% set icon = "fa-exclamation-circle" %}
                     {% endif %}
 
-                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="{{ message }}"><h1 style="color: {{ color }}; display: inline-block; margin-top: 10px"><i class="fa {{ icon }}"></i></h1><a>
+                    <a href="#" data-toggle="popover" data-trigger="focus" data-container="body" data-placement="bottom" title="{{ title }}" data-content="{{ content }}"><h1 style="color: {{ color }}; display: inline-block; margin-top: 10px"><i class="fa {{ icon }}"></i></h1></a>
 
                 </div>
                 <div class="col-xs-10 col-md-8">
@@ -207,6 +211,7 @@
     $(document).ready(function(){
         $('[data-toggle="popover"]').popover();
         $('[data-toggle="tooltip"]').tooltip();
+
         {% if request.args.get('action') == 'submit' %}
         $('#submit-modal').modal('show');
         {% elif request.args.get('action') == 'vote' %}
