@@ -57,7 +57,7 @@
                     {% endif %}
                     {% endfor %}
                 </div>
-                <h5 style="font-weight: inherit">{{ league.users|length }} member(s) <i class="fa fa-chevron-down"></i></h5>
+                <h5 style="font-weight: inherit">{{ league.users|length }} member{% if league.users|length != 1 %}s{% endif %} <i class="fa fa-chevron-down"></i></h5>
             </a>
             <div id="users" class="collapse well">
                 <div class="row">
