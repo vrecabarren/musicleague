@@ -104,11 +104,15 @@
             <div class="spacer"></div>
 
             {% for submission_period in league.submission_periods|reverse %}
-            {% set needs_to_submit = league.has_user(user) and submission_period.accepting_submissions and not my_submission %}
-            {% set needs_to_vote = league.has_user(user) and submission_period.accepting_votes and not my_vote %}
+            {% set needs_to_submit = submission_period.accepting_submissions and not my_submission %}
+            {% set needs_to_vote = submission_period.accepting_votes and not my_vote %}
             <div class="row">
                 <div class="col-xs-2 col-md-1 text-right">
-                    {% if not needs_to_submit and not needs_to_vote %}
+                    {% if not league.has_user(user) %}
+                        {% set message = "You are only viewing" %}
+                        {% set color = "#b8b8b8" %}
+                        {% set icon = "fa-eye" %}
+                    {% elif not needs_to_submit and not needs_to_vote %}
                         {% set message = "No action required" %}
                         {% set color = "#5cb85c" %}
                         {% set icon = "fa-check-circle-o" %}
