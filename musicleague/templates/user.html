@@ -38,7 +38,11 @@
                         {% endfor %}
                     </div>
                     <span class="text-muted">
-                        {{ league.users[:3]|map(attribute='name')|join(', ') }}{% if league.users|length > 3 %} and <a href="#" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="{{ league.users|map(attribute='name')|join(', ') }}">{{ league.users[3:]|length }} other members</a>{% endif %}
+                        {{ league.users[:3]|map(attribute='name')|join(', ') }}
+                        {% if league.users|length > 3 %}
+                        and
+                        <a href="#" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="{{ league.users|map(attribute='name')|join('<br>') }}">{{ league.users[3:]|length }} other members</a>
+                        {% endif %}
                     </span>
                 </div>
             </div>
