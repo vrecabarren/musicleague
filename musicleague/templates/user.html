@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Music League | User{% endblock %}
+{% block title %}Music League | {{ page_user.name }}{% endblock %}
 
 {% block content %}
 
@@ -33,7 +33,7 @@
                     <h3 style="margin-top: inherit">{{ league.name }}</h3>
                     <span class="text-muted">Created by <a href="{{ url_for('view_user', user_id=league.owner.id) }}" title="{{ league.owner.name }}">{{ league.owner.first_name }}</a> on {{ moment(league.created).format('MMMM D, YYYY') }}</span>
                     <div style="margin: 10px 0px">
-                        {% for user in league.users %}
+                        {% for user in league.users if user.image_url %}
                         <img src="{{ user.image_url }}" alt="" class="img img-circle" height="25" width="25" style="margin-right: -15px">
                         {% endfor %}
                     </div>
