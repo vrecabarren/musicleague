@@ -47,7 +47,7 @@ def profile():
         if league.current_submission_period:
             tracks.extend(league.current_submission_period.all_tracks[:3])
 
-    tracks = g.spotify.tracks(tracks).get('tracks')
+    tracks = g.spotify.tracks(tracks).get('tracks') if tracks else []
     tracks_by_uri = {track['uri']: track for track in tracks}
 
     images = g.spotify.user(str(page_user.id)).get('images')
@@ -135,7 +135,7 @@ def view_user(user_id):
         if league.current_submission_period:
             tracks.extend(league.current_submission_period.all_tracks[:3])
 
-    tracks = g.spotify.tracks(tracks).get('tracks')
+    tracks = g.spotify.tracks(tracks).get('tracks') if tracks else []
     tracks_by_uri = {track['uri']: track for track in tracks}
 
     images = g.spotify.user(user_id).get('images')
