@@ -6,6 +6,14 @@
 
 <div class="container">
     <div class="row">
+        <div class="col-md-8 col-md-offset-2 text-center">
+            <h1>{{ page_user.name }}</h1>
+            <p class="text-muted">Owns {{ owner_leagues }} league(s)</p>
+            <p class="text-muted">Contributes to {{ contributor_leagues }} league(s)</p>
+            <img class="img img-circle" src="{{ page_user.image_url }}" alt="{{ page_user.name }}" height="100">
+        </div>
+    </div>
+    <!-- <div class="row">
         <div class="col-md-3 col-md-offset-2 text-left">
             <img class="img img-rounded" src="{{ page_user.image_url }}" alt="{{ page_user.name }}" height="200">
         </div>
@@ -14,53 +22,38 @@
             <p>Owns {{ owner_leagues }} league(s)</p>
             <p>Contributes to {{ contributor_leagues }} league(s)</p>
         </div>
-    </div>
+    </div> -->
 
-    <div class="row spacer" style="display: flex; align-items: center">
-        <div class="col-md-4 col-md-offset-2">
-            {% if page_user == user %}
-            <h2>Your Leagues</h2>
-            {% else %}
-            <h2>{{ page_user.first_name }}&rsquo;s Leagues</h2>
-            {% endif %}
-        </div>
-        <div class="col-md-4 text-right">
-            {% if request.url_rule.endpoint == 'profile' %}
-            <a href="{{ url_for('get_create_league') }}" class="btn btn-success">Add New League</a>
-            </form>
-            {% endif %}
+    {% if page_user == user %}
+    <div class="spacer"></div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <a href="{{ url_for('get_create_league') }}" class="btn btn-default">Add New League</a>
         </div>
     </div>
+    <div class="spacer"></div>
+    {% endif %}
 
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
+            {% for league in leagues %}
+            <div class="row linked" data-href="{{ url_for('view_league', league_id=league.id) }}">
+                <div class="col-md-12">
+                    <h3 style="margin-top: inherit">{{ league.name }}</h3>
+                    <span class="text-muted">Created by <a href="{{ url_for('view_user', user_id=league.owner.id) }}">{{ league.owner.first_name }}</a> on {{ moment(league.created).format('MMMM D, YYYY') }}</span>
+                    <div style="margin: 10px 0px">
+                        {% for user in league.users %}
+                        <img src="{{ user.image_url }}" alt="" class="img img-circle" height="25" width="25" style="margin-right: -15px">
+                        {% endfor %}
+                    </div>
+                    <span class="text-muted">
+                        {{ league.users[:3]|map(attribute='name')|join(', ') }}{% if league.users|length > 3 %} and {{ league.users|length - 3 }} other members{% endif %}
+                    </span>
+                </div>
+            </div>
 
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Owner</th>
-                        <th>Created</th>
-                        {% if request.url_rule.endpoint == 'profile' %}
-                        <th></th>
-                        {% endif %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for league in leagues %}
-                        <tr class="linked" data-href="{{ url_for('view_league', league_id=league.id) }}">
-                            <td>{{ league.name }}</td>
-                            <td><a href="{{ url_for('view_user', user_id=league.owner.id) }}">{{ league.owner.name }}</a></td>
-                            <td>{{ league.created.strftime('%m/%d/%Y') }}</td>
-                            <td>
-                                {% if league.has_owner(user) and request.url_rule.endpoint == 'profile' %}
-                                <a href="{{ url_for('remove_league', league_id=league.id) }}"><i class="fa fa-times" aria-hidden="true" style="color: red"></i></a>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            {% if not loop.last %}<hr>{% endif %}
+            {% endfor %}
 
         </div>
     </div>
