@@ -233,9 +233,6 @@
 {% block js %}
 <script type="text/javascript">
     $(document).ready(function(){
-        $('[data-toggle="popover"]').popover();
-        $('[data-toggle="tooltip"]').tooltip();
-
         {% if request.args.get('action') == 'submit' %}
         $('#submit-modal').modal('show');
         {% elif request.args.get('action') == 'vote' %}

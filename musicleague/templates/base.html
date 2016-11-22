@@ -72,6 +72,13 @@
 
     {{ moment.include_moment() }}
 
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $('[data-toggle="popover"]').popover();
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+    </script>
+
     {% block js %}
     {% endblock %}
 
