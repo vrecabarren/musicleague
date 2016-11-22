@@ -28,8 +28,14 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             {% for league in leagues %}
+            {% set csp = league.current_submission_period %}
+            {% set show_now_playing = csp and csp.all_tracks %}
             <div class="row linked" data-href="{{ url_for('view_league', league_id=league.id) }}">
+                {% if show_now_playing %}
+                <div class="col-md-6">
+                {% else %}
                 <div class="col-md-12">
+                {% endif %}
                     <h3 style="margin-top: inherit">{{ league.name }}</h3>
                     <span class="text-muted">Created by <a href="{{ url_for('view_user', user_id=league.owner.id) }}" title="{{ league.owner.name }}">{{ league.owner.first_name }}</a> on {{ moment(league.created).format('MMMM D, YYYY') }}</span>
                     <div style="margin: 10px 0px">
@@ -45,6 +51,15 @@
                         {% endif %}
                     </span>
                 </div>
+                {% if show_now_playing %}
+                <div class="col-md-6 text-right">
+                    <h3 style="color: #2ecc71; margin-top: inherit">Now Playing</h3>
+                    {% for uri in csp.all_tracks[:3] %}
+                    {% set track = tracks_by_uri[uri] %}
+                    <p>{{ track['name'] }} <span class="text-muted">by {{ track['artists'][0]['name'] }}</span></p>
+                    {% endfor %}
+                </div>
+                {% endif %}
             </div>
 
             {% if not loop.last %}<hr>{% endif %}
