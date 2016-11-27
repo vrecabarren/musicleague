@@ -153,16 +153,14 @@
                 <div class="col-xs-10 col-md-8">
                     {% if submission_period.is_complete %}
                         {% set progress_bar_type = "progress-bar-success" %}
-                        {% set due_date_text = "Completed on " %}
-                        {% set due_date = moment(submission_period.vote_due_date).format('dddd, MMMM D') %}
+                        {% set due_date = moment(submission_period.vote_due_date).format('[Completed on] dddd, MMMM D [at] ha') %}
                         {% set progress_perc = 100 %}
                     {% elif submission_period.accepting_submissions %}
                         {% set progress_bar_type = "progress-bar-success" %}
                         {% if needs_to_submit %}
                             {% set progress_bar_type = "progress-bar-warning" %}
                         {% endif %}
-                        {% set due_date_text = "Submissions due by " %}
-                        {% set due_date = moment(submission_period.submission_due_date).format('dddd, MMMM D') %}
+                        {% set due_date = moment(submission_period.submission_due_date).format('[Submissions due by] ha [on] dddd, MMMM D') %}
                         {% set progress_perc = (submission_period.submissions|length / league.users|length * 100)|int %}
                         {% set progress_count = submission_period.submissions|length %}
                         {% set progress_action = "submitted" %}
@@ -171,14 +169,13 @@
                         {% if needs_to_vote %}
                             {% set progress_bar_type = "progress-bar-warning" %}
                         {% endif %}
-                        {% set due_date_text = "Votes due by " %}
-                        {% set due_date = moment(submission_period.vote_due_date).format('dddd, MMMM D') %}
+                        {% set due_date = moment(submission_period.vote_due_date).format('[Votes due by] ha [on] dddd, MMMM D') %}
                         {% set progress_perc = (submission_period.votes|length / league.users|length * 100)|int %}
                         {% set progress_count = submission_period.votes|length %}
                         {% set progress_action = "voted" %}
                     {% endif %}
                     <h4 style="margin-top: 10px">{{ submission_period.name }}</h4>
-                    <h5 class="text-muted" style="font-weight: inherit"><i class="fa fa-clock-o"></i>&nbsp;{{ due_date_text + due_date }}</h5>
+                    <h5 class="text-muted" style="font-weight: inherit"><i class="fa fa-clock-o"></i>&nbsp;{{ due_date }}</h5>
                     {% if not submission_period.is_complete %}<h5 class="text-muted" style="font-weight: inherit">{{ progress_count }} of {{ league.users|length }} have {{ progress_action}}</h5>{% endif %}
                     <div class="progress">
                         <div class="progress-bar {{ progress_bar_type }} progress-bar-striped" role="progressbar" aria-valuenow="{{ progress_perc }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress_perc }}%">
