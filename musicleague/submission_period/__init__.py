@@ -5,7 +5,6 @@ import logging
 from musicleague.models import SubmissionPeriod
 from musicleague.submission_period.tasks import TYPES
 from musicleague.submission_period.tasks.schedulers import _cancel_pending_task
-from musicleague.submission_period.tasks.schedulers import schedule_complete_submission_period  # noqa
 from musicleague.submission_period.tasks.schedulers import schedule_playlist_creation  # noqa
 from musicleague.submission_period.tasks.schedulers import schedule_submission_reminders  # noqa
 from musicleague.submission_period.tasks.schedulers import schedule_vote_reminders  # noqa
@@ -18,9 +17,14 @@ def create_submission_period(league):
         league=league,
         submission_due_date=datetime.utcnow() + timedelta(days=5),
         vote_due_date=datetime.utcnow() + timedelta(days=7))
+
+    # Save to get id for notification tasks
+    new_submission_period.save()
+
     schedule_playlist_creation(new_submission_period)
     schedule_submission_reminders(new_submission_period)
     schedule_vote_reminders(new_submission_period)
+
     new_submission_period.save()
 
     logging.info('Submission period created: %s', new_submission_period.id)
