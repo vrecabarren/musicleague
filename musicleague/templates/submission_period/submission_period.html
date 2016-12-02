@@ -41,7 +41,9 @@
                         <br>
                         <span class="text-muted">Submitted by {{ submission.user.name }}</span>
                         <br>
-                        <span class="text-primary">{{ votes|length }} {% if votes|length == 1 %}person{% else %}people{% endif %} voted for this</span>
+                        <a role="button" data-toggle="collapse" href="#{{ track_id }}" aria-expanded="false" aria-controls="{{ track_id }}">
+                            {{ votes|length }} {% if votes|length == 1 %}person{% else %}people{% endif %} voted for this
+                        </a>
                     </div>
                     <div class="col-xs-2 col-md-2 text-center">
                         <h3 class="text-primary">
