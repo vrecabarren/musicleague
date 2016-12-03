@@ -7,4 +7,5 @@ mongoengine
 pytz
 redis
 requests
-spotipy
+# spotipy
+git+https://github.com/nathancoleman/spotipy.git@log_bad_request#egg=spotipy
