@@ -18,7 +18,7 @@
 
     {% if page_user == user %}
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-8 col-md-offset-2 text-center">
             <a href="{{ url_for('get_create_league') }}" class="btn btn-default">Add New League</a>
         </div>
     </div>
@@ -28,16 +28,10 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             {% for league in leagues %}
-            {% set csp = league.current_submission_period %}
-            {% set show_now_playing = csp and csp.all_tracks %}
             <div class="row linked" data-href="{{ url_for('view_league', league_id=league.id) }}">
-                {% if show_now_playing %}
-                <div class="col-xs-12 col-sm-8">
-                {% else %}
-                <div class="col-xs-12">
-                {% endif %}
+                <div class="col-xs-12 text-center">
                     <h3 style="margin-top: inherit">{{ league.name }}</h3>
-                    <span class="text-muted">Created by <a href="{{ url_for('view_user', user_id=league.owner.id) }}" title="{{ league.owner.name }}">{{ league.owner.first_name }}</a> on {{ moment(league.created).format('MMMM D, YYYY') }}</span>
+                    <span class="text-muted">Created by <a href="{{ url_for('view_user', user_id=league.owner.id) }}" title="{{ league.owner.name }}">{{ league.owner.name }}</a> on {{ moment(league.created).format('MMMM D, YYYY') }}</span>
                     <div style="margin: 10px 0px">
                         {% for user in league.users if user.image_url %}
                         <img src="{{ user.image_url }}" alt="" class="img img-circle" height="25" width="25" style="margin-right: -15px">
@@ -51,17 +45,7 @@
                         {% endif %}
                     </span>
                 </div>
-                {% if show_now_playing %}
-                <div class="hidden-xs col-sm-4 text-right">
-                    <h3 style="color: #2ecc71; margin-top: inherit">Now Playing</h3>
-                    {% for uri in csp.all_tracks[:3] %}
-                    {% set track = tracks_by_uri[uri] %}
-                    <p>{{ track['artists'][0]['name'] }}</p>
-                    {% endfor %}
-                </div>
-                {% endif %}
             </div>
-
             {% if not loop.last %}<hr>{% endif %}
             {% endfor %}
 

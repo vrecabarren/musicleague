@@ -42,21 +42,12 @@ def autocomplete():
 def profile():
     page_user = g.user
     leagues = get_leagues_for_user(g.user)
-    tracks = []
-    for league in leagues:
-        if league.current_submission_period:
-            tracks.extend(league.current_submission_period.all_tracks[:3])
-
-    tracks = g.spotify.tracks(tracks).get('tracks') if tracks else []
-    tracks_by_uri = {track['uri']: track for track in tracks}
-
     images = g.spotify.user(str(page_user.id)).get('images')
     return {
         'user': g.user,
         'page_user': page_user,
         'user_image': images[0] if images else '',
         'leagues': leagues,
-        'tracks_by_uri': tracks_by_uri,
         'owner_leagues': len(get_leagues_for_owner(page_user)),
         'contributor_leagues': len(get_leagues_for_user(page_user))
         }
@@ -130,21 +121,12 @@ def view_user(user_id):
         return redirect(url_for('profile'))
     page_user = get_user(user_id)
     leagues = get_leagues_for_user(page_user)
-    tracks = []
-    for league in leagues:
-        if league.current_submission_period:
-            tracks.extend(league.current_submission_period.all_tracks[:3])
-
-    tracks = g.spotify.tracks(tracks).get('tracks') if tracks else []
-    tracks_by_uri = {track['uri']: track for track in tracks}
-
     images = g.spotify.user(user_id).get('images')
     return {
         'user': g.user,
         'page_user': page_user,
         'user_image': images[0] if images else '',
         'leagues': leagues,
-        'tracks_by_uri': tracks_by_uri,
         'owner_leagues': len(get_leagues_for_owner(page_user)),
         'contributor_leagues': len(get_leagues_for_user(page_user))
         }
