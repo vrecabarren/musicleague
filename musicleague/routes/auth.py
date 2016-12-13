@@ -9,6 +9,8 @@ from flask import url_for
 from spotipy import Spotify
 
 from musicleague import app
+from musicleague.environment import get_setting
+from musicleague.environment.variables import SPOTIFY_BOT_USERNAME
 from musicleague.routes.decorators import login_required
 from musicleague.spotify import get_spotify_oauth
 from musicleague.user import create_user
@@ -62,6 +64,13 @@ def login():
             spotify = Spotify(access_token)
             spotify_user = spotify.current_user()
             user_id = spotify_user.get('id')
+
+            if user_id == get_setting(SPOTIFY_BOT_USERNAME):
+                import logging
+                logging.warning(
+                    'Logging in as BOT. access_token: %s, refresh_token: %s, '
+                    'expires_at: %s', token_info['access_token'],
+                    token_info['refresh_token'], token_info['expires_at'])
 
             user = get_user(user_id)
 
