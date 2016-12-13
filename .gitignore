@@ -2,3 +2,4 @@
 settingslocal.py
 .idea
 /dump.rdb
+/.env
