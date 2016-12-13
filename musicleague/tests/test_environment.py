@@ -1,7 +1,6 @@
 from unittest import TestCase
 from uuid import uuid4
 
-from musicleague.environment import get_local_setting
 from musicleague.environment import get_port
 from musicleague.environment import get_secret_key
 from musicleague.environment import is_debug
@@ -33,12 +32,6 @@ class GetSecretKeyTestCase(TestCase):
 
     def setUp(self):
         self.secret_key = uuid4().hex
-
-    @dec.env_local
-    def test_env_local(self):
-        set_environment_state(SECRET_KEY.key, remove=True)
-        local_setting = get_local_setting(SECRET_KEY)
-        self.assertEqual(local_setting, get_secret_key())
 
     @dec.env_deployed
     def test_no_env_var(self):
