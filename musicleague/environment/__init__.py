@@ -16,45 +16,24 @@ def get_setting(env_setting):
     if env_setting.key == DEPLOYED.key:
         return get_environment_setting(DEPLOYED)
 
-    getter = get_environment_setting if is_deployed() else get_local_setting
-    return getter(env_setting)
+    return get_environment_setting(env_setting)
 
 
 def get_environment_setting(env_setting):
     """Any value retrieved from the environment will be typecast to match
     env_setting.default
     """
-    if env_setting.key == DEPLOYED.key:
-        setting = os.environ.get(DEPLOYED.key, DEPLOYED.default)
-
-    elif not is_deployed():
-        setting = env_setting.default
-
-    else:
-        setting = os.environ.get(env_setting.key, env_setting.default)
-
-    typecast = type(env_setting.default)
-    return typecast(setting)
+    setting = os.environ.get(env_setting.key, env_setting.default)
+    logging.debug('GET SETTING %s: %s', env_setting.key, setting)
+    return _cast_value(env_setting, setting)
 
 
-def get_local_setting(env_setting):
-    """Any value retrieved from the environment will be typecast to match
-    env_setting.default
-    """
-    try:
-        import settingslocal
-        setting = getattr(settingslocal, env_setting.key)
-        typecast = type(env_setting.default)
-        return typecast(setting)
-    except AttributeError:
-        logging.info('Attempt to get local setting %s failed because we '
-                     'could not find it in settingslocal.py. Default is %s',
-                     env_setting.key, env_setting.default)
-    except ImportError:
-        logging.info('Attempt to get local setting %s failed because we '
-                     'could not find settingslocal.py. Default is %s',
-                     env_setting.key, env_setting.default)
-    return env_setting.default
+def _cast_value(env_setting, value):
+    if isinstance(env_setting.default, bool) and isinstance(value, basestring):
+        return value.lower() == 'true'
+
+    desired_type = type(env_setting.default)
+    return desired_type(value)
 
 
 def is_debug():
