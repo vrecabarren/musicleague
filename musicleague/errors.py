@@ -1,13 +1,14 @@
+class BotExistsError(Exception):
+    """ Error to indicate that Bot being created with id already exists. """
+
+
 class LeagueExistsError(Exception):
-    def __init__(self, *args, **kwargs):
-        Exception.__init__(self, *args, **kwargs)
+    """ Error to indicate that League being created with id already exists. """
 
 
 class UserDoesNotExistError(Exception):
-    def __init__(self, *args, **kwargs):
-        Exception.__init__(self, *args, **kwargs)
+    """ Error to indicate that User being fetched with id does not exist. """
 
 
 class UserExistsError(Exception):
-    def __init__(self, *args, **kwargs):
-        Exception.__init__(self, *args, **kwargs)
+    """ Error to indicate that User being created with id already exists. """
