@@ -21,8 +21,7 @@ def get_spotify_oauth():
     redirect_uri = get_setting(SPOTIFY_REDIRECT_URI)
     scopes = ' '.join(OAUTH_SCOPES)
     spotify_oauth = oauth2.SpotifyOAuth(
-        client_id, client_secret, redirect_uri, scope=scopes,
-        cache_path='.spotipyoauthcache')
+        client_id, client_secret, redirect_uri, scope=scopes)
     return spotify_oauth
 
 
