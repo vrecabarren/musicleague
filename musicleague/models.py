@@ -57,6 +57,13 @@ class User(Document):
         return self.name.split(' ')[0]
 
 
+class Bot(Document):
+    id = StringField(primary_key=True, required=True)
+    auth_token = StringField(required=True)
+    refresh_token = StringField(required=True)
+    expires_in = IntField(required=True)
+
+
 class InvitedUser(Document):
     email = StringField(required=True)
 
