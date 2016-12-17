@@ -1,3 +1,4 @@
+import logging
 from time import time
 
 from spotipy import Spotify
