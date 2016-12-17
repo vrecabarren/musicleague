@@ -1,0 +1,2 @@
+{{ vote.user.name }} just voted for {{ vote.submission_period.name }}!
+This is vote #{{ vote.count }} for this user.

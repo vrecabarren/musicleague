@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 jumbotron text-center">
+
+                <h1>Music League</h1>
+
+                <h3>{{ vote.user.name }} just voted for <a href="{{ url_for('view_submission_period', _external=True, league_id=vote.league.id, submission_period_id=vote.submission_period.id) }}">{{ vote.submission_period.name }}</a>!</h3>
+
+                 <p>This is vote #{{ vote.count }} for this user.</p>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
