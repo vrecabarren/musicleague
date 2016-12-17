@@ -9,6 +9,7 @@ from flask import url_for
 from musicleague import app
 from musicleague.notify import owner_all_users_submitted_notification
 from musicleague.notify import owner_user_submitted_notification
+from musicleague.notify import user_last_to_submit_notification
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import league_required
 from musicleague.submission import create_or_update_submission
@@ -57,5 +58,8 @@ def submit(league_id, **kwargs):
         if not remaining or remaining == set([league.owner]):
             owner_all_users_submitted_notification(
                 league.owner, submission_period)
+
+        if len(remaining) == 1:
+            user_last_to_submit_notification(remaining[0], submission_period)
 
     return redirect(url_for('view_league', league_id=league_id))
