@@ -4,6 +4,7 @@ from collections import namedtuple
 EnvironmentVariable = namedtuple('EnvironmentVariable', 'key, default')
 
 
+ADD_BOT_REDIRECT_URI = EnvironmentVariable(key='ADD_BOT_REDIRECT_URI', default='')  # noqa
 DEBUG = EnvironmentVariable(key='DEBUG', default=False)
 DEPLOYED = EnvironmentVariable(key='ON_HEROKU', default=False)
 MAILGUN_API_BASE_URL = EnvironmentVariable(key='MAILGUN_API_BASE_URL', default='')  # noqa

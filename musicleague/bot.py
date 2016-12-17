@@ -1,8 +1,32 @@
+from time import time
+
+from spotipy import Spotify
+
 from musicleague.environment import get_setting
 from musicleague.environment.variables import SPOTIFY_BOT_USERNAME
 from musicleague.errors import BotDoesNotExistError
 from musicleague.errors import BotExistsError
 from musicleague.models import Bot
+from musicleague.spotify import get_spotify_oauth
+
+
+def get_botify():
+    bot_id = get_setting(SPOTIFY_BOT_USERNAME)
+    bot = get_bot(bot_id)
+    if not bot:
+        return
+
+    # If access_expired, refresh it
+    if bot.expires_at < int(time()):
+        logging.warn('Bot %s access expired. Refreshing.', bot_id)
+        oauth = get_spotify_oauth()
+        token_info = oauth._refresh_access_token(bot.refresh_token)
+        access_token = token_info['access_token']
+        refresh_token = token_info['refresh_token']
+        expires_at = token_info['expires_at']
+        bot = update_bot(bot_id, access_token, refresh_token, expires_at)
+
+    return bot_id, Spotify(bot.access_token)
 
 
 def is_bot(user_id):

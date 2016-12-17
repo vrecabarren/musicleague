@@ -11,7 +11,6 @@ from spotipy import Spotify
 
 from musicleague import app
 from musicleague.bot import create_or_update_bot
-from musicleague.bot import is_bot
 from musicleague.routes.decorators import login_required
 from musicleague.spotify import get_spotify_oauth
 from musicleague.user import create_user_from_spotify_user
@@ -20,6 +19,7 @@ from musicleague.user import get_user
 
 LOGIN_URL = '/login/'
 LOGOUT_URL = '/logout/'
+ADD_BOT_URL = '/add_bot/'
 
 
 @app.before_request
@@ -40,9 +40,9 @@ def before_request():
             oauth = get_spotify_oauth()
             token_info = oauth._refresh_access_token(refresh_token)
             access_token = token_info['access_token']
-            session['access_token'] = access_token
-            session['expires_at'] = token_info['expires_at']
-            session['refresh_token'] = token_info['refresh_token']
+            _update_session(
+                current_user, access_token, token_info['refresh_token'],
+                int(token_info['expires_at']))
 
         g.spotify = Spotify(access_token)
 
@@ -65,12 +65,6 @@ def login():
             spotify_user = spotify.current_user()
             user_id = spotify_user.get('id')
 
-            if is_bot(user_id):
-                logging.warn('Create/update bot %s: %s, %s, %s', user_id,
-                             access_token, refresh_token, expires_at)
-                create_or_update_bot(user_id, access_token, refresh_token,
-                                     expires_at)
-
             user = get_user(user_id)
 
             # If user logging in w/ Spotify does not yet exist, create it
@@ -89,6 +83,31 @@ def login():
     return redirect(url_for('profile'))
 
 
+@app.route(ADD_BOT_URL)
+def add_bot():
+    _clear_session()
+    oauth = get_spotify_oauth(bot=True)
+    code = oauth.parse_response_code(request.url)
+    if code:
+        token_info = oauth.get_access_token(code)
+        access_token = token_info['access_token']
+        refresh_token = token_info['refresh_token']
+        expires_at = int(token_info['expires_at'])
+
+        spotify = Spotify(access_token)
+        spotify_user = spotify.current_user()
+        bot_id = spotify_user['id']
+
+        logging.warn('Create/update bot %s: %s, %s, %s', bot_id,
+                     access_token, refresh_token, expires_at)
+
+        create_or_update_bot(bot_id, access_token, refresh_token, expires_at)
+
+        return 'Successfully added bot: %s' % (bot_id)
+
+    return redirect(oauth.get_authorize_url())
+
+
 @app.route(LOGOUT_URL)
 @login_required
 def logout():
@@ -104,7 +123,11 @@ def _update_session(user_id, access_token, refresh_token, expires_at):
 
 
 def _clear_session():
-    session.pop('current_user')
-    session.pop('access_token')
-    session.pop('expires_at')
-    session.pop('refresh_token')
+    if 'current_user' in session:
+        session.pop('current_user')
+    if 'access_token' in session:
+        session.pop('access_token')
+    if 'expires_at' in session:
+        session.pop('expires_at')
+    if 'refresh_token' in session:
+        session.pop('refresh_token')
