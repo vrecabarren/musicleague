@@ -1,0 +1,3 @@
+All other users have voted for {{ submission_period.league.name }}!
+
+Everyone is waiting!
