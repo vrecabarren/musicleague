@@ -48,6 +48,38 @@ def owner_user_submitted_notification(owner, submission):
     )
 
 
+def owner_all_users_voted_notification(owner, submission_period):
+    if not submission_period or not owner or not owner.email:
+        return
+
+    if not owner.preferences.owner_all_users_voted_notifications:
+        return
+
+    _send_email.apply_async(
+        args=[owner.email,
+              'Music League - All Users Voted',
+              _txt_email('all_voted.txt',
+                         submission_period=submission_period),
+              _html_email('all_voted.html',
+                          submission_period=submission_period)]
+    )
+
+
+def owner_user_voted_notification(owner, vote):
+    if not vote or not owner or not owner.email:
+        return
+
+    if not owner.preferences.owner_user_voted_notifications:
+        return
+
+    _send_email.apply_async(
+        args=[owner.email,
+              'Music League - User Voted',
+              _txt_email('voted.txt', vote=vote),
+              _html_email('voted.html', vote=vote)]
+    )
+
+
 def user_added_to_league_notification(user, league):
     if not league or not user or not user.email:
         return
