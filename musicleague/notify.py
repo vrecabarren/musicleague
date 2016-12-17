@@ -107,6 +107,40 @@ def user_invited_to_league_notification(invited_user, league):
     )
 
 
+def user_last_to_submit_notification(user, submission_period):
+    if not submission_period or not user or not user.email:
+        return
+
+    if not user.preferences.user_last_to_submit_notifications:
+        return
+
+    _send_email.apply_async(
+        args=[user.email,
+              'Music League - Last to Submit',
+              _txt_email('last_to_submit.txt',
+                         submission_period=submission_period),
+              _html_email('last_to_submit.html',
+                          submission_period=submission_period)]
+    )
+
+
+def user_last_to_vote_notification(user, submission_period):
+    if not submission_period or not user or not user.email:
+        return
+
+    if not user.preferences.user_last_to_vote_notifications:
+        return
+
+    _send_email.apply_async(
+        args=[user.email,
+              'Music League - Last to Vote',
+              _txt_email('last_to_vote.txt',
+                         submission_period=submission_period),
+              _html_email('last_to_vote.html',
+                          submission_period=submission_period)]
+    )
+
+
 def user_playlist_created_notification(submission_period):
     if not submission_period or not submission_period.league.users:
         return
