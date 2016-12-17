@@ -60,6 +60,7 @@ def submit(league_id, **kwargs):
                 league.owner, submission_period)
 
         if len(remaining) == 1:
-            user_last_to_submit_notification(remaining[0], submission_period)
+            last_user = list(remaining)[0]
+            user_last_to_submit_notification(last_user, submission_period)
 
     return redirect(url_for('view_league', league_id=league_id))

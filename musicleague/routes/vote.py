@@ -34,6 +34,7 @@ def vote(league_id, **kwargs):
             owner_all_users_voted_notification(league.owner, submission_period)
 
         if len(remaining) == 1:
-            user_last_to_vote_notification(remaining[0], submission_period)
+            last_user = remaining = list(remaining)[0]
+            user_last_to_vote_notification(last_user, submission_period)
 
     return redirect(url_for('view_league', league_id=league_id))
