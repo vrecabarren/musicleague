@@ -1,3 +1,4 @@
+import logging
 from time import time
 
 from flask import g
@@ -9,11 +10,11 @@ from flask import url_for
 from spotipy import Spotify
 
 from musicleague import app
-from musicleague.environment import get_setting
-from musicleague.environment.variables import SPOTIFY_BOT_USERNAME
+from musicleague.bot import create_or_update_bot
+from musicleague.bot import is_bot
 from musicleague.routes.decorators import login_required
 from musicleague.spotify import get_spotify_oauth
-from musicleague.user import create_user
+from musicleague.user import create_user_from_spotify_user
 from musicleague.user import get_user
 
 
@@ -57,37 +58,26 @@ def login():
         if code:
             token_info = oauth.get_access_token(code)
             access_token = token_info['access_token']
-            session['access_token'] = access_token
-            session['expires_at'] = token_info['expires_at']
-            session['refresh_token'] = token_info['refresh_token']
+            refresh_token = token_info['refresh_token']
+            expires_at = int(token_info['expires_at'])
 
             spotify = Spotify(access_token)
             spotify_user = spotify.current_user()
             user_id = spotify_user.get('id')
 
-            if user_id == get_setting(SPOTIFY_BOT_USERNAME):
-                import logging
-                logging.warning(
-                    'Logging in as BOT. access_token: %s, refresh_token: %s, '
-                    'expires_at: %s', token_info['access_token'],
-                    token_info['refresh_token'], token_info['expires_at'])
+            if is_bot(user_id):
+                logging.warn('Create/update bot %s: %s, %s, %s', user_id,
+                             access_token, refresh_token, expires_at)
+                create_or_update_bot(user_id, access_token, refresh_token,
+                                     expires_at)
 
             user = get_user(user_id)
 
             # If user logging in w/ Spotify does not yet exist, create it
             if not user:
-                user_email = spotify_user.get('email')
-                user_display_name = spotify_user.get('display_name')
-                user_images = spotify_user.get('images')
-                user_image_url = ''
-                if user_images:
-                    user_image_url = user_images[0].get('url', user_image_url)
+                user = create_user_from_spotify_user(spotify_user)
 
-                user = create_user(id=user_id, email=user_email,
-                                   name=(user_display_name or user_id),
-                                   image_url=user_image_url)
-
-            session['current_user'] = user.id
+            _update_session(user_id, access_token, refresh_token, expires_at)
 
             # If user was going to a particular destination before logging in,
             # send them there after login.
@@ -102,8 +92,19 @@ def login():
 @app.route(LOGOUT_URL)
 @login_required
 def logout():
+    _clear_session()
+    return redirect(url_for("hello", action='logout'))
+
+
+def _update_session(user_id, access_token, refresh_token, expires_at):
+    session['current_user'] = user_id
+    session['access_token'] = access_token
+    session['refresh_token'] = refresh_token
+    session['expires_at'] = expires_at
+
+
+def _clear_session():
     session.pop('current_user')
     session.pop('access_token')
     session.pop('expires_at')
     session.pop('refresh_token')
-    return redirect(url_for("hello", action='logout'))

@@ -59,9 +59,9 @@ class User(Document):
 
 class Bot(Document):
     id = StringField(primary_key=True, required=True)
-    auth_token = StringField(required=True)
+    access_token = StringField(required=True)
     refresh_token = StringField(required=True)
-    expires_in = IntField(required=True)
+    expires_at = IntField(required=True)
 
 
 class InvitedUser(Document):

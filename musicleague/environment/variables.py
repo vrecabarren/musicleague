@@ -16,9 +16,6 @@ REDISCLOUD_URL = EnvironmentVariable(key='REDISCLOUD_URL', default='redis://127.
 SECRET_KEY = EnvironmentVariable(key='SECRET_KEY', default='')
 SERVER_NAME = EnvironmentVariable(key='SERVER_NAME', default='')
 SPOTIFY_BOT_USERNAME = EnvironmentVariable(key='SPOTIFY_BOT_USERNAME', default='')  # noqa
-SPOTIFY_BOT_ACCESS_TOKEN = EnvironmentVariable(key='SPOTIFY_BOT_ACCESS_TOKEN', default='')  # noqa
-SPOTIFY_BOT_EXPIRES_AT = EnvironmentVariable(key='SPOTIFY_BOT_EXPIRES_AT', default='')  # noqa
-SPOTIFY_BOT_REFRESH_TOKEN = EnvironmentVariable(key='SPOTIFY_BOT_REFRESH_TOKEN', default='')  # noqa
 SPOTIFY_CLIENT_ID = EnvironmentVariable(key='SPOTIFY_CLIENT_ID', default='')
 SPOTIFY_CLIENT_SECRET = EnvironmentVariable(key='SPOTIFY_CLIENT_SECRET', default='')  # noqa
 SPOTIFY_REDIRECT_URI = EnvironmentVariable(key='SPOTIFY_REDIRECT_URI', default='')  # noqa
