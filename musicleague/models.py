@@ -20,12 +20,18 @@ class UserPreferences(EmbeddedDocument):
     owner_all_users_submitted_notifications = BooleanField(
         default=True, role=OWNER_PREFERENCE_ROLE,
         verbose_name='Receive a notification when all users have submitted')
+    owner_all_users_voted_notifications = BooleanField(
+        default=True, role=OWNER_PREFERENCE_ROLE,
+        verbose_name='Receive a notification when all users have voted')
     owner_user_left_notifications = BooleanField(
         default=True, role=OWNER_PREFERENCE_ROLE,
         verbose_name='Receive a notification when a user leaves')
     owner_user_submitted_notifications = BooleanField(
         default=True, role=OWNER_PREFERENCE_ROLE,
         verbose_name='Receive a notification when a user submits')
+    owner_user_voted_notifications = BooleanField(
+        default=True, role=OWNER_PREFERENCE_ROLE,
+        verbose_name='Receive a notification when a user votes')
 
     user_added_to_league_notifications = BooleanField(
         default=True, role=USER_PREFERENCE_ROLE,
