@@ -55,11 +55,12 @@ def submit(league_id, **kwargs):
 
         submitted_users = set([s.user for s in submission_period.submissions])
         remaining = set(league.users) - submitted_users
-        if not remaining or remaining == set([league.owner]):
+
+        if not remaining:
             owner_all_users_submitted_notification(
                 league.owner, submission_period)
 
-        if len(remaining) == 1:
+        elif len(remaining) == 1:
             last_user = list(remaining)[0]
             user_last_to_submit_notification(last_user, submission_period)
 

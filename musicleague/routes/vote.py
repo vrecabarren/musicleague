@@ -30,10 +30,11 @@ def vote(league_id, **kwargs):
 
         voted_users = set([v.user for v in submission_period.votes])
         remaining = set(league.users) - voted_users
-        if not remaining or remaining == set([league.owner]):
+
+        if not remaining:
             owner_all_users_voted_notification(league.owner, submission_period)
 
-        if len(remaining) == 1:
+        elif len(remaining) == 1:
             last_user = remaining = list(remaining)[0]
             user_last_to_vote_notification(last_user, submission_period)
 
