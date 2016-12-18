@@ -180,7 +180,7 @@
                     <h5 class="text-muted" style="font-weight: inherit"><i class="fa fa-clock-o"></i>&nbsp;{{ due_date }}</h5>
                     {% if not submission_period.is_complete %}
                     <h5 class="text-muted" style="font-weight: inherit">
-                        <a href="#" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" data-content="{{ content }}">
+                        <a href="#" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" data-content="{{ content }}" style="color: inherit">
                             {{ progress_count }} of {{ league.users|length }} have {{ progress_action}}
                         </a>
                     </h5>
