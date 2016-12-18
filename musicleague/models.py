@@ -112,8 +112,8 @@ class SubmissionPeriod(Document):
     pending_tasks = DictField()
     playlist_id = StringField()
     playlist_url = StringField(default='')
-    submissions = ListField(
-        ReferenceField(Submission, reverse_delete_rule=PULL))
+    submissions = ListField(ReferenceField(Submission,
+                                           reverse_delete_rule=PULL))
     votes = ListField(ReferenceField(Vote, reverse_delete_rule=PULL))
 
     @property
@@ -123,13 +123,15 @@ class SubmissionPeriod(Document):
     @property
     def accepting_submissions(self):
         return (self.is_current and
-                self.submission_due_date > datetime.utcnow())
+                (len(self.submissions) < len(self.league.users)) and
+                (self.submission_due_date > datetime.utcnow()))
 
     @property
     def accepting_votes(self):
         return (self.is_current and
-                self.vote_due_date > datetime.utcnow() and
-                datetime.utcnow() > self.submission_due_date)
+                (not self.accepting_submissions) and
+                (len(self.votes) < len(self.league.users)) and
+                (self.vote_due_date > datetime.utcnow()))
 
     @property
     def all_tracks(self):
