@@ -1,4 +1,5 @@
 from random import shuffle
+import re
 
 from spotipy import oauth2
 
@@ -28,35 +29,66 @@ def get_spotify_oauth(bot=False):
     return spotify_oauth
 
 
-def create_or_update_playlist(submission_period):
+def create_playlist(submission_period):
     from musicleague.bot import get_botify
     bot_id, botify = get_botify()
 
-    tracks = []
-    for submission in submission_period.submissions:
-        tracks.extend(submission.tracks)
+    playlist_name = str(submission_period.name)
+    tracks = submission_period.all_tracks
     shuffle(tracks)
 
-    # Create new playlist and link to this submission period
-    if not submission_period.playlist_created:
-        playlist_name = str(submission_period.name)
-        playlist = botify.user_playlist_create(
-            bot_id, playlist_name, public=False)
+    playlist = botify.user_playlist_create(bot_id, playlist_name)
+    botify.user_playlist_add_tracks(bot_id, playlist.get('id'), tracks)
 
-        botify.user_playlist_add_tracks(bot_id, playlist.get('id'), tracks)
+    external_urls = playlist.get('external_urls')
+    submission_period.playlist_id = playlist.get('id')
+    submission_period.playlist_url = external_urls.get('spotify')
+    submission_period.save()
 
-        external_urls = playlist.get('external_urls')
-        submission_period.playlist_id = playlist.get('id')
-        submission_period.playlist_url = external_urls.get('spotify')
-        submission_period.save()
-
-        user_playlist_created_notification(submission_period)
-
-    # Update existing playlist for this submission period
-    else:
-        # TODO Only get the playlist's id
-        playlist = botify.user_playlist(bot_id, submission_period.playlist_id)
-        botify.user_playlist_replace_tracks(
-            bot_id, submission_period.playlist_id, tracks)
+    user_playlist_created_notification(submission_period)
 
     return playlist
+
+
+def update_playlist(submission_period):
+    from musicleague.bot import get_botify
+    bot_id, botify = get_botify()
+
+    tracks = submission_period.all_tracks
+    shuffle(tracks)
+
+    # TODO Reference submission period's url so we don't have to return this
+    playlist = botify.user_playlist(bot_id, submission_period.playlist_id)
+    botify.user_playlist_replace_tracks(
+        bot_id, submission_period.playlist_id, tracks)
+
+    return playlist
+
+
+def create_or_update_playlist(submission_period):
+
+    if not submission_period.playlist_created:
+        # Create new playlist and link to this submission period
+        playlist = create_playlist(submission_period)
+
+    else:
+        # Update existing playlist for this submission period
+        playlist = update_playlist(submission_period)
+
+    return playlist
+
+
+def to_uri(url_or_uri):
+    uri_regex = 'spotify:track:[A-Za-z0-9]{22}'
+    url_regex = ('(?:http|https):\/\/(?:open|play)\.spotify\.com\/track\/'
+                 '(?P<id>[A-Za-z0-9]{22})')
+
+    # If valid URI, no need to modify
+    if re.match(uri_regex, url_or_uri):
+        return url_or_uri
+
+    # Has to be a valid track URL to mutate. If not, return None.
+    if not re.match(url_regex, url_or_uri):
+        return None
+
+    return 'spotify:track:%s' % re.match(url_regex, url_or_uri).group('id')
