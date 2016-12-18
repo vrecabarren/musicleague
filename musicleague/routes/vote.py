@@ -26,7 +26,9 @@ def vote(league_id, **kwargs):
     submission_period = league.current_submission_period
     if submission_period and submission_period.accepting_votes:
         vote = create_or_update_vote(votes, submission_period, league, g.user)
-        owner_user_voted_notification(league.owner, vote)
+
+        if g.user.id != league.owner.id:
+            owner_user_voted_notification(league.owner, vote)
 
         voted_users = set([v.user for v in submission_period.votes])
         remaining = set(league.users) - voted_users

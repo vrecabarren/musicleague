@@ -38,7 +38,8 @@ def submit(league_id, **kwargs):
         submission = create_or_update_submission(tracks, submission_period,
                                                  league, g.user)
 
-        owner_user_submitted_notification(league.owner, submission)
+        if g.user.id != league.owner.id:
+            owner_user_submitted_notification(league.owner, submission)
 
         submitted_users = set([s.user for s in submission_period.submissions])
         remaining = set(league.users) - submitted_users
