@@ -24,7 +24,7 @@ def vote(league_id, **kwargs):
     votes = {uri: int(votes or 0) for uri, votes in request.form.iteritems()}
 
     submission_period = league.current_submission_period
-    if submission_period and submission_period.is_current:
+    if submission_period and submission_period.accepting_votes:
         vote = create_or_update_vote(votes, submission_period, league, g.user)
         owner_user_voted_notification(league.owner, vote)
 
