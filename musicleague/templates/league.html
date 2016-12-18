@@ -164,7 +164,7 @@
                         {% set progress_perc = (submission_period.submissions|length / league.users|length * 100)|int %}
                         {% set progress_count = submission_period.submissions|length %}
                         {% set progress_action = "submitted" %}
-                        {% set content = "<strong>Submitted:</strong> " + submission_period.have_submitted|map(attribute='name')|join(', ') + "<hr><strong>Waiting for:</strong> " + submission_period.have_not_submitted|map(attribute='name')|join(', ') %}
+                        {% set content = "<strong>Submitted:</strong><br>" + submission_period.have_submitted|map(attribute='name')|join('<br>') + "<hr><strong>Waiting for:</strong><br>" + submission_period.have_not_submitted|map(attribute='name')|join('<br>') %}
                     {% elif submission_period.accepting_votes %}
                         {% set progress_bar_type = "progress-bar-success" %}
                         {% if needs_to_vote %}
@@ -174,7 +174,7 @@
                         {% set progress_perc = (submission_period.votes|length / league.users|length * 100)|int %}
                         {% set progress_count = submission_period.votes|length %}
                         {% set progress_action = "voted" %}
-                        {% set content = "<strong>Voted:</strong> " + submission_period.have_voted|map(attribute='name')|join(', ') + "<hr><strong>Waiting for:</strong> " + submission_period.have_not_voted|map(attribute='name')|join(', ') %}
+                        {% set content = "<strong>Voted:</strong><br>" + submission_period.have_voted|map(attribute='name')|join('<br>') + "<hr><strong>Waiting for:</strong><br>" + submission_period.have_not_voted|map(attribute='name')|join('<br>') %}
                     {% endif %}
                     <h4 style="margin-top: 10px">{{ submission_period.name }}</h4>
                     <h5 class="text-muted" style="font-weight: inherit"><i class="fa fa-clock-o"></i>&nbsp;{{ due_date }}</h5>
