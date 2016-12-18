@@ -137,13 +137,13 @@ def view_league(league_id, **kwargs):
 
         tracks_by_uri = {track.get('uri'): track for track in tracks if track}
 
-        my_submission = next(
-            (sub for sub in league.current_submission_period.submissions
-             if sub.user == g.user), None)
+    my_submission = next(
+        (sub for sub in league.current_submission_period.submissions
+         if sub.user == g.user), None)
 
-        my_vote = next(
-            (vote for vote in league.current_submission_period.votes
-             if vote.user == g.user), None)
+    my_vote = next(
+        (vote for vote in league.current_submission_period.votes
+         if vote.user == g.user), None)
 
     return {
         'user': g.user,
