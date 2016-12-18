@@ -12,14 +12,14 @@ from musicleague.routes.decorators import league_required
 from musicleague.vote import create_or_update_vote
 
 
-VOTE_URL = '/l/<league_id>/vote/'
+VOTE_URL = '/l/<league_id>/<submission_period_id>/vote/'
 
 
 @app.route(VOTE_URL, methods=['POST'])
 @login_required
 @league_required
-def vote(league_id, **kwargs):
     league = kwargs.get('league')
+def vote(league_id, submission_period_id):
 
     votes = {uri: int(votes or 0) for uri, votes in request.form.iteritems()}
 
