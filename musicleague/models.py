@@ -127,6 +127,13 @@ class SubmissionPeriod(Document):
                 (self.submission_due_date > datetime.utcnow()))
 
     @property
+    def accepting_late_submissions(self):
+        return (self.league.preferences.late_submissions and
+                self.is_current and
+                (len(self.submissions) < len(self.league.users)) and
+                (self.vote_due_date > datetime.utcnow()))
+
+    @property
     def accepting_votes(self):
         return (self.is_current and
                 (not self.accepting_submissions) and

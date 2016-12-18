@@ -25,7 +25,8 @@ def submit(league_id, **kwargs):
     league = kwargs.get('league')
 
     submission_period = league.current_submission_period
-    if submission_period and submission_period.accepting_submissions:
+    if submission_period and (submission_period.accepting_submissions or
+                              submission_period.accepting_late_submissions):
 
         tracks = [
             to_uri(escape(request.form.get('track' + str(i))))
