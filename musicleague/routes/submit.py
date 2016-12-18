@@ -15,13 +15,13 @@ from musicleague.spotify import to_uri
 from musicleague.submission import create_or_update_submission
 
 
-SUBMIT_URL = '/l/<league_id>/submit/'
+SUBMIT_URL = '/l/<league_id>/<submission_period_id>/submit/'
 
 
 @app.route(SUBMIT_URL, methods=['POST'])
 @login_required
 @league_required
-def submit(league_id, **kwargs):
+def submit(league_id, submission_period_id, **kwargs):
     league = kwargs.get('league')
 
     submission_period = league.current_submission_period
