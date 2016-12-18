@@ -122,14 +122,12 @@ class SubmissionPeriod(Document):
 
     @property
     def accepting_submissions(self):
-        return (self.is_current and
-                (len(self.submissions) < len(self.league.users)) and
+        return ((len(self.submissions) < len(self.league.users)) and
                 (self.submission_due_date > datetime.utcnow()))
 
     @property
     def accepting_late_submissions(self):
         return (self.league.preferences.late_submissions and
-                self.is_current and
                 (len(self.submissions) < len(self.league.users)) and
                 (self.vote_due_date > datetime.utcnow()))
 
@@ -143,8 +141,7 @@ class SubmissionPeriod(Document):
 
     @property
     def accepting_votes(self):
-        return (self.is_current and
-                (not self.accepting_submissions) and
+        return ((not self.accepting_submissions) and
                 (len(self.votes) < len(self.league.users)) and
                 (self.vote_due_date > datetime.utcnow()))
 
@@ -165,9 +162,11 @@ class SubmissionPeriod(Document):
 
     @property
     def is_complete(self):
-        if not self.is_current:
-            return True
         return not (self.accepting_submissions or self.accepting_votes)
+
+    @property
+    def is_current_v2(self):
+        return self == self.league.current_submission_period
 
 
 class LeaguePreferences(EmbeddedDocument):
@@ -224,10 +223,8 @@ class League(Document):
 
     @property
     def current_submission_period(self):
-        for submission_period in self.submission_periods:
-            if submission_period.is_current:
-                return submission_period
-        return None
+        return next(
+            (sp for sp in self.submission_periods if not sp.is_complete), None)
 
     def has_owner(self, user):
         return self.owner == user
