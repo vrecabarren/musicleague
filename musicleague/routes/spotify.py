@@ -12,6 +12,9 @@ CREATE_PLAYLIST_URL = '/l/<league_id>/playlist/create/'
 VIEW_PLAYLIST_URL = '/l/<league_id>/playlist/'
 
 
+# TODO: These can likely be removed
+
+
 @app.route(CREATE_PLAYLIST_URL)
 @login_required
 def create_spotify_playlist(league_id):
