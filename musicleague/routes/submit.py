@@ -9,6 +9,7 @@ from musicleague.notify import owner_all_users_submitted_notification
 from musicleague.notify import owner_user_submitted_notification
 from musicleague.notify import user_last_to_submit_notification
 from musicleague.routes.decorators import login_required
+from musicleague.routes.decorators import templated
 from musicleague.spotify import create_or_update_playlist
 from musicleague.spotify import to_uri
 from musicleague.submission import create_or_update_submission
@@ -16,6 +17,23 @@ from musicleague.submission_period import get_submission_period
 
 
 SUBMIT_URL = '/l/<league_id>/<submission_period_id>/submit/'
+
+
+@app.route(SUBMIT_URL, methods=['GET'])
+@templated('submit/submit.html')
+@login_required
+def view_submit(league_id, submission_period_id):
+    submission_period = get_submission_period(submission_period_id)
+    league = submission_period.league
+    my_submission = next(
+        (s for s in submission_period.submissions if s.user == g.user), None)
+
+    return {
+        'user': g.user,
+        'league': league,
+        'submission_period': submission_period,
+        'my_submission': my_submission,
+    }
 
 
 @app.route(SUBMIT_URL, methods=['POST'])

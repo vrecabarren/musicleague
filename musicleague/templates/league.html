@@ -197,7 +197,7 @@
                         {% if my_submission %}
                             {% set message = "Change Selection" %}
                         {% endif %}
-                    <a href="#submit-modal" data-toggle="modal" data-target="#submit-modal" class="btn btn-success">{{ message }}</a>
+                    <a href="{{ url_for('view_submit', league_id=league.id, submission_period_id=submission_period.id) }}" class="btn btn-success">{{ message }}</a>
                     {% elif league.has_user(user) and submission_period.accepting_votes %}
                     <a href="#vote-modal" data-toggle="modal" data-target="#vote-modal" class="btn btn-primary">Submit Votes</a>
                     <br>
