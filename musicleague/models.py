@@ -134,11 +134,27 @@ class SubmissionPeriod(Document):
                 (self.vote_due_date > datetime.utcnow()))
 
     @property
+    def have_submitted(self):
+        return [submission.user for submission in self.submissions]
+
+    @property
+    def have_not_submitted(self):
+        return list(set(self.league.users) - set(self.have_submitted))
+
+    @property
     def accepting_votes(self):
         return (self.is_current and
                 (not self.accepting_submissions) and
                 (len(self.votes) < len(self.league.users)) and
                 (self.vote_due_date > datetime.utcnow()))
+
+    @property
+    def have_voted(self):
+        return [vote.user for vote in self.votes]
+
+    @property
+    def have_not_voted(self):
+        return list(set(self.league.users) - set(self.have_voted))
 
     @property
     def all_tracks(self):
