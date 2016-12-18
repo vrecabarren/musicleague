@@ -11,6 +11,7 @@ from spotipy import Spotify
 
 from musicleague import app
 from musicleague.bot import create_or_update_bot
+from musicleague.bot import is_bot
 from musicleague.routes.decorators import login_required
 from musicleague.spotify import get_spotify_oauth
 from musicleague.user import create_user_from_spotify_user
@@ -97,6 +98,10 @@ def add_bot():
         spotify = Spotify(access_token)
         spotify_user = spotify.current_user()
         bot_id = spotify_user['id']
+
+        # Check that we're adding a bot listed in env var list
+        if not is_bot(bot_id):
+            return 'Invalid bot: %s. If valid, add to environment.' % (bot_id)
 
         logging.warn('Create/update bot %s: %s, %s, %s', bot_id,
                      access_token, refresh_token, expires_at)
