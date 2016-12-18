@@ -175,8 +175,8 @@ def user_removed_from_league_notification(user, league):
     )
 
 
-def user_submit_reminder_notification(user, league):
-    if not league or not user or not user.email:
+def user_submit_reminder_notification(user, submission_period):
+    if not submission_period or not user or not user.email:
         return
 
     if not user.preferences.user_submit_reminder_notifications:
@@ -185,13 +185,17 @@ def user_submit_reminder_notification(user, league):
     _send_email.apply_async(
         args=[user.email,
               'Music League - Submission Reminder',
-              _txt_email('submit_reminder.txt', league=league),
-              _html_email('submit_reminder.html', league=league)]
+              _txt_email('submit_reminder.txt',
+                         league=submission_period.league,
+                         submission_period=submission_period),
+              _html_email('submit_reminder.html',
+                          league=submission_period.league,
+                          submission_period=submission_period)]
     )
 
 
-def user_vote_reminder_notification(user, league):
-    if not league or not user or not user.email:
+def user_vote_reminder_notification(user, submission_period):
+    if not submission_period or not user or not user.email:
         return
 
     if not user.preferences.user_vote_reminder_notifications:
@@ -200,8 +204,12 @@ def user_vote_reminder_notification(user, league):
     _send_email.apply_async(
         args=[user.email,
               'Music League - Vote Reminder',
-              _txt_email('vote_reminder.txt', league=league),
-              _html_email('vote_reminder.html', league=league)]
+              _txt_email('vote_reminder.txt',
+                         league=submission_period.league,
+                         submission_period=submission_period),
+              _html_email('vote_reminder.html',
+                          league=submission_period.league,
+                          submission_period=submission_period)]
     )
 
 
