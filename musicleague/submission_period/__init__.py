@@ -29,12 +29,6 @@ def create_submission_period(league):
 
     logging.info('Submission period created: %s', new_submission_period.id)
 
-    # Mark all other previous submission periods as not current
-    for submission_period in league.submission_periods:
-        if submission_period.is_current:
-            submission_period.is_current = False
-            submission_period.save()
-
     league.submission_periods.append(new_submission_period)
     league.save()
 
@@ -55,7 +49,6 @@ def remove_submission_period(submission_period_id):
         return
 
     league = submission_period.league
-    removing_current = submission_period.is_current
 
     # Cancel scheduled submission and vote reminder jobs if they exist
     _cancel_pending_task(
@@ -66,11 +59,6 @@ def remove_submission_period(submission_period_id):
     submission_period.delete()
 
     league.reload('submission_periods')
-
-    if removing_current and league.submission_periods:
-        new_current = league.submission_periods[-1]
-        new_current.is_current = True
-        new_current.save()
 
     logging.info('Submission period removed: %s', submission_period_id)
 
