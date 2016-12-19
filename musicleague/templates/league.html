@@ -188,12 +188,12 @@
                             {{ progress_count }} of {{ league.users|length }} have {{ progress_action}}
                         </a>
                     </h5>
-                    {% endif %}
                     <div class="progress">
                         <div class="progress-bar {{ progress_bar_type }} progress-bar-striped" role="progressbar" aria-valuenow="{{ progress_perc }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress_perc }}%">
                             <span class="sr-only">{{ progress_perc }}% Complete</span>
                         </div>
                     </div>
+                    {% endif %}
                     {% endif %}
                 </div>
                 <div class="col-xs-2 col-xs-offset-2 col-md-3 col-md-offset-0 text-right">
