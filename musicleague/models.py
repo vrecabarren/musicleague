@@ -36,12 +36,6 @@ class UserPreferences(EmbeddedDocument):
     user_added_to_league_notifications = BooleanField(
         default=True, role=USER_PREFERENCE_ROLE,
         verbose_name='Receive a notification when added to a new league')
-    user_last_to_submit_notifications = BooleanField(
-        default=True, role=USER_PREFERENCE_ROLE,
-        verbose_name="Receive a notification when you're last to submit")
-    user_last_to_vote_notifications = BooleanField(
-        default=True, role=USER_PREFERENCE_ROLE,
-        verbose_name="Receive a notification when you're last to vote")
     user_playlist_created_notifications = BooleanField(
         default=True, role=USER_PREFERENCE_ROLE,
         verbose_name='Receive a notification when a new playlist is created')
