@@ -132,8 +132,6 @@ def view_league(league_id, **kwargs):
         my_submission = next(
             (s for s in submissions if s.user.id == g.user.id), None)
 
-    logging.warn('c: %s, my submission: %s', league.current_submission_period, my_submission)
-
     return {
         'user': g.user,
         'league': league,
