@@ -30,7 +30,7 @@ def schedule_complete_submission_period(submission_period):
 
 
 def schedule_playlist_creation(submission_period):
-    if not submission_period.league.preferences.auto_playlist_creation:
+    if not is_deployed():
         return
 
     creation_time = submission_period.submission_due_date
