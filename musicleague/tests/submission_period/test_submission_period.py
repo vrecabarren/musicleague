@@ -39,8 +39,6 @@ class CreateSubmissionPeriodTestCase(TestCase):
         self.assertEqual(created.league, saved.league)
 
         self.assertTrue(saved in self.league.submission_periods)
-        self.assertFalse(self.league.submission_periods[0].is_current)
-        self.assertTrue(self.league.submission_periods[1].is_current)
 
         schedule_playlist.assert_called_once_with(created)
         schedule_submission_reminders.assert_called_once_with(created)
@@ -91,17 +89,12 @@ class RemoveSubmissionPeriodTestCase(TestCase):
 
     @patch('musicleague.submission_period._cancel_pending_task')
     def test_remove_existing(self, cancel_task):
-        sp1 = create_submission_period(self.league)
         cancel_task.reset_mock()
 
         sp2 = create_submission_period(self.league)
-        self.assertFalse(get_submission_period(sp1.id).is_current)
-        self.assertTrue(get_submission_period(sp2.id).is_current)
-
         remove_submission_period(sp2.id)
 
         self.assertEqual(2, cancel_task.call_count)
-        self.assertTrue(get_submission_period(sp1.id).is_current)
         self.assertIsNone(get_submission_period(sp2.id))
 
 
