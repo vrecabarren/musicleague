@@ -39,8 +39,15 @@ def view_submit(league_id, submission_period_id):
 @app.route(SUBMIT_URL, methods=['POST'])
 @login_required
 def submit(league_id, submission_period_id):
-
     submission_period = get_submission_period(submission_period_id)
+    if not submission_period or not submission_period.league:
+        # TODO Return internal error
+        return
+
+    if not submission_period.league.has_user(g.user):
+        # TODO Return unauthorized
+        return
+
     if submission_period and (submission_period.accepting_submissions or
                               submission_period.accepting_late_submissions):
         league = submission_period.league

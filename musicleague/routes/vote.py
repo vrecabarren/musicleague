@@ -42,10 +42,17 @@ def view_vote(league_id, submission_period_id):
 @app.route(VOTE_URL, methods=['POST'])
 @login_required
 def vote(league_id, submission_period_id):
+    submission_period = get_submission_period(submission_period_id)
+    if not submission_period or not submission_period.league:
+        # TODO Return internal error
+        return
+
+    if not submission_period.league.has_user(g.user):
+        # TODO Return unauthorized
+        return
 
     votes = {uri: int(votes or 0) for uri, votes in request.form.iteritems()}
 
-    submission_period = get_submission_period(submission_period_id)
     if submission_period and submission_period.accepting_votes:
         league = submission_period.league
         vote = create_or_update_vote(votes, submission_period, league, g.user)
