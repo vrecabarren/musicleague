@@ -18,7 +18,7 @@
 
                 <h3>Votes for <a href="{{ url_for('view_league', _external=True, league_id=league.id) }}">{{ league.name }}</a> are due in approximately {{ league.preferences.submission_reminder_time }} hours.</h3>
 
-                <a href="{{ url_for('view_league', league_id=league.id) }}?action=vote" class="btn btn-lg btn-success">Vote</a>
+                <a href="{{ url_for('view_vote', league_id=league.id, submission_period_id=submission_period.id) }}" class="btn btn-lg btn-success">Vote</a>
 
             </div>
         </div>

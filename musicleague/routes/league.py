@@ -126,31 +126,14 @@ def save_league_settings(league_id, **kwargs):
 def view_league(league_id, **kwargs):
     league = kwargs.get('league')
 
-    tracks_by_uri = {}
     my_submission = None
-    my_vote = None
-
     if league.current_submission_period:
-        tracks = league.current_submission_period.all_tracks
-        if tracks:
-            tracks = g.spotify.tracks(tracks).get('tracks')
-
-        tracks_by_uri = {track.get('uri'): track for track in tracks if track}
-
+        submissions = league.current_submission_period.submissions
         my_submission = next(
-            (sub for sub in league.current_submission_period.submissions
-             if sub.user == g.user), None)
-
-        my_vote = next(
-            (vote for vote in league.current_submission_period.votes
-             if vote.user == g.user), None)
+            (s for s in submissions if s.user.id == g.user.id), None)
 
     return {
         'user': g.user,
-        'league': kwargs.get('league'),
-        'edit': request.args.get('edit'),
-        'action': request.args.get('action'),
-        'tracks_by_uri': tracks_by_uri,
-        'my_submission': my_submission,
-        'my_vote': my_vote
+        'league': league,
+        'my_submission': my_submission
     }

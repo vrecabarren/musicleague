@@ -30,12 +30,13 @@
 {% block content %}
 
 <div class="container">
-    {% if league.has_user(user) and league.preferences.late_submissions and league.current_submission_period and not league.current_submission_period.accepting_submissions and not my_submission and league.current_submission_period.accepting_votes %}
+    {% set csp = league.current_submission_period %}
+    {% if league.has_user(user) and csp and not csp.accepting_submissions and csp.accepting_late_submissions and not my_submission %}
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="alert alert-info alert-dismissable" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                The deadline for song selection has passed, but it looks like you haven't submitted! You may still do so <strong><a href="?action=submit">here</a></strong>.
+                The deadline for song selection has passed, but it looks like you haven't submitted! You may still do so <strong><a href="{{ url_for('view_submit', league_id=league.id, submission_period_id=csp.id)}}">here</a></strong>.
             </div>
         </div>
     </div>
@@ -120,9 +121,9 @@
             </div>
             {% endif %}
 
-            {% for submission_period in league.submission_periods|reverse %}
-            {% set needs_to_submit = league.has_user(user) and submission_period.accepting_submissions and not my_submission %}
-            {% set needs_to_vote = league.has_user(user) and submission_period.accepting_votes and not my_vote %}
+            {% for submission_period in league.submission_periods %}
+            {% set needs_to_submit = league.has_user(user) and submission_period.is_current_v2 and submission_period.accepting_submissions and not my_submission %}
+            {% set needs_to_vote = league.has_user(user) and submission_period.is_current_v2 and submission_period.accepting_votes and not my_vote %}
             <div class="row">
                 <div class="col-xs-2 col-md-1 text-right">
                     {% if not league.has_user(user) %}
@@ -147,7 +148,9 @@
                         {% set icon = "fa-exclamation-circle" %}
                     {% endif %}
 
+                    {% if submission_period.is_complete or submission_period.is_current_v2 %}
                     <a href="#" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" title="{{ title }}" data-content="{{ content }}"><h1 style="color: {{ color }}; display: inline-block; margin-top: 10px"><i class="fa {{ icon }}"></i></h1></a>
+                    {% endif %}
 
                 </div>
                 <div class="col-xs-10 col-md-8">
@@ -177,6 +180,7 @@
                         {% set content = "<strong>Voted:</strong><br>" + submission_period.have_voted|map(attribute='name')|join('<br>') + "<hr><strong>Waiting for:</strong><br>" + submission_period.have_not_voted|map(attribute='name')|join('<br>') %}
                     {% endif %}
                     <h4 style="margin-top: 10px">{{ submission_period.name }}</h4>
+                    {% if submission_period.is_complete or submission_period.is_current_v2 %}
                     <h5 class="text-muted" style="font-weight: inherit"><i class="fa fa-clock-o"></i>&nbsp;{{ due_date }}</h5>
                     {% if not submission_period.is_complete %}
                     <h5 class="text-muted" style="font-weight: inherit">
@@ -184,22 +188,20 @@
                             {{ progress_count }} of {{ league.users|length }} have {{ progress_action}}
                         </a>
                     </h5>
-                    {% endif %}
                     <div class="progress">
                         <div class="progress-bar {{ progress_bar_type }} progress-bar-striped" role="progressbar" aria-valuenow="{{ progress_perc }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress_perc }}%">
                             <span class="sr-only">{{ progress_perc }}% Complete</span>
                         </div>
                     </div>
+                    {% endif %}
+                    {% endif %}
                 </div>
                 <div class="col-xs-2 col-xs-offset-2 col-md-3 col-md-offset-0 text-right">
-                    {% if league.has_user(user) and submission_period.accepting_submissions %}
-                        {% set message = "Select Songs" %}
-                        {% if my_submission %}
-                            {% set message = "Change Selection" %}
-                        {% endif %}
-                    <a href="#submit-modal" data-toggle="modal" data-target="#submit-modal" class="btn btn-success">{{ message }}</a>
+                    {% if not submission_period.is_complete and not submission_period.is_current_v2 %}
+                    {% elif league.has_user(user) and submission_period.accepting_submissions %}
+                    <a href="{{ url_for('view_submit', league_id=league.id, submission_period_id=submission_period.id) }}" class="btn btn-success">Select Songs</a>
                     {% elif league.has_user(user) and submission_period.accepting_votes %}
-                    <a href="#vote-modal" data-toggle="modal" data-target="#vote-modal" class="btn btn-primary">Submit Votes</a>
+                    <a href="{{ url_for('view_vote', league_id=league.id, submission_period_id=submission_period.id) }}" class="btn btn-primary">Submit Votes</a>
                     <br>
                     <a href="{{ submission_period.playlist_url }}" class="btn btn-link text-muted" target="_blank">Listen to Playlist</a>
                     {% else %}
@@ -208,7 +210,7 @@
                     <a href="{{ submission_period.playlist_url }}" class="btn btn-link text-muted" target="_blank">Listen to Playlist</a>
                     {% endif %}
                     {% if league.has_owner(user) %}
-                    <br>
+
                     <a class="btn btn-link text-muted dropdown-toggle" data-toggle="dropdown" id="options-dropdown">Admin</a>
                     <ul class="dropdown-menu" aria-labelledby="options-dropdown">
                         <li><a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id, action='edit') }}">Edit Preferences</a></li>
@@ -230,8 +232,6 @@
 
 {% include "modals/members/members.html" %}
 {% include "modals/edit_league/edit_league.html" %}
-{% include "modals/submit/submit.html" %}
-{% include "modals/vote/vote.html" %}
 
 {% endblock %}
 

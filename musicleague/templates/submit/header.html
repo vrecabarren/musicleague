@@ -1,0 +1,8 @@
+<div class="row">
+    <div class="col-md-8 col-md-offset-2 text-center">
+        <h1>{{ submission_period.name }}</h1>
+        <p><a href="{{ url_for('view_league', league_id=league.id) }}">{{ league.name }}</a> <em id="submission-period-created" class="text-muted">Created on {{ moment(submission_period.created).format('MMM D, YYYY') }}</em></p>
+    </div>
+</div>
+
+<div class="spacer"></div>

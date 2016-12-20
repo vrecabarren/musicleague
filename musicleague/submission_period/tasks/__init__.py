@@ -62,7 +62,7 @@ def send_submission_reminders(submission_period_id):
         to_notify = set(league.users) - users_submitted
         for user in to_notify:
             logging.warning('%s has not submitted! Notifying.', user.name)
-            user_submit_reminder_notification(user, league)
+            user_submit_reminder_notification(user, submission_period)
 
     except:
         logging.exception('Error occurred while sending submission reminders!')
@@ -83,7 +83,7 @@ def send_vote_reminders(submission_period_id):
         to_notify = set(league.users) - users_voted
         for user in to_notify:
             logging.warning('%s has not submitted! Notifying.', user.name)
-            user_vote_reminder_notification(user, league)
+            user_vote_reminder_notification(user, submission_period)
 
     except:
         logging.exception('Error occurred while sending vote reminders!')
