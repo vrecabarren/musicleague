@@ -5,17 +5,17 @@ from mock import patch
 from musicleague.environment.variables import MAILGUN_API_BASE_URL
 from musicleague.environment.variables import MAILGUN_API_KEY
 from musicleague.environment.variables import NOTIFICATION_SENDER
-from musicleague.notify import HTML_PATH
-from musicleague.notify import TXT_PATH
-from musicleague.notify import _html_email
-from musicleague.notify import _send_email
-from musicleague.notify import _txt_email
+from musicleague.notify.email import HTML_PATH
+from musicleague.notify.email import TXT_PATH
+from musicleague.notify.email import _html_email
+from musicleague.notify.email import _send_email
+from musicleague.notify.email import _txt_email
 from musicleague.tests.utils.decorators import env_deployed
 from musicleague.tests.utils.decorators import env_local
 from musicleague.tests.utils.environment import set_environment_state
 
 
-PATH = 'musicleague.notify.%s'
+PATH = 'musicleague.notify.email.%s'
 
 
 class SendEmailTestCase(TestCase):
