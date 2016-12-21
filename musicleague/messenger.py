@@ -1,5 +1,6 @@
 import httplib
 import json
+import logging
 import requests
 
 from musicleague.environment import get_setting
@@ -28,7 +29,7 @@ def process_data(data):
 
 
 def process_message(sender_id, message_text):
-    send_message(sender_id, "You said: %s".format(message_text))
+    send_message(sender_id, "You said: {}".format(message_text))
 
 
 def send_message(recipient_id, message_text):
@@ -41,5 +42,6 @@ def send_message(recipient_id, message_text):
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages",
                       params=params, headers=headers, data=data)
-    if r.status_code != httplib.OK:
-        pass
+
+    if r.status_code == httplib.OK:
+        logging.debug("Message to %s succeeded", recipient_id)
