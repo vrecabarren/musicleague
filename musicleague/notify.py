@@ -23,6 +23,12 @@ def owner_all_users_submitted_notification(owner, submission_period):
     if not owner.preferences.owner_all_users_submitted_notifications:
         return
 
+    if owner.messenger:
+        from musicleague.messenger import send_message
+        send_message(
+            owner.messenger.id,
+            "All users have submitted for {}".format(submission_period.name))
+
     _send_email.apply_async(
         args=[owner.email,
               'Music League - All Users Submitted',
@@ -31,12 +37,6 @@ def owner_all_users_submitted_notification(owner, submission_period):
               _html_email('all_submitted.html',
                           submission_period=submission_period)]
     )
-
-    if owner.messenger:
-        from musicleague.messenger import send_message
-        send_message(
-            owner.messenger.id,
-            "All users have submitted for {}".format(submission_period.name))
 
 
 def owner_user_submitted_notification(owner, submission):
