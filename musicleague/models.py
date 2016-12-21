@@ -7,7 +7,6 @@ from mongoengine import Document
 from mongoengine import EmbeddedDocument
 from mongoengine import EmbeddedDocumentField
 from mongoengine import IntField
-from mongoengine import JsonField
 from mongoengine import ListField
 from mongoengine import PULL
 from mongoengine import ReferenceField
