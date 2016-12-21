@@ -7,6 +7,7 @@ from mongoengine import Document
 from mongoengine import EmbeddedDocument
 from mongoengine import EmbeddedDocumentField
 from mongoengine import IntField
+from mongoengine import JsonField
 from mongoengine import ListField
 from mongoengine import PULL
 from mongoengine import ReferenceField
@@ -50,11 +51,17 @@ class UserPreferences(EmbeddedDocument):
         verbose_name='Receive a reminder before the vote due date')
 
 
+class UserMessengerContext(EmbeddedDocument):
+    messenger_id = StringField(required=True)
+    status = IntField(required=False, default=0)
+
+
 class User(Document):
     id = StringField(primary_key=True, required=True)
     email = StringField(required=True)
     image_url = StringField(required=False, default='')
     joined = DateTimeField(required=True)
+    messenger = EmbeddedDocument(UserMessengerContext)
     name = StringField(required=False, default='')
     preferences = EmbeddedDocumentField(UserPreferences)
 
