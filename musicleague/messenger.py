@@ -33,6 +33,7 @@ def process_message(sender_id, message_text):
 
 
 def send_message(recipient_id, message_text):
+    logging.warn("Sending message: %s: %s", recipient_id, message_text)
     access_token = get_setting(MESSENGER_PAGE_ACCESS_TOKEN)
     params = {"access_token": access_token}
     headers = {"Content-Type": "application/json"}
@@ -44,4 +45,6 @@ def send_message(recipient_id, message_text):
                       params=params, headers=headers, data=data)
 
     if r.status_code == httplib.OK:
-        logging.debug("Message to %s succeeded", recipient_id)
+        logging.warn("Message succeeded")
+    else:
+        logging.warn("Message failed. Status: %s", r.status_code)
