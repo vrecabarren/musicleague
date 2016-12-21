@@ -28,7 +28,7 @@ def process_data(data):
 
 
 def process_message(sender_id, message_text):
-    send_message(sender_id, "got it, thanks!")
+    send_message(sender_id, "You said: %s".format(message_text))
 
 
 def send_message(recipient_id, message_text):
