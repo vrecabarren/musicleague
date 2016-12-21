@@ -11,7 +11,7 @@ MESSENGER_HOOK_URL = '/messenger/'
 
 
 @app.route(MESSENGER_HOOK_URL, methods=['GET'])
-def verify(self):
+def verify():
     # When the endpoint is registered as a webhook, it must echo back
     # the 'hub.challenge' value it receives in the query arguments
     hub_mode = request.args.get('hub.mode')
@@ -30,6 +30,6 @@ def verify(self):
 
 
 @app.route(MESSENGER_HOOK_URL, methods=['POST'])
-def webhook(self):
+def webhook():
     # TODO Process incoming message from Facebook Messenger webhook
     pass
