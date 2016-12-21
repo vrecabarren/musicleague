@@ -23,6 +23,8 @@ def add_messenger(messenger_id):
     user.messenger = context
     user.save()
 
+    return "Messenger context added for {}".format(messenger_id), httplib.OK
+
 
 @app.route(MESSENGER_HOOK_URL, methods=['GET'])
 def verify():
