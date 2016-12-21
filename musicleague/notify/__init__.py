@@ -1,0 +1,130 @@
+
+from musicleague.notify.email import owner_all_users_submitted_email
+from musicleague.notify.email import owner_all_users_voted_email
+from musicleague.notify.email import owner_user_submitted_email
+from musicleague.notify.email import owner_user_voted_email
+from musicleague.notify.email import user_added_to_league_email
+from musicleague.notify.email import user_invited_to_league_email
+from musicleague.notify.email import user_last_to_submit_email
+from musicleague.notify.email import user_last_to_vote_email
+from musicleague.notify.email import user_playlist_created_email
+from musicleague.notify.email import user_removed_from_league_email
+from musicleague.notify.email import user_submit_reminder_email
+from musicleague.notify.email import user_vote_reminder_email
+
+from musicleague.notify.messenger import owner_all_users_submitted_messenger
+from musicleague.notify.messenger import owner_all_users_voted_messenger
+from musicleague.notify.messenger import owner_user_submitted_messenger
+from musicleague.notify.messenger import owner_user_voted_messenger
+
+
+def owner_all_users_submitted_notification(owner, submission_period):
+    if not submission_period or not owner or not owner.email:
+        return
+
+    if not owner.preferences.owner_all_users_submitted_notifications:
+        return
+
+    owner_all_users_submitted_email(owner, submission_period)
+    owner_all_users_submitted_messenger(owner, submission_period)
+
+
+def owner_user_submitted_notification(owner, submission):
+    if not submission or not owner or not owner.email:
+        return
+
+    if not owner.preferences.owner_user_submitted_notifications:
+        return
+
+    owner_user_submitted_email(owner, submission)
+    owner_user_submitted_messenger(owner, submission)
+
+
+def owner_all_users_voted_notification(owner, submission_period):
+    if not submission_period or not owner or not owner.email:
+        return
+
+    if not owner.preferences.owner_all_users_voted_notifications:
+        return
+
+    owner_all_users_voted_email(owner, submission_period)
+    owner_all_users_voted_messenger(owner, submission_period)
+
+
+def owner_user_voted_notification(owner, vote):
+    if not vote or not owner or not owner.email:
+        return
+
+    if not owner.preferences.owner_user_voted_notifications:
+        return
+
+    owner_user_voted_email(owner, vote)
+    owner_user_voted_messenger(owner, vote)
+
+
+def user_added_to_league_notification(user, league):
+    if not league or not user or not user.email:
+        return
+
+    if not user.preferences.user_added_to_league_notifications:
+        return
+
+    user_added_to_league_email(user, league)
+
+
+def user_invited_to_league_notification(invited_user, league):
+    if not league or not invited_user or not invited_user.email:
+        return
+
+    user_invited_to_league_email(invited_user, league)
+
+
+def user_last_to_submit_notification(user, submission_period):
+    if not submission_period or not user or not user.email:
+        return
+
+    user_last_to_submit_email(user, submission_period)
+
+
+def user_last_to_vote_notification(user, submission_period):
+    if not submission_period or not user or not user.email:
+        return
+
+    user_last_to_vote_email(user, submission_period)
+
+
+def user_playlist_created_notification(submission_period):
+    if not submission_period or not submission_period.league.users:
+        return
+
+    user_playlist_created_email(submission_period)
+
+
+def user_removed_from_league_notification(user, league):
+    if league or not user or not user.email:
+        return
+
+    if not user.preferences.user_removed_from_league_notifications:
+        return
+
+    user_removed_from_league_email(user, league)
+
+
+def user_submit_reminder_notification(user, submission_period):
+    if not submission_period or not user or not user.email:
+        return
+
+    if not user.preferences.user_submit_reminder_notifications:
+        return
+
+    user_submit_reminder_email(user, submission_period)
+
+
+def user_vote_reminder_notification(user, submission_period):
+    if not submission_period or not user or not user.email:
+        return
+
+    if not user.preferences.user_vote_reminder_notifications:
+        return
+
+    user_vote_reminder_email(user, submission_period)
