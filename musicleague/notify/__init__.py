@@ -16,6 +16,13 @@ from musicleague.notify.messenger import owner_all_users_submitted_messenger
 from musicleague.notify.messenger import owner_all_users_voted_messenger
 from musicleague.notify.messenger import owner_user_submitted_messenger
 from musicleague.notify.messenger import owner_user_voted_messenger
+from musicleague.notify.messenger import user_added_to_league_messenger
+from musicleague.notify.messenger import user_last_to_submit_messenger
+from musicleague.notify.messenger import user_last_to_vote_messenger
+from musicleague.notify.messenger import user_playlist_created_messenger
+from musicleague.notify.messenger import user_removed_from_league_messenger
+from musicleague.notify.messenger import user_submit_reminder_messenger
+from musicleague.notify.messenger import user_vote_reminder_messenger
 
 
 def owner_all_users_submitted_notification(owner, submission_period):
@@ -70,6 +77,7 @@ def user_added_to_league_notification(user, league):
         return
 
     user_added_to_league_email(user, league)
+    user_added_to_league_messenger(user, league)
 
 
 def user_invited_to_league_notification(invited_user, league):
@@ -84,6 +92,7 @@ def user_last_to_submit_notification(user, submission_period):
         return
 
     user_last_to_submit_email(user, submission_period)
+    user_last_to_submit_messenger(user, submission_period)
 
 
 def user_last_to_vote_notification(user, submission_period):
@@ -91,6 +100,7 @@ def user_last_to_vote_notification(user, submission_period):
         return
 
     user_last_to_vote_email(user, submission_period)
+    user_last_to_vote_messenger(user, submission_period)
 
 
 def user_playlist_created_notification(submission_period):
@@ -98,6 +108,7 @@ def user_playlist_created_notification(submission_period):
         return
 
     user_playlist_created_email(submission_period)
+    user_playlist_created_messenger(submission_period)
 
 
 def user_removed_from_league_notification(user, league):
@@ -108,6 +119,7 @@ def user_removed_from_league_notification(user, league):
         return
 
     user_removed_from_league_email(user, league)
+    user_removed_from_league_messenger(user, league)
 
 
 def user_submit_reminder_notification(user, submission_period):
@@ -118,6 +130,7 @@ def user_submit_reminder_notification(user, submission_period):
         return
 
     user_submit_reminder_email(user, submission_period)
+    user_submit_reminder_messenger(user, submission_period)
 
 
 def user_vote_reminder_notification(user, submission_period):
@@ -128,3 +141,4 @@ def user_vote_reminder_notification(user, submission_period):
         return
 
     user_vote_reminder_email(user, submission_period)
+    user_vote_reminder_messenger(user, submission_period)
