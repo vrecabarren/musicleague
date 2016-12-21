@@ -24,6 +24,7 @@ def owner_all_users_submitted_notification(owner, submission_period):
         return
 
     if owner.messenger:
+        logging.warn("Sending message to owner %s", owner.messenger.id)
         from musicleague.messenger import send_message
         send_message(
             owner.messenger.id,
