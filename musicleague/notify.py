@@ -32,6 +32,12 @@ def owner_all_users_submitted_notification(owner, submission_period):
                           submission_period=submission_period)]
     )
 
+    if owner.messenger:
+        from musicleague.messenger import send_message
+        send_message(
+            owner.messenger.id,
+            "All users have submitted for {}".format(submission_period.name))
+
 
 def owner_user_submitted_notification(owner, submission):
     if not submission or not owner or not owner.email:
