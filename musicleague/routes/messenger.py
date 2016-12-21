@@ -1,14 +1,27 @@
 import httplib
 
+from flask import g
 from flask import request
 
 from musicleague import app
 from musicleague.environment import get_setting
 from musicleague.environment.variables import MESSENGER_VERIFY_TOKEN
 from musicleague.messenger import process_data
+from musicleague.models import MessengerContext
 
 
 MESSENGER_HOOK_URL = '/messenger/'
+
+
+@app.route('/add_messenger/<messenger_id>/', methods=['GET'])
+def add_messenger(messenger_id):
+    user = g.user
+
+    context = MessengerContext(id=messenger_id, user=user)
+    context.save()
+
+    user.messenger = context
+    user.save()
 
 
 @app.route(MESSENGER_HOOK_URL, methods=['GET'])
