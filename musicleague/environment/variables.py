@@ -9,6 +9,8 @@ DEBUG = EnvironmentVariable(key='DEBUG', default=False)
 DEPLOYED = EnvironmentVariable(key='ON_HEROKU', default=False)
 MAILGUN_API_BASE_URL = EnvironmentVariable(key='MAILGUN_API_BASE_URL', default='')  # noqa
 MAILGUN_API_KEY = EnvironmentVariable(key='MAILGUN_API_KEY', default='')
+MESSENGER_PAGE_ACCESS_TOKEN = EnvironmentVariable(key='MESSENGER_PAGE_ACCESS_TOKEN', default='')  # noqa
+MESSENGER_VERIFY_TOKEN = EnvironmentVariable(key='MESSENGER_VERIFY_TOKEN', default='')  # noqa
 MONGODB_URI = EnvironmentVariable(key='MONGODB_URI', default='127.0.0.1')
 NOTIFICATION_SENDER = EnvironmentVariable(key="NOTIFICATION_SENDER", default='')  # noqa
 PORT = EnvironmentVariable(key='PORT', default=5000)
