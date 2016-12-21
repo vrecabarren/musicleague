@@ -5,8 +5,6 @@ from flask import request
 from flask import url_for
 
 from musicleague import app
-from musicleague.messenger import verify
-from musicleague.messenger import webhook
 from musicleague.models import League
 from musicleague.models import Submission
 from musicleague.models import User
@@ -24,6 +22,8 @@ from musicleague.routes.league import add_user_for_league
 from musicleague.routes.league import get_create_league
 from musicleague.routes.league import remove_league
 from musicleague.routes.league import view_league
+from musicleague.routes.messenger import verify
+from musicleague.routes.messenger import webhook
 from musicleague.routes.spotify import create_spotify_playlist
 from musicleague.routes.spotify import view_playlist
 from musicleague.routes.submission_period import post_create_submission_period
