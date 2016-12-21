@@ -26,7 +26,7 @@ def verify():
 
         return hub_challenge, httplib.OK
 
-    return '', httplib.NOT_FOUND
+    return 'Hello World', httplib.OK
 
 
 @app.route(MESSENGER_HOOK_URL, methods=['POST'])
