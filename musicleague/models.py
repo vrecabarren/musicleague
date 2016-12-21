@@ -50,9 +50,10 @@ class UserPreferences(EmbeddedDocument):
         verbose_name='Receive a reminder before the vote due date')
 
 
-class UserMessengerContext(EmbeddedDocument):
-    messenger_id = StringField(required=True)
+class MessengerContext(Document):
+    id = StringField(primary_key=True, required=True)
     status = IntField(required=False, default=0)
+    user = ReferenceField('User')
 
 
 class User(Document):
@@ -60,7 +61,7 @@ class User(Document):
     email = StringField(required=True)
     image_url = StringField(required=False, default='')
     joined = DateTimeField(required=True)
-    messenger = EmbeddedDocument(UserMessengerContext)
+    messenger = ReferenceField(MessengerContext)
     name = StringField(required=False, default='')
     preferences = EmbeddedDocumentField(UserPreferences)
 
@@ -234,4 +235,4 @@ class League(Document):
 
 
 ALL_MODELS = [UserPreferences, User, InvitedUser, Submission, Vote,
-              SubmissionPeriod, LeaguePreferences, League]
+              SubmissionPeriod, LeaguePreferences, League, MessengerContext]
