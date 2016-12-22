@@ -1,4 +1,5 @@
 from musicleague.messenger.context import get_context
+from musicleague.messenger.context import STATUS_LINK_ACCOUNT
 from musicleague.messenger.interactions.new_user import process_link_user
 from musicleague.messenger.interactions.new_user import process_new_user
 
@@ -21,5 +22,5 @@ def process_message(sender_id, message_text):
         process_new_user(sender_id)
 
     # If this is a user we've interacted with but accounts aren't linked, link
-    elif context and not context.user:
+    elif context and context.status == STATUS_LINK_ACCOUNT:
         process_link_user(context, sender_id, message_text)

@@ -1,12 +1,14 @@
 from flask import url_for
 
 from musicleague.messenger.context import create_context
+from musicleague.messenger.context import STATUS_DEFAULT
+from musicleague.messenger.context import STATUS_LINK_ACCOUNT
 from musicleague.messenger.send import send_message
 from musicleague.user import get_user
 
 
 def process_new_user(messenger_id):
-    create_context(messenger_id)
+    create_context(messenger_id, status=STATUS_LINK_ACCOUNT)
 
     send_message(
         messenger_id,
@@ -22,6 +24,7 @@ def process_link_user(context, messenger_id, message_text):
                      "I'm sorry. I didn't find a user with that ID.")
         return
 
+    context.status = STATUS_DEFAULT
     context.user = user
     context.save()
 
