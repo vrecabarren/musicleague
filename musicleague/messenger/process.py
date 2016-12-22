@@ -23,4 +23,4 @@ def process_message(sender_id, message_text):
 
     # If this is a user we've interacted with but accounts aren't linked, link
     elif context and context.status == STATUS_LINK_ACCOUNT:
-        process_link_user(context, sender_id, message_text)
+        process_link_user(context, message_text)

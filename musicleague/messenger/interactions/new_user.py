@@ -17,10 +17,10 @@ def process_new_user(messenger_id):
         "can find it here: {}".format(url_for('user_id', _external=True)))
 
 
-def process_link_user(context, messenger_id, message_text):
+def process_link_user(context, message_text):
     user = get_user(message_text)
     if not user:
-        send_message(messenger_id,
+        send_message(context.id,
                      "I'm sorry. I didn't find a user with that ID.")
         return
 
@@ -31,6 +31,6 @@ def process_link_user(context, messenger_id, message_text):
     user.messenger = context
     user.save()
 
-    send_message(messenger_id,
+    send_message(context.id,
                  "I've linked your Facebook and Music League accounts!\n"
                  "You will now receive notifications from me in Messenger.")
