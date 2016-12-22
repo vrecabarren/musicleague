@@ -5,10 +5,8 @@ from musicleague.messenger.interactions.new_user import process_new_user
 
 def process_data(data):
     if data["object"] == "page":
-
         for entry in data["entry"]:
             for messaging_event in entry["messaging"]:
-
                 if messaging_event.get("message"):
                     sender_id = messaging_event["sender"]["id"]
                     message_text = messaging_event["message"]["text"]

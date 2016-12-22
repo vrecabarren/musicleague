@@ -1,3 +1,4 @@
+import httplib
 import logging
 from time import time
 
@@ -21,6 +22,7 @@ from musicleague.user import get_user
 LOGIN_URL = '/login/'
 LOGOUT_URL = '/logout/'
 ADD_BOT_URL = '/add_bot/'
+USER_ID_URL = '/id/'
 
 
 @app.before_request
@@ -82,6 +84,12 @@ def login():
                 return redirect(next_url)
 
     return redirect(url_for('profile'))
+
+
+@app.route(USER_ID_URL, methods=['GET'])
+@login_required
+def user_id():
+    return g.user.id, httplib.OK
 
 
 @app.route(ADD_BOT_URL)
