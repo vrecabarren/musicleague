@@ -6,7 +6,7 @@ STATUS_LINK_ACCOUNT = 1
 
 
 def create_context(messenger_id, status=STATUS_DEFAULT, user=None):
-    context = MessengerContext(id=messenger_id, user=user)
+    context = MessengerContext(id=messenger_id, status=status, user=user)
     context.save()
     return context
 
