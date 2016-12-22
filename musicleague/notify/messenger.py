@@ -88,7 +88,7 @@ def user_playlist_created_messenger(submission_period):
         if user.messenger:
             send_message(
                 user.messenger.id,
-                "A new playlist has been created for {}. "
+                "A new playlist has been created for {}.\n"
                 "Listen to it here: {}".format(
                     submission_period.name, submission_period.playlist_url))
 

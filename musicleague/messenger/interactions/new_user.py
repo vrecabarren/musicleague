@@ -29,4 +29,5 @@ def process_link_user(context, messenger_id, message_text):
     user.save()
 
     send_message(messenger_id,
-                 "I've linked your Facebook and Music League accounts!")
+                 "I've linked your Facebook and Music League accounts!\n"
+                 "You will now receive notifications from me in Messenger.")
