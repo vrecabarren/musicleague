@@ -1,3 +1,6 @@
+from flask import url_for
+
+from musicleague import app
 from musicleague.messenger import send_message
 
 
@@ -48,9 +51,13 @@ def user_added_to_league_messenger(user, league):
         return
 
     if user.messenger:
-        send_message(
-            user.messenger.id,
-            "You've been added to the league {}".format(league.name))
+        with app.app_context():
+            send_message(
+                user.messenger.id,
+                "You've been added to the league {}.\n{}"
+                .format(league.name,
+                        url_for('view_league',
+                                league_id=league.id, _external=True)))
 
 
 def user_invited_to_league_messenger(invited_user, league):
@@ -65,9 +72,14 @@ def user_last_to_submit_messenger(user, submission_period):
         return
 
     if user.messenger:
-        send_message(
-            user.messenger.id,
-            "You're the last to submit for {}".format(submission_period.name))
+        with app.app_context():
+            send_message(
+                user.messenger.id,
+                "You're the last to submit for {}.\n{}"
+                .format(submission_period.name,
+                        url_for('view_submit',
+                                league_id=submission_period.league.id,
+                                submission_period_id=submission_period.id)))
 
 
 def user_last_to_vote_messenger(user, submission_period):
@@ -75,9 +87,14 @@ def user_last_to_vote_messenger(user, submission_period):
         return
 
     if user.messenger:
-        send_message(
-            user.messenger.id,
-            "You're the last to vote for {}".format(submission_period.name))
+        with app.app_context():
+            send_message(
+                user.messenger.id,
+                "You're the last to vote for {}.\n{}"
+                .format(submission_period.name,
+                        url_for('view_vote',
+                                league_id=submission_period.league.id,
+                                submission_period_id=submission_period.id)))
 
 
 def user_playlist_created_messenger(submission_period):
@@ -108,9 +125,14 @@ def user_submit_reminder_messenger(user, submission_period):
         return
 
     if user.messenger:
-        send_message(
-            user.messenger.id,
-            "It's time to submit for {}".format(submission_period.name))
+        with app.app_context():
+            send_message(
+                user.messenger.id,
+                "It's time to submit for {}.\n{}"
+                .format(submission_period.name,
+                        url_for('view_submit',
+                                league_id=submission_period.league.id,
+                                submission_period_id=submission_period.id)))
 
 
 def user_vote_reminder_messenger(user, submission_period):
@@ -118,6 +140,11 @@ def user_vote_reminder_messenger(user, submission_period):
         return
 
     if user.messenger:
-        send_message(
-            user.messenger.id,
-            "It's time to vote for {}".format(submission_period.name))
+        with app.app_context():
+            send_message(
+                user.messenger.id,
+                "It's time to vote for {}.\n{}"
+                .format(submission_period.name,
+                        url_for('view_vote',
+                                league_id=submission_period.league.id,
+                                submission_period_id=submission_period.id)))
