@@ -11,8 +11,8 @@ def process_new_user(messenger_id):
     send_message(
         messenger_id,
         "Hi! I don't believe we've spoken before. Please provide the ID given "
-        "to you on the Music League website.\u000AIf you don't have one, you "
-        "can find it here: {}".format(url_for('user_id')))
+        "to you on the Music League website.\nIf you don't have one, you "
+        "can find it here: {}".format(url_for('user_id', _external=True)))
 
 
 def process_link_user(context, messenger_id, message_text):
