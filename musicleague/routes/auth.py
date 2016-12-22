@@ -1,4 +1,3 @@
-import httplib
 import logging
 from time import time
 
@@ -14,6 +13,7 @@ from musicleague import app
 from musicleague.bot import create_or_update_bot
 from musicleague.bot import is_bot
 from musicleague.routes.decorators import login_required
+from musicleague.routes.decorators import templated
 from musicleague.spotify import get_spotify_oauth
 from musicleague.user import create_user_from_spotify_user
 from musicleague.user import get_user
@@ -88,8 +88,11 @@ def login():
 
 @app.route(USER_ID_URL, methods=['GET'])
 @login_required
+@templated('id.html')
 def user_id():
-    return g.user.id, httplib.OK
+    return {
+        'user': g.user,
+    }
 
 
 @app.route(ADD_BOT_URL)

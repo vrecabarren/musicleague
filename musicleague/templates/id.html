@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Music League | ID{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 jumbotron text-center" style="margin-top: 50px">
+                <h3>Your User ID is:</h3>
+                <h1>{{ user.id }}</h1>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
