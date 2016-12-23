@@ -238,11 +238,7 @@
 {% block js %}
 <script type="text/javascript">
     $(document).ready(function(){
-        {% if request.args.get('action') == 'submit' %}
-        $('#submit-modal').modal('show');
-        {% elif request.args.get('action') == 'vote' %}
-        $('#vote-modal').modal('show');
-        {% elif request.args.get('action') == 'edit' %}
+        {% if request.args.get('action') == 'edit' %}
         $('#edit-modal').modal('show');
         {% elif request.args.get('action') == 'members' %}
         $('#members-modal').modal('show');
@@ -252,7 +248,5 @@
 <script type="text/javascript">
 {% include "modals/members/members.js" %}
 {% include "modals/edit_league/edit_league.js" %}
-{% include "modals/submit/submit.js" %}
-{% include "modals/vote/vote.js" %}
 </script>
 {% endblock %}
