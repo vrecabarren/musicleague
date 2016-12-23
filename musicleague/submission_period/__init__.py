@@ -10,9 +10,16 @@ from musicleague.submission_period.tasks.schedulers import schedule_submission_r
 from musicleague.submission_period.tasks.schedulers import schedule_vote_reminders  # noqa
 
 
-def create_submission_period(league):
+def create_submission_period(league, name=None, description=None):
+    if name is None:
+        name = 'Submission Period %s' % (len(league.submission_periods) + 1)
+
+    if description is None:
+        description = ''
+
     new_submission_period = SubmissionPeriod(
-        name='Submission Period %s' % (len(league.submission_periods) + 1),
+        name=name,
+        description=description,
         created=datetime.utcnow(),
         league=league,
         submission_due_date=datetime.utcnow() + timedelta(days=5),

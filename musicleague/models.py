@@ -105,6 +105,7 @@ class Vote(Document):
 class SubmissionPeriod(Document):
     created = DateTimeField()
     complete = BooleanField(default=False)
+    description = StringField(max_length=255)
     submission_due_date = DateTimeField()
     vote_due_date = DateTimeField()
     is_current = BooleanField(default=True)

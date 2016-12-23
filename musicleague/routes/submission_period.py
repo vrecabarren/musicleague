@@ -25,13 +25,14 @@ SETTINGS_URL = '/l/<league_id>/<submission_period_id>/settings/'
 VIEW_SUBMISSION_PERIOD_URL = '/l/<league_id>/<submission_period_id>/'
 
 
-@app.route(CREATE_SUBMISSION_PERIOD_URL)
+@app.route(CREATE_SUBMISSION_PERIOD_URL, methods=['POST'])
 @login_required
 @league_required
 def post_create_submission_period(league_id, **kwargs):
     league = kwargs.get('league')
     if league.has_owner(g.user):
-        create_submission_period(league)
+        name = request.form.get('name')
+        create_submission_period(league, name)
     return redirect(url_for('view_league', league_id=league_id))
 
 

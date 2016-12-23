@@ -95,7 +95,9 @@
             <span data-toggle="modal" data-target="#edit-modal">
                 <a href="#edit-modal" data-toggle="tooltip" data-placement="top" class="btn btn-default" title="Edit League Preferences"><i class="fa fa-gear"></i></a>
             </span>
-            <a href="{{ url_for('post_create_submission_period', league_id=league.id) }}" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Create New Submission Period"><i class="fa fa-plus"></i></a>
+            <span data-toggle="modal" data-target="#add-submission-period-modal">
+                <a href="#add-submission-period-modal" data-toggle="tooltip" data-placement="top" class="btn btn-default" title="Create New Submission Period"><i class="fa fa-plus"></i></a>
+            </span>
             {% endif %}
 
             {% if not league.has_user(user) %}
@@ -232,6 +234,7 @@
 
 {% include "modals/members/members.html" %}
 {% include "modals/edit_league/edit_league.html" %}
+{% include "modals/add_submission_period/add_submission_period.html" %}
 
 {% endblock %}
 
