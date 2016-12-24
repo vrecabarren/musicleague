@@ -164,6 +164,8 @@ class SubmissionPeriod(Document):
 
     @property
     def is_complete(self):
+        if self.vote_due_date < datetime.utcnow():
+            return True
         return not (self.accepting_submissions or self.accepting_votes)
 
     @property
