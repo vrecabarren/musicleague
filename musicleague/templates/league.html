@@ -132,7 +132,7 @@
                 {% elif csp.accepting_votes %}
                 <a href="{{ url_for('view_vote', league_id=league.id, submission_period_id=csp.id) }}" class="btn btn-md btn-primary" style="margin: 5px 0px; width: 100%">Submit Votes</a>
                 <br>
-                <a href="{{ csp.playlist_url }}" target="_blank" class="btn btn-link text-muted" style="margin: 5px 0px; width: 100%">Listen to Playlist</a>
+                <a href="{{ csp.playlist_url }}" target="_blank" class="btn btn-default" style="margin: 5px 0px; width: 100%">Listen to Playlist</a>
                 {% endif %}
             </div>
         </div>
