@@ -184,7 +184,7 @@
             {% set needs_to_vote = league.has_user(user) and submission_period.is_current_v2 and submission_period.accepting_votes and not my_vote %}
             <div class="row">
 
-                <div class="col-xs-10 col-md-8">
+                <div class="col-xs-12 col-md-8">
                     {% if submission_period.is_complete %}
                     <a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}" title="View Results">
                         <h4 style="margin-top: 10px">{{ submission_period.name }}</h4>
@@ -200,20 +200,22 @@
                     <h5 class="text-muted" style="font-weight: inherit"><i class="fa fa-clock-o"></i>&nbsp;{{ due_date }}</h5>
                     {% endif %}
                 </div>
-                <div class="col-xs-2 col-xs-offset-2 col-md-4 col-md-offset-0 text-right">
-                    {% if submission_period.playlist_url %}
-                    <a href="{{ submission_period.playlist_url }}" class="btn btn-link text-muted" target="_blank">Listen to Playlist</a>
-                    {% endif %}
+                <div class="col-xs-12 col-md-4 col-md-offset-0 text-right">
+                    <div style="width: 100%">
+                        {% if submission_period.playlist_url %}
+                        <a href="{{ submission_period.playlist_url }}" class="btn btn-link text-muted" target="_blank">Listen to Playlist</a>
+                        {% endif %}
 
-                    {% if league.has_owner(user) %}
-                    <a class="btn btn-link text-muted dropdown-toggle" data-toggle="dropdown" id="options-dropdown">Admin</a>
-                    <ul class="dropdown-menu" aria-labelledby="options-dropdown">
-                        <li><a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id, action='edit') }}">Edit Preferences</a></li>
-                        <li><a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}">View Submission Period</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li class="bg-danger"><a href="{{ url_for('r_remove_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}"><span class="text-danger">Delete</span></a></li>
-                    </ul>
-                    {% endif %}
+                        {% if league.has_owner(user) %}
+                        <a class="btn btn-link text-muted dropdown-toggle" data-toggle="dropdown" id="options-dropdown">Admin</a>
+                        <ul class="dropdown-menu" aria-labelledby="options-dropdown">
+                            <li><a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id, action='edit') }}">Edit Preferences</a></li>
+                            <li><a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}">View Submission Period</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="bg-danger"><a href="{{ url_for('r_remove_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}"><span class="text-danger">Delete</span></a></li>
+                        </ul>
+                        {% endif %}
+                    </div>
                 </div>
 
             </div>
