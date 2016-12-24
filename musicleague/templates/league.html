@@ -84,6 +84,62 @@
         </div>
     </div>
 
+    {% if csp %}
+    <div class="spacer"></div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2" style="border: 1px solid #e3e3e3">
+            <h5 class="alert alert-success">Currently accepting {% if csp.accepting_submissions %}submissions{% else %}votes{% endif %}</h5>
+            <div class="col-md-9">
+                {% set needs_to_submit = league.has_user(user) and csp.is_current_v2 and csp.accepting_submissions and not my_submission %}
+                {% set needs_to_vote = league.has_user(user) and csp.is_current_v2 and csp.accepting_votes and not my_vote %}
+                {% if csp.accepting_submissions %}
+                    {% set progress_bar_type = "progress-bar-success" %}
+                    {% if needs_to_submit %}
+                        {% set progress_bar_type = "progress-bar-warning" %}
+                    {% endif %}
+                    {% set due_date = moment(csp.submission_due_date).format('[Submissions due by] ha [on] dddd, MMMM D') %}
+                    {% set progress_perc = (csp.submissions|length / league.users|length * 100)|int %}
+                    {% set progress_count = csp.submissions|length %}
+                    {% set progress_action = "submitted" %}
+                    {% set content = "<strong>Submitted:</strong><br>" + csp.have_submitted|map(attribute='name')|join('<br>') + "<hr><strong>Waiting for:</strong><br>" + csp.have_not_submitted|map(attribute='name')|join('<br>') %}
+                {% elif csp.accepting_votes %}
+                    {% set progress_bar_type = "progress-bar-success" %}
+                    {% if needs_to_vote %}
+                        {% set progress_bar_type = "progress-bar-warning" %}
+                    {% endif %}
+                    {% set due_date = moment(csp.vote_due_date).format('[Votes due by] ha [on] dddd, MMMM D') %}
+                    {% set progress_perc = (csp.votes|length / league.users|length * 100)|int %}
+                    {% set progress_count = csp.votes|length %}
+                    {% set progress_action = "voted" %}
+                    {% set content = "<strong>Voted:</strong><br>" + csp.have_voted|map(attribute='name')|join('<br>') + "<hr><strong>Waiting for:</strong><br>" + csp.have_not_voted|map(attribute='name')|join('<br>') %}
+                {% endif %}
+                <h3 style="margin-top: 10px">{{ csp.name }}</h3>
+                <h5 class="text-muted" style="font-weight: inherit"><i class="fa fa-clock-o"></i>&nbsp;{{ due_date }}</h5>
+                <h5 class="text-muted" style="font-weight: inherit">
+                    <a href="#" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" data-content="{{ content }}" style="color: inherit">
+                        {{ progress_count }} of {{ league.users|length }} have {{ progress_action}}
+                    </a>
+                </h5>
+                <div class="progress">
+                    <div class="progress-bar {{ progress_bar_type }} progress-bar-striped" role="progressbar" aria-valuenow="{{ progress_perc }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress_perc }}%">
+                        <span class="sr-only">{{ progress_perc }}% Complete</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 text-right">
+                {% if csp.accepting_submissions %}
+                <a href="{{ url_for('view_submit', league_id=league.id, submission_period_id=csp.id) }}" class="btn btn-md btn-success" style="margin: 5px 0px; width: 100%">Submit Songs</a>
+                {% elif csp.accepting_votes %}
+                <a href="{{ url_for('view_vote', league_id=league.id, submission_period_id=csp.id) }}" class="btn btn-md btn-primary" style="margin: 5px 0px; width: 100%">Submit Votes</a>
+                <br>
+                <a href="{{ csp.playlist_url }}" target="_blank" class="btn btn-link text-muted" style="margin: 5px 0px; width: 100%">Listen to Playlist</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="spacer"></div>
+    {% endif %}
+
     <div class="row">
 
         <div class="col-md-8 col-md-offset-2">
@@ -127,92 +183,29 @@
             {% set needs_to_submit = league.has_user(user) and submission_period.is_current_v2 and submission_period.accepting_submissions and not my_submission %}
             {% set needs_to_vote = league.has_user(user) and submission_period.is_current_v2 and submission_period.accepting_votes and not my_vote %}
             <div class="row">
-                <div class="col-xs-2 col-md-1 text-right">
-                    {% if not league.has_user(user) %}
-                        {% set title = "Viewing Only" %}
-                        {% set content = "You are not currently a contributor to this league." %}
-                        {% set color = "#b8b8b8" %}
-                        {% set icon = "fa-eye" %}
-                    {% elif not needs_to_submit and not needs_to_vote %}
-                        {% set title = "Complete" %}
-                        {% set content = "No action required at this time." %}
-                        {% set color = "#5cb85c" %}
-                        {% set icon = "fa-check-circle-o" %}
-                    {% elif needs_to_submit %}
-                        {% set title = "Submission Needed" %}
-                        {% set content = "Please select your songs by the due date shown." %}
-                        {% set color = "#f0ad4e" %}
-                        {% set icon = "fa-exclamation-circle" %}
-                    {% elif needs_to_vote %}
-                        {% set title = "Votes Needed" %}
-                        {% set content = "Please submit your votes by the due date shown." %}
-                        {% set color = "#f0ad4e" %}
-                        {% set icon = "fa-exclamation-circle" %}
-                    {% endif %}
 
-                    {% if submission_period.is_complete or submission_period.is_current_v2 %}
-                    <a href="#" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" title="{{ title }}" data-content="{{ content }}"><h1 style="color: {{ color }}; display: inline-block; margin-top: 10px"><i class="fa {{ icon }}"></i></h1></a>
-                    {% endif %}
-
-                </div>
                 <div class="col-xs-10 col-md-8">
                     {% if submission_period.is_complete %}
-                        {% set progress_bar_type = "progress-bar-success" %}
-                        {% set due_date = moment(submission_period.vote_due_date).format('[Completed on] dddd, MMMM D [at] ha') %}
-                        {% set progress_perc = 100 %}
-                    {% elif submission_period.accepting_submissions %}
-                        {% set progress_bar_type = "progress-bar-success" %}
-                        {% if needs_to_submit %}
-                            {% set progress_bar_type = "progress-bar-warning" %}
-                        {% endif %}
-                        {% set due_date = moment(submission_period.submission_due_date).format('[Submissions due by] ha [on] dddd, MMMM D') %}
-                        {% set progress_perc = (submission_period.submissions|length / league.users|length * 100)|int %}
-                        {% set progress_count = submission_period.submissions|length %}
-                        {% set progress_action = "submitted" %}
-                        {% set content = "<strong>Submitted:</strong><br>" + submission_period.have_submitted|map(attribute='name')|join('<br>') + "<hr><strong>Waiting for:</strong><br>" + submission_period.have_not_submitted|map(attribute='name')|join('<br>') %}
-                    {% elif submission_period.accepting_votes %}
-                        {% set progress_bar_type = "progress-bar-success" %}
-                        {% if needs_to_vote %}
-                            {% set progress_bar_type = "progress-bar-warning" %}
-                        {% endif %}
-                        {% set due_date = moment(submission_period.vote_due_date).format('[Votes due by] ha [on] dddd, MMMM D') %}
-                        {% set progress_perc = (submission_period.votes|length / league.users|length * 100)|int %}
-                        {% set progress_count = submission_period.votes|length %}
-                        {% set progress_action = "voted" %}
-                        {% set content = "<strong>Voted:</strong><br>" + submission_period.have_voted|map(attribute='name')|join('<br>') + "<hr><strong>Waiting for:</strong><br>" + submission_period.have_not_voted|map(attribute='name')|join('<br>') %}
-                    {% endif %}
+                    <a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}" title="View Results">
+                        <h4 style="margin-top: 10px">{{ submission_period.name }}</h4>
+                    </a>
+                    {% elif submission_period.is_current_v2 %}
                     <h4 style="margin-top: 10px">{{ submission_period.name }}</h4>
-                    {% if submission_period.is_complete or submission_period.is_current_v2 %}
-                    <h5 class="text-muted" style="font-weight: inherit"><i class="fa fa-clock-o"></i>&nbsp;{{ due_date }}</h5>
-                    {% if not submission_period.is_complete %}
-                    <h5 class="text-muted" style="font-weight: inherit">
-                        <a href="#" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" data-content="{{ content }}" style="color: inherit">
-                            {{ progress_count }} of {{ league.users|length }} have {{ progress_action}}
-                        </a>
-                    </h5>
-                    <div class="progress">
-                        <div class="progress-bar {{ progress_bar_type }} progress-bar-striped" role="progressbar" aria-valuenow="{{ progress_perc }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress_perc }}%">
-                            <span class="sr-only">{{ progress_perc }}% Complete</span>
-                        </div>
-                    </div>
+                    {% else %}
+                    <h4 style="margin-top: 10px" class="text-muted">{{ submission_period.name }}</h4>
                     {% endif %}
+
+                    {% if submission_period.is_complete %}
+                    {% set due_date = moment(submission_period.vote_due_date).format('[Completed on] dddd, MMMM D [at] ha') %}
+                    <h5 class="text-muted" style="font-weight: inherit"><i class="fa fa-clock-o"></i>&nbsp;{{ due_date }}</h5>
                     {% endif %}
                 </div>
-                <div class="col-xs-2 col-xs-offset-2 col-md-3 col-md-offset-0 text-right">
-                    {% if not submission_period.is_complete and not submission_period.is_current_v2 %}
-                    {% elif league.has_user(user) and submission_period.accepting_submissions %}
-                    <a href="{{ url_for('view_submit', league_id=league.id, submission_period_id=submission_period.id) }}" class="btn btn-success">Select Songs</a>
-                    {% elif league.has_user(user) and submission_period.accepting_votes %}
-                    <a href="{{ url_for('view_vote', league_id=league.id, submission_period_id=submission_period.id) }}" class="btn btn-primary">Submit Votes</a>
-                    <br>
-                    <a href="{{ submission_period.playlist_url }}" class="btn btn-link text-muted" target="_blank">Listen to Playlist</a>
-                    {% else %}
-                    <a href="{{ url_for('view_submission_period', league_id=submission_period.league.id, submission_period_id=submission_period.id) }}" class="btn btn-default">View Results</a>
-                    <br>
+                <div class="col-xs-2 col-xs-offset-2 col-md-4 col-md-offset-0 text-right">
+                    {% if submission_period.playlist_url %}
                     <a href="{{ submission_period.playlist_url }}" class="btn btn-link text-muted" target="_blank">Listen to Playlist</a>
                     {% endif %}
-                    {% if league.has_owner(user) %}
 
+                    {% if league.has_owner(user) %}
                     <a class="btn btn-link text-muted dropdown-toggle" data-toggle="dropdown" id="options-dropdown">Admin</a>
                     <ul class="dropdown-menu" aria-labelledby="options-dropdown">
                         <li><a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id, action='edit') }}">Edit Preferences</a></li>
