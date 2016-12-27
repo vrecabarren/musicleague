@@ -61,8 +61,16 @@ def submit(league_id, submission_period_id):
             to_uri(escape(request.form.get('track' + str(i))))
             for i in range(1, league.preferences.track_count + 1)]
 
+        if None in tracks:
+            flash("Invalid submission. Please submit only tracks.", "danger")
+            return redirect(request.referrer)
+
         # Filter out any invalid URL or URI that we received
         tracks = filter(None, tracks)
+
+        if len(tracks) != len(set(tracks)):
+            flash("Duplicate submissions not allowed.", "warning")
+            return redirect(request.referrer)
 
         submission = create_or_update_submission(
             tracks, submission_period, league, g.user)
