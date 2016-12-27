@@ -1,6 +1,7 @@
 import logging
 from time import time
 
+from flask import flash
 from flask import g
 from flask import redirect
 from flask import request
@@ -128,6 +129,7 @@ def add_bot():
 @login_required
 def logout():
     _clear_session()
+    flash("You have been logged out of Music League.", "info")
     return redirect(url_for("hello", action='logout'))
 
 

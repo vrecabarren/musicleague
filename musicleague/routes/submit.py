@@ -1,6 +1,7 @@
 import httplib
 
 from flask import escape
+from flask import flash
 from flask import g
 from flask import redirect
 from flask import request
@@ -27,6 +28,10 @@ SUBMIT_URL = '/l/<league_id>/<submission_period_id>/submit/'
 def view_submit(league_id, submission_period_id):
     submission_period = get_submission_period(submission_period_id)
     league = submission_period.league
+    if not league.has_user(g.user):
+        flash("You must be a member to submit.", "danger")
+        return redirect(request.referrer)
+
     my_submission = next(
         (s for s in submission_period.submissions if s.user == g.user), None)
 

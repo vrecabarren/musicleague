@@ -65,18 +65,19 @@
     </nav>
 
     <div class="spacer"></div>
-    {% if 'msg' in request.args and 'type' in request.args %}
+    {% set messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <div class="alert alert-{{ request.args['type'] }} alert-dismissable" role="alert">
+                <div class="alert alert-{{ category }} alert-dismissable" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    {{ request.args['msg'] }}
+                    {{ message }}
                 </div>
             </div>
         </div>
     </div>
-    {% endif %}
+    {% endfor %}
 
     {% block content %}
     No content here! Please check back later.
