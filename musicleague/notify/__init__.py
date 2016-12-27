@@ -29,7 +29,7 @@ def owner_all_users_submitted_notification(submission_period):
     if not submission_period:
         return
 
-    owner = submission_period.owner
+    owner = submission_period.league.owner
     if not owner or not owner.email:
         return
 
