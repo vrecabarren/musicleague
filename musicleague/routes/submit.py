@@ -1,3 +1,5 @@
+import httplib
+
 from flask import escape
 from flask import g
 from flask import redirect
@@ -41,12 +43,10 @@ def view_submit(league_id, submission_period_id):
 def submit(league_id, submission_period_id):
     submission_period = get_submission_period(submission_period_id)
     if not submission_period or not submission_period.league:
-        # TODO Return internal error
-        return
+        return "No submission period or league", httplib.INTERNAL_SERVER_ERROR
 
     if not submission_period.league.has_user(g.user):
-        # TODO Return unauthorized
-        return
+        return "Not a member of this league", httplib.UNAUTHORIZED
 
     if submission_period and (submission_period.accepting_submissions or
                               submission_period.accepting_late_submissions):
