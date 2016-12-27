@@ -66,8 +66,9 @@ def remove_submission_period(submission_period_id):
     submission_period.delete()
 
     league.reload('submission_periods')
-
     logging.info('Submission period removed: %s', submission_period_id)
+
+    return submission_period
 
 
 def update_submission_period(submission_period_id, name, submission_due_date,

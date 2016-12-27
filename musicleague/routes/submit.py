@@ -53,41 +53,85 @@ def submit(league_id, submission_period_id):
     if not submission_period.league.has_user(g.user):
         return "Not a member of this league", httplib.UNAUTHORIZED
 
-    if submission_period and (submission_period.accepting_submissions or
-                              submission_period.accepting_late_submissions):
-        league = submission_period.league
+    if (not submission_period.accepting_submissions and
+            not submission_period.accepting_late_submissions):
+        flash("Submissions are no longer being accepted.", "danger")
+        return redirect(request.referrer)
 
-        tracks = [
-            to_uri(escape(request.form.get('track' + str(i))))
-            for i in range(1, league.preferences.track_count + 1)]
+    # Process submission
+    league = submission_period.league
 
-        if None in tracks:
-            flash("Invalid submission. Please submit only tracks.", "danger")
+    tracks = [to_uri(escape(request.form.get('track' + str(i))))
+              for i in range(1, league.preferences.track_count + 1)]
+
+    if None in tracks:
+        flash("Invalid submission. Please submit only tracks.", "danger")
+        return redirect(request.referrer)
+    tracks = filter(None, tracks)
+
+    # Don't allow user to submit duplicate tracks
+    if len(tracks) != len(set(tracks)):
+        flash("Duplicate submissions not allowed.", "warning")
+        return redirect(request.referrer)
+
+    if tracks + submission_period.all_tracks:
+        s_tracks = tracks + submission_period.all_tracks
+        s_tracks = g.spotify.tracks(s_tracks).get('tracks')
+        my_tracks = s_tracks[:len(tracks)]
+        their_tracks = s_tracks[len(tracks):]
+
+        # Don't allow user to submit already submitted track
+        duplicate_track = check_duplicate_track(my_tracks, their_tracks)
+        if duplicate_track is not None:
+            track_name = duplicate_track['name']
+            flash("{} has already been submitted. Please choose another "
+                  "track to submit.".format(track_name), "danger")
             return redirect(request.referrer)
 
-        # Filter out any invalid URL or URI that we received
-        tracks = filter(None, tracks)
+        # Warn user if submitting already submitted artist
+        duplicate_track = check_duplicate_artist(my_tracks, their_tracks)
+        if duplicate_track is not None:
+            artist_name = duplicate_track['artists'][0]['name']
+            flash("Your submission was accepted, but we thought you'd like to "
+                  "know that another track by {} has already been submitted."
+                  .format(artist_name), "warning")
 
-        if len(tracks) != len(set(tracks)):
-            flash("Duplicate submissions not allowed.", "warning")
-            return redirect(request.referrer)
+    submission = create_or_update_submission(tracks, submission_period, league,
+                                             g.user)
 
-        submission = create_or_update_submission(
-            tracks, submission_period, league, g.user)
+    flash("Your submissions have been recorded.", "success")
 
-        # If someone besides owner is submitting, notify the owner
-        if g.user.id != league.owner.id:
-            owner_user_submitted_notification(submission)
+    # If someone besides owner is submitting, notify the owner
+    if g.user.id != league.owner.id:
+        owner_user_submitted_notification(submission)
 
-        submitted_users = set([s.user for s in submission_period.submissions])
-        remaining = set(league.users) - submitted_users
+    submitted_users = set([s.user for s in submission_period.submissions])
+    remaining = set(league.users) - submitted_users
 
-        if not remaining:
-            owner_all_users_submitted_notification(submission_period)
-            create_or_update_playlist(submission_period)
+    if not remaining:
+        owner_all_users_submitted_notification(submission_period)
+        create_or_update_playlist(submission_period)
 
-        elif len(remaining) == 1:
-            last_user = list(remaining)[0]
-            user_last_to_submit_notification(last_user, submission_period)
+    elif len(remaining) == 1:
+        last_user = list(remaining)[0]
+        user_last_to_submit_notification(last_user, submission_period)
 
     return redirect(url_for('view_league', league_id=league_id))
+
+
+def check_duplicate_track(my_tracks, their_tracks):
+    duplicate_track = None
+    their_ids = [track['id'] for track in their_tracks]
+    for my_track in my_tracks:
+        if my_track['id'] in their_ids:
+            duplicate_track = my_track
+    return duplicate_track
+
+
+def check_duplicate_artist(my_tracks, their_tracks):
+    duplicate_track = None
+    their_ids = [track['artists'][0]['id'] for track in their_tracks]
+    for my_track in my_tracks:
+        if my_track['artists'][0]['id'] in their_ids:
+            duplicate_track = my_track
+    return duplicate_track

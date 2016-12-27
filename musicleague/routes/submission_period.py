@@ -2,6 +2,7 @@ from collections import defaultdict
 from datetime import datetime
 from pytz import utc
 
+from flask import flash
 from flask import g
 from flask import redirect
 from flask import request
@@ -32,7 +33,9 @@ def post_create_submission_period(league_id, **kwargs):
     league = kwargs.get('league')
     if league.has_owner(g.user):
         name = request.form.get('name')
-        create_submission_period(league, name)
+        submission_period = create_submission_period(league, name)
+        flash("Submission period {} created.".format(submission_period.name),
+              "success")
     return redirect(url_for('view_league', league_id=league_id))
 
 
@@ -42,7 +45,9 @@ def post_create_submission_period(league_id, **kwargs):
 def r_remove_submission_period(league_id, submission_period_id, **kwargs):
     league = kwargs.get('league')
     if league.has_owner(g.user):
-        remove_submission_period(submission_period_id)
+        submission_period = remove_submission_period(submission_period_id)
+        flash("Submission period {} removed.".format(submission_period.name),
+              "success")
     return redirect(url_for('view_league', league_id=league_id))
 
 
