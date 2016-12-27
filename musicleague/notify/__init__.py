@@ -25,8 +25,12 @@ from musicleague.notify.messenger import user_submit_reminder_messenger
 from musicleague.notify.messenger import user_vote_reminder_messenger
 
 
-def owner_all_users_submitted_notification(owner, submission_period):
-    if not submission_period or not owner or not owner.email:
+def owner_all_users_submitted_notification(submission_period):
+    if not submission_period:
+        return
+
+    owner = submission_period.owner
+    if not owner or not owner.email:
         return
 
     if not owner.preferences.owner_all_users_submitted_notifications:
@@ -36,8 +40,12 @@ def owner_all_users_submitted_notification(owner, submission_period):
     owner_all_users_submitted_messenger(owner, submission_period)
 
 
-def owner_user_submitted_notification(owner, submission):
-    if not submission or not owner or not owner.email:
+def owner_user_submitted_notification(submission):
+    if not submission:
+        return
+
+    owner = submission.league.owner
+    if not owner or not owner.email:
         return
 
     if not owner.preferences.owner_user_submitted_notifications:
@@ -47,8 +55,12 @@ def owner_user_submitted_notification(owner, submission):
     owner_user_submitted_messenger(owner, submission)
 
 
-def owner_all_users_voted_notification(owner, submission_period):
-    if not submission_period or not owner or not owner.email:
+def owner_all_users_voted_notification(submission_period):
+    if not submission_period:
+        return
+
+    owner = submission_period.league.owner
+    if not owner or not owner.email:
         return
 
     if not owner.preferences.owner_all_users_voted_notifications:
@@ -58,8 +70,12 @@ def owner_all_users_voted_notification(owner, submission_period):
     owner_all_users_voted_messenger(owner, submission_period)
 
 
-def owner_user_voted_notification(owner, vote):
-    if not vote or not owner or not owner.email:
+def owner_user_voted_notification(vote):
+    if not vote:
+        return
+
+    owner = vote.league.owner
+    if not owner or not owner.email:
         return
 
     if not owner.preferences.owner_user_voted_notifications:

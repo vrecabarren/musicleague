@@ -58,13 +58,13 @@ def vote(league_id, submission_period_id):
         vote = create_or_update_vote(votes, submission_period, league, g.user)
 
         if g.user.id != league.owner.id:
-            owner_user_voted_notification(league.owner, vote)
+            owner_user_voted_notification(vote)
 
         voted_users = set([v.user for v in submission_period.votes])
         remaining = set(league.users) - voted_users
 
         if not remaining:
-            owner_all_users_voted_notification(league.owner, submission_period)
+            owner_all_users_voted_notification(submission_period)
 
         elif len(remaining) == 1:
             last_user = remaining = list(remaining)[0]

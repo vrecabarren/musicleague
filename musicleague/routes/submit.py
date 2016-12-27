@@ -63,14 +63,13 @@ def submit(league_id, submission_period_id):
             tracks, submission_period, league, g.user)
 
         if g.user.id != league.owner.id:
-            owner_user_submitted_notification(league.owner, submission)
+            owner_user_submitted_notification(submission)
 
         submitted_users = set([s.user for s in submission_period.submissions])
         remaining = set(league.users) - submitted_users
 
         if not remaining:
-            owner_all_users_submitted_notification(
-                league.owner, submission_period)
+            owner_all_users_submitted_notification(submission_period)
             create_or_update_playlist(submission_period)
 
         elif len(remaining) == 1:
