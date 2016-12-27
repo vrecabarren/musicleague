@@ -126,14 +126,19 @@ def save_league_settings(league_id, **kwargs):
 def view_league(league_id, **kwargs):
     league = kwargs.get('league')
 
-    my_submission = None
+    my_submission, my_vote = None, None
     if league.current_submission_period:
         submissions = league.current_submission_period.submissions
         my_submission = next(
             (s for s in submissions if s.user.id == g.user.id), None)
 
+        votes = league.current_submission_period.votes
+        my_vote = next(
+            (v for v in votes if v.user.id == g.user.id), None)
+
     return {
         'user': g.user,
         'league': league,
-        'my_submission': my_submission
+        'my_submission': my_submission,
+        'my_vote': my_vote
     }
