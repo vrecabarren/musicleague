@@ -88,7 +88,7 @@
     <div class="spacer"></div>
     <div class="row">
         <div class="col-md-8 col-md-offset-2" style="border: 1px solid #e3e3e3">
-            <h5 class="alert alert-success">Currently accepting {% if csp.accepting_submissions %}submissions{% else %}votes{% endif %}</h5>
+            <h5>Currently accepting {% if csp.accepting_submissions %}submissions{% else %}votes{% endif %}</h5>
             <div class="col-md-9">
                 {% set needs_to_submit = league.has_user(user) and csp.is_current_v2 and csp.accepting_submissions and not my_submission %}
                 {% set needs_to_vote = league.has_user(user) and csp.is_current_v2 and csp.accepting_votes and not my_vote %}
