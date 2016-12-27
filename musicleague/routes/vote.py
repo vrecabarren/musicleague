@@ -22,6 +22,8 @@ VOTE_URL = '/l/<league_id>/<submission_period_id>/vote/'
 def view_vote(league_id, submission_period_id):
     submission_period = get_submission_period(submission_period_id)
     league = submission_period.league
+    my_submission = next(
+        (s for s in submission_period.submissions if s.user == g.user), None)
     my_vote = next(
         (v for v in submission_period.votes if v.user == g.user), None)
 
@@ -29,6 +31,10 @@ def view_vote(league_id, submission_period_id):
     if submission_period.all_tracks:
         tracks = g.spotify.tracks(submission_period.all_tracks).get('tracks')
     tracks_by_uri = {track.get('uri'): track for track in tracks if track}
+
+    if my_submission:
+        for uri in my_submission.tracks:
+            tracks_by_uri.pop(uri, None)
 
     return {
         'user': g.user,
