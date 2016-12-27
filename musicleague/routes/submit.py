@@ -84,8 +84,9 @@ def submit(league_id, submission_period_id):
         duplicate_track = check_duplicate_track(my_tracks, their_tracks)
         if duplicate_track is not None:
             track_name = duplicate_track['name']
-            flash("{} has already been submitted. Please choose another "
-                  "track to submit.".format(track_name), "danger")
+            flash("<strong>{}</strong> has already been submitted. Please "
+                  "choose another track to submit.".format(track_name),
+                  "danger")
             return redirect(request.referrer)
 
         # Warn user if submitting already submitted artist
@@ -93,8 +94,8 @@ def submit(league_id, submission_period_id):
         if duplicate_track is not None:
             artist_name = duplicate_track['artists'][0]['name']
             flash("Your submission was accepted, but we thought you'd like to "
-                  "know that another track by {} has already been submitted."
-                  .format(artist_name), "warning")
+                  "know that another track by <strong>{}</strong> has already "
+                  "been submitted.".format(artist_name), "warning")
 
     submission = create_or_update_submission(tracks, submission_period, league,
                                              g.user)
