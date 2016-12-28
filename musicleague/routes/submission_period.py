@@ -94,12 +94,14 @@ def view_submission_period(league_id, submission_period_id):
 
     total_points = 0
     points_by_uri = defaultdict(int)
+    voters_by_uri = defaultdict(int)
     votes_by_uri = defaultdict(list)
     for vote in submission_period.votes:
         total_points += sum(vote.votes.values())
         for uri, points in vote.votes.iteritems():
             points_by_uri[uri] += points
             if points:
+                voters_by_uri[uri] += 1
                 votes_by_uri[uri].append(vote)
     votes_by_uri
 
@@ -111,10 +113,15 @@ def view_submission_period(league_id, submission_period_id):
             'submission': submission,
             'votes': sorted(votes_by_uri[uri] or [],
                             key=lambda v: v.votes[uri], reverse=True),
-            'points': points_by_uri.get(uri) or 0
+            'points': points_by_uri.get(uri) or 0,
+            'voters': voters_by_uri.get(uri) or 0
         } for uri, submission in submissions_by_uri.iteritems()]
 
-    results = sorted(results, key=(lambda r: r['points']), reverse=True)
+    # Sort results by number of points and then by number of voters.
+    # TODO Allow owner to modify order of rules applied in this sorting.
+    results = sorted(results,
+                     key=(lambda r: (r['points'], r['voters'])),
+                     reverse=True)
 
     return {
         'user': g.user,
