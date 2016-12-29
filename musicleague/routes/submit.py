@@ -1,7 +1,6 @@
 import httplib
 
 from flask import escape
-from flask import flash
 from flask import g
 from flask import redirect
 from flask import request
@@ -11,6 +10,9 @@ from musicleague import app
 from musicleague.notify import owner_all_users_submitted_notification
 from musicleague.notify import owner_user_submitted_notification
 from musicleague.notify import user_last_to_submit_notification
+from musicleague.notify.flash import flash_error
+from musicleague.notify.flash import flash_success
+from musicleague.notify.flash import flash_warning
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 from musicleague.spotify import create_or_update_playlist
@@ -29,7 +31,7 @@ def view_submit(league_id, submission_period_id):
     submission_period = get_submission_period(submission_period_id)
     league = submission_period.league
     if not league.has_user(g.user):
-        flash("You must be a member to submit.", "danger")
+        flash_error("You must be a member to submit.")
         return redirect(request.referrer)
 
     my_submission = next(
@@ -55,7 +57,7 @@ def submit(league_id, submission_period_id):
 
     if (not submission_period.accepting_submissions and
             not submission_period.accepting_late_submissions):
-        flash("Submissions are no longer being accepted.", "danger")
+        flash_error("Submissions are no longer being accepted.")
         return redirect(request.referrer)
 
     # Process submission
@@ -65,13 +67,13 @@ def submit(league_id, submission_period_id):
               for i in range(1, league.preferences.track_count + 1)]
 
     if None in tracks:
-        flash("Invalid submission. Please submit only tracks.", "danger")
+        flash_error("Invalid submission. Please submit only tracks.")
         return redirect(request.referrer)
     tracks = filter(None, tracks)
 
     # Don't allow user to submit duplicate tracks
     if len(tracks) != len(set(tracks)):
-        flash("Duplicate submissions not allowed.", "warning")
+        flash_warning("Duplicate submissions not allowed.")
         return redirect(request.referrer)
 
     if tracks + submission_period.all_tracks:
@@ -84,23 +86,24 @@ def submit(league_id, submission_period_id):
         duplicate_track = check_duplicate_track(my_tracks, their_tracks)
         if duplicate_track is not None:
             track_name = duplicate_track['name']
-            flash("<strong>{}</strong> has already been submitted. Please "
-                  "choose another track to submit.".format(track_name),
-                  "danger")
+            flash_error("<strong>{}</strong> has already been submitted. "
+                        "Please choose another track to submit."
+                        .format(track_name))
             return redirect(request.referrer)
 
         # Warn user if submitting already submitted artist
         duplicate_track = check_duplicate_artist(my_tracks, their_tracks)
         if duplicate_track is not None:
             artist_name = duplicate_track['artists'][0]['name']
-            flash("Your submission was accepted, but we thought you'd like to "
-                  "know that another track by <strong>{}</strong> has already "
-                  "been submitted.".format(artist_name), "warning")
+            flash_warning("Your submission was accepted, but we thought you'd "
+                          "like to know that another track by "
+                          "<strong>{}</strong> has already been submitted."
+                          .format(artist_name))
 
     submission = create_or_update_submission(tracks, submission_period, league,
                                              g.user)
 
-    flash("Your submissions have been recorded.", "success")
+    flash_success("Your submissions have been recorded.")
 
     # If someone besides owner is submitting, notify the owner
     if g.user.id != league.owner.id:

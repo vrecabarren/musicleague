@@ -1,6 +1,5 @@
 import httplib
 
-from flask import flash
 from flask import g
 from flask import redirect
 from flask import request
@@ -10,6 +9,8 @@ from musicleague import app
 from musicleague.notify import owner_all_users_voted_notification
 from musicleague.notify import owner_user_voted_notification
 from musicleague.notify import user_last_to_vote_notification
+from musicleague.notify.flash import flash_error
+from musicleague.notify.flash import flash_success
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 from musicleague.submission_period import get_submission_period
@@ -26,7 +27,7 @@ def view_vote(league_id, submission_period_id):
     submission_period = get_submission_period(submission_period_id)
     league = submission_period.league
     if not league.has_user(g.user):
-        flash("You must be a member to vote.", "danger")
+        flash_error("You must be a member to vote.")
         return redirect(request.referrer)
 
     my_submission = next(
@@ -65,14 +66,14 @@ def vote(league_id, submission_period_id):
     votes = {uri: int(votes or 0) for uri, votes in request.form.iteritems()}
 
     if not submission_period.accepting_votes:
-        flash("Votes are no longer being accepted.", "danger")
+        flash_error("Votes are no longer being accepted.")
         return redirect(request.referrer)
 
     # Process votes
     league = submission_period.league
     vote = create_or_update_vote(votes, submission_period, league, g.user)
 
-    flash("Your votes have been recorded.", "success")
+    flash_success("Your votes have been recorded.")
 
     # If someone besides owner is submitting, notify the owner
     if g.user.id != league.owner.id:

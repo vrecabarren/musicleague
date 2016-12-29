@@ -2,7 +2,6 @@ from collections import defaultdict
 from datetime import datetime
 from pytz import utc
 
-from flask import flash
 from flask import g
 from flask import redirect
 from flask import request
@@ -10,6 +9,7 @@ from flask import url_for
 
 from musicleague import app
 from musicleague.league import get_league
+from musicleague.notify.flash import flash_success
 from musicleague.routes.decorators import league_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
@@ -34,8 +34,8 @@ def post_create_submission_period(league_id, **kwargs):
     if league.has_owner(g.user):
         name = request.form.get('name')
         submission_period = create_submission_period(league, name)
-        flash("Submission period <strong>{}</strong> created."
-              .format(submission_period.name), "success")
+        flash_success("Submission period <strong>{}</strong> created."
+                      .format(submission_period.name))
     return redirect(url_for('view_league', league_id=league_id))
 
 
@@ -46,8 +46,8 @@ def r_remove_submission_period(league_id, submission_period_id, **kwargs):
     league = kwargs.get('league')
     if league.has_owner(g.user):
         submission_period = remove_submission_period(submission_period_id)
-        flash("Submission period <strong>{}</strong> removed."
-              .format(submission_period.name), "success")
+        flash_success("Submission period <strong>{}</strong> removed."
+                      .format(submission_period.name), "success")
     return redirect(url_for('view_league', league_id=league_id))
 
 

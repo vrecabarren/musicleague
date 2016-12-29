@@ -13,6 +13,7 @@ from spotipy import Spotify
 from musicleague import app
 from musicleague.bot import create_or_update_bot
 from musicleague.bot import is_bot
+from musicleague.notify.flash import flash_info
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 from musicleague.spotify import get_spotify_oauth
@@ -129,7 +130,7 @@ def add_bot():
 @login_required
 def logout():
     _clear_session()
-    flash("You have been logged out of Music League.", "info")
+    flash_info("You have been logged out of Music League.")
     return redirect(url_for("hello", action='logout'))
 
 
