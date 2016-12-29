@@ -1,7 +1,6 @@
 import logging
 from time import time
 
-from flask import flash
 from flask import g
 from flask import redirect
 from flask import request
