@@ -3,7 +3,6 @@ from datetime import timedelta
 import logging
 
 from musicleague.models import SubmissionPeriod
-from musicleague.submission_period.tasks import TYPES
 from musicleague.submission_period.tasks.schedulers import _cancel_pending_task
 from musicleague.submission_period.tasks.schedulers import schedule_playlist_creation  # noqa
 from musicleague.submission_period.tasks.schedulers import schedule_submission_reminders  # noqa
@@ -57,11 +56,9 @@ def remove_submission_period(submission_period_id):
 
     league = submission_period.league
 
-    # Cancel scheduled submission and vote reminder jobs if they exist
-    _cancel_pending_task(
-        submission_period.pending_tasks.get(TYPES.SEND_SUBMISSION_REMINDERS))
-    _cancel_pending_task(
-        submission_period.pending_tasks.get(TYPES.SEND_VOTE_REMINDERS))
+    # Cancel all scheduled tasks
+    for pending_task_id in submission_period.pending_tasks.values():
+        _cancel_pending_task(pending_task_id)
 
     submission_period.delete()
 
