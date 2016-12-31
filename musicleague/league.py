@@ -1,4 +1,5 @@
 from datetime import datetime
+import logging
 
 from haikunator import Haikunator
 
@@ -61,7 +62,7 @@ def remove_league(league_id, league=None):
     if league is None:
         league = get_league(league_id)
 
-    if not league or league.id != league_id:
+    if not league or str(league.id) != str(league_id):
         return
 
     for submission_period in league.submission_periods:
