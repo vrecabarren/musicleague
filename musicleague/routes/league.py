@@ -6,12 +6,14 @@ from flask import request
 from flask import url_for
 
 from musicleague import app
+from musicleague.league import add_user
+from musicleague.league import create_league
+from musicleague.league import remove_league
+from musicleague.league import remove_user
+from musicleague.notify.flash import flash_success
 from musicleague.routes.decorators import league_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
-from musicleague.league import add_user
-from musicleague.league import create_league
-from musicleague.league import remove_user
 from musicleague.submission import get_submission
 
 
@@ -79,10 +81,12 @@ def join_league(league_id, **kwargs):
 @app.route(REMOVE_LEAGUE_URL)
 @login_required
 @league_required
-def remove_league(league_id, **kwargs):
+def get_remove_league(league_id, **kwargs):
     league = kwargs.get('league')
     if league and league.has_owner(g.user):
-        league.delete()
+        league = remove_league(league_id, league=league)
+        flash_success("League <strong>{}</strong> removed."
+                      .format(league.name))
     return redirect(url_for('profile'))
 
 

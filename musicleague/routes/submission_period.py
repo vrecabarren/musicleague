@@ -47,7 +47,7 @@ def r_remove_submission_period(league_id, submission_period_id, **kwargs):
     if league.has_owner(g.user):
         submission_period = remove_submission_period(submission_period_id)
         flash_success("Submission period <strong>{}</strong> removed."
-                      .format(submission_period.name), "success")
+                      .format(submission_period.name))
     return redirect(url_for('view_league', league_id=league_id))
 
 

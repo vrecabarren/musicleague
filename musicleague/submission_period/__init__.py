@@ -49,9 +49,11 @@ def get_submission_period(submission_period_id):
         return None
 
 
-def remove_submission_period(submission_period_id):
-    submission_period = get_submission_period(submission_period_id)
-    if not submission_period:
+def remove_submission_period(submission_period_id, submission_period=None):
+    if submission_period is None:
+        submission_period = get_submission_period(submission_period_id)
+
+    if not submission_period or submission_period.id != submission_period_id:
         return
 
     league = submission_period.league

@@ -8,6 +8,7 @@ from musicleague.models import LeaguePreferences
 from musicleague.notify import user_added_to_league_notification
 from musicleague.notify import user_invited_to_league_notification
 from musicleague.notify import user_removed_from_league_notification
+from musicleague.submission_period import remove_submission_period
 from musicleague.user import get_user_by_email
 
 
@@ -54,6 +55,22 @@ def create_league(user):
     new_league.preferences = LeaguePreferences(name=name)
     new_league.save()
     return new_league
+
+
+def remove_league(league_id, league=None):
+    if league is None:
+        league = get_league(league_id)
+
+    if not league or league.id != league_id:
+        return
+
+    for submission_period in league.submission_periods:
+        remove_submission_period(submission_period.id,
+                                 submission_period=submission_period)
+
+    league.delete()
+
+    return league
 
 
 def get_league(league_id):
