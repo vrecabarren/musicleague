@@ -5,96 +5,86 @@ from musicleague.messenger import send_message
 
 
 def owner_all_users_submitted_messenger(owner, submission_period):
-    if not submission_period or not owner or not owner.email:
+    if not submission_period or not owner or not owner.messenger:
         return
 
-    if owner.messenger:
-        send_message(
-            owner.messenger.id,
-            "All users have submitted for {}".format(submission_period.name))
+    send_message(
+        owner.messenger.id,
+        "All users have submitted for {}".format(submission_period.name))
 
 
 def owner_user_submitted_messenger(owner, submission):
-    if not submission or not owner or not owner.email:
+    if not submission or not owner or not owner.messenger:
         return
 
-    if owner.messenger:
-        send_message(
-            owner.messenger.id,
-            "{} just submitted for {}".format(
-                submission.user.name, submission.submission_period.name))
+    send_message(
+        owner.messenger.id,
+        "{} just submitted for {}".format(
+            submission.user.name, submission.submission_period.name))
 
 
 def owner_all_users_voted_messenger(owner, submission_period):
-    if not submission_period or not owner or not owner.email:
+    if not submission_period or not owner or not owner.messenger:
         return
 
-    if owner.messenger:
-        send_message(
-            owner.messenger.id,
-            "All users have voted for {}".format(submission_period.name))
+    send_message(
+        owner.messenger.id,
+        "All users have voted for {}".format(submission_period.name))
 
 
 def owner_user_voted_messenger(owner, vote):
-    if not vote or not owner or not owner.email:
+    if not vote or not owner or not owner.messenger:
         return
 
-    if owner.messenger:
-        send_message(
-            owner.messenger.id,
-            "{} just voted for {}".format(
-                vote.user.name, vote.submission_period.name))
+    send_message(
+        owner.messenger.id,
+        "{} just voted for {}".format(vote.user.name,
+                                      vote.submission_period.name))
 
 
 def user_added_to_league_messenger(user, league):
-    if not league or not user or not user.email:
+    if not league or not user or not user.messenger:
         return
 
-    if user.messenger:
-        with app.app_context():
-            send_message(
-                user.messenger.id,
-                "You've been added to the league {}.\n{}"
-                .format(league.name,
-                        url_for('view_league',
-                                league_id=league.id, _external=True)))
+    with app.app_context():
+        send_message(
+            user.messenger.id,
+            "You've been added to the league {}.\n{}".format(
+                league.name,
+                url_for('view_league', league_id=league.id, _external=True)))
 
 
 def user_invited_to_league_messenger(invited_user, league):
-    if not league or not invited_user or not invited_user.email:
-        return
-
     # TODO Determine if there is ever a scenario where this could be used
+    return
 
 
 def user_last_to_submit_messenger(user, submission_period):
-    if not submission_period or not user or not user.email:
+    if not submission_period or not user or not user.messenger:
         return
 
-    if user.messenger:
-        with app.app_context():
-            send_message(
-                user.messenger.id,
-                "You're the last to submit for {}.\n{}"
-                .format(submission_period.name,
-                        url_for('view_submit',
-                                league_id=submission_period.league.id,
-                                submission_period_id=submission_period.id)))
+    with app.app_context():
+        send_message(
+            user.messenger.id,
+            "You're the last to submit for {}.\n{}".format(
+                submission_period.name,
+                url_for('view_submit', league_id=submission_period.league.id,
+                        submission_period_id=submission_period.id,
+                        _external=True)))
 
 
 def user_last_to_vote_messenger(user, submission_period):
-    if not submission_period or not user or not user.email:
+    if not submission_period or not user or not user.messenger:
         return
 
-    if user.messenger:
-        with app.app_context():
-            send_message(
-                user.messenger.id,
-                "You're the last to vote for {}.\n{}"
-                .format(submission_period.name,
-                        url_for('view_vote',
-                                league_id=submission_period.league.id,
-                                submission_period_id=submission_period.id)))
+    with app.app_context():
+        send_message(
+            user.messenger.id,
+            "You're the last to vote for {}.\n{}".format(
+                submission_period.name,
+                url_for('view_vote', league_id=submission_period.league.id,
+                        submission_period_id=submission_period.id,
+                        _external=True)))
 
 
 def user_playlist_created_messenger(submission_period):
@@ -111,40 +101,37 @@ def user_playlist_created_messenger(submission_period):
 
 
 def user_removed_from_league_messenger(user, league):
-    if league or not user or not user.email:
+    if not league or not user or not user.messenger:
         return
 
-    if user.messenger:
-        send_message(
-            user.messenger.id,
-            "You've been removed from the league {}".format(league.name))
+    send_message(
+        user.messenger.id,
+        "You've been removed from the league {}".format(league.name))
 
 
 def user_submit_reminder_messenger(user, submission_period):
-    if not submission_period or not user or not user.email:
+    if not submission_period or not user or not user.messenger:
         return
 
-    if user.messenger:
-        with app.app_context():
-            send_message(
-                user.messenger.id,
-                "It's time to submit for {}.\n{}"
-                .format(submission_period.name,
-                        url_for('view_submit',
-                                league_id=submission_period.league.id,
-                                submission_period_id=submission_period.id)))
+    with app.app_context():
+        send_message(
+            user.messenger.id,
+            "It's time to submit for {}.\n{}".format(
+                submission_period.name,
+                url_for('view_submit', league_id=submission_period.league.id,
+                        submission_period_id=submission_period.id,
+                        _external=True)))
 
 
 def user_vote_reminder_messenger(user, submission_period):
-    if not submission_period or not user or not user.email:
+    if not submission_period or not user or not user.messenger:
         return
 
-    if user.messenger:
-        with app.app_context():
-            send_message(
-                user.messenger.id,
-                "It's time to vote for {}.\n{}"
-                .format(submission_period.name,
-                        url_for('view_vote',
-                                league_id=submission_period.league.id,
-                                submission_period_id=submission_period.id)))
+    with app.app_context():
+        send_message(
+            user.messenger.id,
+            "It's time to vote for {}.\n{}".format(
+                submission_period.name,
+                url_for('view_vote', league_id=submission_period.league.id,
+                        submission_period_id=submission_period.id,
+                        _external=True)))

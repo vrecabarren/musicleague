@@ -140,7 +140,7 @@ def user_playlist_created_email(submission_period):
 
 
 def user_removed_from_league_email(user, league):
-    if league or not user or not user.email:
+    if not league or not user or not user.email:
         return
 
     _send_email.apply_async(
