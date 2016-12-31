@@ -10,6 +10,7 @@ from musicleague.league import add_user
 from musicleague.league import create_league
 from musicleague.league import remove_league
 from musicleague.league import remove_user
+from musicleague.notify.flash import flash_error
 from musicleague.notify.flash import flash_success
 from musicleague.routes.decorators import league_required
 from musicleague.routes.decorators import login_required
@@ -87,6 +88,10 @@ def get_remove_league(league_id, **kwargs):
         league = remove_league(league_id, league=league)
         flash_success("League <strong>{}</strong> removed."
                       .format(league.name))
+
+    elif league and not league.has_owner(g.user):
+        flash_error("Only the owner may remove a league.")
+
     return redirect(url_for('profile'))
 
 
