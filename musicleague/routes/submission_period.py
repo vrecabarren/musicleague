@@ -33,7 +33,8 @@ def post_create_submission_period(league_id, **kwargs):
     league = kwargs.get('league')
     if league.has_owner(g.user):
         name = request.form.get('name')
-        submission_period = create_submission_period(league, name)
+        description = request.form.get('description')
+        submission_period = create_submission_period(league, name, description)
         flash_success("Submission period <strong>{}</strong> created."
                       .format(submission_period.name))
     return redirect(url_for('view_league', league_id=league_id))
