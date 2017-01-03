@@ -30,7 +30,7 @@ class CreateSubmissionPeriodTestCase(TestCase):
                     schedule_vote_reminders):
         created = create_submission_period(self.league)
 
-        self.assertEqual('Submission Period 2', created.name)
+        self.assertEqual('Round 2', created.name)
         self.assertEqual(self.league, created.league)
 
         saved = get_submission_period(created.id)
@@ -66,7 +66,7 @@ class GetSubmissionPeriodTestCase(TestCase):
         sp = get_submission_period(id)
         self.assertIsNotNone(sp)
         self.assertEqual(id, sp.id)
-        self.assertEqual('Submission Period 1', sp.name)
+        self.assertEqual('Round 1', sp.name)
 
 
 class RemoveSubmissionPeriodTestCase(TestCase):

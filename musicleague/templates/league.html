@@ -156,7 +156,7 @@
                 <a href="#edit-modal" data-toggle="tooltip" data-placement="top" class="btn btn-default" title="Edit League Preferences"><i class="fa fa-gear"></i></a>
             </span>
             <span data-toggle="modal" data-target="#add-submission-period-modal">
-                <a href="#add-submission-period-modal" data-toggle="tooltip" data-placement="top" class="btn btn-default" title="Create New Submission Period"><i class="fa fa-plus"></i></a>
+                <a href="#add-submission-period-modal" data-toggle="tooltip" data-placement="top" class="btn btn-default" title="Create New Round"><i class="fa fa-plus"></i></a>
             </span>
             {% endif %}
 
@@ -168,14 +168,14 @@
 
             {% if league.has_owner(user) and not league.submission_periods|length %}
             <div class="text-muted text-center" style="border: 3px dashed #b8b8b8; border-radius: 10px; padding: 30px;">
-                <span class="lead text-center">You don't have any submission periods.</span>
+                <span class="lead text-center">You haven't created a round yet.</span>
                 <hr>
                 <span class="lead text-center"><a href="{{ url_for('post_create_submission_period', league_id=league.id) }}">Create one</a> when you're for people to start submitting songs and voting!</span>
             </div>
             <div class="text-muted" style="padding: 30px 0px">
                 <p class="lead">In the future, you can:<br>
                     <ul>
-                        <li><p class="lead">create additional submission periods using <a href="#" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></a></p></li>
+                        <li><p class="lead">create additional rounds using <a href="#" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></a></p></li>
                         <li><p class="lead">add new members and remove current members using <a href="#" class="btn btn-sm btn-default"><i class="fa fa-user"></i></a></p></li>
                         <li><p class="lead">change the name, how voting works, and other settings using <a href="#" class="btn btn-sm btn-default"><i class="fa fa-gear"></i></a></p></li>
                     </ul>
@@ -223,7 +223,7 @@
                         <a class="btn btn-link text-muted dropdown-toggle" data-toggle="dropdown" id="options-dropdown">Admin</a>
                         <ul class="dropdown-menu" aria-labelledby="options-dropdown">
                             <li><a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id, action='edit') }}">Edit Preferences</a></li>
-                            <li><a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}">View Submission Period</a></li>
+                            <li><a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}">View Round</a></li>
                             <li role="separator" class="divider"></li>
                             <li class="bg-danger"><a href="{{ url_for('r_remove_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}"><span class="text-danger">Delete</span></a></li>
                         </ul>

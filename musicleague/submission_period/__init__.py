@@ -11,7 +11,7 @@ from musicleague.submission_period.tasks.schedulers import schedule_vote_reminde
 
 def create_submission_period(league, name=None, description=None):
     if name is None:
-        name = 'Submission Period %s' % (len(league.submission_periods) + 1)
+        name = 'Round %s' % (len(league.submission_periods) + 1)
 
     if description is None:
         description = ''
