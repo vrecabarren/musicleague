@@ -24,24 +24,34 @@ I recommend using [virtualenv](http://www.virtualenv.org/en/latest/) along with
 [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/) for
 the smoothest experience.
 
-You may do any of the below after cloning this repo and running ```make install```.
+### Prerequisites
+There are two prerequisites to install before running:
+- [MongoDB](https://docs.mongodb.com/manual/installation/)
+- [Redis](https://redis.io/topics/quickstart)
 
-### Linting
+### Make Utils
+
+You may do any of the below after installing prerequisites, cloning this repo, and running ```make install```.
+
+#### Linting
 ```
 make lint
 ```
 
-### Running Unit Tests
+#### Running Unit Tests
+_Requires listed prerequisites to be up and running._
 ```
 make unit
 ```
 
-### Running Locally
+#### Running Locally
+_Requires listed prerequisites to be up and running._
 ```
 make run
 ```
 
-### Running Continuous Integration Script
+#### Running Continuous Integration Script
+_Requires listed prerequisites to be up and running._
 ```
 make ci
 ```
