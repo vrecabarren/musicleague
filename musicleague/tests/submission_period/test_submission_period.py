@@ -129,3 +129,4 @@ class UpdateSubmissionPeriodTestCase(TestCase):
         saved = get_submission_period(updated.id)
         self.assertIsNotNone(saved)
         self.assertEqual(updated.name, saved.name)
+        self.assertEqual(updated.description, saved.description)

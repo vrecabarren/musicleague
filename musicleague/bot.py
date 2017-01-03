@@ -15,7 +15,7 @@ def get_botify():
     bot_id = get_setting(SPOTIFY_BOT_USERNAME)
     bot = get_bot(bot_id)
     if not bot:
-        return
+        return None, None
 
     # If access_expired, refresh it
     if bot.expires_at < int(time()):
