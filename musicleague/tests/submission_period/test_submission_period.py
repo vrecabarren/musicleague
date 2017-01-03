@@ -112,8 +112,8 @@ class UpdateSubmissionPeriodTestCase(TestCase):
         id = sp.id
         sp.delete()
 
-        sp = update_submission_period(
-            id, 'New Name', datetime.utcnow(), datetime.utcnow())
+        sp = update_submission_period(id, 'New Name', 'New Description',
+                                      datetime.utcnow(), datetime.utcnow())
 
         self.assertIsNone(sp)
 
@@ -121,7 +121,8 @@ class UpdateSubmissionPeriodTestCase(TestCase):
         created = create_submission_period(self.league)
 
         updated = update_submission_period(
-            created.id, 'New Name', datetime.utcnow(), datetime.utcnow())
+            created.id, 'New Name', 'New Description', datetime.utcnow(),
+            datetime.utcnow())
 
         self.assertEqual('New Name', updated.name)
 
