@@ -62,6 +62,9 @@ def save_submission_period_settings(league_id, submission_period_id,
                                     **kwargs):
     name = request.form.get('name')
 
+    description = request.form.get('description')
+    description = description.strip()
+
     submission_due_date_str = request.form.get('submission_due_date_utc')
     submission_due_date = utc.localize(
         datetime.strptime(submission_due_date_str, '%m/%d/%y %I%p'))
@@ -70,8 +73,8 @@ def save_submission_period_settings(league_id, submission_period_id,
     vote_due_date = utc.localize(
         datetime.strptime(vote_due_date_str, '%m/%d/%y %I%p'))
 
-    update_submission_period(submission_period_id, name, submission_due_date,
-                             vote_due_date)
+    update_submission_period(submission_period_id, name, description,
+                             submission_due_date, vote_due_date)
 
     return redirect(url_for('view_submission_period',
                             league_id=league_id,

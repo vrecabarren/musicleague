@@ -71,13 +71,14 @@ def remove_submission_period(submission_period_id, submission_period=None):
     return submission_period
 
 
-def update_submission_period(submission_period_id, name, submission_due_date,
-                             vote_due_date):
+def update_submission_period(submission_period_id, name, description,
+                             submission_due_date, vote_due_date):
     submission_period = get_submission_period(submission_period_id)
     if not submission_period:
         return
 
     submission_period.name = name
+    submission_period.description = description
     submission_period.submission_due_date = submission_due_date
     submission_period.vote_due_date = vote_due_date
 
