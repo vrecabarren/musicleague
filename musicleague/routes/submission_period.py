@@ -34,6 +34,9 @@ def post_create_submission_period(league_id, **kwargs):
     if league.has_owner(g.user):
         name = request.form.get('name')
         description = request.form.get('description')
+        if not description or not description.strip():
+            description = None
+
         submission_period = create_submission_period(league, name, description)
         flash_success("Submission period <strong>{}</strong> created."
                       .format(submission_period.name))
