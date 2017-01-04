@@ -29,38 +29,36 @@
 <body>
     <nav class="navbar navbar-default navbar-static-top" style="background-color: #fff; border: none">
         <div class="container">
-            <!-- <div class="col-xs-12 col-md-8 col-md-offset-2"> -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar" style="color: black"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                      </button>
-                    <a href="/" class="navbar-brand"><span style="color: #2ecc71">Music League</span></a>
-                </div>
-                <div class="collapse navbar-collapse" id="navbar">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="mailto:ndcodes+mlissues@gmail.com" title="Report a Problem"><span class="text-info"><i class="fa fa-bug"></i>&nbsp;Report a Problem</span></a></li>
-                        {% if user %}
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.name }} <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ url_for('profile') }}" title="Profile"><i class="fa fa-user" style="margin-right: 10px"></i>&nbsp;Profile</a></li>
-                                <li role="separator" class="divider"></li>
-                                {% if user.email == 'nathandanielcoleman@gmail.com' %}
-                                <li><a href="{{ url_for('admin') }}" title="Admin"><i class="fa fa-key" style="margin-right: 10px"></i>Admin</a></li>
-                                {% endif %}
-                                <li><a href="{{ url_for('view_profile_settings') }}" title="Settings"><i class="fa fa-cog" style="margin-right: 10px"></i>Settings</a></li>
-                                <li><a href="{{ url_for('logout') }}"><i class="fa fa-sign-out" style="margin-right: 10px"></i>&nbsp;Log Out</a></li>
-                            </ul>
-                        </li>
-                        {% else %}
-                        <li><a href="{{ oauth_url }}" title="Log In With Your Spotify Account"><i class="fa fa-spotify"></i>&nbsp;Log In</a></li>
-                        {% endif %}
-                    </ul>
-                </div>
-            <!-- </div> -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar" style="color: black"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                <a href="/" class="navbar-brand"><span style="color: #2ecc71">Music League</span></a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="mailto:ndcodes+mlissues@gmail.com" title="Report a Problem"><span class="text-info"><i class="fa fa-bug"></i>&nbsp;Report a Problem</span></a></li>
+                    {% if user %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.name }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('profile') }}" title="Profile"><i class="fa fa-user" style="margin-right: 10px"></i>&nbsp;Profile</a></li>
+                            <li role="separator" class="divider"></li>
+                            {% if user.email == 'nathandanielcoleman@gmail.com' %}
+                            <li><a href="{{ url_for('admin') }}" title="Admin"><i class="fa fa-key" style="margin-right: 10px"></i>Admin</a></li>
+                            {% endif %}
+                            <li><a href="{{ url_for('view_profile_settings') }}" title="Settings"><i class="fa fa-cog" style="margin-right: 10px"></i>Settings</a></li>
+                            <li><a href="{{ url_for('logout') }}"><i class="fa fa-sign-out" style="margin-right: 10px"></i>&nbsp;Log Out</a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li><a href="{{ oauth_url }}" title="Log In With Your Spotify Account"><i class="fa fa-spotify"></i>&nbsp;Log In</a></li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
     </nav>
 
