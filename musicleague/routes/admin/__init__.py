@@ -39,7 +39,7 @@ def admin():
 @login_required
 def admin_leagues():
     if g.user.email == 'nathandanielcoleman@gmail.com':
-        leagues = League.objects().all()
+        leagues = League.objects().all().order_by('preferences.name')
         return {
             'user': g.user,
             'leagues': leagues
@@ -61,7 +61,7 @@ def admin_tools():
 @login_required
 def admin_users():
     if g.user.email == 'nathandanielcoleman@gmail.com':
-        users = User.objects().all()
+        users = User.objects().all().order_by('name')
         return {
             'user': g.user,
             'users': users
