@@ -2,28 +2,75 @@
 
 {% block title %}Music League | Admin{% endblock %}
 
+{% block css %}
+<style>
+body {background-color: #f3f3f3; }
+.league {
+    background-color: #fff;
+    margin-bottom: 5px;
+    padding: 10px 25px;
+}
+</style>
+{% endblock %}
+
 {% block content %}
 
 <div class="container">
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for league in leagues %}
-            <tr>
-                <td><a href=".{{ league.id }}-submission-periods" data-toggle="collapse">{{ league.name }}</a>&nbsp;<a href="{{ url_for('view_league', league_id=league.id) }}" target="_blank"><i class="fa fa-link"></i></a></td>
-                {% for submission_period in league.submission_periods %}
-                <tr class="{{ league.id }}-submission-periods" class="collapse">
-                    <td style="padding-left: 50px"><a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id)}}" target="_blank">{{ submission_period.name }}</a></td>
-                </tr>
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    {% for league in leagues %}
+    <div class="row league">
+        <div class="row">
+            <div class="col-md-4">
+                <h5>{{ league.name }}</h5>
+            </div>
+            <div class="col-md-3 text-center">
+                {% if league.submission_periods|length > 0 %}
+                <a href="#{{ league.id }}-submission-periods" data-toggle="collapse"><h5>{{ league.submission_periods|length }} Rounds</h5></a>
+                {% else %}
+                <h5>0 Rounds</h5>
+                {% endif %}
+            </div>
+            <div class="col-md-3 text-center">
+                <h5>{{ league.users|length }} users</h5>
+            </div>
+            <div class="col-md-2 text-right">
+                <a href="{{ url_for('view_league', league_id=league.id) }}" target="_blank"><h5>View</h5></a>
+            </div>
+        </div>
+        {% if league.submission_periods|length > 0 %}
+        <div id="{{ league.id }}-submission-periods" class="collapse">
+            <hr>
+            <div class="row">
+                <div class="col-md-11 col-md-offset-1">
+                    {% for submission_period in league.submission_periods %}
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h5>{% if submission_period.is_complete %}<i class="fa fa-check-circle-o"></i>{% elif submission_period.is_current_v2 %}<i class="fa fa-circle-o"></i>{% else %} <i class="fa fa-calendar-o"></i>{% endif %}&nbsp;{{ submission_period.name }}</h5>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h5>{{ submission_period.submissions|length }} Submissions</h5>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h5>{{ submission_period.votes|length }} Votes</h5>
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id)}}" target="_blank"><h5>View</h5></a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
 </div>
 
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(.collapse).collapse();
+    });
+</script>
 {% endblock %}
