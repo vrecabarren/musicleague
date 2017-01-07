@@ -37,7 +37,7 @@ def autocomplete():
 
 
 @app.route(PROFILE_URL)
-@templated('user.html')
+@templated('user/page.html')
 @login_required
 def profile():
     page_user = g.user
@@ -114,7 +114,7 @@ def save_notification_settings():
 
 
 @app.route(VIEW_USER_URL)
-@templated('user.html')
+@templated('user/page.html')
 @login_required
 def view_user(user_id):
     if user_id == str(g.user.id):

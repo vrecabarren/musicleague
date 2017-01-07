@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Music League | {{ page_user.name }}{% endblock %}
+
+{% block css %}
+<style>
+    body { background-color: #f3f3f3; }
+
+    #user-info {
+        background-color: #fff;
+        border-radius: 5px;
+        margin-bottom: 5px;
+        padding-bottom: 10px;
+        text-align: center;
+    }
+    #user-info .user-img { margin: 20px 0px 20px 0px; }
+
+    #user-admin {
+        background-color: #fff;
+        border-radius: 5px;
+        margin-bottom: 5px;
+        padding: 10px;
+        text-align: left;
+    }
+
+    .league-item {
+        background-color: #fff;
+        border-radius: 5px;
+        margin-bottom: 5px;
+        padding: 20px 0px;
+        text-align: center;
+    }
+    .league-item .league-remove {
+        position: relative;
+        left: -15px;
+        top: -20px;
+    }
+    .league-item .league-members { margin: 10px 0px; }
+    .league-item .league-title { margin-top: inherit; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            {% include "user/fragments/user-info.html" %}
+
+            {% if page_user == user %}
+                {% include "user/fragments/user-admin.html" %}
+            {% endif %}
+
+            {% for league in leagues %}
+                {% include "user/fragments/league-item.html" %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
