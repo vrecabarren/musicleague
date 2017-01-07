@@ -27,32 +27,34 @@ from musicleague.notify.messenger import user_vote_reminder_messenger
 
 def owner_all_users_submitted_notification(submission_period):
     if not submission_period:
-        return
+        return False
 
     owner = submission_period.league.owner
     if not owner or not owner.email:
-        return
+        return False
 
     if not owner.preferences.owner_all_users_submitted_notifications:
-        return
+        return False
 
     owner_all_users_submitted_email(owner, submission_period)
     owner_all_users_submitted_messenger(owner, submission_period)
+    return True
 
 
 def owner_user_submitted_notification(submission):
     if not submission:
-        return
+        return False
 
     owner = submission.league.owner
     if not owner or not owner.email:
-        return
+        return False
 
     if not owner.preferences.owner_user_submitted_notifications:
-        return
+        return False
 
     owner_user_submitted_email(owner, submission)
     owner_user_submitted_messenger(owner, submission)
+    return True
 
 
 def owner_all_users_voted_notification(submission_period):
