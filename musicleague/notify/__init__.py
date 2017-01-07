@@ -59,32 +59,34 @@ def owner_user_submitted_notification(submission):
 
 def owner_all_users_voted_notification(submission_period):
     if not submission_period:
-        return
+        return False
 
     owner = submission_period.league.owner
     if not owner:
-        return
+        return False
 
     if not owner.preferences.owner_all_users_voted_notifications:
-        return
+        return False
 
     owner_all_users_voted_email(owner, submission_period)
     owner_all_users_voted_messenger(owner, submission_period)
+    return True
 
 
 def owner_user_voted_notification(vote):
     if not vote:
-        return
+        return False
 
     owner = vote.league.owner
     if not owner:
-        return
+        return False
 
     if not owner.preferences.owner_user_voted_notifications:
-        return
+        return False
 
     owner_user_voted_email(owner, vote)
     owner_user_voted_messenger(owner, vote)
+    return True
 
 
 def user_added_to_league_notification(user, league):
