@@ -30,6 +30,9 @@ def get_spotify_oauth(bot=False):
 
 
 def create_playlist(submission_period):
+    if not submission_period:
+        return
+
     from musicleague.bot import get_botify
     bot_id, botify = get_botify()
 
