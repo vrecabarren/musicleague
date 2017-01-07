@@ -1,11 +1,14 @@
 from flask import g
 from flask import redirect
 from flask import request
-from flask import url_for
 
 from musicleague import app
+from musicleague.models import InvitedUser
 from musicleague.models import League
+from musicleague.models import Submission
+from musicleague.models import SubmissionPeriod
 from musicleague.models import User
+from musicleague.models import Vote
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 
@@ -17,8 +20,18 @@ ADMIN_USERS_URL = '/admin/users/'
 
 
 @app.route(ADMIN_URL)
+@templated('admin/page.html')
+@login_required
 def admin():
-    return redirect(url_for('admin_users'))
+    return {
+        'user': g.user,
+        'num_invited': InvitedUser.objects().count(),
+        'num_leagues': League.objects().count(),
+        'num_rounds': SubmissionPeriod.objects().count(),
+        'num_submissions': Submission.objects().count(),
+        'num_users': User.objects().count(),
+        'num_votes': Vote.objects().count()
+    }
 
 
 @app.route(ADMIN_LEAGUES_URL)

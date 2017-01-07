@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Music League | Admin{% endblock %}
+
+{% block css %}
+<style>
+    .metric-block {
+        background-color: #fff;
+        border: 1px solid #dedede;
+        border-radius: 5px;
+        padding: 50px;
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="metric-block jumbotron linked" data-href="{{ url_for('admin_users') }}">
+                <h4>Users</h4>
+                <h1>{{ num_users }}</h1>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="metric-block jumbotron linked" data-href="{{ url_for('admin_leagues') }}">
+                <h4>Leagues</h4>
+                <h1>{{ num_leagues }}</h1>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="metric-block jumbotron">
+                <h4>Rounds</h4>
+                <h1>{{ num_rounds }}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="metric-block jumbotron">
+                <h4>Submissions</h4>
+                <h1>{{ num_submissions }}</h1>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="metric-block jumbotron">
+                <h4>Votes</h4>
+                <h1>{{ num_votes }}</h1>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="metric-block jumbotron">
+                <h4>Invited</h4>
+                <h1>{{ num_invited }}</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
