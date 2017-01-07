@@ -74,7 +74,7 @@ def send_submission_reminders(submission_period_id):
 def send_vote_reminders(submission_period_id):
     if not submission_period_id:
         logging.error('No submission period id for vote reminders!')
-        return
+        return False
 
     try:
         from musicleague.submission_period import get_submission_period
@@ -86,6 +86,8 @@ def send_vote_reminders(submission_period_id):
         for user in to_notify:
             logging.warning('%s has not submitted! Notifying.', user.name)
             user_vote_reminder_notification(user, submission_period)
+        return True
 
-    except:
-        logging.exception('Error occurred while sending vote reminders!')
+    except Exception as e:
+        logging.exception('Error while sending vote reminders: %s', e)
+        return False
