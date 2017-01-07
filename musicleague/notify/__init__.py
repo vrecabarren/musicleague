@@ -30,7 +30,7 @@ def owner_all_users_submitted_notification(submission_period):
         return False
 
     owner = submission_period.league.owner
-    if not owner or not owner.email:
+    if not owner:
         return False
 
     if not owner.preferences.owner_all_users_submitted_notifications:
@@ -46,7 +46,7 @@ def owner_user_submitted_notification(submission):
         return False
 
     owner = submission.league.owner
-    if not owner or not owner.email:
+    if not owner:
         return False
 
     if not owner.preferences.owner_user_submitted_notifications:
@@ -62,7 +62,7 @@ def owner_all_users_voted_notification(submission_period):
         return
 
     owner = submission_period.league.owner
-    if not owner or not owner.email:
+    if not owner:
         return
 
     if not owner.preferences.owner_all_users_voted_notifications:
@@ -77,7 +77,7 @@ def owner_user_voted_notification(vote):
         return
 
     owner = vote.league.owner
-    if not owner or not owner.email:
+    if not owner:
         return
 
     if not owner.preferences.owner_user_voted_notifications:
@@ -88,7 +88,7 @@ def owner_user_voted_notification(vote):
 
 
 def user_added_to_league_notification(user, league):
-    if not league or not user or not user.email:
+    if not league or not user:
         return
 
     if not user.preferences.user_added_to_league_notifications:
@@ -99,14 +99,14 @@ def user_added_to_league_notification(user, league):
 
 
 def user_invited_to_league_notification(invited_user, league):
-    if not league or not invited_user or not invited_user.email:
+    if not league or not invited_user:
         return
 
     user_invited_to_league_email(invited_user, league)
 
 
 def user_last_to_submit_notification(user, submission_period):
-    if not submission_period or not user or not user.email:
+    if not submission_period or not user:
         return
 
     user_last_to_submit_email(user, submission_period)
@@ -114,7 +114,7 @@ def user_last_to_submit_notification(user, submission_period):
 
 
 def user_last_to_vote_notification(user, submission_period):
-    if not submission_period or not user or not user.email:
+    if not submission_period or not user:
         return
 
     user_last_to_vote_email(user, submission_period)
@@ -130,7 +130,7 @@ def user_playlist_created_notification(submission_period):
 
 
 def user_removed_from_league_notification(user, league):
-    if league or not user or not user.email:
+    if league or not user:
         return
 
     if not user.preferences.user_removed_from_league_notifications:
@@ -141,7 +141,7 @@ def user_removed_from_league_notification(user, league):
 
 
 def user_submit_reminder_notification(user, submission_period):
-    if not submission_period or not user or not user.email:
+    if not submission_period or not user:
         return
 
     if not user.preferences.user_submit_reminder_notifications:
@@ -152,7 +152,7 @@ def user_submit_reminder_notification(user, submission_period):
 
 
 def user_vote_reminder_notification(user, submission_period):
-    if not submission_period or not user or not user.email:
+    if not submission_period or not user:
         return
 
     if not user.preferences.user_vote_reminder_notifications:
