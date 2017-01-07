@@ -11,6 +11,7 @@ from musicleague.environment.variables import SPOTIFY_REDIRECT_URI
 from musicleague.spotify import BOT_SCOPES
 from musicleague.spotify import get_spotify_oauth
 from musicleague.spotify import OAUTH_SCOPES
+from musicleague.spotify import to_uri
 from musicleague.tests.utils.environment import set_environment_state
 
 
@@ -32,9 +33,6 @@ class GetSpotifyOauthTestCase(unittest.TestCase):
         self.bot_redirect_uri = 'bot_redirect_uri'
         set_environment_state(ADD_BOT_REDIRECT_URI.key, self.bot_redirect_uri)
 
-    def tearDown(self):
-        pass
-
     @patch(PATCH_PATH + 'oauth2.SpotifyOAuth', wraps=SpotifyOAuth)
     def test_spotify_oauth(self, oauth_construct):
 
@@ -54,3 +52,23 @@ class GetSpotifyOauthTestCase(unittest.TestCase):
         oauth_construct.assert_called_once_with(
             self.client_id, self.client_secret, self.bot_redirect_uri,
             scope=BOT_SCOPES)
+
+
+class ToUriTestCase(unittest.TestCase):
+
+    def test_non_track_uri(self):
+        album_uri = 'spotify:album:0QA8bVnLCxOpCYMhIdT6rz'
+        self.assertIsNone(to_uri(album_uri))
+
+    def test_non_track_url(self):
+        album_url = 'https://open.spotify.com/album/0QA8bVnLCxOpCYMhIdT6rz'
+        self.assertIsNone(to_uri(album_url))
+
+    def test_track_uri(self):
+        track_uri = 'spotify:track:0YhEJmOYZoRdKNPbCvHs8R'
+        self.assertEqual(track_uri, to_uri(track_uri))
+
+    def test_track_url(self):
+        track_uri = 'spotify:track:0YhEJmOYZoRdKNPbCvHs8R'
+        track_url = 'https://open.spotify.com/track/0YhEJmOYZoRdKNPbCvHs8R'
+        self.assertEqual(track_uri, to_uri(track_url))
