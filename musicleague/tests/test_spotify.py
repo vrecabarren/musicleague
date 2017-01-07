@@ -16,6 +16,7 @@ from musicleague.spotify import create_playlist
 from musicleague.spotify import get_spotify_oauth
 from musicleague.spotify import OAUTH_SCOPES
 from musicleague.spotify import to_uri
+from musicleague.spotify import update_playlist
 from musicleague.submission_period import create_submission_period
 from musicleague.tests.utils.environment import set_environment_state
 from musicleague.user import create_user
@@ -101,6 +102,53 @@ class CreatePlaylistTestCase(unittest.TestCase):
             bot_id, playlist_id, self.submission_period.all_tracks)
 
         notify.assert_called_once_with(self.submission_period)
+
+
+class UpdatePlaylistTestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.user = create_user('id', 'Test User', 'test@user.com', '')
+        self.league = create_league(self.user)
+        self.submission_period = create_submission_period(
+            self.league, 'Test League', 'Description')
+
+    def tearDown(self):
+        self.user.delete()
+        self.league.delete()
+        self.submission_period.delete()
+
+    @patch('musicleague.bot.get_botify')
+    def test_no_submission_period(self, get_bot):
+        self.assertIsNone(update_playlist(None))
+        self.assertFalse(get_bot.called)
+
+    @patch('musicleague.bot.get_botify')
+    def test_no_submission_period_playlist_id(self, get_bot):
+        self.assertIsNone(update_playlist(self.submission_period))
+        self.assertFalse(get_bot.called)
+
+    @patch('musicleague.bot.get_botify')
+    def test_update_playlist(self, get_bot):
+        playlist_id = '6UeSakyzhiEt4NB3UAd6NQ'
+        playlist_url = 'https://open.spotify.com/user/billboard.com/playlist/6UeSakyzhiEt4NB3UAd6NQ'  # noqa
+        playlist = {'id': playlist_id,
+                    'external_urls': {'spotify': playlist_url}}
+        self.submission_period.playlist_id = playlist_id
+        self.submission_period.playlist_url = playlist_url
+        self.submission_period.save()
+
+        bot_id = 'bot_id'
+        mock_botify = Mock(spec=Spotify)
+        mock_botify.user_playlist.return_value = playlist
+        get_bot.return_value = bot_id, mock_botify
+
+        returned_playlist = update_playlist(self.submission_period)
+
+        self.assertEqual(playlist, returned_playlist)
+
+        self.assertTrue(get_bot.called)
+        mock_botify.user_playlist_replace_tracks.assert_called_once_with(
+            bot_id, playlist_id, self.submission_period.all_tracks)
 
 
 class ToUriTestCase(unittest.TestCase):

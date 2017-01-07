@@ -54,6 +54,9 @@ def create_playlist(submission_period):
 
 
 def update_playlist(submission_period):
+    if not submission_period or not submission_period.playlist_id:
+        return
+
     from musicleague.bot import get_botify
     bot_id, botify = get_botify()
 
