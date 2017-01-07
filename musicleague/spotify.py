@@ -72,6 +72,8 @@ def update_playlist(submission_period):
 
 
 def create_or_update_playlist(submission_period):
+    if not submission_period:
+        return
 
     if not submission_period.playlist_created:
         # Create new playlist and link to this submission period
