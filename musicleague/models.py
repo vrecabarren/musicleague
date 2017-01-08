@@ -57,6 +57,8 @@ class MessengerContext(Document):
 
 
 class User(Document):
+    ADMIN = 'admin'
+
     id = StringField(primary_key=True, required=True)
     email = StringField(required=True)
     image_url = StringField(required=False, default='')
@@ -64,10 +66,15 @@ class User(Document):
     messenger = ReferenceField(MessengerContext)
     name = StringField(required=False, default='')
     preferences = EmbeddedDocumentField(UserPreferences)
+    roles = ListField(required=False, default=[])
 
     @property
     def first_name(self):
         return self.name.split(' ')[0]
+
+    @property
+    def is_admin(self):
+        return self.ADMIN in self.roles
 
 
 class Bot(Document):
