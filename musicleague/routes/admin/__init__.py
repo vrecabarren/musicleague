@@ -1,6 +1,4 @@
 from flask import g
-from flask import redirect
-from flask import request
 
 from musicleague import app
 from musicleague.models import InvitedUser
