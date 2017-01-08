@@ -31,11 +31,29 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <div class="pull-left"><a href="{{ url_for('r_remove_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}" class="btn btn-danger">Delete</a></div>
+                        <div class="pull-left"><a href="#confirm-delete" class="btn btn-danger" data-dismiss="modal" data-toggle="modal">Delete</a></div>
                         <button type="submit" class="btn btn-success">Save</button>
                         <button class="btn btn-link" data-dismiss="modal">Cancel</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" role="dialog" id="confirm-delete" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title text-center" id="myModalLabel">Delete Round</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Are you sure you want to delete <strong>{{ submission_period.name }}</strong>?</p>
+                </div>
+                <div class="modal-footer text-center">
+                    <a href="{{ url_for('r_remove_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}" class="btn btn-danger">Delete</a>
+                    <a href="#edit-modal" class="btn btn-link" data-dismiss="modal" data-toggle="modal">Cancel</a>
+                </div>
             </div>
         </div>
     </div>
