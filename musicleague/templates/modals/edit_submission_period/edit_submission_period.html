@@ -1,4 +1,4 @@
-    <div class="modal fade" role="dialog" id="edit-modal" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal" role="dialog" id="edit-modal" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form action="{{ url_for('save_submission_period_settings', league_id=submission_period.league.id, submission_period_id=submission_period.id) }}" method="post">
@@ -40,7 +40,7 @@
         </div>
     </div>
 
-    <div class="modal fade" role="dialog" id="confirm-delete" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal" role="dialog" id="confirm-delete" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
