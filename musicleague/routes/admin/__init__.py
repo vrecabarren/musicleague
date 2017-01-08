@@ -35,7 +35,7 @@ def admin():
 
 
 @app.route(ADMIN_LEAGUES_URL)
-@templated('admin/leagues.html')
+@templated('admin/leagues/page.html')
 @login_required
 @admin_required
 def admin_leagues():
@@ -47,7 +47,7 @@ def admin_leagues():
 
 
 @app.route(ADMIN_TOOLS_URL)
-@templated('admin/tools.html')
+@templated('admin/tools/page.html')
 @login_required
 @admin_required
 def admin_tools():
@@ -55,7 +55,7 @@ def admin_tools():
 
 
 @app.route(ADMIN_USERS_URL)
-@templated('admin/users.html')
+@templated('admin/users/page.html')
 @login_required
 @admin_required
 def admin_users():
