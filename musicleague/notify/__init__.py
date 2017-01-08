@@ -27,14 +27,14 @@ from musicleague.notify.messenger import user_vote_reminder_messenger
 
 def owner_all_users_submitted_notification(submission_period):
     if not submission_period:
-        return False
+        return
 
     owner = submission_period.league.owner
     if not owner:
-        return False
+        return
 
     if not owner.preferences.owner_all_users_submitted_notifications:
-        return False
+        return
 
     owner_all_users_submitted_email(owner, submission_period)
     owner_all_users_submitted_messenger(owner, submission_period)
@@ -43,14 +43,14 @@ def owner_all_users_submitted_notification(submission_period):
 
 def owner_user_submitted_notification(submission):
     if not submission:
-        return False
+        return
 
     owner = submission.league.owner
     if not owner:
-        return False
+        return
 
     if not owner.preferences.owner_user_submitted_notifications:
-        return False
+        return
 
     owner_user_submitted_email(owner, submission)
     owner_user_submitted_messenger(owner, submission)
@@ -59,14 +59,14 @@ def owner_user_submitted_notification(submission):
 
 def owner_all_users_voted_notification(submission_period):
     if not submission_period:
-        return False
+        return
 
     owner = submission_period.league.owner
     if not owner:
-        return False
+        return
 
     if not owner.preferences.owner_all_users_voted_notifications:
-        return False
+        return
 
     owner_all_users_voted_email(owner, submission_period)
     owner_all_users_voted_messenger(owner, submission_period)
@@ -75,14 +75,14 @@ def owner_all_users_voted_notification(submission_period):
 
 def owner_user_voted_notification(vote):
     if not vote:
-        return False
+        return
 
     owner = vote.league.owner
     if not owner:
-        return False
+        return
 
     if not owner.preferences.owner_user_voted_notifications:
-        return False
+        return
 
     owner_user_voted_email(owner, vote)
     owner_user_voted_messenger(owner, vote)
@@ -98,6 +98,7 @@ def user_added_to_league_notification(user, league):
 
     user_added_to_league_email(user, league)
     user_added_to_league_messenger(user, league)
+    return True
 
 
 def user_invited_to_league_notification(invited_user, league):
@@ -105,6 +106,7 @@ def user_invited_to_league_notification(invited_user, league):
         return
 
     user_invited_to_league_email(invited_user, league)
+    return True
 
 
 def user_last_to_submit_notification(user, submission_period):
@@ -113,6 +115,7 @@ def user_last_to_submit_notification(user, submission_period):
 
     user_last_to_submit_email(user, submission_period)
     user_last_to_submit_messenger(user, submission_period)
+    return True
 
 
 def user_last_to_vote_notification(user, submission_period):
@@ -121,18 +124,22 @@ def user_last_to_vote_notification(user, submission_period):
 
     user_last_to_vote_email(user, submission_period)
     user_last_to_vote_messenger(user, submission_period)
+    return True
 
 
 def user_playlist_created_notification(submission_period):
     if not submission_period or not submission_period.league.users:
         return
 
+    # NOTE: Preference is checked within the calls below
+
     user_playlist_created_email(submission_period)
     user_playlist_created_messenger(submission_period)
+    return True
 
 
 def user_removed_from_league_notification(user, league):
-    if league or not user:
+    if not league or not user:
         return
 
     if not user.preferences.user_removed_from_league_notifications:
@@ -140,6 +147,7 @@ def user_removed_from_league_notification(user, league):
 
     user_removed_from_league_email(user, league)
     user_removed_from_league_messenger(user, league)
+    return True
 
 
 def user_submit_reminder_notification(user, submission_period):
@@ -151,6 +159,7 @@ def user_submit_reminder_notification(user, submission_period):
 
     user_submit_reminder_email(user, submission_period)
     user_submit_reminder_messenger(user, submission_period)
+    return True
 
 
 def user_vote_reminder_notification(user, submission_period):
@@ -162,3 +171,4 @@ def user_vote_reminder_notification(user, submission_period):
 
     user_vote_reminder_email(user, submission_period)
     user_vote_reminder_messenger(user, submission_period)
+    return True
