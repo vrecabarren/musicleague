@@ -9,6 +9,7 @@ from musicleague.models import Submission
 from musicleague.models import SubmissionPeriod
 from musicleague.models import User
 from musicleague.models import Vote
+from musicleague.routes.decorators import admin_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 
@@ -22,6 +23,7 @@ ADMIN_USERS_URL = '/admin/users/'
 @app.route(ADMIN_URL)
 @templated('admin/page.html')
 @login_required
+@admin_required
 def admin():
     return {
         'user': g.user,
@@ -37,33 +39,30 @@ def admin():
 @app.route(ADMIN_LEAGUES_URL)
 @templated('admin/leagues.html')
 @login_required
+@admin_required
 def admin_leagues():
-    if g.user.email == 'nathandanielcoleman@gmail.com':
-        leagues = League.objects().all().order_by('preferences.name')
-        return {
-            'user': g.user,
-            'leagues': leagues
-        }
-    return redirect(request.referrer)
+    leagues = League.objects().all().order_by('preferences.name')
+    return {
+        'user': g.user,
+        'leagues': leagues
+    }
 
 
 @app.route(ADMIN_TOOLS_URL)
 @templated('admin/tools.html')
 @login_required
+@admin_required
 def admin_tools():
-    if g.user.email == 'nathandanielcoleman@gmail.com':
-        return {}
-    return redirect(request.referrer)
+    return {}
 
 
 @app.route(ADMIN_USERS_URL)
 @templated('admin/users.html')
 @login_required
+@admin_required
 def admin_users():
-    if g.user.email == 'nathandanielcoleman@gmail.com':
-        users = User.objects().all().order_by('name')
-        return {
-            'user': g.user,
-            'users': users
-        }
-    return redirect(request.referrer)
+    users = User.objects().all().order_by('name')
+    return {
+        'user': g.user,
+        'users': users
+    }

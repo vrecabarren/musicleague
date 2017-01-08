@@ -1,6 +1,7 @@
 from functools import wraps
 import urlparse
 
+from flask import g
 from flask import redirect
 from flask import render_template
 from flask import request
@@ -8,6 +9,8 @@ from flask import session
 from flask import url_for
 
 from musicleague.league import get_league
+from musicleague.notify.flash import flash_error
+from musicleague.notify.flash import flash_warning
 
 
 def login_required(func):
@@ -19,7 +22,18 @@ def login_required(func):
             parsed_url = urlparse.urlsplit(url)
             next_url = '%s?%s' % (parsed_url.path, parsed_url.query)
             session['next_url'] = next_url.encode('base64', 'strict')
+            flash_warning('You must be logged in to reach that page')
             return redirect(url_for('hello', next_url=next_url))
+        return func(*args, **kwargs)
+    return wrapper
+
+
+def admin_required(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if not g.user.is_admin:
+            flash_error('You must be an admin to access that page')
+            return redirect(url_for('hello'))
         return func(*args, **kwargs)
     return wrapper
 
