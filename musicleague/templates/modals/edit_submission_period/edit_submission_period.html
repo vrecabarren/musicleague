@@ -50,9 +50,13 @@
                 <div class="modal-body text-center">
                     <p>Are you sure you want to delete <strong>{{ submission_period.name }}</strong>?</p>
                 </div>
-                <div class="modal-footer text-center">
-                    <a href="{{ url_for('r_remove_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}" class="btn btn-danger">Delete</a>
-                    <a href="#edit-modal" class="btn btn-link" data-dismiss="modal" data-toggle="modal">Cancel</a>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+                            <a href="{{ url_for('r_remove_submission_period', league_id=league.id, submission_period_id=submission_period.id) }}" class="btn btn-danger">Delete</a>
+                            <a href="#edit-modal" class="btn btn-link" data-dismiss="modal" data-toggle="modal">Cancel</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
