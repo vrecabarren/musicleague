@@ -92,6 +92,9 @@ def user_playlist_created_messenger(submission_period):
         return
 
     for user in submission_period.league.users:
+        if not user.preferences.user_playlist_created_notifications:
+            continue
+
         if user.messenger:
             send_message(
                 user.messenger.id,

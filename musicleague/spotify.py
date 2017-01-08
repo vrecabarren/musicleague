@@ -30,6 +30,9 @@ def get_spotify_oauth(bot=False):
 
 
 def create_playlist(submission_period):
+    if not submission_period:
+        return
+
     from musicleague.bot import get_botify
     bot_id, botify = get_botify()
 
@@ -51,6 +54,9 @@ def create_playlist(submission_period):
 
 
 def update_playlist(submission_period):
+    if not submission_period or not submission_period.playlist_id:
+        return
+
     from musicleague.bot import get_botify
     bot_id, botify = get_botify()
 
@@ -66,6 +72,8 @@ def update_playlist(submission_period):
 
 
 def create_or_update_playlist(submission_period):
+    if not submission_period:
+        return
 
     if not submission_period.playlist_created:
         # Create new playlist and link to this submission period
