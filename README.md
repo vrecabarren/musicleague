@@ -1,6 +1,7 @@
 # Music League
 [![Build Status](https://travis-ci.org/nathancoleman/musicleague.svg?branch=master)](https://travis-ci.org/nathancoleman/musicleague)
 [![Coverage Status](https://coveralls.io/repos/github/nathancoleman/musicleague/badge.svg?branch=master)](https://coveralls.io/github/nathancoleman/musicleague?branch=master)
+<a href="https://zenhub.com"><img src="https://raw.githubusercontent.com/ZenHubIO/support/master/zenhub-badge.png"></a>
 
 Have you ever wanted to battle it out with your friends and see who has the
 best taste in music?
