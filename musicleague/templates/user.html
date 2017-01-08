@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Music League | {{ page_user.name }}{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 text-center">
+            <h1>{{ page_user.name }}</h1>
+            <p class="text-muted">Owns {{ owner_leagues }} league(s)</p>
+            <p class="text-muted">Contributes to {{ contributor_leagues }} league(s)</p>
+            <img class="img img-circle" src="{{ page_user.image_url }}" alt="{{ page_user.name }}" height="100">
+        </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    {% if page_user == user %}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 text-center">
+            <a href="{{ url_for('get_create_league') }}" class="btn btn-default">Add New League</a>
+        </div>
+    </div>
+    <div class="spacer"></div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            {% for league in leagues %}
+            <div class="row linked" data-href="{{ url_for('view_league', league_id=league.id) }}">
+                <div class="col-xs-12 text-center">
+                    <h3 style="margin-top: inherit">{{ league.name }}</h3>
+                    <span class="text-muted">Created by <a href="{{ url_for('view_user', user_id=league.owner.id) }}" title="{{ league.owner.name }}">{{ league.owner.name }}</a> on {{ moment(league.created).format('MMMM D, YYYY') }}</span>
+                    <div style="margin: 10px 0px">
+                        {% for user in league.users if user.image_url %}
+                        <img src="{{ user.image_url }}" alt="" class="img img-circle" height="25" width="25" style="margin-right: -15px">
+                        {% endfor %}
+                    </div>
+                    <span class="text-muted">
+                        {{ league.users[:3]|map(attribute='name')|join(', ') }}
+                        {% if league.users|length > 3 %}
+                        and
+                        <a href="#" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-container="body" data-content="{{ league.users|map(attribute='name')|join('<br>') }}">{{ league.users[3:]|length }} others</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+            {% if not loop.last %}<hr>{% endif %}
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
