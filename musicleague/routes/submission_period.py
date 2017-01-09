@@ -82,7 +82,7 @@ def save_submission_period_settings(league_id, submission_period_id,
 
 
 @app.route(VIEW_SUBMISSION_PERIOD_URL)
-@templated('submission_period/submission_period.html')
+@templated('submission_period/page.html')
 @login_required
 def view_submission_period(league_id, submission_period_id):
     if submission_period_id is None:
