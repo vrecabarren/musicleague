@@ -6,7 +6,7 @@
             <div id="owned-leagues-inner">
                 <span class="owned-leagues">You Own</span>
                 <span class="owned-leagues owned-leagues-count">{{ owner_leagues }}</span>
-                <span class="owned-leagues">League{% if leagues|length != 1 %}s{% endif %}</span>
+                <span class="owned-leagues">League{% if owner_leagues != 1 %}s{% endif %}</span>
             </div>
         </div>
         <img src="{{ page_user.image_url }}" alt="" id="user-img" class="img img-circle">
