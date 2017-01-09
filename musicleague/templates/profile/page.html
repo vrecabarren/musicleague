@@ -29,10 +29,10 @@
                     <div class="members">
                         <div class="images">
                             {% for member in league.users if member.image_url %}
-                            <img src="{{ member.image_url }}" alt="" class="img img-circle">
+                            <img src="{{ member.image_url }}" alt="{{ member.name }}" class="img img-circle">
                             {% endfor %}
                         </div>
-                        {{ league.users|length }} Members
+                        <a href="#" data-toggle="popover" data-trigger="hover" data-placement="right" data-container="body" data-content="{{ league.users|map(attribute='name')|join('<br>') }}">{{ league.users|length }} Members</a>
                     </div>
                 </div>
             </div>

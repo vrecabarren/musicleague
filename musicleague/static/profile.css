@@ -87,8 +87,8 @@ body { font-family: 'Nunito', sans-serif; }
             color: #02B8EF;
         }
 
-    .league-item .members {
-        color: #02B8EF;
+    .league-item .members a {
+        color: #02B8EF !important;
         font-size: 1.3em;
     }
 
