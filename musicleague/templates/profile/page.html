@@ -30,7 +30,7 @@
                         <img src="{{ member.image_url }}" alt="{{ member.name }}" class="img img-circle">
                         {% endfor %}
                     </div>
-                    <a href="#" data-toggle="popover" data-trigger="hover" data-placement="right" data-container="body" data-content="{{ league.users|map(attribute='name')|join('<br>') }}">{{ league.users|length }} Members</a>
+                    <a href="#" data-toggle="popover" data-trigger="hover" data-placement="right" data-container="body" data-content="{{ league.users|map(attribute='name')|join('<br>') }}">{{ league.users|length }} Member{% if league.users|length != 1 %}s{% endif %}</a>
                 </div>
             </div>
         </div>
