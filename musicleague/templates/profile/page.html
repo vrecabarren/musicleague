@@ -16,7 +16,7 @@
         {% for row in leagues|batch(3) %}
         <div class="row">
             {% for league in row %}
-            <div class="col-sm-4">
+            <div class="col-sm-6 col-md-4">
                 <div class="league-item linked" data-href="{{ url_for('view_league', league_id=league.id) }}">
                     <div class="league-tile">
                         <div class="league-tile-inner">
