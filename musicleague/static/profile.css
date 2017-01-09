@@ -117,10 +117,15 @@ body { font-family: 'Nunito', sans-serif; }
         }
 
             .league-item .league-tile .league-tile-inner .league-title {
+                align-items: center;
                 color: #02B8EF;
+                display: flex;;
                 font-size: 1.5em;
                 font-weight: bold;
+                justify-content: center;
+                text-align: center;
                 text-transform: uppercase;
+                vertical-align: middle;
             }
 
             .league-item .league-tile .league-tile-inner .league-title.complete {
