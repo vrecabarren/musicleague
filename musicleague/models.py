@@ -237,6 +237,10 @@ class League(Document):
         return next(
             (sp for sp in self.submission_periods if not sp.is_complete), None)
 
+    @property
+    def is_complete(self):
+        return all((sp.is_complete for sp in self.submission_periods))
+
     def has_owner(self, user):
         return self.owner == user
 
