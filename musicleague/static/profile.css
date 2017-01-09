@@ -7,13 +7,21 @@
 body { font-family: 'Nunito', sans-serif; }
 
 #nav-bar {
-    background-color: #00259A;
+    background: none;
     border-bottom: 4px solid #fff;
     padding: 50px 20px;
 }
 
+#img-bar {
+    background: url("/static/images/ml_header03.jpg");
+    background-attachment: scroll;
+    background-position: 50% 40%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 #user-bar {
-    background-color: #00259A;
+    background: none;
     color: #fff;
     padding: 10px 0px;
     text-align: center;

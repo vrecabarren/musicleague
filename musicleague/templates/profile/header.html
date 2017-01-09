@@ -1,23 +1,25 @@
-<div id="nav-bar">
+<div id="img-bar">
+    <div id="nav-bar">
 
-</div>
-<div id="user-bar">
-        <div id="owned-leagues-outer">
-            <div id="owned-leagues-inner">
-                <span class="owned-leagues">You Own</span>
-                <span class="owned-leagues owned-leagues-count">{{ owner_leagues }}</span>
-                <span class="owned-leagues">League{% if owner_leagues != 1 %}s{% endif %}</span>
+    </div>
+    <div id="user-bar">
+            <div id="owned-leagues-outer">
+                <div id="owned-leagues-inner">
+                    <span class="owned-leagues">You Own</span>
+                    <span class="owned-leagues owned-leagues-count">{{ owner_leagues }}</span>
+                    <span class="owned-leagues">League{% if owner_leagues != 1 %}s{% endif %}</span>
+                </div>
             </div>
-        </div>
-        <img src="{{ page_user.image_url }}" alt="" id="user-img" class="img img-circle">
-        <div id="scores-outer">
-            <div id="scores-inner">
-                <span class="score-item">1st - <span class="score">3</span></span>
-                <span class="score-item">2nd - <span class="score">0</span></span>
-                <span class="score-item">3rd - <span class="score">4</span></span>
+            <img src="{{ page_user.image_url }}" alt="" id="user-img" class="img img-circle">
+            <div id="scores-outer">
+                <div id="scores-inner">
+                    <span class="score-item">1st - <span class="score">3</span></span>
+                    <span class="score-item">2nd - <span class="score">0</span></span>
+                    <span class="score-item">3rd - <span class="score">4</span></span>
+                </div>
             </div>
-        </div>
-    <span id="user-name">{{ page_user.name }}</span>
+        <span id="user-name">{{ page_user.name }}</span>
+    </div>
 </div>
 <div id="label-bar">
     <span>{% if page_user.id == user.id %}Your{% else %}{{ page_user.first_name }}&rsquo;s{% endif %} Leagues</span>
