@@ -31,8 +31,13 @@ def view_submit(league_id, submission_period_id):
     submission_period = get_submission_period(submission_period_id)
     league = submission_period.league
     if not league.has_user(g.user):
-        flash_error("You must be a member to submit.")
-        return redirect(request.referrer)
+        flash_error("You must be a member of the league to submit")
+        return redirect(url_for('view_league', league_id=league.id))
+
+    if not (submission_period.accepting_submissions or
+            submission_period.accepting_late_submissions):
+        flash_error('Submissions are not currently being accepted')
+        return redirect(url_for('view_league', league_id=league.id))
 
     my_submission = next(
         (s for s in submission_period.submissions if s.user == g.user), None)
