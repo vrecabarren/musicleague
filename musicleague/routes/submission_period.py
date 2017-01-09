@@ -37,9 +37,20 @@ def post_create_submission_period(league_id, **kwargs):
         if not description or not description.strip():
             description = None
 
-        submission_period = create_submission_period(league, name, description)
+        submission_due_date_str = request.form.get('submission_due_date_utc')
+        submission_due_date = utc.localize(
+            datetime.strptime(submission_due_date_str, '%m/%d/%y %I%p'))
+
+        vote_due_date_str = request.form.get('voting_due_date_utc')
+        vote_due_date = utc.localize(
+            datetime.strptime(vote_due_date_str, '%m/%d/%y %I%p'))
+
+        submission_period = create_submission_period(
+            league, name, description, submission_due_date, vote_due_date)
+
         flash_success("<strong>{}</strong> created."
                       .format(submission_period.name))
+
     return redirect(url_for('view_league', league_id=league_id))
 
 

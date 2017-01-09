@@ -1,3 +1,5 @@
+from datetime import datetime
+from datetime import timedelta
 import logging
 
 from flask import g
@@ -145,9 +147,19 @@ def view_league(league_id, **kwargs):
         my_vote = next(
             (v for v in votes if v.user.id == g.user.id), None)
 
+    if league.submission_periods:
+        lsp = league.submission_periods[-1]
+        next_submission_due_date = lsp.submission_due_date + timedelta(weeks=1)
+        next_vote_due_date = lsp.vote_due_date + timedelta(weeks=1)
+    else:
+        next_submission_due_date = datetime.utcnow() + timedelta(days=5)
+        next_vote_due_date = datetime.utcnow() + timedelta(days=7)
+
     return {
         'user': g.user,
         'league': league,
         'my_submission': my_submission,
-        'my_vote': my_vote
+        'my_vote': my_vote,
+        'next_submission_due_date': next_submission_due_date,
+        'next_vote_due_date': next_vote_due_date
     }

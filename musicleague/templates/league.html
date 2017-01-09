@@ -3,6 +3,7 @@
 {% block title %}Music League | {{ league.name }}{% endblock %}
 
 {% block css %}
+<link rel="stylesheet" href="/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
 <style>
 .avatar-circle {
   width: 32px;
@@ -278,8 +279,11 @@
         {% endif %}
     });
 </script>
+<script type="text/javascript" src="/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript">
 {% include "modals/members/members.js" %}
 {% include "modals/edit_league/edit_league.js" %}
+{% include "modals/add_submission_period/add_submission_period.js" %}
+</script>
 </script>
 {% endblock %}
