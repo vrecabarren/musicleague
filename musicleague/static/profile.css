@@ -119,10 +119,19 @@ body { font-family: 'Nunito', sans-serif; }
             background-color: #fff;
             border-radius: 5px;
             height: 100%;
-            padding: 150px 10px 15px 10px;
+            padding: 15px 10px 15px 10px;
             text-align: center;
             width: 100%;
         }
+
+            .league-item .league-tile .league-tile-inner .league-icon {
+                display: inline-block;
+                height: 104px;
+                margin: 15px 25px;
+                width: 78px;
+            }
+
+            .league-item .league-tile .league-tile-inner .league-icon.complete { width: 79px; }
 
             .league-item .league-tile .league-tile-inner .league-title {
                 align-items: center;
