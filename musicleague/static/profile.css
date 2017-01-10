@@ -10,7 +10,13 @@ body { font-family: 'Nunito', sans-serif; }
     background: none;
     border-bottom: 4px solid #fff;
     height: 120px;
+    padding: 17px 50px;
 }
+
+    #nav-bar .brand-icon {
+        height: 86px;
+        width: 70px;
+    }
 
 #img-bar {
     background: url("/static/images/ml_header03.jpg");
