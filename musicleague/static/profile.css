@@ -9,7 +9,7 @@ body { font-family: 'Nunito', sans-serif; }
 #nav-bar {
     background: none;
     border-bottom: 4px solid #fff;
-    padding: 50px 20px;
+    height: 120px;
 }
 
 #img-bar {
