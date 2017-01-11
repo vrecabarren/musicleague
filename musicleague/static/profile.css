@@ -116,7 +116,11 @@ body { font-family: 'Nunito', sans-serif; }
     text-align: center;
 }
     .league-item .league-tile {
-        background-color: #00259A;
+        background: url("/static/images/ml_header03.jpg");
+        background-attachment: scroll;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        background-size: cover;
         border-radius: 5px;
         padding: 50px;
     }
