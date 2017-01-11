@@ -84,9 +84,11 @@ def submit(league_id, submission_period_id):
     # Don't include user's own previous submission when checking duplicates
     my_submission = next((s for s in submission_period.submissions
                           if s.user.id == g.user.id), None)
-    their_tracks = set(submission_period.all_tracks)
-    their_tracks.difference_update(set(my_submission.tracks))
-    their_tracks = list(their_tracks)
+    their_tracks = []
+    if submission_period.all_tracks:
+        their_tracks = set(submission_period.all_tracks)
+        their_tracks.difference_update(set(my_submission.tracks))
+        their_tracks = list(their_tracks)
 
     if their_tracks:
         s_tracks = tracks + their_tracks
