@@ -87,7 +87,8 @@ def submit(league_id, submission_period_id):
     their_tracks = []
     if submission_period.all_tracks:
         their_tracks = set(submission_period.all_tracks)
-        their_tracks.difference_update(set(my_submission.tracks))
+        if my_submission is not None:
+            their_tracks.difference_update(set(my_submission.tracks))
         their_tracks = list(their_tracks)
 
     if their_tracks:
