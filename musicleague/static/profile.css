@@ -64,6 +64,11 @@ body { font-family: 'Nunito', sans-serif; }
         vertical-align: top;
     }
 
+        #nav-bar .account-wrapper .dropdown-menu > li > a:hover {
+            background-color: #F8C62C;
+            color: #00259A;
+        }
+
         #nav-bar .account-wrapper .account-name {
 
         }
