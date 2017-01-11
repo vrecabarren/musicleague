@@ -1,9 +1,20 @@
 from datetime import datetime
+from random import choice
 
 from musicleague.errors import UserDoesNotExistError
 from musicleague.errors import UserExistsError
 from musicleague.models import User
 from musicleague.models import UserPreferences
+
+
+DEFAULT_AVATARS = [
+    '/static/avatars/bowie_avatar.svg',
+    '/static/avatars/daft_avatar.svg',
+    '/static/avatars/elvis_avatar.svg',
+    '/static/avatars/prince_avatar.svg',
+    '/static/avatars/punk_avatar.svg',
+    '/static/avatars/supremes_avatar.svg'
+]
 
 
 def create_user_from_spotify_user(spotify_user):
@@ -23,6 +34,9 @@ def create_user_from_spotify_user(spotify_user):
 def create_user(id, name, email, image_url):
     if get_user(id):
         raise UserExistsError('User with id %s already exists' % id)
+
+    if not image_url:
+        image_url = choice(DEFAULT_AVATARS)
 
     new_user = User(
         id=id, name=name, email=email, joined=datetime.utcnow(),
