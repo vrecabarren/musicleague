@@ -81,8 +81,15 @@ def submit(league_id, submission_period_id):
         flash_warning("Duplicate submissions not allowed.")
         return redirect(request.referrer)
 
-    if tracks + submission_period.all_tracks:
-        s_tracks = tracks + submission_period.all_tracks
+    # Don't include user's own previous submission when checking duplicates
+    my_submission = next((s for s in submission_period.submissions
+                          if s.user.id == g.user.id), None)
+    their_tracks = set(submission_period.all_tracks)
+    their_tracks.difference_update(set(my_submission.tracks))
+    their_tracks = list(their_tracks)
+
+    if their_tracks:
+        s_tracks = tracks + their_tracks
         s_tracks = g.spotify.tracks(s_tracks).get('tracks')
         my_tracks = s_tracks[:len(tracks)]
         their_tracks = s_tracks[len(tracks):]
