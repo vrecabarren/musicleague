@@ -16,6 +16,12 @@ DEFAULT_AVATARS = [
     '/static/avatars/supremes_avatar.svg'
 ]
 
+PROFILE_BACKGROUNDS = [
+    'ml_header01.jpg', 'ml_header02.jpg', 'ml_header03.jpg', 'ml_header04.jpg',
+    'ml_header05.jpg', 'ml_header06.jpg', 'ml_header07.jpg', 'ml_header08.jpg',
+    'ml_header09.jpg', 'ml_header10.jpg', 'ml_header11.jpg'
+]
+
 
 def create_user_from_spotify_user(spotify_user):
     user_id = spotify_user.get('id')
@@ -38,9 +44,12 @@ def create_user(id, name, email, image_url):
     if not image_url:
         image_url = choice(DEFAULT_AVATARS)
 
+    profile_background = choice(PROFILE_BACKGROUNDS)
+
     new_user = User(
         id=id, name=name, email=email, joined=datetime.utcnow(),
-        image_url=image_url, preferences=UserPreferences())
+        image_url=image_url, profile_background=profile_background,
+        preferences=UserPreferences())
     new_user.save()
     return new_user
 
@@ -73,6 +82,9 @@ def create_or_update_user(id, name, email, image_url):
 def get_user(id):
     try:
         user = User.objects.get(id=id)
+        if not user.profile_background:
+            user.profile_background = choice(PROFILE_BACKGROUNDS)
+            user.save()
         return user
     except User.DoesNotExist:
         return None

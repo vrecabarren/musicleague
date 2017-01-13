@@ -66,6 +66,7 @@ class User(Document):
     messenger = ReferenceField(MessengerContext)
     name = StringField(required=False, default='')
     preferences = EmbeddedDocumentField(UserPreferences)
+    profile_background = StringField(required=False, default='')
     roles = ListField(required=False, default=[])
 
     @property
