@@ -40,8 +40,13 @@
                             <span class="text">Log Out</span>
                         </a>
                     </li>
-                    {% if user.is_admin %}
-                    <li><a href="{{ url_for('admin') }}">Admin</a></li>
+                    {% if not user.is_admin %}
+                    <li>
+                        <a href="{{ url_for('admin') }}">
+                            <span id="admin-icon" class="icon"></span>
+                            <span class="text">Admin</span>
+                        </a>
+                    </li>
                     {% endif %}
                 </ul>
             </div>
