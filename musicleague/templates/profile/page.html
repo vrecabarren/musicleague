@@ -50,27 +50,32 @@
 {% block js %}
 <script type="text/javascript">
     var make_tile_size_consistent = function() {
-        var maxTileHeight = 0;
+        // Make all league titles center vertically w/ the tallest
+        var maxTitleHeight = 0;
         $('.league-title').each(function(){
             var height = $(this).height();
-            if (height > maxTileHeight) maxTileHeight = height;
+            if (height > maxTitleHeight) maxTitleHeight = height;
         });
-        $('.league-title').height(maxTileHeight);
+        $('.league-title').height(maxTitleHeight);
 
+        // Make innter tile a square at minimum height
+        var tileHeight = $('.league-tile-inner').first().height();
+        var tileWidth = $('.league-tile-inner').first().width();
+        if (tileWidth != null && tileHeight < tileWidth ) {
+            $('.league-tile-inner').outerHeight(tileWidth);
+        }
+
+        // After resizing things, make sure the league items are consistent
         var maxItemHeight = 0;
         $('.league-item').each(function() {
             var height = $(this).height();
             if (height > maxItemHeight) maxItemHeight = height;
         });
         $('.league-item').height(maxItemHeight);
-
-        var tileWidth = $('.league-tile-inner').first().width();
-        if (tileWidth != null) {
-            $('.league-tile-inner').css('min-height', tileWidth);
-        }
     };
 
     var randomize_tile_backgrounds = function() {
+        // Use single league tile background shifted to random positions
         $('.league-tile').each(function(){
             var horizontalPosition = Math.floor((Math.random() * 100));
             var verticalPosition = Math.floor((Math.random() * 100));
@@ -78,7 +83,7 @@
         });
     };
 
-    $(document).ready(function(){
+    $(window).load(function(){
         make_tile_size_consistent();
         randomize_tile_backgrounds();
     });
