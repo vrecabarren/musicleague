@@ -48,11 +48,7 @@ body { font-family: 'Nunito', sans-serif; }
         }
 
     #nav-bar .account-divider {
-        border-left: 2px solid #fff;
-        border-right: 2px solid #fff;
-        border-radius: 5px;
         display: inline-block;;
-        height: 90px;
         margin-left: 25px;
         margin-right: 25px;
     }
