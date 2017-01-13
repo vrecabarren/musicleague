@@ -236,13 +236,13 @@ body { font-family: 'Nunito', sans-serif; }
         background: url("/static/images/ml_leaguetile.jpg");
         background-attachment: scroll;
         background-repeat: no-repeat;
-        border-radius: 5px;
+        border-radius: 8px;
         padding: 50px;
     }
 
         .league-item .league-tile .league-tile-inner {
             background-color: #fff;
-            border-radius: 5px;
+            border-radius: 8px;
             height: 100%;
             padding: 15px 10px 15px 10px;
             text-align: center;
