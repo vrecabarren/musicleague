@@ -22,11 +22,25 @@
                     <img src="/static/icons/account_icon.svg" alt="" class="account-icon">
                 </a>
                 <ul class="dropdown-menu pull-right">
-                    <li><a href="{{ url_for('profile') }}"><img src="/static/icons/profile_.svg" alt="" class="icon">Profile</a></li>
-                    <li><a href="{{ url_for('view_profile_settings') }}"><img src="/static/icons/settings_icon.svg" alt="" class="icon">Settings</a></li>
-                    <li><a href="{{ url_for('logout') }}"><img src="/static/icons/logout_icon.svg" alt="" class="icon">Log Out</a></li>
+                    <li>
+                        <a href="{{ url_for('profile') }}">
+                            <span id="profile-icon" class="icon"></span>
+                            <span class="text">Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('view_profile_settings') }}">
+                            <span id="settings-icon" class="icon"></span>
+                            <span class="text">Settings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('logout') }}">
+                            <span id="logout-icon" class="icon"></span>
+                            <span class="text">Log Out</span>
+                        </a>
+                    </li>
                     {% if user.is_admin %}
-                    <li role="separator" class="divider"></li>
                     <li><a href="{{ url_for('admin') }}">Admin</a></li>
                     {% endif %}
                 </ul>

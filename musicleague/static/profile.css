@@ -77,14 +77,29 @@ body { font-family: 'Nunito', sans-serif; }
         #nav-bar .account-wrapper .dropdown-menu > li > a {
             color: #fff;
             line-height: 40px;
+            vertical-align: middle;
         }
 
+            #nav-bar .account-wrapper .dropdown-menu > li > a > .text { vertical-align: middle; }
+
             #nav-bar .account-wrapper .dropdown-menu > li > a > .icon {
+                background-position: 50% 50%;
+                background-repeat: no-repeat;
+                display: inline-block;
                 height: 16px;
                 margin-right: 10px;
                 vertical-align: middle;
                 width: 16px;
             }
+
+            #nav-bar .account-wrapper .dropdown-menu > li > a > #profile-icon { background: url("/static/icons/profile_icon.svg"); width: 12px; }
+            #nav-bar .account-wrapper .dropdown-menu > li > a:hover > #profile-icon { background: url("/static/icons/profile_icon_blue.svg"); }
+
+            #nav-bar .account-wrapper .dropdown-menu > li > a > #settings-icon { background: url("/static/icons/settings_icon.svg"); }
+            #nav-bar .account-wrapper .dropdown-menu > li > a:hover > #settings-icon { background: url("/static/icons/settings_icon_blue.svg"); }
+
+            #nav-bar .account-wrapper .dropdown-menu > li > a > #logout-icon { background: url("/static/icons/logout_icon.svg"); }
+            #nav-bar .account-wrapper .dropdown-menu > li > a:hover > #logout-icon { background: url("/static/icons/logout_icon_blue.svg"); }
 
         #nav-bar .account-wrapper .dropdown-menu > li > a:hover {
             background-color: #fff;
