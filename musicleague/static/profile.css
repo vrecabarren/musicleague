@@ -100,6 +100,8 @@ body { font-family: 'Nunito', sans-serif; }
         width: 200px;
     }
 
+    #user-bar .visible-xs #owned-leagues-outer { display: inline; }
+
         #user-bar #owned-leagues-outer #owned-leagues-inner {
             display: inline-block;
             text-align: center;
@@ -139,6 +141,8 @@ body { font-family: 'Nunito', sans-serif; }
         width: 200px;
     }
 
+    #user-bar .visible-xs #scores-outer { display: inline; }
+
         #user-bar #scores-outer #scores-inner {
             display: inline-block;
             text-align: center;
@@ -152,8 +156,6 @@ body { font-family: 'Nunito', sans-serif; }
                 line-height: 38px;
                 text-transform: uppercase;
             }
-
-            #user-bar #scores-outer #scores-inner .score-item:last-child { margin-bottom: 0px; }
 
             #user-bar #scores-outer #scores-inner .score-item .score { color: #F8C62C; }
 
@@ -172,6 +174,22 @@ body { font-family: 'Nunito', sans-serif; }
         margin-bottom: 10px;
         text-transform: uppercase;
     }
+
+    #user-bar .visible-xs #stars {
+        display: inline-block;
+        margin: 0px 25px;
+        vertical-align: middle;
+        width: 30px;
+    }
+
+        #user-bar .visible-xs #stars .star {
+            height: 29px;
+            width: 30px;
+        }
+
+        #user-bar .visible-xs #stars .star:first-child { margin-bottom: 5px; }
+
+        #user-bar .visible-xs #stars .star:last-child { margin-top: 5px; }
 
 #label-bar {
     background-color: #02B8EF;
