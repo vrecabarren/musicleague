@@ -176,7 +176,7 @@ body { font-family: 'Nunito', sans-serif; }
             #user-bar #scores-outer #scores-inner .score-item {
                 color: #fff;
                 display: block;
-                font-size: 14px;
+                font-size: 18px;
                 line-height: 38px;
                 text-transform: uppercase;
             }
