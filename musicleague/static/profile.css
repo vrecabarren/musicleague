@@ -129,6 +129,7 @@ body { font-family: 'Nunito', sans-serif; }
             }
 
     #user-bar #user-img {
+        background-color: #fff;
         border: 3px solid #fff;
         height: 190px;
         margin: 10px 50px;
