@@ -82,10 +82,21 @@ def create_or_update_user(id, name, email, image_url):
 def get_user(id):
     try:
         user = User.objects.get(id=id)
+        updated = False
+
+        if not user.image_url:
+            user.image_url = choice(DEFAULT_AVATARS)
+            updated = True
+
         if not user.profile_background:
             user.profile_background = choice(PROFILE_BACKGROUNDS)
+            updated = True
+
+        if updated:
             user.save()
+
         return user
+
     except User.DoesNotExist:
         return None
 
