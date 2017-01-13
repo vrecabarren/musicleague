@@ -40,7 +40,7 @@
                             <span class="text">Log Out</span>
                         </a>
                     </li>
-                    {% if not user.is_admin %}
+                    {% if user.is_admin %}
                     <li>
                         <a href="{{ url_for('admin') }}">
                             <span id="admin-icon" class="icon"></span>
