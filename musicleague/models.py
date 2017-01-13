@@ -66,6 +66,7 @@ class User(Document):
     messenger = ReferenceField(MessengerContext)
     name = StringField(required=False, default='')
     preferences = EmbeddedDocumentField(UserPreferences)
+    profile_background = StringField(required=False, default='')
     roles = ListField(required=False, default=[])
 
     @property
@@ -236,6 +237,10 @@ class League(Document):
     def current_submission_period(self):
         return next(
             (sp for sp in self.submission_periods if not sp.is_complete), None)
+
+    @property
+    def is_complete(self):
+        return all((sp.is_complete for sp in self.submission_periods))
 
     def has_owner(self, user):
         return self.owner == user

@@ -4,3 +4,4 @@ settingslocal.py
 /dump.rdb
 /.env
 /.coverage
+.DS_Store

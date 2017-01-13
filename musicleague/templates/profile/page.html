@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Music League | {{ page_user.name }}{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/profile.css">
+{% endblock %}
+
+{% block content %}
+
+{% include "profile/header.html" %}
+
+<div class="container">
+
+    <div id="leagues">
+        {% for league in leagues %}
+        <div class="col-sm-6 col-md-4">
+            <div class="league-item">
+                <div class="league-tile linked" data-href="{{ url_for('view_league', league_id=league.id) }}">
+                    <div class="league-tile-inner">
+                        {% if league.is_complete %}
+                        <img class="league-icon complete" src="/static/icons/completed_league_icon.svg" alt="">
+                        <div class="league-title complete">{{ league.name }}</div>
+                        {% else %}
+                        <img class="league-icon" src="/static/icons/live_league_icon.svg" alt="">
+                        <div class="league-title">{{ league.name }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="created-by">
+                    Created by <a href="{{ url_for('view_user', user_id=league.owner.id )}}" class="creator-name">{{ league.owner.name }}</a> on {{ moment(league.created).format('MM.DD.YY') }}
+                </div>
+                <div class="members">
+                    <div class="images">
+                        {% for member in league.users if member.image_url %}
+                        <img src="{{ member.image_url }}" alt="{{ member.name }}" class="img img-circle">
+                        {% endfor %}
+                    </div>
+                    <a href="#" data-toggle="popover" data-trigger="hover" data-placement="right" data-container="body" data-content="{{ league.users|map(attribute='name')|join('<br>') }}">{{ league.users|length }} Member{% if league.users|length != 1 %}s{% endif %}</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    var make_tile_size_consistent = function() {
+        // Make all league titles center vertically w/ the tallest
+        var maxTitleHeight = 0;
+        $('.league-title').each(function(){
+            var height = $(this).height();
+            if (height > maxTitleHeight) maxTitleHeight = height;
+        });
+        $('.league-title').height(maxTitleHeight);
+
+        // Make innter tile a square at minimum height
+        var tileHeight = $('.league-tile-inner').first().height();
+        var tileWidth = $('.league-tile-inner').first().width();
+        if (tileWidth != null && tileHeight < tileWidth ) {
+            $('.league-tile-inner').outerHeight(tileWidth);
+        }
+
+        // After resizing things, make sure the league items are consistent
+        var maxItemHeight = 0;
+        $('.league-item').each(function() {
+            var height = $(this).height();
+            if (height > maxItemHeight) maxItemHeight = height;
+        });
+        $('.league-item').height(maxItemHeight);
+    };
+
+    var randomize_tile_backgrounds = function() {
+        // Use single league tile background shifted to random positions
+        $('.league-tile').each(function(){
+            var horizontalPosition = Math.floor((Math.random() * 100));
+            var verticalPosition = Math.floor((Math.random() * 100));
+            $(this).css('background-position', horizontalPosition + '% ' + verticalPosition + '%');
+        });
+    };
+
+    $(window).load(function(){
+        make_tile_size_consistent();
+        randomize_tile_backgrounds();
+    });
+</script>
+{% endblock %}
