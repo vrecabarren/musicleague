@@ -41,9 +41,12 @@ body { font-family: 'Nunito', sans-serif; }
         vertical-align: top;
     }
 
+        #nav-bar .add-league-wrapper .add-league-text {
+            margin-right: 10px;
+        }
+
         #nav-bar .add-league-wrapper .add-league-icon {
             height: 32px;
-            margin-left: 10px;
             width: 32px;
         }
 
@@ -66,13 +69,12 @@ body { font-family: 'Nunito', sans-serif; }
         }
 
         #nav-bar .account-wrapper .account-name {
-
+            margin-right:10px;
         }
 
         #nav-bar .account-wrapper .account-icon {
             cursor: pointer;
             height: 32px;
-            margin-left: 10px;
             width: 32px;
         }
 
