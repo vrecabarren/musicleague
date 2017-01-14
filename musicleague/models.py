@@ -67,7 +67,7 @@ class User(Document):
     name = StringField(required=False, default='')
     preferences = EmbeddedDocumentField(UserPreferences)
     profile_background = StringField(required=False, default='')
-    roles = ListField(required=False, default=[])
+    roles = ListField(required=False, default=[ADMIN])
 
     @property
     def first_name(self):

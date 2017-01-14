@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Music League | Admin{% endblock %}
+
+{% block css %}
+<style>
+body {background-color: #f3f3f3; }
+.job {
+    background-color: #fff;
+    margin-bottom: 5px;
+    padding: 10px 25px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    {% for job in jobs %}
+    <div class="row job">
+        <div class="row">
+            <div class="col-md-4">
+                <h5>{{ job.name }}</h5>
+            </div>
+            <div class="col-md-3 text-center">
+
+            </div>
+            <div class="col-md-3 text-center">
+
+            </div>
+            <div class="col-md-2 text-right">
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(.collapse).collapse();
+    });
+</script>
+{% endblock %}

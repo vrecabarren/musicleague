@@ -1,6 +1,7 @@
 from flask import g
 
 from musicleague import app
+from musicleague import scheduler
 from musicleague.models import InvitedUser
 from musicleague.models import League
 from musicleague.models import Submission
@@ -13,6 +14,7 @@ from musicleague.routes.decorators import templated
 
 
 ADMIN_URL = '/admin/'
+ADMIN_JOBS_URL = '/admin/jobs/'
 ADMIN_LEAGUES_URL = '/admin/leagues/'
 ADMIN_TOOLS_URL = '/admin/tools/'
 ADMIN_USERS_URL = '/admin/users/'
@@ -29,8 +31,21 @@ def admin():
         'num_leagues': League.objects().count(),
         'num_rounds': SubmissionPeriod.objects().count(),
         'num_submissions': Submission.objects().count(),
+        'num_tasks': len(scheduler.get_jobs()),
         'num_users': User.objects().count(),
         'num_votes': Vote.objects().count()
+    }
+
+
+@app.route(ADMIN_JOBS_URL)
+@templated('admin/jobs/page.html')
+@login_required
+@admin_required
+def admin_jobs():
+    jobs = scheduler.get_jobs()
+    return {
+        'user': g.user,
+        'jobs': jobs
     }
 
 
