@@ -2,9 +2,6 @@ from flask import redirect
 from flask import request
 
 from musicleague import app
-from musicleague import scheduler
-from musicleague.notify.flash import flash_error
-from musicleague.notify.flash import flash_success
 from musicleague.routes.decorators import admin_required
 from musicleague.routes.decorators import login_required
 from musicleague.submission_period import get_submission_period
