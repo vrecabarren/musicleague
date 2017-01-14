@@ -21,24 +21,26 @@ body {background-color: #f3f3f3; }
 {% block content %}
 
 <div class="container">
-    {% for job in jobs %}
+    {% for job, scheduled_time in jobs %}
     <div class="row job">
         <div class="row">
             <div class="col-md-4">
                 <h5>{{ job.func_name }}</h5>
             </div>
             <div class="col-md-3 text-center">
-                <h5>{{ moment(job.created_at).format('MMM D, YYYY') }}</h5>
+                <h5>Created: {{ moment(job.created_at).format('MM/D/YY h:ma') }}</h5>
             </div>
             <div class="col-md-3 text-center">
-
+                <h5>Scheduled: {{ moment(scheduled_time).format('MM/D/YY h:ma') }}</h5>
             </div>
             <div class="col-md-2 text-right">
                 <a href="#{{ job.id }}-data" data-toggle="collapse"><h5>View</h5></a>
             </div>
         </div>
         <div id="{{ job.id }}-data" class="job-data collapse">
-            <strong>Description:</strong> {{ job.description }}
+            <strong>Function:</strong> {{ job.func_name }}
+            <br>
+            <strong>Args:</strong> {{ job.args }}
             <br>
             <strong>Status:</strong> {{ job.status }}
             <br>

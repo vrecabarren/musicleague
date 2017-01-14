@@ -42,7 +42,8 @@ def admin():
 @login_required
 @admin_required
 def admin_jobs():
-    jobs = scheduler.get_jobs()
+    jobs = scheduler.get_jobs(with_times=True)
+    jobs = sorted(jobs, key=(lambda (j, _): j.func_name))
     return {
         'user': g.user,
         'jobs': jobs
