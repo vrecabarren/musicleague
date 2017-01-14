@@ -10,6 +10,10 @@ body {background-color: #f3f3f3; }
     margin-bottom: 5px;
     padding: 10px 25px;
 }
+
+.league-options, .round-options {
+    padding: 15px 25px;
+}
 </style>
 {% endblock %}
 
@@ -23,11 +27,7 @@ body {background-color: #f3f3f3; }
                 <h5>{{ league.name }}</h5>
             </div>
             <div class="col-md-3 text-center">
-                {% if league.submission_periods|length > 0 %}
                 <a href="#{{ league.id }}-submission-periods" data-toggle="collapse"><h5>{{ league.submission_periods|length }} Rounds</h5></a>
-                {% else %}
-                <h5>0 Rounds</h5>
-                {% endif %}
             </div>
             <div class="col-md-3 text-center">
                 <h5>{{ league.users|length }} users</h5>
@@ -36,9 +36,10 @@ body {background-color: #f3f3f3; }
                 <a href="{{ url_for('view_league', league_id=league.id) }}" target="_blank"><h5>View</h5></a>
             </div>
         </div>
-        {% if league.submission_periods|length > 0 %}
         <div id="{{ league.id }}-submission-periods" class="collapse">
-            <hr>
+            <div class="row league-options">
+                <a href="{{ url_for('admin_remove_league', league_id=league.id) }}" class="btn btn-sm btn-danger">Delete</a>
+            </div>
             <div class="row">
                 <div class="col-md-11 col-md-offset-1">
                     {% for submission_period in league.submission_periods %}
@@ -52,15 +53,21 @@ body {background-color: #f3f3f3; }
                         <div class="col-md-3 text-center">
                             <h5>{{ submission_period.votes|length }} Votes</h5>
                         </div>
-                        <div class="col-md-2 text-right">
+                        <div class="col-md-1 text-right">
                             <a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id)}}" target="_blank"><h5>View</h5></a>
+                        </div>
+                        <div class="col-md-1 text-right">
+                            <a href="#{{ submission_period.id }}-options" data-toggle="collapse"><h5>Options</h5></a>
+                        </div>
+                        <div id="{{ submission_period.id }}-options" class="round-options collapse">
+                            <a href="{{ url_for('admin_reschedule_tasks', submission_period_id=submission_period.id) }}" class="btn btn-sm btn-primary">Reschedule Tasks</a>
+                            <a href="{{ url_for('admin_remove_round', league_id=league.id, submission_period_id=submission_period.id) }}" class="btn btn-sm btn-danger">Delete</a>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
             </div>
         </div>
-        {% endif %}
     </div>
     {% endfor %}
 </div>
