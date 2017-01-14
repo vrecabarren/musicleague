@@ -11,6 +11,10 @@ body {background-color: #f3f3f3; }
     padding: 10px 25px;
 }
 
+.job-options {
+    padding: 15px 25px;
+}
+
 .job-data {
     background-color: #efefef;
     padding: 25px;
@@ -37,20 +41,25 @@ body {background-color: #f3f3f3; }
                 <a href="#{{ job.id }}-data" data-toggle="collapse"><h5>View</h5></a>
             </div>
         </div>
-        <div id="{{ job.id }}-data" class="job-data collapse">
-            <strong>Function:</strong> {{ job.func_name }}
-            <br>
-            <strong>Args:</strong> {{ job.args }}
-            <br>
-            <strong>Kwargs:</strong> {{ job.kwargs }}
-            <br>
-            <strong>Status:</strong> {{ job.status }}
-            <br>
-            <strong>Meta:</strong> {{ job.meta }}
-            <br>
-            <strong>Origin:</strong> {{ job.origin }}
-            <br>
-            <strong>Created:</strong> {{ moment(job.created_at).format('MM/D/YY h:ma') }}
+        <div id="{{ job.id }}-data" class="collapse">
+            <div class="row job-options">
+                <a href="{{ url_for('cancel_job', job_id=job.id) }}" class="btn btn-sm btn-danger">Cancel Job</a>
+            </div>
+            <div id="{{ job.id }}-data" class="row job-data">
+                <strong>Function:</strong> {{ job.func_name }}
+                <br>
+                <strong>Args:</strong> {{ job.args }}
+                <br>
+                <strong>Kwargs:</strong> {{ job.kwargs }}
+                <br>
+                <strong>Status:</strong> {{ job.status }}
+                <br>
+                <strong>Meta:</strong> {{ job.meta }}
+                <br>
+                <strong>Origin:</strong> {{ job.origin }}
+                <br>
+                <strong>Created:</strong> {{ moment(job.created_at).format('MM/D/YY h:ma') }}
+            </div>
         </div>
     </div>
     {% endfor %}

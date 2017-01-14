@@ -12,6 +12,7 @@ from musicleague.routes.admin import admin
 from musicleague.routes.admin import admin_leagues
 from musicleague.routes.admin import admin_tools
 from musicleague.routes.admin import admin_users
+from musicleague.routes.admin.jobs import cancel_job
 from musicleague.routes.admin.tools import clean_submission_periods
 from musicleague.routes.admin.tools import clean_submissions
 from musicleague.routes.auth import before_request
