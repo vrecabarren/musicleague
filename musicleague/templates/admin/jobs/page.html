@@ -25,7 +25,7 @@ body {background-color: #f3f3f3; }
     <div class="row job">
         <div class="row">
             <div class="col-md-4">
-                <h5>{{ job.func_name }}</h5>
+                <h5>{{ job.func_name.split('.')[-1] }}</h5>
             </div>
             <div class="col-md-3 text-center">
                 <h5>Created: {{ moment(job.created_at).format('MM/D/YY h:ma') }}</h5>
@@ -41,6 +41,8 @@ body {background-color: #f3f3f3; }
             <strong>Function:</strong> {{ job.func_name }}
             <br>
             <strong>Args:</strong> {{ job.args }}
+            <br>
+            <strong>Kwargs:</strong> {{ job.kwargs }}
             <br>
             <strong>Status:</strong> {{ job.status }}
             <br>
