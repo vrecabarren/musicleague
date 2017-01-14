@@ -31,7 +31,7 @@ body {background-color: #f3f3f3; }
                 <h5>{{ job.id }}</h5>
             </div>
             <div class="col-xs-6 col-md-3">
-                <h5>Scheduled: {{ moment(scheduled_time).format('MM/D/YY h:ma') }}</h5>
+                <h5>Scheduled: {{ moment(scheduled_time).format('MM/D/YY hh:mma') }}</h5>
             </div>
             <div class="col-xs-6 col-md-2 text-right">
                 <a href="#{{ job.id }}-data" data-toggle="collapse"><h5>View</h5></a>
