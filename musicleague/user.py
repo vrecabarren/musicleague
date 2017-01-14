@@ -19,7 +19,7 @@ DEFAULT_AVATARS = [
 PROFILE_BACKGROUNDS = [
     'ml_header01.jpg', 'ml_header02.jpg', 'ml_header03.jpg', 'ml_header04.jpg',
     'ml_header05.jpg', 'ml_header06.jpg', 'ml_header07.jpg', 'ml_header08.jpg',
-    'ml_header09.jpg', 'ml_header10.jpg', 'ml_header11.jpg'
+    'ml_header09.jpg', 'ml_header10.jpg', 'ml_header11.jpg', 'ml_header12.jpg'
 ]
 
 
