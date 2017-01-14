@@ -10,6 +10,11 @@ body {background-color: #f3f3f3; }
     margin-bottom: 5px;
     padding: 10px 25px;
 }
+
+.job-data {
+    background-color: #efefef;
+    padding: 25px;
+}
 </style>
 {% endblock %}
 
@@ -20,17 +25,26 @@ body {background-color: #f3f3f3; }
     <div class="row job">
         <div class="row">
             <div class="col-md-4">
-                <h5>{{ job.name }}</h5>
+                <h5>{{ job.func_name }}</h5>
             </div>
             <div class="col-md-3 text-center">
-
+                <h5>{{ moment(job.created_at).format('MMM D, YYYY') }}</h5>
             </div>
             <div class="col-md-3 text-center">
 
             </div>
             <div class="col-md-2 text-right">
-
+                <a href="#{{ job.id }}-data" data-toggle="collapse"><h5>View</h5></a>
             </div>
+        </div>
+        <div id="{{ job.id }}-data" class="job-data collapse">
+            <strong>Description:</strong> {{ job.description }}
+            <br>
+            <strong>Status:</strong> {{ job.status }}
+            <br>
+            <strong>Meta:</strong> {{ job.meta }}
+            <br>
+            <strong>Origin:</strong> {{ job.origin }}
         </div>
     </div>
     {% endfor %}
