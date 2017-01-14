@@ -56,13 +56,13 @@
             var height = $(this).height();
             if (height > maxTitleHeight) maxTitleHeight = height;
         });
-        $('.league-title').height(maxTitleHeight);
+        $('.league-title').css('min-height', maxTitleHeight + 'px');
 
         // Make innter tile a square at minimum height
         var tileHeight = $('.league-tile-inner').first().height();
         var tileWidth = $('.league-tile-inner').first().width();
         if (tileWidth != null && tileHeight < tileWidth ) {
-            $('.league-tile-inner').outerHeight(tileWidth);
+            $('.league-tile-inner').css('min-height', tileWidth + 'px');
         }
 
         // After resizing things, make sure the league items are consistent
@@ -71,7 +71,7 @@
             var height = $(this).height();
             if (height > maxItemHeight) maxItemHeight = height;
         });
-        $('.league-item').height(maxItemHeight);
+        $('.league-item').css('min-height', maxItemHeight + 'px');
     };
 
     var randomize_tile_backgrounds = function() {
