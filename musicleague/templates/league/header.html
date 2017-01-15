@@ -86,6 +86,24 @@
         </div>
     </div>
 </div>
-<div id="label-bar">
-
+<div id="current-round-bar">
+    {% if league.current_submission_period %}
+    {% set current = league.current_submission_period %}
+    <div class="container">
+        <div class="row round-bar">
+            <div class="col-md-2">
+                <img src="/static/icons/swords_gray.svg" alt="" class="round-status-icon">
+            </div>
+            <div class="col-md-6">
+                <span class="round-title">{{ current.name }}</span>
+            </div>
+            <div class="col-md-2">
+                <span class="action-required">You Have <span class="emphasize">Not</span> Submitted</span>
+            </div>
+            <div class="col-md-2">
+                <img src="/static/icons/submit_white.svg" alt="" class="action-button">
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </div>
