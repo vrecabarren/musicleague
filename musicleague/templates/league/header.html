@@ -92,16 +92,28 @@
     <div class="container">
         <div class="row round-bar">
             <div class="col-md-2">
-                <img src="/static/icons/swords_gray.svg" alt="" class="round-status-icon">
+                <img src="/static/icons/swords_white.svg" alt="" class="round-status-icon">
             </div>
             <div class="col-md-6">
                 <span class="round-title">{{ current.name }}</span>
+                <br>
+                {% if current.accepting_submissions %}
+                <span class="status-text">{{ moment(current.submission_due_date).format('[Submissions due by] hhA [on] dddd, MMMM D') }}</span>
+                {% elif current.accepting_votes %}
+                <span class="status-text">{{ moment(current.vote_due_date).format('[Votes due by] hhA [on] dddd, MMMM D') }}</span>
+                {% endif %}
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 text-right">
                 <span class="action-required">You Have <span class="emphasize">Not</span> Submitted</span>
             </div>
-            <div class="col-md-2">
-                <img src="/static/icons/submit_white.svg" alt="" class="action-button">
+            <div class="col-md-2 text-center">
+                {% if current.accepting_submissions %}
+                    {% if my_submission %}
+                    {% else %}
+                    {% endif %}
+                {% elif current.accepting_votes %}
+                {% endif %}
+                <span class="action-text">Let's Do This</span>
             </div>
         </div>
     </div>

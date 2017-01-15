@@ -186,18 +186,27 @@ body { font-family: 'Nunito', sans-serif; }
 #current-round-bar {
     background-color: #02B8EF;
     color: #fff;
-    font-family: 'Cubano', sans-serif;
-    font-size: 40px;
-    line-height: 48px;
     margin-bottom: 50px;
     padding: 50px;
-    text-align: left;
-    text-transform: uppercase;
     width: 100%;
 }
 
-.round-bar {
+    #current-round-bar .round-bar .round-title {
+        color: #fff;
+        font-size: 18px;
+        line-height: 22px;
+    }
 
+    #current-round-bar .round-bar .status-text {
+        color: #fff;
+        margin: 10px 0px;
+    }
+
+    #current-round-bar .round-bar .action-required { color: #fff; }
+    #current-round-bar .round-bar .action-text { color: #fff; }
+
+.round-bar {
+    margin: 50px 0px;
 }
 
     .round-bar .round-status-icon {
@@ -209,17 +218,32 @@ body { font-family: 'Nunito', sans-serif; }
     .round-bar .round-title {
         color: #d4d4d4;
         font-family: 'Cubano', sans-serif;
-        font-size: 18px;
-        line-height: 22px;
+        font-size: 24px;
+        line-height: 29px;
+        vertical-align: top;
     }
 
         .round-bar .round-title.current { color: #02B8EF; }
         .round-bar .round-title.complete { color: #00259A; }
 
+    .round-bar .status-text {
+        display: inline-block;
+        font-size: 14px;
+        line-height: 19px;
+        margin: 25px 0px;
+    }
+
+        .round-bar .status-text.current { color: #02B8EF; }
+        .round-bar .status-text.complete { color: #00259A; }
+
+    .round-bar .action-required-wrapper { height: 100%; }
     .round-bar .action-required {
+        color: #02B8EF;
+        display: inline-block;;
         font-family: 'Cubano', sans-serif;
         font-size: 14px;
         line-height: 17px;
+        vertical-align: middle !important;
     }
 
         .round-bar .action-required .emphasize { color: #F8C62C; }
@@ -228,3 +252,16 @@ body { font-family: 'Nunito', sans-serif; }
         height: 81px;
         width: 79px;
     }
+
+    .round-bar .action-text {
+        color: #d4d4d4;
+        display: block;
+        font-family: 'Cubano', sans-serif;
+        font-size: 12px;
+        line-height: 25px;
+    }
+
+        .round-bar .action-text.current { color: #02B8EF; }
+        .round-bar .action-text.complete { color: #00259A; }
+
+    .round-bar .round-divider { margin: 25px 0px 0px 0px; }
