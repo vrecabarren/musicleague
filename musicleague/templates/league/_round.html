@@ -1,5 +1,5 @@
 <div class="row round-bar">
-    <div class="col-md-2">
+    <div class="col-md-2 text-center">
         <span alt="" class="round-status-icon{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}"></span>
     </div>
     <div class="col-md-6">
@@ -25,8 +25,8 @@
                 <span class="action-required">You Have <span class="emphasize">Not</span> Submitted</span>
                 {% endif %}
             {% elif round.accepting_votes %}
-            <a href="{{ round.playlist_url }}" class="action-link">
-                <span alt="" class="action-button playlist"></span>
+            <a href="{{ round.playlist_url }}" target="_blank" class="action-link">
+                <span alt="" class="action-button playlist current"></span>
                 <span class="action-text current">Listen to Playlist!</span>
             </a>
             {% endif %}
