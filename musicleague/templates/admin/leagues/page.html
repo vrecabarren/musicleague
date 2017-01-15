@@ -60,6 +60,7 @@ body {background-color: #f3f3f3; }
                             <a href="#{{ submission_period.id }}-options" data-toggle="collapse"><h5>Options</h5></a>
                         </div>
                         <div id="{{ submission_period.id }}-options" class="round-options collapse">
+                            <a href="{{ url_for('admin_generate_playlist', submission_period_id=submission_period.id) }}" class="btn btn-sm btn-success">Generate Playlist</a>
                             <a href="{{ url_for('admin_reschedule_tasks', submission_period_id=submission_period.id) }}" class="btn btn-sm btn-primary">Reschedule Tasks</a>
                             <a href="{{ url_for('admin_remove_round', league_id=league.id, submission_period_id=submission_period.id) }}" class="btn btn-sm btn-danger">Delete</a>
                         </div>
