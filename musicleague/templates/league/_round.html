@@ -1,0 +1,76 @@
+<div class="row round-bar">
+    <div class="col-md-2">
+        <span alt="" class="round-status-icon{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}"></span>
+    </div>
+    <div class="col-md-6">
+        <span class="round-title{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ round.name }}</span>
+        <br>
+        {% if round.is_complete %}
+            <span class="status-text complete">{{ moment(round.vote_due_date).format('[Completed on] MM.DD.YY [at] hhA') }}</span>
+        {% elif round.is_current_v2 %}
+            {% if round.accepting_submissions %}
+            <span class="status-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ moment(round.submission_due_date).format('[Submissions due by] hhA [on] dddd, MMMM D') }}</span>
+            {% elif round.accepting_votes %}
+            <span class="status-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ moment(round.vote_due_date).format('[Votes due by] hhA [on] dddd, MMMM D') }}</span>
+            {% endif %}
+        {% else %}
+        {% endif %}
+    </div>
+    <div class="col-md-2 text-center">
+        {% if round.is_current_v2 %}
+            {% if round.accepting_submissions %}
+                {% if my_submission %}
+                <span class="action-required"><span class="emphasize">Change</span> Your Submission</span>
+                {% else %}
+                <span class="action-required">You Have <span class="emphasize">Not</span> Submitted</span>
+                {% endif %}
+            {% elif round.accepting_votes %}
+            <a href="{{ round.playlist_url }}" class="action-link">
+                <span alt="" class="action-button playlist"></span>
+                <span class="action-text current">Listen to Playlist!</span>
+            </a>
+            {% endif %}
+        {% endif %}
+    </div>
+    <div class="col-md-2 text-center">
+        {% if round.is_complete %}
+            <a href="{{ round.playlist_url }}" class="action-link">
+                <span alt="" class="action-button playlist"></span>
+                <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Listen to Playlist!</span>
+            </a>
+        {% elif round.is_current_v2 %}
+            {% if round.accepting_submissions %}
+                <a href="{{ url_for('view_submit', league_id=league.id, submission_period_id=round.id) }}" class="action-link">
+                    {% if my_submission %}
+                    <span alt="" class="action-button change"></span>
+                    {% else %}
+                    <span alt="" class="action-button submit"></span>
+                    {% endif %}
+                    <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Let's Do This</span>
+                </a>
+            {% elif round.accepting_votes %}
+                <a href="{{ url_for('view_vote', league_id=league.id, submission_period_id=round.id) }}" class="action-link">
+                    {% if my_vote %}
+                    <span alt="" class="action-button change"></span>
+                    <span class="action-text">Change Votes!</span>
+                    {% else %}
+                    <span alt="" class="action-button vote"></span>
+                    <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Submit Votes!</span>
+                    {% endif %}
+                </a>
+            {% endif %}
+        {% else %}
+            <a href="#" class="action-link">
+                <img src="/static/icons/clock_gray.svg" alt="" class="action-button">
+                <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Waiting!</span>
+            </a>
+        {% endif %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-10 col-md-offset-2">
+        <svg class="round-divider{% if round.is_complete %} complete{% elif round.is_current_v2 %} current{% endif %}" width="100" height="5" viewBox="0 0 124 7" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <line stroke-linecap="round" x1="0" y1="2" x2="124" y2="2" stroke="#d4d4d4" stroke-width="3"/>
+        </svg>
+    </div>
+</div>

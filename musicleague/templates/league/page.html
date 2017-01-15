@@ -13,59 +13,7 @@
 <div class="container">
 
     {% for round in league.submission_periods %}
-    <div class="row">
-        <div class="round-bar clear">
-            {% if round.is_complete %}
-                {% set status_src = '/static/icons/completed_league_icon.svg' %}
-                {% set action_src = '/static/icons/playlist_icon_blue.svg' %}
-                {% set action_txt = 'Listen To Playlist' %}
-                {% set divider_color = '#00259A' %}
-            {% elif round.is_current_v2 %}
-                {% set status_src = '/static/icons/live_league_icon.svg' %}
-                {% set action_src = '/static/icons/submit_lightblue.svg' %}
-                {% set action_txt = "Let's Do This" %}
-                {% set divider_color = '#02B8EF' %}
-            {% else %}
-                {% set status_src = '/static/icons/swords_gray.svg' %}
-                {% set action_src = '/static/icons/clock_gray.svg' %}
-                {% set action_txt = 'Waiting' %}
-                {% set divider_color = '#d4d4d4' %}
-            {% endif %}
-            <div class="col-md-2">
-                <img src="{{ status_src }}" alt="" class="round-status-icon">
-            </div>
-            <div class="col-md-6">
-                <span class="round-title{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ round.name }}</span>
-                <br>
-                {% if round.is_complete %}
-                <span class="status-text complete">{{ moment(round.vote_due_date).format('[Completed on] MM.DD.YY [at] hhA') }}</span>
-                {% elif round.is_current_v2 %}
-                    {% if round.accepting_submissions %}
-                    <span class="status-text current">{{ moment(round.submission_due_date).format('[Submissions due by] hhA [on] dddd, MMMM D') }}</span>
-                    {% elif round.accepting_votes %}
-                    <span class="status-text current">{{ moment(round.vote_due_date).format('[Votes due by] hhA [on] dddd, MMMM D') }}</span>
-                    {% endif %}
-                {% else %}
-                <span class="status-text"></span>
-                {% endif %}
-                <br>
-                <svg class="round-divider" width="124" height="5" viewBox="0 0 124 7" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                    <line stroke-linecap="round" x1="0" y1="2" x2="124" y2="2" stroke="{{ divider_color }}" stroke-width="3"/>
-                </svg>
-            </div>
-            <div class="col-md-2 text-right">
-                {% if round.is_current_v2 %}
-                <div class="action-required-wrapper">
-                    <span class="action-required">You Have <span class="emphasize">Not</span> Submitted</span>
-                </div>
-                {% endif %}
-            </div>
-            <div class="col-md-2 text-center">
-                <img src="{{ action_src }}" alt="" class="action-button">
-                <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ action_txt }}</span>
-            </div>
-        </div>
-    </div>
+        {% include "league/_round.html" %}
     {% endfor %}
 
 </div>
