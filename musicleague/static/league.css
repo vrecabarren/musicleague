@@ -210,6 +210,8 @@ body { font-family: 'Nunito', sans-serif; }
 
     #current-round-bar .round-bar .status-text { color: #fff; }
 
+    #current-round-bar .action-progress { display: block; }
+
     #current-round-bar .round-bar .action-required { color: #fff; }
     #current-round-bar .round-bar .action-link .action-button.change { background: url("/static/icons/change_white.svg"); }
     #current-round-bar .round-bar .action-link .action-button.playlist { background: url("/static/icons/playlist_icon_white.svg"); }
@@ -256,6 +258,24 @@ body { font-family: 'Nunito', sans-serif; }
 
         .round-bar .status-text.current { color: #02B8EF; }
         .round-bar .status-text.complete { color: #00259A; }
+
+    .round-bar .action-progress {
+        display: none;
+        margin-bottom: 25px;
+    }
+
+        .round-bar .action-progress .text-progress {
+            font-family: 'Cubano', sans-serif;
+            font-size: 18px;
+            line-height: 22px;
+        }
+
+            .round-bar .action-progress .text-progress .emphasize {
+                color: #F8C62C;
+                display: block;
+                font-size: 36px;
+                line-height: 40px;
+            }
 
     .round-bar .action-required-wrapper { height: 100%; }
     .round-bar .action-required {

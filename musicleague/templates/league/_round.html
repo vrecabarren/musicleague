@@ -19,6 +19,14 @@
                 {% else %}
                 {% endif %}
             </div>
+            <div class="col-xs-12 text-center-xs action-progress">
+                <div class="visible-xs">
+                    <span class="text-progress"><span class="emphasize">{{ round.submissions|length }} of {{ league.users|length }}</span> Have Submitted</span>
+                </div>
+                <div class="hidden-xs">
+
+                </div>
+            </div>
         </div>
     </div>
     <div class="{% if round.is_current_v2 and round.accepting_votes %}col-xs-6{% else %}hidden-xs{% endif %} col-sm-2 text-center">
