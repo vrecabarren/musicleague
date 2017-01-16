@@ -280,14 +280,15 @@ body { font-family: 'Nunito', sans-serif; }
         .round-bar .action-progress .bar-progress { border: none; border-radius: 0px; }
             .round-bar .action-progress .bar-progress .progress-bar { background-color: #F8C62C; border: none; }
 
-    .round-bar .action-required-wrapper { height: 100%; }
+    .round-bar .action-required-wrapper { height: 120px; }
     .round-bar .action-required {
         color: #02B8EF;
-        display: inline-block;;
+        display: table-cell;
         font-family: 'Cubano', sans-serif;
         font-size: 14px;
+        height: 90px;
         line-height: 17px;
-        vertical-align: middle !important;
+        vertical-align: middle;
     }
 
         .round-bar .action-required .emphasize { color: #F8C62C; }
