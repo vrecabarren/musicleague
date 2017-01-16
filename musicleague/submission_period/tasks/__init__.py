@@ -1,7 +1,9 @@
 import logging
 
+from rq.decorators import job
+
 from musicleague import app
-from musicleague import celery
+from musicleague import redis_conn
 from musicleague.notify import user_submit_reminder_notification
 from musicleague.notify import user_vote_reminder_notification
 from musicleague.spotify import create_or_update_playlist
@@ -15,7 +17,7 @@ class TYPES:
     SEND_VOTE_REMINDERS = 'svr'
 
 
-@celery.task
+@job('default', connection=redis_conn)
 def complete_submission_period(submission_period_id):
     if not submission_period_id:
         logging.error('No submission period id for completion!')
@@ -31,7 +33,7 @@ def complete_submission_period(submission_period_id):
         logging.exception('Error occurred while completing submission period!')
 
 
-@celery.task
+@job('default', connection=redis_conn)
 def create_playlist(submission_period_id):
     if not submission_period_id:
         logging.error('No submission period id for playlist creation!')
@@ -47,7 +49,7 @@ def create_playlist(submission_period_id):
         logging.exception('Error occurred while creating playlist!')
 
 
-@celery.task
+@job('default', connection=redis_conn)
 def send_submission_reminders(submission_period_id):
     if not submission_period_id:
         logging.error('No submission period id for submission reminders!')
@@ -70,7 +72,7 @@ def send_submission_reminders(submission_period_id):
         return False
 
 
-@celery.task
+@job('default', connection=redis_conn)
 def send_vote_reminders(submission_period_id):
     if not submission_period_id:
         logging.error('No submission period id for vote reminders!')

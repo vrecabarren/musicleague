@@ -1,2 +1,3 @@
 web: python app.py
-worker: celery worker --app=musicleague.celery
+worker: python worker.py
+scheduler: python scheduler.py

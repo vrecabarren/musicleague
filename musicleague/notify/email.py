@@ -3,8 +3,10 @@ import requests
 
 from flask import render_template
 
+from rq.decorators import job
+
 from musicleague import app
-from musicleague import celery
+from musicleague import redis_conn
 from musicleague.environment import is_deployed
 from musicleague.environment import get_setting
 from musicleague.environment.variables import MAILGUN_API_BASE_URL
@@ -20,13 +22,11 @@ def owner_all_users_submitted_email(owner, submission_period):
     if not submission_period or not owner or not owner.email:
         return
 
-    _send_email.apply_async(
-        args=[owner.email,
-              'Music League - All Users Submitted',
-              _txt_email('all_submitted.txt',
-                         submission_period=submission_period),
-              _html_email('all_submitted.html',
-                          submission_period=submission_period)]
+    _send_email.delay(
+        owner.email,
+        'Music League - All Users Submitted',
+        _txt_email('all_submitted.txt', submission_period=submission_period),
+        _html_email('all_submitted.html', submission_period=submission_period)
     )
 
 
@@ -34,11 +34,11 @@ def owner_user_submitted_email(owner, submission):
     if not submission or not owner or not owner.email:
         return
 
-    _send_email.apply_async(
-        args=[owner.email,
-              'Music League - User Submitted',
-              _txt_email('submitted.txt', submission=submission),
-              _html_email('submitted.html', submission=submission)]
+    _send_email.delay(
+        owner.email,
+        'Music League - User Submitted',
+        _txt_email('submitted.txt', submission=submission),
+        _html_email('submitted.html', submission=submission)
     )
 
 
@@ -46,13 +46,11 @@ def owner_all_users_voted_email(owner, submission_period):
     if not submission_period or not owner or not owner.email:
         return
 
-    _send_email.apply_async(
-        args=[owner.email,
-              'Music League - All Users Voted',
-              _txt_email('all_voted.txt',
-                         submission_period=submission_period),
-              _html_email('all_voted.html',
-                          submission_period=submission_period)]
+    _send_email.delay(
+        owner.email,
+        'Music League - All Users Voted',
+        _txt_email('all_voted.txt', submission_period=submission_period),
+        _html_email('all_voted.html', submission_period=submission_period)
     )
 
 
@@ -60,11 +58,11 @@ def owner_user_voted_email(owner, vote):
     if not vote or not owner or not owner.email:
         return
 
-    _send_email.apply_async(
-        args=[owner.email,
-              'Music League - User Voted',
-              _txt_email('voted.txt', vote=vote),
-              _html_email('voted.html', vote=vote)]
+    _send_email.delay(
+        owner.email,
+        'Music League - User Voted',
+        _txt_email('voted.txt', vote=vote),
+        _html_email('voted.html', vote=vote)
     )
 
 
@@ -72,11 +70,11 @@ def user_added_to_league_email(user, league):
     if not league or not user or not user.email:
         return
 
-    _send_email.apply_async(
-        args=[user.email,
-              'Music League - New League',
-              _txt_email('added.txt', league=league),
-              _html_email('added.html', league=league)]
+    _send_email.delay(
+        user.email,
+        'Music League - New League',
+        _txt_email('added.txt', league=league),
+        _html_email('added.html', league=league)
     )
 
 
@@ -84,11 +82,11 @@ def user_invited_to_league_email(invited_user, league):
     if not league or not invited_user or not invited_user.email:
         return
 
-    _send_email.apply_async(
-        args=[invited_user.email,
-              'Music League - You Are Invited',
-              _txt_email('invited.txt', user=invited_user, league=league),
-              _html_email('invited.html', user=invited_user, league=league)]
+    _send_email.delay(
+        invited_user.email,
+        'Music League - You Are Invited',
+        _txt_email('invited.txt', user=invited_user, league=league),
+        _html_email('invited.html', user=invited_user, league=league)
     )
 
 
@@ -96,13 +94,11 @@ def user_last_to_submit_email(user, submission_period):
     if not submission_period or not user or not user.email:
         return
 
-    _send_email.apply_async(
-        args=[user.email,
-              'Music League - Last to Submit',
-              _txt_email('last_to_submit.txt',
-                         submission_period=submission_period),
-              _html_email('last_to_submit.html',
-                          submission_period=submission_period)]
+    _send_email.delay(
+        user.email,
+        'Music League - Last to Submit',
+        _txt_email('last_to_submit.txt', submission_period=submission_period),
+        _html_email('last_to_submit.html', submission_period=submission_period)
     )
 
 
@@ -110,13 +106,11 @@ def user_last_to_vote_email(user, submission_period):
     if not submission_period or not user or not user.email:
         return
 
-    _send_email.apply_async(
-        args=[user.email,
-              'Music League - Last to Vote',
-              _txt_email('last_to_vote.txt',
-                         submission_period=submission_period),
-              _html_email('last_to_vote.html',
-                          submission_period=submission_period)]
+    _send_email.delay(
+        user.email,
+        'Music League - Last to Vote',
+        _txt_email('last_to_vote.txt', submission_period=submission_period),
+        _html_email('last_to_vote.html', submission_period=submission_period)
     )
 
 
@@ -129,13 +123,12 @@ def user_playlist_created_email(submission_period):
         u.email for u in submission_period.league.users[1:]
         if u.email and u.preferences.user_playlist_created_notifications)
 
-    _send_email.apply_async(
-        args=[to,
-              'Music League - New Playlist',
-              _txt_email('playlist.txt', submission_period=submission_period),
-              _html_email('playlist.html', submission_period=submission_period)
-              ],
-        kwargs={'additional_data': {'bcc': bcc_list}}
+    _send_email.delay(
+        to,
+        'Music League - New Playlist',
+        _txt_email('playlist.txt', submission_period=submission_period),
+        _html_email('playlist.html', submission_period=submission_period),
+        additional_data={'bcc': bcc_list}
     )
 
 
@@ -143,11 +136,11 @@ def user_removed_from_league_email(user, league):
     if not league or not user or not user.email:
         return
 
-    _send_email.apply_async(
-        args=[user.email,
-              'Music League - New League',
-              _txt_email('removed.txt', league=league),
-              _html_email('removed.html', league=league)]
+    _send_email.delay(
+        user.email,
+        'Music League - New League',
+        _txt_email('removed.txt', league=league),
+        _html_email('removed.html', league=league)
     )
 
 
@@ -155,15 +148,15 @@ def user_submit_reminder_email(user, submission_period):
     if not submission_period or not user or not user.email:
         return
 
-    _send_email.apply_async(
-        args=[user.email,
-              'Music League - Submission Reminder',
-              _txt_email('submit_reminder.txt',
-                         league=submission_period.league,
-                         submission_period=submission_period),
-              _html_email('submit_reminder.html',
-                          league=submission_period.league,
-                          submission_period=submission_period)]
+    _send_email.delay(
+        user.email,
+        'Music League - Submission Reminder',
+        _txt_email('submit_reminder.txt',
+                   league=submission_period.league,
+                   submission_period=submission_period),
+        _html_email('submit_reminder.html',
+                    league=submission_period.league,
+                    submission_period=submission_period)
     )
 
 
@@ -171,19 +164,18 @@ def user_vote_reminder_email(user, submission_period):
     if not submission_period or not user or not user.email:
         return
 
-    _send_email.apply_async(
-        args=[user.email,
-              'Music League - Vote Reminder',
-              _txt_email('vote_reminder.txt',
-                         league=submission_period.league,
-                         submission_period=submission_period),
-              _html_email('vote_reminder.html',
-                          league=submission_period.league,
-                          submission_period=submission_period)]
-    )
+    _send_email.delay(
+        user.email,
+        'Music League - Vote Reminder',
+        _txt_email('vote_reminder.txt',
+                   league=submission_period.league,
+                   submission_period=submission_period),
+        _html_email('vote_reminder.html',
+                    league=submission_period.league,
+                    submission_period=submission_period))
 
 
-@celery.task
+@job('default', connection=redis_conn)
 def _send_email(to, subject, text, html, additional_data=None):
     if not is_deployed():
         logging.info(text)

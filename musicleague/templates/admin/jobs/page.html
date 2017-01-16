@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Music League | Admin{% endblock %}
+
+{% block css %}
+<style>
+body {background-color: #f3f3f3; }
+.job {
+    background-color: #fff;
+    margin-bottom: 5px;
+    padding: 10px 25px;
+}
+
+.job-options {
+    padding: 15px 25px;
+}
+
+.job-data {
+    background-color: #efefef;
+    padding: 25px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    {% for job, scheduled_time in jobs %}
+    <div class="row job">
+        <div class="row">
+            <div class="col-xs-6 col-md-3">
+                <h5>{{ job.func_name.split('.')[-1] }}</h5>
+            </div>
+            <div class="col-xs-6 col-md-4">
+                <h5>{{ job.id }}</h5>
+            </div>
+            <div class="col-xs-6 col-md-3">
+                <h5>Scheduled: {{ moment(scheduled_time).format('MM/D/YY hh:mma') }}</h5>
+            </div>
+            <div class="col-xs-6 col-md-2 text-right">
+                <a href="#{{ job.id }}-data" data-toggle="collapse"><h5>View</h5></a>
+            </div>
+        </div>
+        <div id="{{ job.id }}-data" class="collapse">
+            <div class="row job-options">
+                <a href="{{ url_for('cancel_job', job_id=job.id) }}" class="btn btn-sm btn-danger">Cancel Job</a>
+            </div>
+            <div id="{{ job.id }}-data" class="row job-data">
+                <strong>Function:</strong> {{ job.func_name }}
+                <br>
+                <strong>Args:</strong> {{ job.args }}
+                <br>
+                <strong>Kwargs:</strong> {{ job.kwargs }}
+                <br>
+                <strong>Status:</strong> {{ job.status }}
+                <br>
+                <strong>Meta:</strong> {{ job.meta }}
+                <br>
+                <strong>Origin:</strong> {{ job.origin }}
+                <br>
+                <strong>Created:</strong> {{ moment(job.created_at).format('MM/D/YY hh:mma') }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(.collapse).collapse();
+    });
+</script>
+{% endblock %}
