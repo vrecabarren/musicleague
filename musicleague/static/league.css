@@ -191,6 +191,15 @@ body { font-family: 'Nunito', sans-serif; }
     width: 100%;
 }
 
+    #current-round-bar .call-for-action {
+        color: #fff;
+        display: block;
+        font-family: 'Cubano', sans-serif;
+        font-size: 24px;
+        line-height: 29px;
+        margin-bottom: 25px;
+    }
+
     #current-round-bar .round-bar .round-status-icon.current { background: url("/static/icons/swords_white.svg"); }
 
     #current-round-bar .round-bar .round-title {
@@ -199,10 +208,7 @@ body { font-family: 'Nunito', sans-serif; }
         line-height: 22px;
     }
 
-    #current-round-bar .round-bar .status-text {
-        color: #fff;
-        margin: 10px 0px;
-    }
+    #current-round-bar .round-bar .status-text { color: #fff; }
 
     #current-round-bar .round-bar .action-required { color: #fff; }
     #current-round-bar .round-bar .action-link .action-button.change { background: url("/static/icons/change_white.svg"); }

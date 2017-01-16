@@ -11,7 +11,6 @@
                 <img src="/static/icons/add_icon.svg" alt="" class="add-league-icon">
             </a>
         </div>
-        <!-- <div class="account-divider"></div> -->
         <svg class="account-divider" width="7" height="120" viewBox="0 0 3 120" version="1.1" xmlns="http://www.w3.org/2000/svg">
             <line stroke-linecap="round" x1="1" y1="0" x2="1" y2="90" stroke="white" stroke-width="3"/>
         </svg>
@@ -90,6 +89,16 @@
     {% if league.current_submission_period %}
     {% set current = league.current_submission_period %}
     <div class="container">
+        <div class="row">
+            <span class="call-for-action text-center-xs">
+                {% if current.accepting_submissions %}
+                Now Accepting Submissions!
+                {% else %}
+                Now Accepting Votes!
+                {% endif %}
+            </span>
+        </div>
+
         {% set round = league.current_submission_period %}
         {% include "league/_round.html" %}
     </div>
