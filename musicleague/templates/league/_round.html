@@ -88,7 +88,7 @@
             {% endif %}
         {% else %}
             <a href="#" class="action-link hidden-xs">
-                <img src="/static/icons/clock_gray.svg" alt="" class="action-button">
+                <span alt="" class="action-button clock"></span>
                 <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Waiting!</span>
             </a>
         {% endif %}

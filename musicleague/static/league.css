@@ -214,6 +214,7 @@ body { font-family: 'Nunito', sans-serif; }
 
     #current-round-bar .round-bar .action-required { color: #fff; }
     #current-round-bar .round-bar .action-link .action-button.change { background: url("/static/icons/change_white.svg"); }
+    #current-round-bar .round-bar .action-link .action-button.clock { background: url("/static/icons/clock_gray.svg"); }
     #current-round-bar .round-bar .action-link .action-button.playlist { background: url("/static/icons/playlist_icon_white.svg"); }
     #current-round-bar .round-bar .action-link .action-button.submit { background: url("/static/icons/submit_white.svg"); }
     #current-round-bar .round-bar .action-link .action-button.vote { background: url("/static/icons/vote_white.svg"); }
