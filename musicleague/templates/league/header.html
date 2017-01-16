@@ -70,7 +70,7 @@
                                 {% for row in league.users|batch(3) %}
                                     <div class="row">
                                         {% for member in row %}
-                                        <div class="col-xs-12 col-sm-6 col-lg-4 member">
+                                        <div class="col-xs-12 col-sm-6 col-lg-4 member text-left">
                                             <img src="{{ member.image_url }}" alt="" class="img img-circle">
                                             <span class="member-name">{{ member.name }}</span>
                                         </div>
