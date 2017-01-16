@@ -163,7 +163,7 @@ body { font-family: 'Nunito', sans-serif; }
 
         #title-bar .members #member-count { margin: 0px 10px; }
 
-        #title-bar .members .dropdown-menu {
+        #title-bar .members #members-collapse #members-container {
             background-color: rgba(0, 37, 154, 0.85);
             border: 3px solid #fff;
             border-radius: 8px;
@@ -174,14 +174,16 @@ body { font-family: 'Nunito', sans-serif; }
             padding: 25px 0px;
         }
 
-            #title-bar .members .dropdown-menu .member img {
-                height: 50px;
-                width: 49px;
-            }
+            #title-bar .members #members-container .member { margin: 10px 0px; }
 
-            #title-bar .members .dropdown-menu .member .member-name {
-                margin-left: 10px;
-            }
+                #title-bar .members #members-container .member img {
+                    height: 50px;
+                    width: 49px;
+                }
+
+                #title-bar .members #members-container .member .member-name {
+                    margin-left: 10px;
+                }
 
 #current-round-bar {
     background-color: #02B8EF;
