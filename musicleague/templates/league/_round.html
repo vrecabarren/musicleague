@@ -69,7 +69,7 @@
                 <a href="{{ url_for('view_submit', league_id=league.id, submission_period_id=round.id) }}" class="action-link">
                     {% if my_submission %}
                     <span alt="" class="action-button change"></span>
-                    <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Change Your Submission!</span>
+                    <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Change Submissions!</span>
                     {% else %}
                     <span alt="" class="action-button submit"></span>
                     <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Let's Do This!</span>
