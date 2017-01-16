@@ -219,6 +219,7 @@ body { font-family: 'Nunito', sans-serif; }
         background: url("/static/icons/clock_gray.svg");
         display: inline-block;
         height: 90px;
+        margin-bottom: 25px;
         width: 90px;
     }
 

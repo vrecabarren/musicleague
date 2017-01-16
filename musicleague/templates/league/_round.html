@@ -21,7 +21,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-6 col-sm-2 text-center">
+    <div class="{% if round.is_current_v2 and round.accepting_votes %}col-xs-6{% else %}hidden-xs{% endif %} col-sm-2 text-center">
         {% if round.is_current_v2 %}
             {% if round.accepting_submissions %}
                 {% if my_submission %}
@@ -37,7 +37,7 @@
             {% endif %}
         {% endif %}
     </div>
-    <div class="col-xs-6 col-sm-2 text-center">
+    <div class="{% if round.is_current_v2 and round.accepting_votes %}col-xs-6{% else %}col-xs-12{% endif %} col-sm-2 text-center">
         {% if round.is_complete %}
             <a href="{{ round.playlist_url }}" class="action-link">
                 <span alt="" class="action-button playlist"></span>
@@ -65,7 +65,7 @@
                 </a>
             {% endif %}
         {% else %}
-            <a href="#" class="action-link">
+            <a href="#" class="action-link hidden-xs">
                 <img src="/static/icons/clock_gray.svg" alt="" class="action-button">
                 <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Waiting!</span>
             </a>
