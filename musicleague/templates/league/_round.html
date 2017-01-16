@@ -79,7 +79,7 @@
                 <a href="{{ url_for('view_vote', league_id=league.id, submission_period_id=round.id) }}" class="action-link">
                     {% if my_vote %}
                     <span alt="" class="action-button change"></span>
-                    <span class="action-text">Change Votes!</span>
+                    <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Change Votes!</span>
                     {% else %}
                     <span alt="" class="action-button vote"></span>
                     <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Submit Votes!</span>
