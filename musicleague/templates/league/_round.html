@@ -42,7 +42,7 @@
             </div>
         </div>
     </div>
-    <div class="{% if round.is_current_v2 and round.accepting_votes %}col-xs-6{% else %}hidden-xs{% endif %} col-sm-2 col-sm-offset-1 text-center">
+    <div class="{% if round.is_current_v2 %}col-xs-6{% else %}hidden-xs{% endif %} col-sm-2 col-sm-offset-1 text-center">
         {% if round.is_current_v2 %}
             {% if round.accepting_submissions %}
                 {% if my_submission %}
@@ -58,7 +58,7 @@
             {% endif %}
         {% endif %}
     </div>
-    <div class="{% if round.is_current_v2 and round.accepting_votes %}col-xs-6{% else %}col-xs-12{% endif %} col-sm-2 text-center">
+    <div class="{% if round.is_current_v2 %}col-xs-6{% else %}col-xs-12{% endif %} col-sm-2 text-center">
         {% if round.is_complete %}
             <a href="{{ round.playlist_url }}" class="action-link">
                 <span alt="" class="action-button playlist"></span>
