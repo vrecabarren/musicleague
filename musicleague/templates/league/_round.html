@@ -22,22 +22,32 @@
             <div class="col-xs-12 text-center-xs action-progress">
                 <div class="visible-xs">
                     {% if round.accepting_submissions %}
-                    <span class="text-progress"><span class="emphasize">{{ round.submissions|length }} of {{ league.users|length }}</span> Have Submitted</span>
+                    {% set content = "<strong>Submitted:</strong><br>" + round.have_submitted|map(attribute='name')|join('<br>') + "<hr><strong>Waiting for:</strong><br>" + round.have_not_submitted|map(attribute='name')|join('<br>') %}
+                    <span href="#" data-toggle="popover" data-trigger="click" data-container="body" data-placement="bottom" data-content="{{ content }}" style="color: inherit">
+                        <span class="text-progress"><span class="emphasize">{{ round.submissions|length }} of {{ league.users|length }}</span> Have Submitted</span>
+                    </span>
                     {% else %}
-                    <span class="text-progress"><span class="emphasize">{{ round.votes|length }} of {{ league.users|length }}</span> Have Voted</span>
+                    {% set content = "<strong>Voted:</strong><br>" + round.have_voted|map(attribute='name')|join('<br>') + "<hr><strong>Waiting for:</strong><br>" + round.have_not_voted|map(attribute='name')|join('<br>') %}
+                    <span href="#" data-toggle="popover" data-trigger="click" data-container="body" data-placement="bottom" data-content="{{ content }}" style="color: inherit">
+                        <span class="text-progress"><span class="emphasize">{{ round.votes|length }} of {{ league.users|length }}</span> Have Voted</span>
+                    </span>
                     {% endif %}
                 </div>
                 <div class="hidden-xs">
                     {% if round.accepting_submissions %}
                         {% set progress_perc = (round.submissions|length / league.users|length * 100)|int %}
+                        {% set content = "<strong>Submitted:</strong><br>" + round.have_submitted|map(attribute='name')|join('<br>') + "<hr><strong>Waiting for:</strong><br>" + round.have_not_submitted|map(attribute='name')|join('<br>') %}
                     {% else %}
                         {% set progress_perc = (round.votes|length / league.users|length * 100)|int %}
+                        {% set content = "<strong>Voted:</strong><br>" + round.have_voted|map(attribute='name')|join('<br>') + "<hr><strong>Waiting for:</strong><br>" + round.have_not_voted|map(attribute='name')|join('<br>') %}
                     {% endif %}
-                    <div class="bar-progress progress">
-                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{ progress_perc }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress_perc }}%">
-                            <span class="sr-only">{{ progress_perc }}% Complete</span>
+                    <span href="#" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" data-content="{{ content }}" style="color: inherit">
+                        <div class="bar-progress progress">
+                            <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{ progress_perc }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress_perc }}%">
+                                <span class="sr-only">{{ progress_perc }}% Complete</span>
+                            </div>
                         </div>
-                    </div>
+                    </span>
                 </div>
             </div>
         </div>

@@ -265,6 +265,8 @@ body { font-family: 'Nunito', sans-serif; }
         margin-bottom: 25px;
     }
 
+        .round-bar .action-progress a:hover, .round-bar .action-progress a:active { text-decoration: none; }
+
         .round-bar .action-progress .text-progress {
             font-family: 'Cubano', sans-serif;
             font-size: 18px;
