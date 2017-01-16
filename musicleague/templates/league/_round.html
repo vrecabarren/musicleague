@@ -46,7 +46,7 @@
         {% if round.is_current_v2 %}
             {% if round.accepting_submissions %}
                 {% if my_submission %}
-                <span class="action-required"><span class="emphasize">Change</span> Your Submission</span>
+                <span class="action-required">You <span class="emphasize">Have</span> Submitted</span>
                 {% else %}
                 <span class="action-required">You Have <span class="emphasize">Not</span> Submitted</span>
                 {% endif %}
@@ -69,10 +69,11 @@
                 <a href="{{ url_for('view_submit', league_id=league.id, submission_period_id=round.id) }}" class="action-link">
                     {% if my_submission %}
                     <span alt="" class="action-button change"></span>
+                    <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Change Your Submission!</span>
                     {% else %}
                     <span alt="" class="action-button submit"></span>
+                    <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Let's Do This!</span>
                     {% endif %}
-                    <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Let's Do This</span>
                 </a>
             {% elif round.accepting_votes %}
                 <a href="{{ url_for('view_vote', league_id=league.id, submission_period_id=round.id) }}" class="action-link">
