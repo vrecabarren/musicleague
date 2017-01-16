@@ -208,7 +208,7 @@ body { font-family: 'Nunito', sans-serif; }
         line-height: 22px;
     }
 
-    #current-round-bar .round-bar .status-text { color: #fff; }
+    #current-round-bar .round-bar .status-text { color: #fff; margin: 15px 0px; }
 
     #current-round-bar .action-progress { display: block; }
 
@@ -276,6 +276,9 @@ body { font-family: 'Nunito', sans-serif; }
                 font-size: 36px;
                 line-height: 40px;
             }
+
+        .round-bar .action-progress .bar-progress { border: none; border-radius: 0px; }
+            .round-bar .action-progress .bar-progress .progress-bar { background-color: #F8C62C; border: none; }
 
     .round-bar .action-required-wrapper { height: 100%; }
     .round-bar .action-required {

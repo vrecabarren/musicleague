@@ -2,7 +2,7 @@
     <div class="col-xs-12 col-sm-2 text-center">
         <span alt="" class="round-status-icon{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}"></span>
     </div>
-    <div class="col-xs-12 col-sm-6">
+    <div class="col-xs-12 col-sm-5">
         <div class="row">
             <div class="col-xs-12 text-center-xs">
                 <span class="round-title{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ round.name }}</span>
@@ -24,12 +24,21 @@
                     <span class="text-progress"><span class="emphasize">{{ round.submissions|length }} of {{ league.users|length }}</span> Have Submitted</span>
                 </div>
                 <div class="hidden-xs">
-
+                    {% if round.accepting_submissions %}
+                        {% set progress_perc = (round.submissions|length / league.users|length * 100)|int %}
+                    {% else %}
+                        {% set progress_perc = (round.votes|length / league.users|length * 100)|int %}
+                    {% endif %}
+                    <div class="bar-progress progress">
+                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{ progress_perc }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress_perc }}%">
+                            <span class="sr-only">{{ progress_perc }}% Complete</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="{% if round.is_current_v2 and round.accepting_votes %}col-xs-6{% else %}hidden-xs{% endif %} col-sm-2 text-center">
+    <div class="{% if round.is_current_v2 and round.accepting_votes %}col-xs-6{% else %}hidden-xs{% endif %} col-sm-2 col-sm-offset-1 text-center">
         {% if round.is_current_v2 %}
             {% if round.accepting_submissions %}
                 {% if my_submission %}
