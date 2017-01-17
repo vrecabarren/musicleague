@@ -302,7 +302,12 @@ body { font-family: 'Nunito', sans-serif; }
 
         .round-bar .action-required .emphasize { color: #F8C62C; }
 
-    .round-bar .action-link:hover { text-decoration: none; }
+    .round-bar .action-link:visited,
+    .round-bar .action-link:hover,
+    .round-bar .action-link:active,
+    .round-bar .action-link:visited .action-text,
+    .round-bar .action-link:hover .action-text,
+    .round-bar .action-link:active .action-text { text-decoration: none; }
 
         .round-bar .action-link .action-button {
             background: url("/static/icons/clock_gray.svg");
