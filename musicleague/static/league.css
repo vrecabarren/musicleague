@@ -41,9 +41,7 @@ body { font-family: 'Nunito', sans-serif; }
         vertical-align: top;
     }
 
-        #nav-bar .add-league-wrapper .add-league-text {
-            margin-right: 10px;
-        }
+        #nav-bar .add-league-wrapper .add-league-text { margin-right: 10px; }
 
         #nav-bar .add-league-wrapper .add-league-icon {
             height: 32px;
@@ -109,9 +107,7 @@ body { font-family: 'Nunito', sans-serif; }
             color: #02b8ef;
         }
 
-        #nav-bar .account-wrapper .account-name {
-            margin-right:10px;
-        }
+        #nav-bar .account-wrapper .account-name { margin-right:10px; }
 
         #nav-bar .account-wrapper .account-icon {
             cursor: pointer;
@@ -191,9 +187,7 @@ body { font-family: 'Nunito', sans-serif; }
                     width: 20px;
                 }
 
-                #title-bar .members #members-container .member .member-name {
-                    margin-left: 10px;
-                }
+                #title-bar .members #members-container .member .member-name { margin-left: 10px; }
 
 #current-round-bar {
     background-color: #02B8EF;
@@ -335,7 +329,6 @@ body { font-family: 'Nunito', sans-serif; }
             .round-bar .action-link .action-text.complete { color: #00259A; }
 
 .round-divider { margin: 25px 0px; }
-
     .round-divider line { stroke: #d4d4d4; }
     .round-divider.current line { stroke: #02B8EF; }
     .round-divider.complete line { stroke: #00259A; }
