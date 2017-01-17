@@ -3,7 +3,7 @@ from datetime import timedelta
 import logging
 
 from musicleague.models import SubmissionPeriod
-from musicleague.submission_period.tasks.schedulers import cancel_pending_task
+from musicleague.submission_period.tasks.cancelers import cancel_pending_task
 from musicleague.submission_period.tasks.schedulers import schedule_playlist_creation  # noqa
 from musicleague.submission_period.tasks.schedulers import schedule_submission_reminders  # noqa
 from musicleague.submission_period.tasks.schedulers import schedule_vote_reminders  # noqa

@@ -14,6 +14,7 @@ from musicleague.notify.flash import flash_success
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 from musicleague.submission_period import get_submission_period
+from musicleague.submission_period.tasks.cancelers import cancel_vote_reminders
 from musicleague.vote import create_or_update_vote
 
 
@@ -88,6 +89,8 @@ def vote(league_id, submission_period_id):
 
     if not remaining:
         owner_all_users_voted_notification(submission_period)
+        cancel_vote_reminders(submission_period)
+        submission_period.save()
 
     elif len(remaining) == 1:
         last_user = remaining = list(remaining)[0]
