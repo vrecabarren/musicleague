@@ -54,36 +54,38 @@
     <div id="title-bar">
         <span class="league-title">{{ league.name }}</span>
         <span class="league-created">Public League Created {{ moment(league.created).format('MM.DD.YY') }}</span>
-        <div class="row">
-            <div class="col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3">
-                <div class="members">
-                    {% for member in league.users %}
-                    <img src="{{ member.image_url }}" alt="{{ member.name }}" class="img img-circle">
-                    {% endfor %}
-                    <span id="member-count">{{ league.users|length }} Members</span>
-                    <a href="#members-collapse" class="dropdown-toggle account-icon" data-toggle="collapse" data-trigger="click" data-container="body" aria-haspopup="true" aria-expanded="false">
-                        <img src="/static/icons/expand_icon.svg" alt="" class="account-icon">
-                    </a>
-                    <div id="members-collapse" class="collapse">
-                        <div id="members-container">
-                            <div class="container-fluid">
-                                {% for row in league.users|batch(3) %}
-                                    <div class="row">
-                                        {% for member in row %}
-                                        <div class="col-xs-12 col-sm-6 col-lg-4 member text-left">
-                                            <img src="{{ member.image_url }}" alt="" class="img img-circle">
-                                            <span class="member-name">{{ member.name }}</span>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3">
+                    <div class="members">
+                        {% for member in league.users %}
+                        <img src="{{ member.image_url }}" alt="{{ member.name }}" class="img img-circle">
+                        {% endfor %}
+                        <span id="member-count">{{ league.users|length }} Members</span>
+                        <a href="#members-collapse" class="dropdown-toggle account-icon" data-toggle="collapse" data-trigger="click" data-container="body" aria-haspopup="true" aria-expanded="false">
+                            <img src="/static/icons/expand_icon.svg" alt="" class="account-icon">
+                        </a>
+                        <div id="members-collapse" class="collapse">
+                            <div id="members-container">
+                                <div class="container-fluid">
+                                    {% for row in league.users|batch(3) %}
+                                        <div class="row">
+                                            {% for member in row %}
+                                            <div class="col-xs-12 col-sm-6 col-lg-4 member text-left">
+                                                <img src="{{ member.image_url }}" alt="" class="img img-circle">
+                                                <span class="member-name">{{ member.name }}</span>
+                                            </div>
+                                            {% endfor %}
                                         </div>
-                                        {% endfor %}
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
+                                    {% endfor %}
+                                </div><!-- .container-fluid -->
+                            </div><!-- #members-container -->
+                        </div><!-- #members-collapse -->
+                    </div><!-- #members -->
                 </div>
-            </div>
-        </div>
-    </div>
+            </div><!-- .row -->
+        </div><!-- .container-fluid -->
+    </div><!-- #title-bar -->
 </div>
 <div id="current-round-bar">
     {% if league.current_submission_period %}
