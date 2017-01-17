@@ -78,7 +78,7 @@
     </div>
     <div class="{% if round.is_current_v2 %}col-xs-6{% else %}col-xs-12{% endif %} col-sm-2 text-center">
         {% if round.is_complete %}
-            <a href="{{ round.playlist_url }}" class="action-link" title="Listen to Playlist">
+            <a href="{{ round.playlist_url }}" target="_blank" class="action-link" title="Listen to Playlist">
                 <span alt="" class="action-button playlist"></span>
                 <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Listen to Playlist!</span>
             </a>
