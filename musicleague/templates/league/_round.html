@@ -61,7 +61,7 @@
                 <span class="action-required">You Have <span class="emphasize">Not</span> Submitted</span>
                 {% endif %}
             {% elif round.accepting_votes %}
-            <a href="{{ round.playlist_url }}" target="_blank" class="action-link">
+            <a href="{{ round.playlist_url }}" target="_blank" class="action-link" title="Listen to Playlist">
                 <span alt="" class="action-button playlist current"></span>
                 <span class="action-text current">Listen to Playlist!</span>
             </a>
@@ -70,13 +70,13 @@
     </div>
     <div class="{% if round.is_current_v2 %}col-xs-6{% else %}col-xs-12{% endif %} col-sm-2 text-center">
         {% if round.is_complete %}
-            <a href="{{ round.playlist_url }}" class="action-link">
+            <a href="{{ round.playlist_url }}" class="action-link" title="Listen to Playlist">
                 <span alt="" class="action-button playlist"></span>
                 <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Listen to Playlist!</span>
             </a>
         {% elif round.is_current_v2 %}
             {% if round.accepting_submissions %}
-                <a href="{{ url_for('view_submit', league_id=league.id, submission_period_id=round.id) }}" class="action-link">
+                <a href="{{ url_for('view_submit', league_id=league.id, submission_period_id=round.id) }}" class="action-link" title="Submit or Change Submission">
                     {% if my_submission %}
                     <span alt="" class="action-button change"></span>
                     <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Change Submissions!</span>
@@ -86,7 +86,7 @@
                     {% endif %}
                 </a>
             {% elif round.accepting_votes %}
-                <a href="{{ url_for('view_vote', league_id=league.id, submission_period_id=round.id) }}" class="action-link">
+                <a href="{{ url_for('view_vote', league_id=league.id, submission_period_id=round.id) }}" class="action-link" title="Vote or Change Votes">
                     {% if my_vote %}
                     <span alt="" class="action-button change"></span>
                     <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Change Votes!</span>
@@ -97,7 +97,7 @@
                 </a>
             {% endif %}
         {% else %}
-            <a href="#" class="action-link hidden-xs">
+            <a href="#" class="action-link hidden-xs" title="Future Round">
                 <span alt="" class="action-button clock"></span>
                 <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Waiting!</span>
             </a>
