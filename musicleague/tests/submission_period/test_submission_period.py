@@ -78,7 +78,7 @@ class RemoveSubmissionPeriodTestCase(TestCase):
     def tearDown(self):
         clean_data()
 
-    @patch('musicleague.submission_period._cancel_pending_task')
+    @patch('musicleague.submission_period.cancel_pending_task')
     def test_none_existing(self, cancel_task):
         sp = create_submission_period(self.league)
         id = sp.id
@@ -87,7 +87,7 @@ class RemoveSubmissionPeriodTestCase(TestCase):
 
         self.assertFalse(cancel_task.called)
 
-    @patch('musicleague.submission_period._cancel_pending_task')
+    @patch('musicleague.submission_period.cancel_pending_task')
     def test_remove_existing(self, cancel_task):
         cancel_task.reset_mock()
 

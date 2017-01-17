@@ -33,7 +33,6 @@ def admin_generate_playlist(submission_period_id):
     return redirect(request.referrer)
 
 
-
 @app.route(REMOVE_ROUND_URL)
 @login_required
 @admin_required

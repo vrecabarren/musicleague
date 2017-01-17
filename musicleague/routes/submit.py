@@ -19,6 +19,8 @@ from musicleague.spotify import create_or_update_playlist
 from musicleague.spotify import to_uri
 from musicleague.submission import create_or_update_submission
 from musicleague.submission_period import get_submission_period
+from musicleague.submission_period.tasks.cancelers import cancel_playlist_creation  # noqa
+from musicleague.submission_period.tasks.cancelers import cancel_submission_reminders  # noqa
 
 
 SUBMIT_URL = '/l/<league_id>/<submission_period_id>/submit/'
@@ -53,6 +55,7 @@ def view_submit(league_id, submission_period_id):
 @app.route(SUBMIT_URL, methods=['POST'])
 @login_required
 def submit(league_id, submission_period_id):
+    # TODO: Way too much happens in this function
     submission_period = get_submission_period(submission_period_id)
     if not submission_period or not submission_period.league:
         return "No submission period or league", httplib.INTERNAL_SERVER_ERROR
@@ -130,6 +133,9 @@ def submit(league_id, submission_period_id):
     if not remaining:
         owner_all_users_submitted_notification(submission_period)
         create_or_update_playlist(submission_period)
+        cancel_playlist_creation(submission_period)
+        cancel_submission_reminders(submission_period)
+        submission_period.save()
 
     elif len(remaining) == 1:
         last_user = list(remaining)[0]
