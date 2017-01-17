@@ -16,7 +16,7 @@ def schedule_complete_submission_period(submission_period):
 
     completion_time = submission_period.vote_due_date
 
-    _cancel_pending_task(
+    cancel_pending_task(
         submission_period.pending_tasks.get(TYPES.COMPLETE_SUBMISSION_PERIOD))
 
     job = scheduler.enqueue_at(
@@ -36,7 +36,7 @@ def schedule_playlist_creation(submission_period):
     creation_time = submission_period.submission_due_date
 
     # Cancel scheduled creation job if one exists
-    _cancel_pending_task(
+    cancel_pending_task(
         submission_period.pending_tasks.get(TYPES.CREATE_PLAYLIST))
 
     # Schedule new playlist creation task
@@ -57,7 +57,7 @@ def schedule_submission_reminders(submission_period):
     notify_time = submission_period.submission_due_date - timedelta(hours=diff)
 
     # Cancel scheduled notification job if one exists
-    _cancel_pending_task(
+    cancel_pending_task(
         submission_period.pending_tasks.get(TYPES.SEND_SUBMISSION_REMINDERS))
 
     # Schedule new submission reminder task
@@ -79,7 +79,7 @@ def schedule_vote_reminders(submission_period):
     notify_time = submission_period.vote_due_date - timedelta(hours=diff)
 
     # Cancel scheduled notification job if one exists
-    _cancel_pending_task(
+    cancel_pending_task(
         submission_period.pending_tasks.get(TYPES.SEND_VOTE_REMINDERS))
 
     # Schedule new vote reminder task
@@ -92,9 +92,9 @@ def schedule_vote_reminders(submission_period):
                  notify_time, job.id)
 
 
-def _cancel_pending_task(job_id):
+def cancel_pending_task(job_id):
     if not job_id:
-        logging.warning('No task_id for _cancel_pending_task')
+        logging.warning('No task_id for cancel_pending_task')
         return
 
     logging.info('Cancel job id %s', job_id)
