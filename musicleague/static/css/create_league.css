@@ -213,3 +213,16 @@ body { font-family: 'Nunito', sans-serif; }
             margin-right: 10px;
             width: 32px;
         }
+
+button[type="submit"] {
+    background: #5FCC34;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Cubano', sans-serif;
+    padding: 15px 0px;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+    button[type="submit"]:hover { color: #fff; }
