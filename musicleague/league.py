@@ -46,10 +46,10 @@ def remove_user(league, user_id):
         user_removed_from_league_notification(removed_user, league)
 
 
-def create_league(user):
-    haikunator = Haikunator()
-
-    name = haikunator.haikunate(token_length=0)
+def create_league(user, name=None):
+    if name is None:
+        haikunator = Haikunator()
+        name = haikunator.haikunate(token_length=0)
 
     new_league = League(owner=user, users=[user], created=datetime.utcnow())
     new_league.preferences = LeaguePreferences(name=name)

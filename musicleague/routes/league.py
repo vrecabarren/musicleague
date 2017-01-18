@@ -6,10 +6,9 @@ from flask import redirect
 from flask import request
 from flask import url_for
 
-from haikunator import Haikunator
-
 from musicleague import app
 from musicleague.league import add_user
+from musicleague.league import create_league
 from musicleague.league import remove_league
 from musicleague.league import remove_user
 from musicleague.routes.decorators import league_required
@@ -55,6 +54,19 @@ def remove_user_for_league(league_id, user_id, **kwargs):
 @login_required
 def get_create_league():
     return {'user': g.user}
+
+
+@app.route(CREATE_LEAGUE_URL, methods=['POST'])
+@login_required
+def post_create_league():
+    name = request.form.get('league-name')
+    num_tracks = request.form.get('tracks-submitted')
+    bank_size = request.form.get('point-bank-size')
+    league = create_league(g.user, name=name)
+    league.preferences.track_count = int(num_tracks)
+    league.preferences.point_bank_size = int(bank_size)
+    league.save()
+    return redirect(url_for('view_league', league_id=league.id))
 
 
 @app.route(JOIN_LEAGUE_URL, methods=['GET'])
