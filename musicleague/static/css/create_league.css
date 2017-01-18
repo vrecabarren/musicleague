@@ -162,3 +162,54 @@ body { font-family: 'Nunito', sans-serif; }
 .section {
     padding: 50px 0px;
 }
+
+    .section .form-group { margin-bottom: 25px; }
+
+        .section .form-group label,
+        .section .checkbox label {
+            color: #00259A;
+            font-family: 'Cubano', sans-serif;
+            font-size: 18px;
+            line-height: 24px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .section .form-group input[type="text"],
+        .section .form-group input[type="email"] {
+            background: #fff;
+            border: 1px solid #02B8EF;
+            border-radius: 8px;
+            font-size: 18px;
+            height: 50px;
+            line-height: 36px;
+        }
+
+            .section .form-group input::-webkit-input-placeholder {
+                color: #d4d4d4;
+                font-family: 'Cubano', sans-serif;
+            }
+
+            .section .form-group input::-moz-placeholder {
+                color: #d4d4d4;
+                font-family: 'Cubano', sans-serif;
+                opacity: 1;
+            }
+
+            .section .form-group input:-ms-input-placeholder {
+                color: #d4d4d4;
+                font-family: 'Cubano', sans-serif;
+            }
+
+            .section .form-group input:-moz-placeholder {
+                color: #d4d4d4;
+                font-family: 'Cubano', sans-serif;
+                opacity: 1;
+            }
+
+        .section .form-group input[type="checkbox"] {
+            border: 1px solid #02B8EF;
+            height: 32px;
+            margin-right: 10px;
+            width: 32px;
+        }
