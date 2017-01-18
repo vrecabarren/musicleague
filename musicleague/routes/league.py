@@ -124,7 +124,7 @@ def save_league_settings(league_id, **kwargs):
 
 
 @app.route(VIEW_LEAGUE_URL, methods=['GET'])
-@templated('league/page.html')
+@templated('league/view/page.html')
 @login_required
 @league_required
 def view_league(league_id, **kwargs):

@@ -8,12 +8,12 @@
 
 {% block content %}
 
-{% include "league/header.html" %}
+{% include "league/view/header.html" %}
 
 <div class="container">
 
     {% for round in league.submission_periods %}
-        {% include "league/_round.html" %}
+        {% include "league/view/_round.html" %}
     {% endfor %}
 
 </div>
