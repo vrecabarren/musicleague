@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Music League | Create A League{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/create_league.css">
+{% endblock %}
+
+{% block content %}
+
+{% include "league/create/header.html" %}
+
+<form action="">
+
+    <div class="section-header">
+        <div class="container">
+            <span class="count"></span>
+            <span class="title">The Basics</span>
+        </div>
+    </div>
+    <div id="the-basics" class="section">
+        <div class="container">
+            <div class="col-md-5 col-md-offset-1">
+                <div class="form-group">
+                    <label for="league-name">League Name</label>
+                    <input type="text" class="form-control" id="league-name" name="league-name">
+                </div>
+                <div class="form-group">
+                    <label for="league-name">Number of Tracks Submitted</label>
+                    <input type="text" class="form-control" id="tracks-submitted" name="tracks-submitted">
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label for="point-bank-size">Point Bank Size</label>
+                    <input type="text" class="form-control" id="point-bank-size" name="point-bank-size">
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="late-submissions"> Allow Submissions After The Deadline Has Passed
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-header">
+        <div class="container">
+            <span class="count"></span>
+            <span class="title">League Members</span>
+        </div>
+    </div>
+    <div id="league-members" class="section">
+        <div class="container">
+            <div class="col-md-5 col-md-offset-1">
+                <div class="form-group">
+                    <label for="search">Search</label>
+                    <input type="text" class="form-control" id="search" name="search" placeholder="Type A Name">
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label for="email">Or Invite Them By Email...</label>
+                    <input type="text" class="form-control" id="emai" name="email" placeholder="Enter Email Address">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-header">
+        <div class="container">
+            <div class="col-md-6">
+                <span class="count"></span>
+                <span class="title">All Done?</span>
+            </div>
+            <div class="col-md-5">
+                <button type="submit" class="btn btn-lg pull-right">Create League</button>
+            </div>
+        </div>
+    </div>
+
+
+</form>
+{% endblock %}

@@ -1,15 +1,15 @@
 from datetime import datetime
 from datetime import timedelta
-import logging
 
 from flask import g
 from flask import redirect
 from flask import request
 from flask import url_for
 
+from haikunator import Haikunator
+
 from musicleague import app
 from musicleague.league import add_user
-from musicleague.league import create_league
 from musicleague.league import remove_league
 from musicleague.league import remove_user
 from musicleague.routes.decorators import league_required
@@ -51,14 +51,10 @@ def remove_user_for_league(league_id, user_id, **kwargs):
 
 
 @app.route(CREATE_LEAGUE_URL, methods=['GET'])
+@templated('league/create/page.html')
 @login_required
 def get_create_league():
-    try:
-        league = create_league(g.user)
-        return redirect(
-            url_for(view_league.__name__, league_id=league.id))
-    except Exception as e:
-        logging.exception('There was an exception: %s', e)
+    return {'user': g.user}
 
 
 @app.route(JOIN_LEAGUE_URL, methods=['GET'])
