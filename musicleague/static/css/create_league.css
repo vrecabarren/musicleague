@@ -214,6 +214,14 @@ body { font-family: 'Nunito', sans-serif; }
             width: 32px;
         }
 
+#league-members #added-members .title {
+    color: #02B8EF;
+    display: block;
+    font-family: 'Cubano', sans-serif;
+    font-size: 18px;
+    line-height: 24px;
+}
+
 a.btn.btn-lg {
     background: #02B8EF;
     border: none;
