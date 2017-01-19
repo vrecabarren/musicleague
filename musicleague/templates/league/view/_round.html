@@ -31,12 +31,12 @@
                 <div class="visible-xs">
                     {% if round.accepting_submissions %}
                     {% set content = "<strong>Submitted:</strong><br>" + round.have_submitted|map(attribute='name')|join('<br>') + "<hr><strong>Waiting for:</strong><br>" + round.have_not_submitted|map(attribute='name')|join('<br>') %}
-                    <span href="#" data-toggle="popover" data-trigger="click" data-container="body" data-placement="bottom" data-content="{{ content }}" style="color: inherit">
+                    <span id="progress-toggle">
                         <span class="text-progress"><span class="emphasize">{{ round.submissions|length }} of {{ league.users|length }}</span> Have Submitted</span>
                     </span>
                     {% else %}
                     {% set content = "<strong>Voted:</strong><br>" + round.have_voted|map(attribute='name')|join('<br>') + "<hr><strong>Waiting for:</strong><br>" + round.have_not_voted|map(attribute='name')|join('<br>') %}
-                    <span href="#" data-toggle="popover" data-trigger="click" data-container="body" data-placement="bottom" data-content="{{ content }}" style="color: inherit">
+                    <span id="progress-toggle">
                         <span class="text-progress"><span class="emphasize">{{ round.votes|length }} of {{ league.users|length }}</span> Have Voted</span>
                     </span>
                     {% endif %}
