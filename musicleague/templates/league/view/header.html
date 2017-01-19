@@ -110,13 +110,34 @@
 </div>
 
 <div id="progress-popover-wrapper" class="popover-content-wrapper">
-    <div class="container-fluid">
+    <div id="progress-popover" class="container-fluid">
         <div class="row">
             <div class="col-xs-12 col-md-6" style="background: #F8C62C; border-radius: 8px;">
-                <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer pharetra tellus sit amet massa efficitur placerat.</span>
+                {% set round = league.current_submission_period %}
+                {% if round and round.accepting_submissions %}
+                <span class="progress-title">Submitted...</span>
+                    {% for user in round.have_submitted %}
+                    <span>{{ user.name }}</span>
+                    {% endfor %}
+                {% elif round and round.accepting_votes %}
+                <span class="progress-title">Voted...</span>
+                {% for user in round.have_voted %}
+                <span>{{ user.name }}</span>
+                {% endfor %}
+                {% endif %}
             </div>
             <div class="col-xs-12 col-md-6" style="background: rgba(0,37,154,.85); border-radius: 8px;">
-                <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer pharetra tellus sit amet massa efficitur placerat.</span>
+                <span class="progress-title">Still Waiting On...</span>
+                {% set round = league.current_submission_period %}
+                {% if round and round.accepting_submissions %}
+                    {% for user in round.have_not_submitted %}
+                    <span>{{ user.name }}</span>
+                    {% endfor %}
+                {% elif round and round.accepting_votes %}
+                {% for user in round.have_not_voted %}
+                <span>{{ user.name }}</span>
+                {% endfor %}
+                {% endif %}
             </div>
         </div>
     </div>
