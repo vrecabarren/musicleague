@@ -103,20 +103,6 @@
                     {% endif %}
                     <span class="member-name">{{ member.name }}</span>
                 </div>
-                <div class="col-xs-12 col-sm-6 col-lg-4 member text-left">
-                    <img src="{{ member.image_url }}" alt="" class="img img-circle">
-                    {% if league.has_owner(member) %}
-                    <span class="owner-star"></span>
-                    {% endif %}
-                    <span class="member-name">{{ member.name }}</span>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-lg-4 member text-left">
-                    <img src="{{ member.image_url }}" alt="" class="img img-circle">
-                    {% if league.has_owner(member) %}
-                    <span class="owner-star"></span>
-                    {% endif %}
-                    <span class="member-name">{{ member.name }}</span>
-                </div>
                 {% endfor %}
             </div>
         {% endfor %}
