@@ -323,15 +323,23 @@ body { font-family: 'Nunito', sans-serif; }
 .popover-content-wrapper { display: none; }
 
 .popover {
+    background: none;
+    border: 3px solid #fff;
     border-radius: 8px;
+    box-shadow: none;
     margin-top: 10px;
     max-width: 100%;
+    overflow: hidden;
+    padding: 0px;
     top: 42px !important;
     width: 100%;
 }
 
     .popover > .arrow { display: none;}
-    .popover .popover-content { border: 1px solid #fff; border-radius: 8px; padding: 1px; }
+    .popover > .popover-content {
+        background: none;
+        padding: 0px;
+    }
 
 #members-popover {
     background-color: rgba(0, 37, 154, .85);
@@ -367,5 +375,24 @@ body { font-family: 'Nunito', sans-serif; }
         font-family: 'Cubano', sans-serif;
         font-size: 18px;
         line-height: 24px;
-        margin: 25px 0px;
+        margin-bottom: 20px;
+    }
+
+    #progress-popover #acted, #progress-popover #waiting {
+        padding: 20px;
+    }
+
+        #progress-popover #acted .member-name,
+        #progress-popover #waiting .member-name {
+            font-size: 18px;
+            line-height: 24px;
+            display: block;
+        }
+
+    #progress-popover #acted {
+        background: #F8C62C
+    }
+
+    #progress-popover #waiting {
+        background: rgba(0,37,154,.85)
     }

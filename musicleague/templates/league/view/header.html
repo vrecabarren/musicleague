@@ -16,7 +16,7 @@
         </svg>
         <div class="account-wrapper">
             <span class="account-name hidden-xs">{{ user.first_name }}</span>
-            <div data-toggle="click" style="display: inline;">
+            <div class="dropdown" style="display: inline;">
                 <a type="button" class="dropdown-toggle account-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <img src="/static/icons/account_icon.svg" alt="" class="account-icon">
                 </a>
@@ -112,7 +112,7 @@
 <div id="progress-popover-wrapper" class="popover-content-wrapper">
     <div id="progress-popover" class="container-fluid">
         <div class="row">
-            <div class="col-xs-12 col-md-6" style="background: #F8C62C; border-radius: 8px;">
+            <div id="acted" class="col-xs-12 col-md-6">
                 {% set round = league.current_submission_period %}
                 {% if round and round.accepting_submissions %}
                 <span class="progress-title">Submitted...</span>
@@ -126,12 +126,12 @@
                 {% endfor %}
                 {% endif %}
             </div>
-            <div class="col-xs-12 col-md-6" style="background: rgba(0,37,154,.85); border-radius: 8px;">
+            <div id="waiting" class="col-xs-12 col-md-6">
                 <span class="progress-title">Still Waiting On...</span>
                 {% set round = league.current_submission_period %}
                 {% if round and round.accepting_submissions %}
                     {% for user in round.have_not_submitted %}
-                    <span>{{ user.name }}</span>
+                    <span class="member-name">{{ user.name }}</span>
                     {% endfor %}
                 {% elif round and round.accepting_votes %}
                 {% for user in round.have_not_voted %}
@@ -142,12 +142,3 @@
         </div>
     </div>
 </div>
-
-{% block js %}
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#members-toggle').popover({placement: 'bottom', content: $('#members-popover-wrapper').html(), html: true, container: '.members'});
-        $('#progress-toggle').popover({placement: 'bottom', content: $('#progress-popover-wrapper').html(), html: true, container: '.action-progress'});
-    });
-</script>
-{% endblock %}

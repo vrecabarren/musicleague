@@ -19,3 +19,12 @@
 </div>
 
 {% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#members-toggle').popover({placement: 'bottom', content: $('#members-popover-wrapper').html(), html: true, container: '.members'});
+        $('.progress-toggle').popover({placement: 'bottom', content: $('#progress-popover-wrapper').html(), html: true, container: '#current-round-progress'});
+    });
+</script>
+{% endblock %}
