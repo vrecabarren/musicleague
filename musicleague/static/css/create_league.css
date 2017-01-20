@@ -143,12 +143,11 @@ body { font-family: 'Nunito', sans-serif; }
 }
 
     .section-header .count {
-        background: #fff;
-        border-radius: 50px;
+        background-color: #fff;
         display: inline-block;
-        font-family: 'Cubano', sans-serif;
-        font-size: 24px;
-        line-height: 29px;
+        height: 60px;
+        margin-right: 10px;
+        width: 60px;
     }
 
     .section-header .title {
