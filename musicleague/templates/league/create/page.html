@@ -3,6 +3,7 @@
 {% block title %}Music League | Create A League{% endblock %}
 
 {% block css %}
+<link rel="stylesheet" href="/static/css/bootcomplete.css">
 <link rel="stylesheet" href="/static/css/create_league.css">
 {% endblock %}
 
@@ -84,4 +85,15 @@
 
 
 </form>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="/static/js/jquery.bootcomplete.js"></script>
+<script type="text/javascript">
+$('#search').bootcomplete({
+    url: '{{ url_for("autocomplete") }}',
+    method: 'get',
+    minLength: 3
+});
+</script>
 {% endblock %}
