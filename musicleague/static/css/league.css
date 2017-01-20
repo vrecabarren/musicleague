@@ -322,16 +322,16 @@ body { font-family: 'Nunito', sans-serif; }
 
 .popover-content-wrapper { display: none; }
 
-.popover {
+.popover.bottom {
     background: none;
     border: 3px solid #fff;
     border-radius: 8px;
     box-shadow: none;
-    margin-top: 10px;
+    margin-top: 25px;
     max-width: 100%;
+    margin-top: 25px;
     overflow: hidden;
     padding: 0px;
-    top: 42px !important;
     width: 100%;
 }
 
