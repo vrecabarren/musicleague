@@ -37,6 +37,7 @@
         $('<div class="'+settings.menuClass+' list-group"></div>').insertAfter($(this))
 
         $(this).on("keyup", searchQuery);
+        $(this).on("keydown", traverseQuery);
         $(this).on("focusout", hideThat)
 
         var xhr;
@@ -87,6 +88,23 @@
                     }
                 })
             }
+        }
+
+        function traverseQuery(e){
+            switch(e.which) {
+
+                case 13: //enter
+                    break;
+
+                case 38: // up
+                    break;
+
+                case 40: // down
+                    break;
+
+                default: return; // exit this handler for other keys
+            }
+            e.preventDefault();
         }
 
         function selectResult(){
