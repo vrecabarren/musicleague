@@ -30,14 +30,14 @@
             <div id="current-round-progress" class="col-xs-12 text-center-xs action-progress">
                 <div class="visible-xs">
                     {% if round.accepting_submissions %}
-                    <span id="progress-toggle" class="progress-toggle">
-                        <span class="text-progress"><span class="emphasize">{{ round.submissions|length }} of {{ league.users|length }}</span> Have Submitted</span>
-                    </span>
+                    <span class="text-progress progress-toggle"><span class="emphasize">{{ round.submissions|length }} of {{ league.users|length }}</span> Have Submitted</span>
                     {% else %}
-                    <span class="progress-toggle">
-                        <span class="text-progress"><span class="emphasize">{{ round.votes|length }} of {{ league.users|length }}</span> Have Voted</span>
-                    </span>
+                    <span class="text-progress progress-toggle"><span class="emphasize">{{ round.votes|length }} of {{ league.users|length }}</span> Have Voted</span>
                     {% endif %}
+                    <br>
+                    <!-- <span class="progress-toggle">
+                        <img src="/static/icons/expand_icon.svg" alt="" height="32" width="32">
+                    </span> -->
                 </div>
                 <div class="hidden-xs">
                     {% if round.accepting_submissions %}
@@ -47,13 +47,11 @@
                         {% set progress_perc = (round.votes|length / league.users|length * 100)|int %}
                         {% set content = "<strong>Voted:</strong><br>" + round.have_voted|map(attribute='name')|join('<br>') + "<hr><strong>Waiting for:</strong><br>" + round.have_not_voted|map(attribute='name')|join('<br>') %}
                     {% endif %}
-                    <span class="progress-toggle" data-trigger="hover">
-                        <div class="bar-progress progress">
-                            <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{ progress_perc }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress_perc }}%">
-                                <span class="sr-only">{{ progress_perc }}% Complete</span>
-                            </div>
+                    <div class="bar-progress progress progress-toggle" data-trigger="hover">
+                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{ progress_perc }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress_perc }}%">
+                            <span class="sr-only">{{ progress_perc }}% Complete</span>
                         </div>
-                    </span>
+                    </div>
                 </div>
             </div>
         </div>

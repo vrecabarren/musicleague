@@ -368,6 +368,8 @@ body { font-family: 'Nunito', sans-serif; }
 
     #members-popover .member .member-name { margin-left: 10px; }
 
+.progress-toggle { cursor: pointer; }
+
 #progress-popover {}
 
     #progress-popover .progress-title {
