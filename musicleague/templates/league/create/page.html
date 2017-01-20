@@ -60,6 +60,7 @@
                 <div id="added-members" class="form-group">
                     <span class="title">Added League Members:</span>
                 </div>
+                <input type="hidden" id="added-members-inp" name="added-members">
             </div>
             <div class="col-md-5">
                 <div class="form-group">
@@ -94,6 +95,19 @@ $('#search').bootcomplete({
     url: '{{ url_for("autocomplete") }}',
     method: 'post',
     minLength: 3
+});
+
+$('form').submit(function(){
+    var members = [];
+
+    $('#added-members .added-member').each(function() {
+        members.push(String($(this).data('id')));
+    });
+
+    var inputField = $(document.getElementById('added-members-inp'));
+    inputField.val(JSON.stringify(members));
+
+    return true;
 });
 </script>
 {% endblock %}

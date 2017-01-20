@@ -1,5 +1,6 @@
 from datetime import datetime
 from datetime import timedelta
+import json
 
 from flask import g
 from flask import redirect
@@ -15,6 +16,7 @@ from musicleague.routes.decorators import league_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 from musicleague.submission import get_submission
+from musicleague.user import get_user
 
 
 ADD_USER_FOR_LEAGUE_URL = '/l/<league_id>/users/add/'
@@ -62,7 +64,10 @@ def post_create_league():
     name = request.form.get('league-name')
     num_tracks = request.form.get('tracks-submitted')
     bank_size = request.form.get('point-bank-size')
-    league = create_league(g.user, name=name)
+    user_ids = json.loads(request.form.get('added-members', []))
+    members = [get_user(uid) for uid in user_ids]
+
+    league = create_league(g.user, name=name, users=members)
     league.preferences.track_count = int(num_tracks)
     league.preferences.point_bank_size = int(bank_size)
     league.save()
