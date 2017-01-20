@@ -24,11 +24,11 @@ SYNC_PROFILE_SETTINGS_URL = '/settings/profile/sync/'
 VIEW_USER_URL = '/user/<user_id>/'
 
 
-@app.route(AUTOCOMPLETE)
+@app.route(AUTOCOMPLETE, methods=['POST'])
 @login_required
 def autocomplete():
-    term = request.args.get('term')
-    results = User.objects(name__istartswith=term).all()
+    term = request.form.get('query')
+    results = User.objects(name__icontains=term).all()
     results = [{'label': user.name, 'id': user.id} for user in results]
     return json.dumps(results)
 
