@@ -80,9 +80,9 @@
                             results += '<a href="" class="list-group-item" data-id="'+j.id+'" data-label="'+j.label+'">'+j.label+'</a>'
                         });
 
-                        $(that).next('.'+settings.menuClass).html(results)
-                        $(that).next('.'+settings.menuClass).children().on("click", selectResult)
-                        $(that).next('.'+settings.menuClass).show()
+                        $(that).next('.'+settings.menuClass).html(results);
+                        $(that).next('.'+settings.menuClass).children().on("click", selectResult);
+                        $(that).next('.'+settings.menuClass).show();
 
                     }
                 })
@@ -90,7 +90,8 @@
         }
 
         function selectResult(){
-            $(that).val($(this).data('label'))
+            $(that).val('');
+            $(that).focus();
             if (settings.idField) {
                 var inputs = $(that).parent().parent().find('input[name="' + settings.idFieldName + '"]');
                 if (inputs.length !== 0) {
