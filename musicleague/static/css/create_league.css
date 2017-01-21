@@ -175,14 +175,19 @@ body { font-family: 'Nunito', sans-serif; }
         }
 
         .section .form-group input[type="text"],
-        .section .form-group input[type="email"] {
+        .section .form-group input[type="email"],
+        .section .form-group textarea {
             background: #fff;
             border: 1px solid #02B8EF;
             border-radius: 8px;
             font-size: 18px;
-            height: 50px;
             line-height: 36px;
         }
+
+        .section .form-group input[type="text"],
+        .section .form-group input[type="email"] {
+             height: 50px;
+         }
 
             .section .form-group input::-webkit-input-placeholder {
                 color: #d4d4d4;
