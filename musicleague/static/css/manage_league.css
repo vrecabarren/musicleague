@@ -296,6 +296,8 @@ button[type="submit"] {
     border-radius: 8px;
     color: #fff;
     font-family: 'Cubano', sans-serif;
+    font-size: 24px;
+    line-height: 29px;
     padding: 15px 0px;
     text-transform: uppercase;
     width: 100%;
