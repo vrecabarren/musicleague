@@ -213,26 +213,40 @@ body { font-family: 'Nunito', sans-serif; }
             width: 32px;
         }
 
-#league-members {}
+        #league-members {}
 
-    #league-members .directive,
-    #league-members #added-members .title {
-        color: #02B8EF;
-        display: block;
-        font-family: 'Cubano', sans-serif;
-        font-size: 18px;
-        line-height: 24px;
-        margin-bottom: 10px;
-    }
+            #league-members .directive {
+                color: #02B8EF;
+                display: block;
+                font-family: 'Cubano', sans-serif;
+                font-size: 18px;
+                line-height: 24px;
+                margin: 0px 0px 50px 0px;
+            }
 
-    #league-members .directive { margin: 0px 0px 50px 0px; }
+            #league-members #search-members-wrapper { padding: 30px; }
 
-    #league-members #added-members .added-member {
-        color: #02B8EF;
-        display: block;
-        font-size: 18px;
-        line-height: 24px;
-    }
+                #league-members #search-members-wrapper #added-members .title {
+                    color: #02B8EF;
+                    display: block;
+                    font-family: 'Cubano', sans-serif;
+                    font-size: 18px;
+                    line-height: 24px;
+                    margin-bottom: 10px;
+                }
+
+                #league-members #search-members-wrapper #added-members .added-member {
+                    color: #02B8EF;
+                    display: block;
+                    font-size: 18px;
+                    line-height: 24px;
+                }
+
+            #league-members #invite-members-wrapper {
+                background: #efefef;
+                border-radius: 8px;
+                padding: 30px;
+            }
 
 #league-rounds {}
 

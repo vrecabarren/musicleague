@@ -74,24 +74,28 @@
             </div>
             <div class="row">
                 <div class="col-md-5 col-md-offset-1">
-                    <div class="form-group">
-                        <label for="search">Search</label>
-                        <input type="text" class="form-control" id="search" name="search" placeholder="Type A Name">
+                    <div id="search-members-wrapper">
+                        <div class="form-group">
+                            <label for="search">Search</label>
+                            <input type="text" class="form-control" id="search" name="search" placeholder="Type A Name">
+                        </div>
+                        <div id="added-members" class="form-group">
+                            <span class="title">League Members:</span>
+                            {% for member in league.users %}
+                            <span class="current-member" data-id="{{ member.id }}" data-label="{{ member.name }}">{{ member.name }}</span>
+                            {% endfor %}
+                        </div>
+                        <input type="hidden" id="added-members-inp" name="added-members">
                     </div>
-                    <div id="added-members" class="form-group">
-                        <span class="title">League Members:</span>
-                        {% for member in league.users %}
-                        <span class="current-member" data-id="{{ member.id }}" data-label="{{ member.name }}">{{ member.name }}</span>
-                        {% endfor %}
-                    </div>
-                    <input type="hidden" id="added-members-inp" name="added-members">
                 </div>
                 <div class="col-md-5">
-                    <div class="form-group">
-                        <label for="email">Or Invite Them By Email...</label>
-                        <input type="email" class="form-control" id="emai" name="email" placeholder="Enter Email Address">
+                    <div id="invite-members-wrapper">
+                        <div class="form-group">
+                            <label for="email">Or Invite Them By Email...</label>
+                            <input type="email" class="form-control" id="emai" name="email" placeholder="Enter Email Address">
+                        </div>
+                        <a href="#" class="btn btn-lg">Send Email</a>
                     </div>
-                    <a href="#" class="btn btn-lg">Send Email</a>
                 </div>
             </div>
         </div>
