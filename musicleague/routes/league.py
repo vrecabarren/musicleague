@@ -10,8 +10,10 @@ from flask import url_for
 from musicleague import app
 from musicleague.league import add_user
 from musicleague.league import create_league
+from musicleague.league import get_league
 from musicleague.league import remove_league
 from musicleague.league import remove_user
+from musicleague.notify.flash import flash_error
 from musicleague.routes.decorators import league_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
@@ -22,6 +24,7 @@ from musicleague.user import get_user
 ADD_USER_FOR_LEAGUE_URL = '/l/<league_id>/users/add/'
 CREATE_LEAGUE_URL = '/l/create/'
 JOIN_LEAGUE_URL = '/l/<league_id>/join/'
+MANAGE_LEAGUE_URL = '/l/<league_id>/manage/'
 REMOVE_LEAGUE_URL = '/l/<league_id>/remove/'
 REMOVE_SUBMISSION_URL = '/l/<league_id>/<submission_period_id>/<submission_id>/remove/'  # noqa
 REMOVE_USER_FOR_LEAGUE_URL = '/l/<league_id>/users/remove/<user_id>/'
@@ -72,6 +75,25 @@ def post_create_league():
     league.preferences.point_bank_size = int(bank_size)
     league.save()
     return redirect(url_for('view_league', league_id=league.id))
+
+
+@app.route(MANAGE_LEAGUE_URL, methods=['GET'])
+@templated('league/manage/page.html')
+@login_required
+def get_manage_league(league_id):
+    league = get_league(league_id)
+    if not league or not league.has_owner(g.user):
+        flash_error('You must be owner of the league to access that page')
+        return redirect(url_for('view_league', league_id=league_id))
+
+    return {'user': g.user,
+            'league': league}
+
+
+@app.route(MANAGE_LEAGUE_URL, methods=['POST'])
+@login_required
+def post_manage_league(league_id):
+    return redirect(url_for('view_league', league_id=league_id))
 
 
 @app.route(JOIN_LEAGUE_URL, methods=['GET'])
