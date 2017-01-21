@@ -240,7 +240,8 @@ body { font-family: 'Nunito', sans-serif; }
 
 #league-members .directive { margin: 0px 0px 50px 0px; }
 
-#league-members #added-members .added-member {
+#league-members #added-members .added-member,
+#league-members #added-members .current-member {
     color: #02B8EF;
     display: block;
     font-size: 18px;
