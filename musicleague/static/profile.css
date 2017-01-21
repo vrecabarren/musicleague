@@ -297,6 +297,10 @@ body { font-family: 'Nunito', sans-serif; }
                 color: #00259A;
             }
 
+            .league-item .league-tile .league-tile-inner .league-title.inactive {
+                color: #d4d4d4;
+            }
+
     .league-item .created-by {
         font-size: 14px;
         line-height: 19px;
