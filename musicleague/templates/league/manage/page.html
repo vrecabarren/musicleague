@@ -182,5 +182,27 @@ $('form').submit(function(){
 
     return true;
 });
+
+$(document).ready(function() {
+    switch (window.location.hash) {
+
+        case '#members':
+            $('.collapse').collapse('hide');
+            $('#league-members').collapse('show');
+            var pos = $('#league-members-header').offset();
+            $('body').animate({ scrollTop: pos.top });
+            break;
+
+        case '#rounds':
+            $('.collapse').collapse('hide');
+            $('#league-rounds').collapse('show');
+            var pos = $('#league-rounds-header').offset();
+            $('body').animate({ scrollTop: pos.top });
+            break;
+
+        default:
+            break;
+    }
+});
 </script>
 {% endblock %}
