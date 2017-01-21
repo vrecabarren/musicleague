@@ -13,35 +13,46 @@
 <div class="container">
 
     <div id="leagues">
-        {% for league in leagues %}
-        <div class="col-sm-6 col-md-4">
-            <div class="league-item">
-                <div class="league-tile linked" data-href="{{ url_for('view_league', league_id=league.id) }}">
-                    <div class="league-tile-inner">
-                        {% if league.is_inactive %}
-                        <img class="league-icon inactive" src="/static/icons/clock_gray.svg" alt="">
-                        <div class="league-title inactive">{{ league.name }}</div>
-                        {% elif league.is_complete %}
-                        <img class="league-icon complete" src="/static/icons/completed_league_icon.svg" alt="">
-                        <div class="league-title complete">{{ league.name }}</div>
-                        {% else %}
-                        <img class="league-icon" src="/static/icons/live_league_icon.svg" alt="">
-                        <div class="league-title">{{ league.name }}</div>
-                        {% endif %}
+        {% for row in leagues|batch(3) %}
+        <div class="row">
+            {% for league in row %}
+            <div class="col-sm-6 col-md-4">
+                <div class="league-item">
+                    <div class="league-tile linked" data-href="{{ url_for('view_league', league_id=league.id) }}">
+                        <div class="league-tile-inner">
+                            {% if league.is_inactive %}
+                            <img class="league-icon inactive" src="/static/icons/clock_gray.svg" alt="">
+                            <div class="league-title inactive">{{ league.name }}</div>
+                            {% elif league.is_complete %}
+                            <img class="league-icon complete" src="/static/icons/completed_league_icon.svg" alt="">
+                            <div class="league-title complete">{{ league.name }}</div>
+                            {% else %}
+                            <img class="league-icon" src="/static/icons/live_league_icon.svg" alt="">
+                            <div class="league-title">{{ league.name }}</div>
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
-                <div class="created-by">
-                    Created by <a href="{{ url_for('view_user', user_id=league.owner.id )}}" class="creator-name">{{ league.owner.name }}</a> on {{ moment(league.created).format('MM.DD.YY') }}
-                </div>
-                <div class="members">
-                    <div class="images">
-                        {% for member in league.users if member.image_url %}
-                        <img src="{{ member.image_url }}" alt="{{ member.name }}" class="img img-circle">
-                        {% endfor %}
+                    {% if league.has_owner(user) %}
+                    <div class="manage-league collapse" style="margin: 20px 0px; font-size: 22px; line-height: 24px;">
+                        <a href="{{ url_for('get_manage_league', league_id=league.id) }}" class="btn btn-default"><i class="fa fa-gear"></i></a>
+                        &nbsp;&nbsp;&nbsp;
+                        <a href="{{ url_for('get_remove_league', league_id=league.id) }}" class="btn btn-default"><i class="fa fa-trash"></i></a>
                     </div>
-                    <a href="#" data-toggle="popover" data-trigger="hover" data-placement="right" data-container="body" data-content="{{ league.users|map(attribute='name')|join('<br>') }}">{{ league.users|length }} Member{% if league.users|length != 1 %}s{% endif %}</a>
+                    {% endif %}
+                    <div class="created-by">
+                        Created by <a href="{{ url_for('view_user', user_id=league.owner.id )}}" class="creator-name">{{ league.owner.name }}</a> on {{ moment(league.created).format('MM.DD.YY') }}
+                    </div>
+                    <div class="members">
+                        <div class="images">
+                            {% for member in league.users if member.image_url %}
+                            <img src="{{ member.image_url }}" alt="{{ member.name }}" class="img img-circle">
+                            {% endfor %}
+                        </div>
+                        <a href="#" data-toggle="popover" data-trigger="hover" data-placement="right" data-container="body" data-content="{{ league.users|map(attribute='name')|join('<br>') }}">{{ league.users|length }} Member{% if league.users|length != 1 %}s{% endif %}</a>
+                    </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
         {% endfor %}
     </div>
@@ -89,6 +100,12 @@
     $(window).load(function(){
         make_tile_size_consistent();
         randomize_tile_backgrounds();
+
+        $(".league-item").hover(function() {
+            $(this).find('.manage-league').collapse('show');
+        }, function() {
+            $(this).find('.manage-league').collapse('hide');
+        });
     });
 </script>
 {% endblock %}
