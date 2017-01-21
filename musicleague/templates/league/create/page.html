@@ -106,10 +106,11 @@
     <div id="league-rounds" class="section">
         <div class="container">
             <div class="col-md-10 col-md-offset-1">
-                <div id="current-rounds" class="row">
-                    <div class="col-md-12">
-                        <span class="title">League Rounds</span>
+                <div class="row">
+                    <div id="added-rounds" class="col-md-12">
+                        <span class="title">Added Rounds</span>
                     </div>
+                    <input type="hidden" id="added-rounds-inp" name="added-rounds">
                 </div>
                 <div class="row">
                     <div class="col-md-12">
@@ -139,6 +140,11 @@
                             <label for="voting-due-date">Voting Due Date</label>
                             <input type="text" class="form-control" id="voting-due-date" name="voting-due-date">
                         </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 col-md-offset-10">
+                        <a id="add-round-btn" class="btn btn-lg">Add Round</a>
                     </div>
                 </div>
             </div>
@@ -174,15 +180,33 @@ $('#search').bootcomplete({
 
 $('form').submit(function(){
     var members = [];
-
     $('#added-members .added-member').each(function() {
         members.push(String($(this).data('id')));
     });
-
     var inputField = $(document.getElementById('added-members-inp'));
     inputField.val(JSON.stringify(members));
 
+    var rounds = [];
+    $('#added-rounds .added-round').each(function() {
+        rounds.push(
+            {
+                'name': $(this).data('label'),
+                'description': $(this).data('description')
+            }
+        );
+    });
+    var inputField = $(document.getElementById('added-rounds-inp'));
+    inputField.val(JSON.stringify(rounds));
+
     return true;
+});
+
+$('#add-round-btn').on('click', function(){
+    var roundName = $('#round-name').val();
+    var roundDescription = $('#round-description').val();
+    $('#added-rounds').append(
+        '<span class="added-round" data-label="'+roundName+'" data-description="'+roundDescription+'">'+roundName+'</span>'
+    );
 });
 </script>
 {% endblock %}

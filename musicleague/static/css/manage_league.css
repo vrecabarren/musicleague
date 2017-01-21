@@ -273,9 +273,9 @@ body { font-family: 'Nunito', sans-serif; }
 
 #league-rounds {}
 
-    #league-rounds #current-rounds { margin-bottom: 20px; }
+    #league-rounds #added-rounds { margin-bottom: 20px; }
 
-        #league-rounds #current-rounds .title {
+        #league-rounds #added-rounds .title {
             color: #02B8EF;
             display: block;
             font-family: 'Cubano', sans-serif;
@@ -284,7 +284,8 @@ body { font-family: 'Nunito', sans-serif; }
             margin-bottom: 10px;
         }
 
-        #league-rounds #current-rounds .current-round {
+        #league-rounds #added-rounds .current-round,
+        #league-rounds #added-rounds .added-round {
             color: #02B8EF;
             display: block;
             font-size: 18px;

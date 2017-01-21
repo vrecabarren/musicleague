@@ -18,6 +18,7 @@ from musicleague.routes.decorators import league_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 from musicleague.submission import get_submission
+from musicleague.submission_period import create_submission_period
 from musicleague.user import get_user
 
 
@@ -67,12 +68,20 @@ def post_create_league():
     name = request.form.get('league-name')
     num_tracks = request.form.get('tracks-submitted')
     bank_size = request.form.get('point-bank-size')
+
     user_ids = json.loads(request.form.get('added-members', []))
     members = [get_user(uid) for uid in user_ids]
+
+    rounds = json.loads(request.form.get('added-rounds', []))
 
     league = create_league(g.user, name=name, users=members)
     league.preferences.track_count = int(num_tracks)
     league.preferences.point_bank_size = int(bank_size)
+
+    for new_round in rounds:
+        create_submission_period(
+            league, new_round['name'], new_round['description'])
+
     league.save()
     return redirect(url_for('view_league', league_id=league.id))
 
@@ -93,6 +102,26 @@ def get_manage_league(league_id):
 @app.route(MANAGE_LEAGUE_URL, methods=['POST'])
 @login_required
 def post_manage_league(league_id):
+    name = request.form.get('league-name')
+    num_tracks = request.form.get('tracks-submitted')
+    bank_size = request.form.get('point-bank-size')
+
+    user_ids = json.loads(request.form.get('added-members', []))
+    members = [get_user(uid) for uid in user_ids]
+
+    rounds = json.loads(request.form.get('added-rounds', []))
+
+    league = get_league(league_id)
+    league.preferences.name = name
+    league.preferences.track_count = int(num_tracks)
+    league.preferences.point_bank_size = int(bank_size)
+    league.users.extend(members)
+
+    for new_round in rounds:
+        create_submission_period(
+            league, new_round['name'], new_round['description'])
+
+    league.save()
     return redirect(url_for('view_league', league_id=league_id))
 
 

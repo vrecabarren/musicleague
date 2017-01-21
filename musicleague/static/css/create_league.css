@@ -213,46 +213,20 @@ body { font-family: 'Nunito', sans-serif; }
             width: 32px;
         }
 
-        #league-members {}
+#league-members {}
 
-            #league-members .directive {
-                color: #02B8EF;
-                display: block;
-                font-family: 'Cubano', sans-serif;
-                font-size: 18px;
-                line-height: 24px;
-                margin: 0px 0px 50px 0px;
-            }
+    #league-members .directive {
+        color: #02B8EF;
+        display: block;
+        font-family: 'Cubano', sans-serif;
+        font-size: 18px;
+        line-height: 24px;
+        margin: 0px 0px 50px 0px;
+    }
 
-            #league-members #search-members-wrapper { padding: 30px; }
+    #league-members #search-members-wrapper { padding: 30px; }
 
-                #league-members #search-members-wrapper #added-members .title {
-                    color: #02B8EF;
-                    display: block;
-                    font-family: 'Cubano', sans-serif;
-                    font-size: 18px;
-                    line-height: 24px;
-                    margin-bottom: 10px;
-                }
-
-                #league-members #search-members-wrapper #added-members .added-member {
-                    color: #02B8EF;
-                    display: block;
-                    font-size: 18px;
-                    line-height: 24px;
-                }
-
-            #league-members #invite-members-wrapper {
-                background: #efefef;
-                border-radius: 8px;
-                padding: 30px;
-            }
-
-#league-rounds {}
-
-    #league-rounds #current-rounds { margin-bottom: 20px; }
-
-        #league-rounds #current-rounds .title {
+        #league-members #search-members-wrapper #added-members .title {
             color: #02B8EF;
             display: block;
             font-family: 'Cubano', sans-serif;
@@ -261,7 +235,34 @@ body { font-family: 'Nunito', sans-serif; }
             margin-bottom: 10px;
         }
 
-        #league-rounds #current-rounds .current-round {
+        #league-members #search-members-wrapper #added-members .added-member {
+            color: #02B8EF;
+            display: block;
+            font-size: 18px;
+            line-height: 24px;
+        }
+
+    #league-members #invite-members-wrapper {
+        background: #efefef;
+        border-radius: 8px;
+        padding: 30px;
+    }
+
+#league-rounds {}
+
+    #league-rounds #added-rounds { margin-bottom: 20px; }
+
+        #league-rounds #added-rounds .title {
+            color: #02B8EF;
+            display: block;
+            font-family: 'Cubano', sans-serif;
+            font-size: 18px;
+            line-height: 24px;
+            margin-bottom: 10px;
+        }
+
+        #league-rounds #added-rounds .current-round,
+        #league-rounds #added-rounds .added-round {
             color: #02B8EF;
             display: block;
             font-size: 18px;
