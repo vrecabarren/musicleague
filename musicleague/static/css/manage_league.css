@@ -188,14 +188,19 @@ body { font-family: 'Nunito', sans-serif; }
         }
 
         .section .form-group input[type="text"],
-        .section .form-group input[type="email"] {
+        .section .form-group input[type="email"],
+        .section .form-group textarea {
             background: #fff;
             border: 1px solid #02B8EF;
             border-radius: 8px;
             font-size: 18px;
-            height: 50px;
             line-height: 36px;
         }
+
+        .section .form-group input[type="text"],
+        .section .form-group input[type="email"] {
+             height: 50px;
+         }
 
             .section .form-group input::-webkit-input-placeholder {
                 color: #d4d4d4;
@@ -227,26 +232,52 @@ body { font-family: 'Nunito', sans-serif; }
         }
 
 #the-basics-header { margin-bottom: 30px; }
+
 #league-members-header { margin-bottom: 30px; }
 
-#league-members .directive, #league-members #added-members .title {
-    color: #02B8EF;
-    display: block;
-    font-family: 'Cubano', sans-serif;
-    font-size: 18px;
-    line-height: 24px;
-    margin-bottom: 10px;
-}
+#league-members {}
 
-#league-members .directive { margin: 0px 0px 50px 0px; }
+    #league-members .directive,
+    #league-members #added-members .title {
+        color: #02B8EF;
+        display: block;
+        font-family: 'Cubano', sans-serif;
+        font-size: 18px;
+        line-height: 24px;
+        margin-bottom: 10px;
+    }
 
-#league-members #added-members .added-member,
-#league-members #added-members .current-member {
-    color: #02B8EF;
-    display: block;
-    font-size: 18px;
-    line-height: 24px;
-}
+    #league-members .directive { margin: 0px 0px 50px 0px; }
+
+    #league-members #added-members .added-member,
+    #league-members #added-members .current-member {
+        color: #02B8EF;
+        display: block;
+        font-size: 18px;
+        line-height: 24px;
+    }
+
+#league-rounds {}
+
+    #league-rounds #current-rounds { margin-bottom: 20px; }
+
+        #league-rounds #current-rounds .title {
+            color: #02B8EF;
+            display: block;
+            font-family: 'Cubano', sans-serif;
+            font-size: 18px;
+            line-height: 24px;
+            margin-bottom: 10px;
+        }
+
+        #league-rounds #current-rounds .current-round {
+            color: #02B8EF;
+            display: block;
+            font-size: 18px;
+            line-height: 24px;
+        }
+
+    #league-rounds #create-round-toggle { margin-top: 20px; }
 
 a.btn.btn-lg {
     background: #02B8EF;

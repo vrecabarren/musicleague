@@ -12,7 +12,6 @@
 {% include "league/manage/header.html" %}
 
 <form action="" method="post">
-
     <div id="the-basics-header" class="section-header">
         <div class="container">
             <div class="row">
@@ -109,9 +108,50 @@
             </div>
         </div>
     </div>
-    <div id="league-rounds" class="section collapse">
+    <div id="league-rounds" class="section collapse{% if '#rounds' in request.url %} in{% endif %}">
         <div class="container">
-
+            <div class="col-md-10 col-md-offset-1">
+                <div id="current-rounds" class="row">
+                    <div class="col-md-12">
+                        <span class="title">League Rounds</span>
+                        {% for round in league.submission_periods %}
+                        <div class="current-round row" data-label="{{ round.name }}" data-id="{{ round.id }}">
+                            <div class="col-xs-12">{{ round.name }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="round-name">Round Name</label>
+                            <input type="text" class="form-control" id="round-name" name="round-name">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="round-description">Description (Optional)</label>
+                            <textarea type="text" rows="2" class="form-control" id="round-description" name="round-description"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="submission-due-date">Submission Due Date</label>
+                            <input type="text" class="form-control" id="submission-due-date" name="submission-due-date">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="voting-due-date">Voting Due Date</label>
+                            <input type="text" class="form-control" id="voting-due-date" name="voting-due-date">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
