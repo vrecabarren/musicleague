@@ -72,11 +72,16 @@ def post_create_league():
     user_ids = json.loads(request.form.get('added-members', []))
     members = [get_user(uid) for uid in user_ids]
 
+    emails = json.loads(request.form.get('invited-members', []))
+
     rounds = json.loads(request.form.get('added-rounds', []))
 
     league = create_league(g.user, name=name, users=members)
     league.preferences.track_count = int(num_tracks)
     league.preferences.point_bank_size = int(bank_size)
+
+    for email in emails:
+        add_user(league, email, notify=True)
 
     for new_round in rounds:
         create_submission_period(
@@ -109,6 +114,8 @@ def post_manage_league(league_id):
     user_ids = json.loads(request.form.get('added-members', []))
     members = [get_user(uid) for uid in user_ids]
 
+    emails = json.loads(request.form.get('invited-members', []))
+
     rounds = json.loads(request.form.get('added-rounds', []))
 
     league = get_league(league_id)
@@ -116,6 +123,9 @@ def post_manage_league(league_id):
     league.preferences.track_count = int(num_tracks)
     league.preferences.point_bank_size = int(bank_size)
     league.users.extend(members)
+
+    for email in emails:
+        add_user(league, email, notify=True)
 
     for new_round in rounds:
         create_submission_period(
