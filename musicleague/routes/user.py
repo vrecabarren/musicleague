@@ -28,7 +28,7 @@ VIEW_USER_URL = '/user/<user_id>/'
 @login_required
 def autocomplete():
     term = request.form.get('query')
-    results = User.objects(name__icontains=term).all()
+    results = User.objects(name__icontains=term).all().limit(10)
     results = [{'label': user.name, 'id': user.id}
                for user in results]
     return json.dumps(sorted(results, key=lambda u: u['label']))
