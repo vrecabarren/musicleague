@@ -348,12 +348,14 @@ body { font-family: 'Nunito', sans-serif; }
 }
 
     #members-popover .member {
+        display: inline-block;
         margin: 10px 0px;
     }
 
     #members-popover .member img {
         background: #fff;
         border: 1px solid #fff;
+        display: inline-block;
         height: 50px;
         width: 50px;
     }
@@ -370,8 +372,6 @@ body { font-family: 'Nunito', sans-serif; }
 
     #members-popover .member .member-name {
         color: #fff;
-        font-size: 18px;
-        line-height: 22px;
         margin-left: 10px;
     }
 
