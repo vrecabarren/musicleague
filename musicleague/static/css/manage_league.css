@@ -167,6 +167,10 @@ body { font-family: 'Nunito', sans-serif; }
         width: 40px;
     }
 
+    .section-header .collapse-toggle.collapsed {
+        background: url('/static/icons/expand_icon.svg');
+    }
+
 .section {
     padding: 50px 0px;
 }
@@ -258,7 +262,8 @@ body { font-family: 'Nunito', sans-serif; }
         }
 
         #league-members #search-members-wrapper #added-members .added-member,
-        #league-members #search-members-wrapper #added-members .current-member {
+        #league-members #search-members-wrapper #added-members .current-member,
+        #league-members #search-members-wrapper #added-members .invited-member {
             color: #02B8EF;
             display: block;
             font-size: 18px;

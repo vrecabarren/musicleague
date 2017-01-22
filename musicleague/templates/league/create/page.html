@@ -221,5 +221,14 @@ $('#add-round-btn').on('click', function(){
         '<span class="added-round" data-label="'+roundName+'" data-description="'+roundDescription+'">'+roundName+'</span>'
     );
 });
+
+$('#send-email-btn').on('click', function(){
+    var email = $('#email').val();
+    $('#added-members').append(
+        '<span class="invited-member" data-email="'+email+'">'+email+'</span>'
+    );
+    $('#email').val("");
+});
+
 </script>
 {% endblock %}
