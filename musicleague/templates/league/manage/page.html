@@ -25,27 +25,30 @@
             </div>
         </div>
     </div>
-    <div id="the-basics" class="section collapse in">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-10 col-md-offset-1">
-                    <div class="form-group">
-                        <label for="league-name">League Name</label>
-                        <input type="text" class="form-control" id="league-name" name="league-name" autofocus="true" value="{{ league.name }}">
+    <div id="the-basics-save-warning" class="save-warning text-center">This Section Has Been Edited. Scroll Down To Save.</div>
+    <div class="section">
+        <div id="the-basics" class="collapse in">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="form-group">
+                            <label for="league-name">League Name</label>
+                            <input type="text" class="form-control" id="league-name" name="league-name" autofocus="true" data-ov="{{ league.name }}" value="{{ league.name }}">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-5 col-md-offset-1">
-                    <div class="form-group">
-                        <label for="league-name">Number of Tracks Submitted</label>
-                        <input type="text" class="form-control" id="tracks-submitted" name="tracks-submitted" value="{{ league.preferences.track_count }}">
+                <div class="row">
+                    <div class="col-md-5 col-md-offset-1">
+                        <div class="form-group">
+                            <label for="league-name">Number of Tracks Submitted</label>
+                            <input type="text" class="form-control" id="tracks-submitted" name="tracks-submitted" value="{{ league.preferences.track_count }}">
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="form-group">
-                        <label for="point-bank-size">Point Bank Size</label>
-                        <input type="text" class="form-control" id="point-bank-size" name="point-bank-size" value="{{ league.preferences.point_bank_size }}">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="point-bank-size">Point Bank Size</label>
+                            <input type="text" class="form-control" id="point-bank-size" name="point-bank-size" value="{{ league.preferences.point_bank_size }}">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -65,37 +68,40 @@
             </div>
         </div>
     </div>
-    <div id="league-members" class="section collapse">
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-xs-12">
-                    <span class="directive">Find League Members By Searching Below Or Inviting Them By Email</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-5 col-md-offset-1">
-                    <div id="search-members-wrapper">
-                        <div class="form-group">
-                            <label for="search">Search</label>
-                            <input type="text" class="form-control" id="search" name="search" placeholder="Type A Name">
-                        </div>
-                        <div id="added-members" class="form-group">
-                            <span class="title">Members:</span>
-                            {% for member in league.users %}
-                            <span class="current-member" data-id="{{ member.id }}" data-label="{{ member.name }}">{{ member.name }}</span>
-                            {% endfor %}
-                        </div>
-                        <input type="hidden" id="added-members-inp" name="added-members">
-                        <input type="hidden" id="invited-members-inp" name="invited-members">
+    <div id="league-members-save-warning" class="save-warning text-center">This Section Has Been Edited. Scroll Down To Save.</div>
+    <div class="section">
+        <div id="league-members" class="collapse">
+            <div class="container">
+                <div class="row text-center">
+                    <div class="col-xs-12">
+                        <span class="directive">Find League Members By Searching Below Or Inviting Them By Email</span>
                     </div>
                 </div>
-                <div class="col-md-5">
-                    <div id="invite-members-wrapper">
-                        <div class="form-group">
-                            <label for="email">Or Invite Them By Email...</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email Address">
+                <div class="row">
+                    <div class="col-md-5 col-md-offset-1">
+                        <div id="search-members-wrapper">
+                            <div class="form-group">
+                                <label for="search">Search</label>
+                                <input type="text" class="form-control" id="search" name="search" placeholder="Type A Name">
+                            </div>
+                            <div id="added-members" class="form-group">
+                                <span class="title">Members:</span>
+                                {% for member in league.users %}
+                                <span class="current-member" data-id="{{ member.id }}" data-label="{{ member.name }}">{{ member.name }}</span>
+                                {% endfor %}
+                            </div>
+                            <input type="hidden" id="added-members-inp" name="added-members">
+                            <input type="hidden" id="invited-members-inp" name="invited-members">
                         </div>
-                        <a id="send-email-btn" class="btn btn-lg">Send Email</a>
+                    </div>
+                    <div class="col-md-5">
+                        <div id="invite-members-wrapper">
+                            <div class="form-group">
+                                <label for="email">Or Invite Them By Email...</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email Address">
+                            </div>
+                            <a id="send-email-btn" class="btn btn-lg">Send Email</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -115,60 +121,63 @@
             </div>
         </div>
     </div>
-    <div id="league-rounds" class="section collapse{% if '#rounds' in request.url %} in{% endif %}">
-        <div class="container">
-            <div class="col-md-10 col-md-offset-1">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div style="padding: 30px">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="round-name">Round Name</label>
-                                        <input type="text" class="form-control" id="round-name" name="round-name">
+    <div id="league-rounds-save-warning" class="save-warning text-center">This Section Has Been Edited. Scroll Down To Save.</div>
+    <div class="section">
+        <div id="league-rounds" class="collapse">
+            <div class="container">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div style="padding: 30px">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="round-name">Round Name</label>
+                                            <input type="text" class="form-control" id="round-name" name="round-name">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="round-description">Description (Optional)</label>
-                                        <textarea type="text" rows="2" class="form-control" id="round-description" name="round-description"></textarea>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="round-description">Description (Optional)</label>
+                                            <textarea type="text" rows="2" class="form-control" id="round-description" name="round-description"></textarea>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="submission-due-date">Songs Due Date</label>
-                                        <input type="text" class="form-control" id="submission-due-date" name="submission-due-date">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="submission-due-date">Songs Due Date</label>
+                                            <input type="text" class="form-control" id="submission-due-date" name="submission-due-date">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="voting-due-date">Voting Due Date</label>
+                                            <input type="text" class="form-control" id="voting-due-date" name="voting-due-date">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="voting-due-date">Voting Due Date</label>
-                                        <input type="text" class="form-control" id="voting-due-date" name="voting-due-date">
+                                <div class="row">
+                                    <div class="col-md-6 col-md-offset-6">
+                                        <a id="add-round-btn" class="btn btn-lg">Add Round</a>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 col-md-offset-6">
-                                    <a id="add-round-btn" class="btn btn-lg">Add Round</a>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div style="padding: 30px">
-                                    <div id="added-rounds" class="col-md-12">
-                                        <span class="title">Rounds:</span>
-                                        {% for round in league.submission_periods %}
-                                        <span class="current-round">{{ round.name }}</span>
-                                        {% endfor %}
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div style="padding: 30px">
+                                        <div id="added-rounds" class="col-md-12">
+                                            <span class="title">Rounds:</span>
+                                            {% for round in league.submission_periods %}
+                                            <span class="current-round">{{ round.name }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        <input type="hidden" id="added-rounds-inp" name="added-rounds">
                                     </div>
-                                    <input type="hidden" id="added-rounds-inp" name="added-rounds">
                                 </div>
                             </div>
                         </div>
@@ -242,6 +251,7 @@ $('#add-round-btn').on('click', function(){
     $('#added-rounds').append(
         '<span class="added-round" data-label="'+roundName+'" data-description="'+roundDescription+'">'+roundName+'</span>'
     );
+    $('#league-rounds-save-warning').css('display', 'block');
 });
 
 $('#send-email-btn').on('click', function(){
@@ -250,6 +260,17 @@ $('#send-email-btn').on('click', function(){
         '<span class="invited-member" data-email="'+email+'">'+email+'</span>'
     );
     $('#email').val("");
+    $('#added-members').trigger('contentchanged');
+});
+
+$('#the-basics input').keydown(function() {
+    if ( $(this).val() != $(this).data('og')) {
+        $('#the-basics-save-warning').css('display', 'block');
+    }
+});
+
+$('#added-members').on('contentchanged', function() {
+    $('#league-members-save-warning').css('display', 'block');
 });
 
 $(document).ready(function() {

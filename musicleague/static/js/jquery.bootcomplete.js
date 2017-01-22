@@ -115,6 +115,7 @@
                 if (inputs.length !== 0) {
                     var addedMember = '<span class="added-member" data-id="'+$(this).data('id')+'" data-label="'+$(this).data('label') +'">'+$(this).data('label')+'</span>';
                     $('#added-members').append(addedMember);
+                    $('#added-members').trigger('contentchanged');
                 }
             }
             $(that).next('.' + settings.menuClass).hide();

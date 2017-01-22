@@ -171,13 +171,19 @@ body { font-family: 'Nunito', sans-serif; }
         background: url('/static/icons/expand_icon.svg');
     }
 
-.section {
-    padding: 50px 0px;
+.save-warning {
+    background-color: #5FCC34;
+    color: #fff;
+    display: none;
+    font-family: 'Cubano', sans-serif;
+    font-size: 18px;
+    line-height: 22px;
+    padding: 10px 0px;
 }
 
-.section.collapse {
-    margin-top: 10px;
-}
+.section { padding: 15px 0px; }
+
+.section .collapse { margin: 35px 0px; }
 
     .section .form-group { margin-bottom: 25px; }
 
@@ -235,9 +241,9 @@ body { font-family: 'Nunito', sans-serif; }
             width: 32px;
         }
 
-#the-basics-header,
-#league-members-header,
-#league-rounds-header { margin-bottom: 30px; }
+#the-basics,
+#league-members,
+#league-rounds { margin-top: 20px; }
 
 #league-members {}
 
