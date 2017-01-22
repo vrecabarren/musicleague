@@ -328,3 +328,35 @@ body { font-family: 'Nunito', sans-serif; }
             }
 
             .league-item .members .images img:last-child { margin-right: 0px; }
+
+    .league-item .admin { margin-top: 15px; }
+
+        .league-item .admin .admin-toggle {
+            background: url('/static/icons/admin_gear_gray.svg');
+            cursor: pointer;
+            display: inline-block;
+            height: 32px;
+            width: 32px;
+        }
+
+        .league-item .admin .admin-toggle.collapsed {
+            background: url('/static/icons/admin_gear_icon.svg');
+        }
+
+        .league-item .admin .admin-controls.collapse.in { display: inline-block; }
+
+            .league-item .admin .admin-controls .control { margin: 0px 2px; }
+
+                .league-item .admin .admin-controls .control .manage {
+                    background: url('/static/icons/league_settings_icon.svg');
+                    display: inline-block;
+                    height: 32px;
+                    width: 32px;
+                }
+
+                .league-item .admin .admin-controls .control .remove {
+                    background: url('/static/icons/trash_icon.svg');
+                    display: inline-block;
+                    height: 32px;
+                    width: 32px;
+                }

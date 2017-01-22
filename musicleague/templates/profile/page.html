@@ -32,13 +32,6 @@
                             {% endif %}
                         </div>
                     </div>
-                    {% if league.has_owner(user) %}
-                    <div class="manage-league collapse" style="margin: 20px 0px; font-size: 22px; line-height: 24px;">
-                        <a href="{{ url_for('get_manage_league', league_id=league.id) }}" class="btn btn-default"><i class="fa fa-gear"></i></a>
-                        &nbsp;&nbsp;&nbsp;
-                        <a href="{{ url_for('get_remove_league', league_id=league.id) }}" class="btn btn-default"><i class="fa fa-trash"></i></a>
-                    </div>
-                    {% endif %}
                     <div class="created-by">
                         Created by <a href="{{ url_for('view_user', user_id=league.owner.id )}}" class="creator-name">{{ league.owner.name }}</a> on {{ moment(league.created).format('MM.DD.YY') }}
                     </div>
@@ -50,6 +43,15 @@
                         </div>
                         <a href="#" data-toggle="popover" data-trigger="hover" data-placement="right" data-container="body" data-content="{{ league.users|map(attribute='name')|join('<br>') }}">{{ league.users|length }} Member{% if league.users|length != 1 %}s{% endif %}</a>
                     </div>
+                    {% if league.has_owner(user) %}
+                    <div class="admin">
+                        <a class="admin-toggle collapsed" title="Admin Controls" data-toggle="collapse" data-target="#{{ league.id }}-controls"></a>
+                        <span id="{{ league.id }}-controls" class="admin-controls collapse width">
+                            <a href="{{ url_for('get_manage_league', league_id=league.id) }}" title="Manage League" class="control"><span class="manage"></span></a>
+                            <a href="{{ url_for('get_remove_league', league_id=league.id) }}" title="Remove League" class="control"><span class="remove"></span></a>
+                        </span>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
             {% endfor %}
