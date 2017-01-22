@@ -33,7 +33,7 @@
                         </div>
                     </div>
                     <div class="created-by">
-                        Created by <a href="{{ url_for('view_user', user_id=league.owner.id )}}" class="creator-name">{{ league.owner.name }}</a> on {{ moment(league.created).format('MM.DD.YY') }}
+                        Created by <a href="{{ url_for('view_user', user_id=league.owner.id )}}" class="creator-name">{% if league.has_owner(user) %}YOU{% else %}{{ league.owner.name }}{% endif %}</a> on {{ moment(league.created).format('MM.DD.YY') }}
                     </div>
                     <div class="members">
                         <div class="images">
