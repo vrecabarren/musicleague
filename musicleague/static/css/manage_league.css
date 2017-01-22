@@ -159,7 +159,7 @@ body { font-family: 'Nunito', sans-serif; }
     }
 
     .section-header .collapse-toggle {
-        background: url('/static/icons/expand_icon.svg');
+        background: url('/static/icons/collapse_icon.svg');
         cursor: pointer;
         display: inline-block;
         height: 40px;
