@@ -228,6 +228,9 @@ $('#add-round-btn').on('click', function(){
     $('#added-rounds').append(
         '<span class="added-round" data-label="'+roundName+'" data-description="'+roundDescription+'">'+roundName+'</span>'
     );
+
+    $('#league-rounds input, #league-rounds textarea').val("");
+    $('#round-name').focus();
 });
 
 $('#send-email-btn').on('click', function(){
