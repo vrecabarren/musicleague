@@ -97,11 +97,13 @@
             <div class="row">
                 {% for member in row %}
                 <div class="col-xs-12 col-sm-6 col-lg-4 member text-left">
-                    <img src="{{ member.image_url }}" alt="" class="img img-circle">
-                    {% if league.has_owner(member) %}
-                    <span class="owner-star"></span>
-                    {% endif %}
-                    <span class="member-name">{{ member.name }}</span>
+                    <a href="{{ url_for('view_user', user_id=member.id) }}" title="{{ member.name }}">
+                        <img src="{{ member.image_url }}" alt="" class="img img-circle">
+                        {% if league.has_owner(member) %}
+                        <span class="owner-star"></span>
+                        {% endif %}
+                        <span class="member-name">{{ member.name }}</span>
+                    </a>
                 </div>
                 {% endfor %}
             </div>

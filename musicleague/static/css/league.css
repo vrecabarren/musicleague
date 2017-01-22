@@ -352,6 +352,8 @@ body { font-family: 'Nunito', sans-serif; }
     }
 
     #members-popover .member img {
+        background: #fff;
+        border: 1px solid #fff;
         height: 50px;
         width: 50px;
     }
@@ -366,7 +368,12 @@ body { font-family: 'Nunito', sans-serif; }
         width: 20px;
     }
 
-    #members-popover .member .member-name { margin-left: 10px; }
+    #members-popover .member .member-name {
+        color: #fff;
+        font-size: 18px;
+        line-height: 22px;
+        margin-left: 10px;
+    }
 
 .progress-toggle { cursor: pointer; }
 
