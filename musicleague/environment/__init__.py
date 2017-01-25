@@ -1,7 +1,6 @@
 import os
 import re
 
-from musicleague import app
 from musicleague.environment.variables import DEBUG
 from musicleague.environment.variables import DEPLOYED
 from musicleague.environment.variables import MONGODB_URI
@@ -24,7 +23,6 @@ def get_environment_setting(env_setting):
     env_setting.default
     """
     setting = os.environ.get(env_setting.key, env_setting.default)
-    app.logger.debug('GET SETTING %s: %s', env_setting.key, setting)
     return _cast_value(env_setting, setting)
 
 
