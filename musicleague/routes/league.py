@@ -88,6 +88,9 @@ def post_create_league():
             league, new_round['name'], new_round['description'])
 
     league.save()
+
+    app.logger.info('Creating league: %s', league.id)
+
     return redirect(url_for('view_league', league_id=league.id))
 
 
@@ -97,6 +100,7 @@ def post_create_league():
 def get_manage_league(league_id):
     league = get_league(league_id)
     if not league or not league.has_owner(g.user):
+        app.logger.warning('Unauthorized user attempted access')
         flash_error('You must be owner of the league to access that page')
         return redirect(url_for('view_league', league_id=league_id))
 
@@ -150,6 +154,8 @@ def join_league(league_id, **kwargs):
         if invited_user:
             invited_user.delete()
 
+    app.logger.info('User joined league: %s', league.id)
+
     return redirect(url_for('view_league', league_id=league_id))
 
 
@@ -159,6 +165,7 @@ def join_league(league_id, **kwargs):
 def get_remove_league(league_id, **kwargs):
     league = kwargs.get('league')
     if league and league.has_owner(g.user):
+        app.logger.info('Removing league: %s', league.id)
         league = remove_league(league_id, league=league)
 
     return redirect(url_for('profile'))
