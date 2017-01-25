@@ -1,7 +1,9 @@
+from datetime import datetime
 import logging
-import sys
 
 from flask import Flask
+from flask import g
+from flask import request
 from flask_moment import Moment
 
 from redis import Redis
@@ -12,7 +14,6 @@ from rq_scheduler import Scheduler
 from musicleague.environment import get_redis_url
 from musicleague.environment import get_secret_key
 from musicleague.environment import get_server_name
-from musicleague.environment import is_debug
 from musicleague.environment import is_deployed
 from musicleague.environment import parse_mongolab_uri
 
@@ -26,18 +27,51 @@ app = Flask(__name__)
 moment = Moment(app)
 app.secret_key = get_secret_key()
 
+
+class ContextualFilter(logging.Filter):
+
+    def filter(self, log_record):
+        log_record.utcnow = (datetime.utcnow()
+                             .strftime('%Y-%m-%d %H:%M:%S,%f %Z'))
+        log_record.url = request.path
+        log_record.method = request.method
+        log_record.user_id = g.user.id
+        log_record.ip = request.environ.get('HTTP_X_REAL_IP',
+                                            request.remote_addr)
+        return True
+
+# Use said info
+log_format = ("%(utcnow)s\tl=%(levelname)s\tu=%(user_id)s\tip=%(ip)s"
+              "\tm=%(method)s\turl=%(url)s\tmsg=%(message)s")
+formatter = logging.Formatter(log_format)
+
+# - Handlers
+# -- Stream handler
+streamHandler = logging.StreamHandler()
+streamHandler.setLevel(logging.INFO)
+streamHandler.setFormatter(formatter)
+
+# # -- LogEntries handler
+# leHandler = LogentriesHandler(app.config['LOGENTRIES_TOKEN'])
+# leHandler.setLevel(logging.INFO)
+# leHandler.setFormatter(formatter)
+
+# - Logger
+log = app.logger
+log.setLevel(logging.DEBUG)
+log.addFilter(ContextualFilter())
+log.addHandler(streamHandler)
+# log.addHandler(leHandler)
+
+
 if is_deployed():
     app.config['SERVER_NAME'] = get_server_name()
 
     host, port, username, password, db = parse_mongolab_uri()
     db = connect(db, host=host, port=port, username=username,
                  password=password)
-    logging.basicConfig(level=logging.DEBUG if is_debug() else logging.WARNING)
 else:
     db = connect(MONGO_DB_NAME)
-    logging.basicConfig(level=logging.DEBUG)
-
-app.logger.addHandler(logging.StreamHandler(sys.stdout))
 
 redis_conn = Redis.from_url(get_redis_url())
 queue = Queue(connection=redis_conn)
