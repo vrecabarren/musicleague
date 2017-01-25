@@ -1,4 +1,3 @@
-import logging
 from time import time
 
 from flask import g
@@ -115,8 +114,8 @@ def add_bot():
         if not is_bot(bot_id):
             return 'Invalid bot: %s. If valid, add to environment.' % (bot_id)
 
-        logging.warn('Create/update bot %s: %s, %s, %s', bot_id,
-                     access_token, refresh_token, expires_at)
+        app.logger.warn('Create/update bot %s: %s, %s, %s', bot_id,
+                        access_token, refresh_token, expires_at)
 
         create_or_update_bot(bot_id, access_token, refresh_token, expires_at)
 

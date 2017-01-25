@@ -1,4 +1,3 @@
-import logging
 import requests
 
 from flask import render_template
@@ -178,7 +177,7 @@ def user_vote_reminder_email(user, submission_period):
 @job('default', connection=redis_conn)
 def _send_email(to, subject, text, html, additional_data=None):
     if not is_deployed():
-        logging.info(text)
+        app.logger.info(text)
         return
 
     api_key = get_setting(MAILGUN_API_KEY)
@@ -200,7 +199,7 @@ def _send_email(to, subject, text, html, additional_data=None):
     request = requests.post(request_url, auth=("api", api_key), data=data)
 
     if request.status_code != 200:
-        logging.warning(
+        app.logger.warning(
             u'Mail send failed. Status: {}, Response: {}'.format(
                 request.status_code, request.text))
         return
