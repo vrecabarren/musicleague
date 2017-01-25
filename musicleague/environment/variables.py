@@ -7,6 +7,7 @@ EnvironmentVariable = namedtuple('EnvironmentVariable', 'key, default')
 ADD_BOT_REDIRECT_URI = EnvironmentVariable(key='ADD_BOT_REDIRECT_URI', default='')  # noqa
 DEBUG = EnvironmentVariable(key='DEBUG', default=False)
 DEPLOYED = EnvironmentVariable(key='ON_HEROKU', default=False)
+LOGENTRIES_TOKEN = EnvironmentVariable(key='LOGENTRIES_TOKEN', default='')
 MAILGUN_API_BASE_URL = EnvironmentVariable(key='MAILGUN_API_BASE_URL', default='')  # noqa
 MAILGUN_API_KEY = EnvironmentVariable(key='MAILGUN_API_KEY', default='')
 MESSENGER_PAGE_ACCESS_TOKEN = EnvironmentVariable(key='MESSENGER_PAGE_ACCESS_TOKEN', default='')  # noqa
