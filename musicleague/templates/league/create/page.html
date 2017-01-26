@@ -212,8 +212,10 @@ $('form').submit(function(){
     $('#added-rounds .added-round').each(function() {
         rounds.push(
             {
-                'name': $(this).data('label'),
-                'description': $(this).data('description')
+                'name': $(this).data('name'),
+                'description': $(this).data('description'),
+                'submission-due-date-utc': $(this).data('submission-due-date-utc'),
+                'voting-due-date-utc': $(this).data('voting-due-date-utc')
             }
         );
     });
@@ -226,8 +228,10 @@ $('form').submit(function(){
 $('#add-round-btn').on('click', function(){
     var roundName = $('#round-name').val();
     var roundDescription = $('#round-description').val();
+    var submissionDueDate = $('#submission-due-date-utc').val();
+    var voteDueDate = $('#voting-due-date-utc').val();
     $('#added-rounds').append(
-        '<span class="added-round" data-label="'+roundName+'" data-description="'+roundDescription+'">'+roundName+'</span>'
+        '<span class="added-round" data-name="'+roundName+'" data-description="'+roundDescription+'" data-submission-due-date-utc="'+submissionDueDate+'" data-voting-due-date-utc="'+voteDueDate+'">'+roundName+'</span>'
     );
 
     $('#league-rounds input, #league-rounds textarea').val("");
