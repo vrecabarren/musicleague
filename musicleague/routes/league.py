@@ -1,6 +1,7 @@
 from datetime import datetime
 from datetime import timedelta
 import json
+from pytz import utc
 
 from flask import g
 from flask import redirect
@@ -84,8 +85,17 @@ def post_create_league():
         add_user(league, email, notify=True)
 
     for new_round in rounds:
+        submission_due_date_str = new_round['submission-due-date-utc']
+        submission_due_date = utc.localize(
+            datetime.strptime(submission_due_date_str, '%m/%d/%y %I%p'))
+
+        vote_due_date_str = new_round['voting-due-date-utc']
+        vote_due_date = utc.localize(
+            datetime.strptime(vote_due_date_str, '%m/%d/%y %I%p'))
+
         create_submission_period(
-            league, new_round['name'], new_round['description'])
+            league, new_round['name'], new_round['description'],
+            submission_due_date, vote_due_date)
 
     league.save()
 
@@ -104,8 +114,18 @@ def get_manage_league(league_id):
         flash_error('You must be owner of the league to access that page')
         return redirect(url_for('view_league', league_id=league_id))
 
+    if league.submission_periods:
+        lsp = league.submission_periods[-1]
+        next_submission_due_date = lsp.submission_due_date + timedelta(weeks=1)
+        next_vote_due_date = lsp.vote_due_date + timedelta(weeks=1)
+    else:
+        next_submission_due_date = datetime.utcnow() + timedelta(days=5)
+        next_vote_due_date = datetime.utcnow() + timedelta(days=7)
+
     return {'user': g.user,
-            'league': league}
+            'league': league,
+            'next_submission_due_date': next_submission_due_date,
+            'next_vote_due_date': next_vote_due_date}
 
 
 @app.route(MANAGE_LEAGUE_URL, methods=['POST'])
@@ -132,8 +152,17 @@ def post_manage_league(league_id):
         add_user(league, email, notify=True)
 
     for new_round in rounds:
+        submission_due_date_str = new_round['submission-due-date-utc']
+        submission_due_date = utc.localize(
+            datetime.strptime(submission_due_date_str, '%m/%d/%y %I%p'))
+
+        vote_due_date_str = new_round['voting-due-date-utc']
+        vote_due_date = utc.localize(
+            datetime.strptime(vote_due_date_str, '%m/%d/%y %I%p'))
+
         create_submission_period(
-            league, new_round['name'], new_round['description'])
+            league, new_round['name'], new_round['description'],
+            submission_due_date, vote_due_date)
 
     league.save()
     return redirect(url_for('view_league', league_id=league_id))

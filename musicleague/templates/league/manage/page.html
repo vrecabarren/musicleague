@@ -176,7 +176,7 @@
                                         <div id="added-rounds" class="col-md-12">
                                             <span class="title">Rounds:</span>
                                             {% for round in league.submission_periods %}
-                                            <span class="current-round">{{ round.name }}</span>
+                                            <span class="current-round" data-name="{{ round.name }}" data-description="{{ round.description }}" data-submission-due-date-utc="{{ round.submission_due_date.strftime('%m/%d/%y %-I%p') }}" data-voting-due-date-utc="{{ round.vote_due_date.strftime('%m/%d/%y %-I%p') }}">{{ round.name }}</span>
                                             {% endfor %}
                                         </div>
                                         <input type="hidden" id="added-rounds-inp" name="added-rounds">
@@ -238,8 +238,10 @@ $('form').submit(function(){
     $('#added-rounds .added-round').each(function() {
         rounds.push(
             {
-                'name': $(this).data('label'),
-                'description': $(this).data('description')
+                'name': $(this).data('name'),
+                'description': $(this).data('description'),
+                'submission-due-date-utc': $(this).data('submission-due-date-utc'),
+                'voting-due-date-utc': $(this).data('voting-due-date-utc')
             }
         );
     });
@@ -252,8 +254,10 @@ $('form').submit(function(){
 $('#add-round-btn').on('click', function(){
     var roundName = $('#round-name').val();
     var roundDescription = $('#round-description').val();
+    var submissionDueDate = $('#submission-due-date-utc').val();
+    var voteDueDate = $('#voting-due-date-utc').val();
     $('#added-rounds').append(
-        '<span class="added-round" data-label="'+roundName+'" data-description="'+roundDescription+'">'+roundName+'</span>'
+        '<span class="added-round" data-name="'+roundName+'" data-description="'+roundDescription+'" data-submission-due-date-utc="'+submissionDueDate+'" data-voting-due-date-utc="'+voteDueDate+'">'+roundName+'</span>'
     );
     $('#league-rounds-save-warning').slideDown();
 
@@ -280,7 +284,9 @@ $('#added-members').on('contentchanged', function() {
     $('#league-members-save-warning').slideDown();
 });
 
-// $('#submission_due_date').val(moment('{{ next_submission_due_date }}').toDate());
+var localSubmissionDueDate = moment.utc('{{ next_submission_due_date }}').toDate();
+$('#submission-due-date').val(moment(localSubmissionDueDate).format('MM/DD/YY hA'));
+$('#submission-due-date-utc').val(moment(moment.utc('{{ next_submission_due_date }}')).format('MM/DD/YY hA'));
 $('#submission-due-date').datetimepicker({
     sideBySide: true,
     format: 'MM/DD/YY hA',
@@ -290,7 +296,9 @@ $('#submission-due-date').datetimepicker({
     $('#submission-due-date-utc').val(moment(e.date.utc()).format('MM/DD/YY hA'));
 });
 
-// $('#voting_due_date').val(moment('{{ next_vote_due_date }}').toDate());
+var localVotingDueDate = moment.utc('{{ next_vote_due_date }}').toDate();
+$('#voting-due-date').val(moment(localVotingDueDate).format('MM/DD/YY hA'));
+$('#voting-due-date-utc').val(moment(moment.utc('{{ next_vote_due_date }}')).format('MM/DD/YY hA'));
 $('#voting-due-date').datetimepicker({
     sideBySide: true,
     format: 'MM/DD/YY hA',
@@ -299,7 +307,6 @@ $('#voting-due-date').datetimepicker({
 }).on("dp.change", function(e) {
     $('#voting-due-date-utc').val(moment(e.date.utc()).format('MM/DD/YY hA'));
 });
-
 
 $(document).ready(function() {
     switch (window.location.hash) {
