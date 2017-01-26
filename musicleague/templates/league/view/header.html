@@ -112,7 +112,36 @@
 </div>
 
 <div id="progress-popover-wrapper" class="popover-content-wrapper">
-    <div id="progress-popover" class="container-fluid">
+    <div id="progress-popover" class="hidden-xs hidden-sm" style="display: table; width: 100%;">
+        <div id="acted" style="display: table-cell; width: 50%;">
+            {% set round = league.current_submission_period %}
+            {% if round and round.accepting_submissions %}
+            <span class="progress-title">Submitted...</span>
+                {% for user in round.have_submitted %}
+                <span>{{ user.name }}</span>
+                {% endfor %}
+            {% elif round and round.accepting_votes %}
+            <span class="progress-title">Voted...</span>
+            {% for user in round.have_voted %}
+            <span>{{ user.name }}</span>
+            {% endfor %}
+            {% endif %}
+        </div>
+        <div id="waiting" style="display: table-cell; width: 50%;">
+            <span class="progress-title">Still Waiting On...</span>
+            {% set round = league.current_submission_period %}
+            {% if round and round.accepting_submissions %}
+                {% for user in round.have_not_submitted %}
+                <span class="member-name">{{ user.name }}</span>
+                {% endfor %}
+            {% elif round and round.accepting_votes %}
+            {% for user in round.have_not_voted %}
+            <span>{{ user.name }}</span>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div id="progress-popover" class="container-fluid visible-xs visible-sm">
         <div class="row">
             <div id="acted" class="col-xs-12 col-md-6">
                 {% set round = league.current_submission_period %}
