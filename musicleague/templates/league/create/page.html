@@ -263,6 +263,7 @@ $('#submission-due-date').datetimepicker({
     showClose: true
 }).on("dp.change", function(e) {
     $('#submission-due-date-utc').val(moment(e.date.utc()).format('MM/DD/YY hA'));
+    $('#voting-due-date').data("DateTimePicker").minDate(e.date.add(1, 'hours').toDate());
 });
 
 $('#voting-due-date').datetimepicker({
