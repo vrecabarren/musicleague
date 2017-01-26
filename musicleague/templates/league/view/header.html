@@ -118,13 +118,13 @@
             {% if round and round.accepting_submissions %}
             <span class="progress-title">Submitted...</span>
                 {% for user in round.have_submitted %}
-                <span>{{ user.name }}</span>
+                <span class="member-name">{{ user.name }}</span>
                 {% endfor %}
             {% elif round and round.accepting_votes %}
             <span class="progress-title">Voted...</span>
-            {% for user in round.have_voted %}
-            <span>{{ user.name }}</span>
-            {% endfor %}
+                {% for user in round.have_voted %}
+                <span class="member-name">{{ user.name }}</span>
+                {% endfor %}
             {% endif %}
         </div>
         <div id="waiting" style="display: table-cell; width: 50%;">
@@ -135,9 +135,9 @@
                 <span class="member-name">{{ user.name }}</span>
                 {% endfor %}
             {% elif round and round.accepting_votes %}
-            {% for user in round.have_not_voted %}
-            <span>{{ user.name }}</span>
-            {% endfor %}
+                {% for user in round.have_not_voted %}
+                <span class="member-name">{{ user.name }}</span>
+                {% endfor %}
             {% endif %}
         </div>
     </div>
@@ -152,9 +152,9 @@
                     {% endfor %}
                 {% elif round and round.accepting_votes %}
                 <span class="progress-title">Voted...</span>
-                {% for user in round.have_voted %}
-                <span>{{ user.name }}</span>
-                {% endfor %}
+                    {% for user in round.have_voted %}
+                    <span class="member-name">{{ user.name }}</span>
+                    {% endfor %}
                 {% endif %}
             </div>
             <div id="waiting" class="col-xs-12 col-md-6">
@@ -165,9 +165,9 @@
                     <span class="member-name">{{ user.name }}</span>
                     {% endfor %}
                 {% elif round and round.accepting_votes %}
-                {% for user in round.have_not_voted %}
-                <span>{{ user.name }}</span>
-                {% endfor %}
+                    {% for user in round.have_not_voted %}
+                    <span>{{ user.name }}</span>
+                    {% endfor %}
                 {% endif %}
             </div>
         </div>
