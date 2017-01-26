@@ -3,6 +3,7 @@
 {% block title %}Music League | Create A League{% endblock %}
 
 {% block css %}
+<link rel="stylesheet" href="/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
 <link rel="stylesheet" href="/static/css/bootcomplete.css">
 <link rel="stylesheet" href="/static/css/create_league.css">
 {% endblock %}
@@ -132,12 +133,14 @@
                                     <div class="form-group">
                                         <label for="submission-due-date">Songs Due Date</label>
                                         <input type="text" class="form-control" id="submission-due-date" name="submission-due-date">
+                                        <input type="hidden" id="submission-due-date-utc" name="submission-due-date-utc">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="voting-due-date">Voting Due Date</label>
                                         <input type="text" class="form-control" id="voting-due-date" name="voting-due-date">
+                                        <input type="hidden" id="voting-due-date-utc" name="voting-due-date-utc">
                                     </div>
                                 </div>
                             </div>
@@ -186,6 +189,7 @@
 
 {% block js %}
 <script type="text/javascript" src="/static/js/jquery.bootcomplete.js"></script>
+<script type="text/javascript" src="/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript">
 $('#search').bootcomplete({
     url: '{{ url_for("autocomplete") }}',
@@ -244,6 +248,24 @@ $('#send-email-btn').on('click', function(){
         '<span class="invited-member" data-email="'+email+'">'+email+'</span>'
     );
     $('#email').val("");
+});
+
+$('#submission-due-date').datetimepicker({
+    sideBySide: true,
+    format: 'MM/DD/YY hA',
+    useStrict: true,
+    showClose: true
+}).on("dp.change", function(e) {
+    $('#submission-due-date-utc').val(moment(e.date.utc()).format('MM/DD/YY hA'));
+});
+
+$('#voting-due-date').datetimepicker({
+    sideBySide: true,
+    format: 'MM/DD/YY hA',
+    useStrict: true,
+    showClose: true
+}).on("dp.change", function(e) {
+    $('#voting-due-date-utc').val(moment(e.date.utc()).format('MM/DD/YY hA'));
 });
 
 </script>
