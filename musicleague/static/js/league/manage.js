@@ -1,24 +1,48 @@
+
+// Initialize league member search autocomplete
 $('#search').bootcomplete({
     url: '{{ url_for("autocomplete") }}',
     method: 'post',
     minLength: 3
 });
 
-$('form').submit(function(){
+// Initialize league round add datetime pickers
+var initializeDatePicker = function(elementId) {
+    return $(elementId).datetimepicker({
+        sideBySide: true,
+        format: 'MM/DD/YY hA',
+        useStrict: true,
+        showClose: true
+    });
+};
+initializeDatePicker('#submission-due-date').on("dp.change", function(e) {
+    $('#submission-due-date-utc').val(moment(e.date.utc()).format('MM/DD/YY hA'));
+    $('#voting-due-date').data("DateTimePicker").minDate(e.date.add(1, 'hours').toDate());
+});
+initializeDatePicker('#voting-due-date').on("dp.change", function(e) {
+    $('#voting-due-date-utc').val(moment(e.date.utc()).format('MM/DD/YY hA'));
+});
+
+// Process submission for manage league form
+var collectAddedMembers = function() {
     var members = [];
     $('#added-members .added-member').each(function() {
         members.push(String($(this).data('id')));
     });
-    var inputField = $(document.getElementById('added-members-inp'));
-    inputField.val(JSON.stringify(members));
+    var jsonField = $(document.getElementById('added-members-inp'));
+    jsonField.val(JSON.stringify(members));
+};
 
+var collectInvitedMembers = function() {
     var invited = [];
     $('#added-members .invited-member').each(function() {
         invited.push(String($(this).data('email')));
     });
-    var inputField = $(document.getElementById('invited-members-inp'));
-    inputField.val(JSON.stringify(invited));
+    var jsonField = $(document.getElementById('invited-members-inp'));
+    jsonField.val(JSON.stringify(invited));
+};
 
+var collectAddedRounds = function() {
     var rounds = [];
     $('#added-rounds .added-round').each(function() {
         rounds.push(
@@ -30,13 +54,30 @@ $('form').submit(function(){
             }
         );
     });
-    var inputField = $(document.getElementById('added-rounds-inp'));
-    inputField.val(JSON.stringify(rounds));
+    var jsonField = $(document.getElementById('added-rounds-inp'));
+    jsonField.val(JSON.stringify(rounds));
+};
 
+var processFormSubmission = function() {
+    collectAddedMembers();
+    collectInvitedMembers();
+    collectAddedRounds();
     return true;
-});
+};
 
-$('#add-round-btn').on('click', function(){
+// Add invited member
+var inviteMember = function() {
+    var email = $('#email').val();
+    $('#added-members').append(
+        '<span class="invited-member" data-email="'+email+'">'+email+'</span>'
+    );
+    $('#email').val("");
+
+    $('#league-members').trigger('contentchanged');
+};
+
+// Add round to league on button click
+var addRound = function() {
     var roundName = $('#round-name').val();
     var roundDescription = $('#round-description').val();
     var submissionDueDate = $('#submission-due-date-utc').val();
@@ -54,47 +95,12 @@ $('#add-round-btn').on('click', function(){
     var nextVotingDueDate = moment.utc(votingDueDate, "MM/DD/YY hA").add(7, 'days');
     $('#voting-due-date').val(moment(nextVotingDueDate.toDate()).format('MM/DD/YY hA'));
     $('#submission-due-date, #voting-due-date').trigger('dp.change');
-});
 
-$('#send-email-btn').on('click', function(){
-    var email = $('#email').val();
-    $('#added-members').append(
-        '<span class="invited-member" data-email="'+email+'">'+email+'</span>'
-    );
-    $('#email').val("");
-    $('#added-members').trigger('contentchanged');
-});
+    $('#league-rounds').trigger('contentchanged');
+};
 
-$('#the-basics input').keydown(function() {
-    if ( $(this).val() != $(this).data('og')) {
-        $('#the-basics-save-warning').slideDown();
-    }
-});
-
-$('#added-members').on('contentchanged', function() {
-    $('#league-members-save-warning').slideDown();
-});
-
-$('#submission-due-date').datetimepicker({
-    sideBySide: true,
-    format: 'MM/DD/YY hA',
-    useStrict: true,
-    showClose: true
-}).on("dp.change", function(e) {
-    $('#submission-due-date-utc').val(moment(e.date.utc()).format('MM/DD/YY hA'));
-    $('#voting-due-date').data("DateTimePicker").minDate(e.date.add(1, 'hours').toDate());
-});
-
-$('#voting-due-date').datetimepicker({
-    sideBySide: true,
-    format: 'MM/DD/YY hA',
-    useStrict: true,
-    showClose: true
-}).on("dp.change", function(e) {
-    $('#voting-due-date-utc').val(moment(e.date.utc()).format('MM/DD/YY hA'));
-});
-
-$('.btn-edit').on("click", function() {
+// Handle edit round modal on button click
+var editRound = function() {
     var round = $(this).parent();
     var id = round.data('id');
     var name = round.data('name');
@@ -111,26 +117,28 @@ $('.btn-edit').on("click", function() {
     modal.find('#edit-voting-due-date').val(moment(votingDueDate).format('MM/DD/YY hA'));
 
     modal.modal('show');
-});
+};
 
-$(document).ready(function() {
-    switch (window.location.hash) {
+// Handle delete round modal on button click
+var deleteRound = function() {
+    var round = $(this).parent();
+    var name = round.data('name');
+    alert(name);
+};
 
-        case '#members':
-            $('.collapse').collapse('hide');
-            $('#league-members').collapse('show');
-            var pos = $('#league-members-header').offset();
-            $('body').animate({ scrollTop: pos.top });
-            break;
-
-        case '#rounds':
-            $('.collapse').collapse('hide');
-            $('#league-rounds').collapse('show');
-            var pos = $('#league-rounds-header').offset();
-            $('body').animate({ scrollTop: pos.top });
-            break;
-
-        default:
-            break;
+// Show save warnings when necessary
+$('#the-basics').on('contentchanged', function() { $('#the-basics-save-warning').slideDown(); });
+$('#league-members').on('contentchanged', function() { $('#league-members-save-warning').slideDown(); });
+$('#league-rounds').on('contentchanged', function() { $('#league-rounds-save-warning').slideDown(); });
+$('#the-basics input').keydown(function() {
+    if ( $(this).val() != $(this).data('og')) {
+        $('#the-basics').trigger('contentchanged');
     }
 });
+
+
+$('form').submit(processFormSubmission);
+$('#send-email-btn').on('click', inviteMember);
+$('#add-round-btn').on('click', addRound);
+$('.edit-round-btn').on("click", editRound);
+$('.delete-round-btn').on("click", deleteRound);

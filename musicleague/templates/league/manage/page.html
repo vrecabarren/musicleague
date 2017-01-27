@@ -178,8 +178,8 @@
                                             {% for round in league.submission_periods %}
                                             <span class="current-round" data-id="{{ round.id }}" data-name="{{ round.name }}" data-description="{{ round.description }}" data-submission-due-date-utc="{{ round.submission_due_date.strftime('%m/%d/%y %-I%p') }}" data-voting-due-date-utc="{{ round.vote_due_date.strftime('%m/%d/%y %-I%p') }}">
                                                 {{ round.name }}
-                                                <a class="btn btn-edit">Edit</a>
-                                                <a class="btn btn-delete">Delete</a>
+                                                <a class="btn edit-round-btn">Edit</a>
+                                                <a class="btn delete-round-btn">Delete</a>
                                             </span>
                                             {% endfor %}
                                         </div>
