@@ -176,7 +176,11 @@
                                         <div id="added-rounds" class="col-md-12">
                                             <span class="title">Rounds:</span>
                                             {% for round in league.submission_periods %}
-                                            <span class="current-round" data-name="{{ round.name }}" data-description="{{ round.description }}" data-submission-due-date-utc="{{ round.submission_due_date.strftime('%m/%d/%y %-I%p') }}" data-voting-due-date-utc="{{ round.vote_due_date.strftime('%m/%d/%y %-I%p') }}">{{ round.name }}</span>
+                                            <span class="current-round" data-id="{{ round.id }}" data-name="{{ round.name }}" data-description="{{ round.description }}" data-submission-due-date-utc="{{ round.submission_due_date.strftime('%m/%d/%y %-I%p') }}" data-voting-due-date-utc="{{ round.vote_due_date.strftime('%m/%d/%y %-I%p') }}">
+                                                {{ round.name }}
+                                                <a class="btn btn-edit">Edit</a>
+                                                <a class="btn btn-delete">Delete</a>
+                                            </span>
                                             {% endfor %}
                                         </div>
                                         <input type="hidden" id="added-rounds-inp" name="added-rounds">
@@ -205,8 +209,54 @@
         </div>
     </div>
 
-
 </form>
+
+<div id="edit-round-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Editing Round</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label for="edit-name">Round Name</label>
+                                <input type="text" name="edit-name" id="edit-name" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label for="edit-description">Description (Optional)</label>
+                                <textarea name="edit-description" id="edit-description" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <div class="form-group">
+                                <label for="edit-submission-due-date">Songs Due Date</label>
+                                <input type="text" class="form-control" id="edit-submission-due-date" name="edit-submission-due-date">
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                            <div class="form-group">
+                                <label for="edit-voting-due-date">Votes Due Date</label>
+                                <input type="text" class="form-control" id="edit-voting-due-date" name="edit-voting-due-date">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block js %}
@@ -313,6 +363,25 @@ $('#voting-due-date').datetimepicker({
     showClose: true
 }).on("dp.change", function(e) {
     $('#voting-due-date-utc').val(moment(e.date.utc()).format('MM/DD/YY hA'));
+});
+
+$('.btn-edit').on("click", function() {
+    var round = $(this).parent();
+    var id = round.data('id');
+    var name = round.data('name');
+    var description = round.data('description');
+    var submissionDueDateUTC = round.data('submission-due-date-utc');
+    var submissionDueDate = moment.utc(submissionDueDateUTC, "MM/DD/YY hA").toDate();
+    var votingDueDateUTC = round.data('voting-due-date-utc');
+    var votingDueDate = moment.utc(votingDueDateUTC, "MM/DD/YY hA").toDate();
+
+    var modal = $('#edit-round-modal');
+    modal.find('#edit-name').val(name);
+    modal.find('#edit-description').val(description);
+    modal.find('#edit-submission-due-date').val(moment(submissionDueDate).format('MM/DD/YY hA'));
+    modal.find('#edit-voting-due-date').val(moment(votingDueDate).format('MM/DD/YY hA'));
+
+    modal.modal('show');
 });
 
 $(document).ready(function() {
