@@ -114,18 +114,8 @@ def get_manage_league(league_id):
         flash_error('You must be owner of the league to access that page')
         return redirect(url_for('view_league', league_id=league_id))
 
-    if league.submission_periods:
-        lsp = league.submission_periods[-1]
-        next_submission_due_date = lsp.submission_due_date + timedelta(weeks=1)
-        next_vote_due_date = lsp.vote_due_date + timedelta(weeks=1)
-    else:
-        next_submission_due_date = datetime.utcnow() + timedelta(days=5)
-        next_vote_due_date = datetime.utcnow() + timedelta(days=7)
-
     return {'user': g.user,
-            'league': league,
-            'next_submission_due_date': next_submission_due_date,
-            'next_vote_due_date': next_vote_due_date}
+            'league': league}
 
 
 @app.route(MANAGE_LEAGUE_URL, methods=['POST'])
