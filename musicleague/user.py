@@ -37,6 +37,16 @@ def create_user_from_spotify_user(spotify_user):
         image_url=user_image_url)
 
 
+def update_user_from_spotify_user(user, spotify_user):
+    user_images = spotify_user.get('images')
+    user_image_url = ''
+    if user_images:
+        user.image_url = user_images[0].get('url', user_image_url)
+        user.save()
+
+    return user
+
+
 def create_user(id, name, email, image_url):
     if get_user(id):
         raise UserExistsError('User with id %s already exists' % id)
