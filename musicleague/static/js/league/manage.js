@@ -112,9 +112,7 @@ function inviteMember() {
 };
 
 // Add round to league on button click
-function guid() { return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4(); }
-function s4() { return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1); }
-
+function guid() { return Math.floor((1 + Math.random()) * 0x10000).toString(16); }
 function addRound() {
     // Generate a random id for correlation when editing added round
     var roundId = guid();
@@ -122,10 +120,24 @@ function addRound() {
     var roundDescription = $('#round-description').val();
     var submissionDueDate = $('#submission-due-date-utc').val();
     var votingDueDate = $('#voting-due-date-utc').val();
-    $('#added-rounds').append(
-        '<span class="round added-round" data-id="'+roundId+'" data-name="'+roundName+'" data-description="'+roundDescription+'" data-submission-due-date-utc="'+submissionDueDate+'" data-voting-due-date-utc="'+votingDueDate+'">'+roundName+'</span>'
-    );
-    $('#league-rounds-save-warning').slideDown();
+
+    var newRound = $('<span class="round added-round"></span>');
+    $('#added-rounds').append(newRound);
+    newRound = $('#added-rounds').children().last();
+    newRound.data('id', roundId);
+    newRound.data('name', roundName);
+    newRound.data('description', roundDescription);
+    newRound.data('submission-due-date-utc', submissionDueDate);
+    newRound.data('voting-due-date-utc', votingDueDate);
+    newRound.append('<span class="round-name">'+roundName+'</span>');
+
+    // var editRoundButton = $('<a class="btn edit-round-btn">Edit</a>');
+    // editRoundButton.on("click", editRound);
+    // newRound.append(editRoundButton);
+    //
+    // var deleteRoundButton = $('<a class="btn delete-round-btn">Delete</a>');
+    // deleteRoundButton.on("click", deleteRound);
+    // newRound.append(deleteRoundButton);
 
     $('#league-rounds input, #league-rounds textarea').val("");
     $('#round-name').focus();
@@ -173,7 +185,7 @@ function commitEditRound() {
     var editedSubmissionDueDateUTC = modal.find('#edit-submission-due-date-utc').val();
     var editedVotingDueDateUTC = modal.find('#edit-voting-due-date-utc').val();
 
-    var round = $('.round[data-id='+editedId+']');
+    var round = $('.round[data-id="'+editedId+'"]');
     round.data('name', editedName);
     round.data('description', editedDescription);
     round.data('submission-due-date-utc', editedSubmissionDueDateUTC);
@@ -181,6 +193,8 @@ function commitEditRound() {
     round.find('.round-name').html(editedName);
     round.removeClass('current-round').addClass('edited-round');
     modal.modal('hide');
+
+    $('#league-rounds').trigger('contentchanged');
 };
 
 // Handle delete round modal on button click
@@ -203,12 +217,18 @@ function commitDeleteRound() {
     var deletedName = modal.find('#delete-name').html();
     var round = $('.round[data-id='+deletedId+']');
     round.find('.round-name').html('<s>'+deletedName+'</s>');
+    round.find('.edit-round-btn').remove();
     round.find('.delete-round-btn').remove();
     var undoButton = $('<a class="btn undelete-round-btn">Undo</a>');
     undoButton.on("click", undeleteRound);
     round.append(undoButton);
-    round.removeClass('current-round').addClass('deleted-round');
+    round.removeClass('current-round');
+    round.removeClass('added-round');
+    round.removeClass('edited-round');
+    round.addClass('deleted-round');
     modal.modal('hide');
+
+    $('#league-rounds').trigger('contentchanged');
 };
 
 function undeleteRound() {
@@ -216,10 +236,15 @@ function undeleteRound() {
     var undeletedName = round.data('name');
     round.find('.round-name').html(undeletedName);
     round.find('.undelete-round-btn').remove();
+    var editButton = $('<a class="btn edit-round-btn">Edit</a>');
+    editButton.on("click", editRound);
+    round.append(editButton);
     var deleteButton = $('<a class="btn delete-round-btn">Delete</a>');
     deleteButton.on("click", deleteRound);
     round.append(deleteButton);
     round.removeClass('deleted-round').addClass('current-round');
+
+    $('#league-rounds').trigger('contentchanged');
 };
 
 // Bind all event handlers
