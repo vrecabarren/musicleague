@@ -1,7 +1,7 @@
 
 // Initialize league member search autocomplete
 $('#search').bootcomplete({
-    url: '{{ url_for("autocomplete") }}',
+    url: '/autocomplete/',
     method: 'post',
     minLength: 3
 });
@@ -98,6 +98,36 @@ function processFormSubmission() {
     collectEditedRounds();
     collectDeletedRounds();
     return true;
+};
+
+// Remove member
+function deleteMember() {
+    var member = $(this).parent();
+    var deletedId = member.data('id');
+    var deletedName = member.data('name');
+    member.find('.member-name').html('<s>'+deletedName+'</s>');
+    member.find('.delete-member-btn').remove();
+    var undoButton = $('<a class="btn undelete-member-btn">Undo</a>');
+    undoButton.on("click", undeleteMember);
+    member.append(undoButton);
+    member.removeClass('current-member');
+    member.addClass('deleted-member');
+
+    $('#league-members').trigger('contentchanged');
+};
+
+function undeleteMember() {
+    var member = $(this).parent();
+    var undeletedId = member.data('id');
+    var undeletedName = member.data('name');
+    member.find('.member-name').html(undeletedName);
+    member.find('.undelete-member-btn').remove();
+    var deleteButton = $('<a class="btn delete-member-btn">Delete</a>');
+    deleteButton.on("click", deleteMember);
+    member.append(deleteButton);
+    member.removeClass('deleted-member').addClass('current-member');
+
+    $('#league-members').trigger('contentchanged');
 };
 
 // Add invited member
@@ -252,6 +282,7 @@ function undeleteRound() {
 $(document).ready(function() {
     $('form').submit(processFormSubmission);
     $('#send-email-btn').on('click', inviteMember);
+    $('.delete-member-btn').on('click', deleteMember);
     $('#add-round-btn').on('click', addRound);
     $('.edit-round-btn').on("click", editRound);
     $('#edit-round-btn').on("click", commitEditRound);
