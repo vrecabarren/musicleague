@@ -17,6 +17,7 @@ from musicleague.routes.decorators import templated
 from musicleague.spotify import get_spotify_oauth
 from musicleague.user import create_user_from_spotify_user
 from musicleague.user import get_user
+from musicleague.user import update_user_from_spotify_user
 
 
 LOGIN_URL = '/login/'
@@ -73,6 +74,11 @@ def login():
             # If user logging in w/ Spotify does not yet exist, create it
             if not user:
                 user = create_user_from_spotify_user(spotify_user)
+
+            # If user's image is from Facebook, token may have expired.
+            # TODO: This needs to be smarter
+            elif 'fbcdn.net' in user.image_url:
+                user = update_user_from_spotify_user(user, spotify_user)
 
             _update_session(user_id, access_token, refresh_token, expires_at)
 
