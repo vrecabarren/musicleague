@@ -113,7 +113,7 @@
             if (settings.idField) {
                 var inputs = $(that).parent().parent().find('input[name="' + settings.idFieldName + '"]');
                 if (inputs.length !== 0) {
-                    var addedMember = '<span class="added-member" data-id="'+$(this).data('id')+'" data-name="'+$(this).data('label') +'">'+$(this).data('label')+'</span>';
+                    var addedMember = '<span class="member added-member" data-id="'+$(this).data('id')+'" data-name="'+$(this).data('label') +'">'+$(this).data('label')+'</span>';
                     $('#added-members').append(addedMember);
                     $('#added-members').trigger('contentchanged');
                 }
