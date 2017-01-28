@@ -295,15 +295,18 @@ body { font-family: 'Nunito', sans-serif; }
             margin-bottom: 10px;
         }
 
-        #league-rounds #added-rounds .current-round,
-        #league-rounds #added-rounds .added-round,
-        #league-rounds #added-rounds .deleted-round {
+        #league-rounds #added-rounds .round .edit-round-btn { color: #5FCC34; }
+        #league-rounds #added-rounds .round .delete-round-btn { color: #D21E35; }
+
+        #league-rounds #added-rounds .round {
             color: #02B8EF;
             display: block;
             font-size: 18px;
             line-height: 24px;
         }
 
+        #league-rounds #added-rounds .added-round { color: #5FCC34; }
+        #league-rounds #added-rounds .edited-round { color: #00259A; }
         #league-rounds #added-rounds .deleted-round { color: #D21E35; }
 
     #league-rounds #create-round-toggle { margin-top: 20px; }

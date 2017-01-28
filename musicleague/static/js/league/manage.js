@@ -22,6 +22,13 @@ initializeDatePicker('#submission-due-date').on("dp.change", function(e) {
 initializeDatePicker('#voting-due-date').on("dp.change", function(e) {
     $('#voting-due-date-utc').val(moment(e.date.utc()).format('MM/DD/YY hA'));
 });
+initializeDatePicker('#edit-submission-due-date').on("dp.change", function(e) {
+    $('#edit-submission-due-date-utc').val(moment(e.date.utc()).format('MM/DD/YY hA'));
+    $('#edit-voting-due-date').data("DateTimePicker").minDate(e.date.add(1, 'hours').toDate());
+});
+initializeDatePicker('#edit-voting-due-date').on("dp.change", function(e) {
+    $('#edit-voting-due-date-utc').val(moment(e.date.utc()).format('MM/DD/YY hA'));
+});
 
 // Process submission for manage league form
 function collectAddedMembers() {
@@ -123,8 +130,17 @@ function editRound() {
 function commitEditRound() {
     var modal = $('#edit-round-modal');
     var editedId = modal.find('#edit-id').val();
+    var editedName = modal.find('#edit-name').val();
+    var editedDescription = modal.find('#edit-description').val();
+    var editedSubmissionDueDateUTC = modal.find('#edit-submission-due-date-utc').val();
+    var editedVotingDueDateUTC = modal.find('#edit-voting-due-date-utc').val();
 
-
+    var round = $('.round[data-id='+editedId+']');
+    round.data('name', editedName);
+    round.data('description', editedDescription);
+    round.data('submission-due-date-utc', editedSubmissionDueDateUTC);
+    round.data('voting-due-date-utc', editedVotingDueDateUTC);
+    round.removeClass('current-round').addClass('edited-round');
     modal.modal('hide');
 };
 
