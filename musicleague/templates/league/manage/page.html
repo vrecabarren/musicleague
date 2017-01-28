@@ -42,13 +42,13 @@
                     <div class="col-md-5 col-md-offset-1">
                         <div class="form-group">
                             <label for="league-name">Number of Tracks Submitted</label>
-                            <input type="text" class="form-control" id="tracks-submitted" name="tracks-submitted" value="{{ league.preferences.track_count }}">
+                            <input type="text" class="form-control" id="tracks-submitted" name="tracks-submitted" data-ov="{{ league.preferences.track_count }}" value="{{ league.preferences.track_count }}">
                         </div>
                     </div>
                     <div class="col-md-5">
                         <div class="form-group">
                             <label for="point-bank-size">Point Bank Size</label>
-                            <input type="text" class="form-control" id="point-bank-size" name="point-bank-size" value="{{ league.preferences.point_bank_size }}">
+                            <input type="text" class="form-control" id="point-bank-size" name="point-bank-size" data-ov="{{ league.preferences.point_bank_size }}" value="{{ league.preferences.point_bank_size }}">
                         </div>
                     </div>
                 </div>
@@ -184,6 +184,8 @@
                                             {% endfor %}
                                         </div>
                                         <input type="hidden" id="added-rounds-inp" name="added-rounds">
+                                        <input type="hidden" id="edited-rounds-inp" name="edited-rounds">
+                                        <input type="hidden" id="deleted-rounds-inp" name="deleted-rounds">
                                     </div>
                                 </div>
                             </div>

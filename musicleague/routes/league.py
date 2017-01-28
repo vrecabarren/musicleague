@@ -20,6 +20,8 @@ from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 from musicleague.submission import get_submission
 from musicleague.submission_period import create_submission_period
+from musicleague.submission_period import remove_submission_period
+from musicleague.submission_period import update_submission_period
 from musicleague.user import get_user
 
 
@@ -130,7 +132,11 @@ def post_manage_league(league_id):
 
     emails = json.loads(request.form.get('invited-members', []))
 
-    rounds = json.loads(request.form.get('added-rounds', []))
+    added_rounds = json.loads(request.form.get('added-rounds', []))
+    edited_rounds = json.loads(request.form.get('edited-rounds', []))
+    deleted_rounds = json.loads(request.form.get('deleted-rounds', []))
+
+    app.logger.warning(deleted_rounds)
 
     league = get_league(league_id)
     league.preferences.name = name
@@ -141,18 +147,34 @@ def post_manage_league(league_id):
     for email in emails:
         add_user(league, email, notify=True)
 
-    for new_round in rounds:
-        submission_due_date_str = new_round['submission-due-date-utc']
+    for added_round in added_rounds:
+        submission_due_date_str = added_round['submission-due-date-utc']
         submission_due_date = utc.localize(
             datetime.strptime(submission_due_date_str, '%m/%d/%y %I%p'))
 
-        vote_due_date_str = new_round['voting-due-date-utc']
+        vote_due_date_str = added_round['voting-due-date-utc']
         vote_due_date = utc.localize(
             datetime.strptime(vote_due_date_str, '%m/%d/%y %I%p'))
 
         create_submission_period(
-            league, new_round['name'], new_round['description'],
+            league, added_round['name'], added_round['description'],
             submission_due_date, vote_due_date)
+
+    for edited_round in edited_rounds:
+        submission_due_date_str = edited_round['submission-due-date-utc']
+        submission_due_date = utc.localize(
+            datetime.strptime(submission_due_date_str, '%m/%d/%y %I%p'))
+
+        vote_due_date_str = edited_round['voting-due-date-utc']
+        vote_due_date = utc.localize(
+            datetime.strptime(vote_due_date_str, '%m/%d/%y %I%p'))
+
+        update_submission_period(
+            edited_round['id'], edited_round['name'],
+            edited_round['description'], submission_due_date, vote_due_date)
+
+    for deleted_round in deleted_rounds:
+        remove_submission_period(deleted_round)
 
     league.save()
     return redirect(url_for('view_league', league_id=league_id))

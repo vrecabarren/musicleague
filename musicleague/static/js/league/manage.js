@@ -65,10 +65,38 @@ function collectAddedRounds() {
     jsonField.val(JSON.stringify(rounds));
 };
 
+function collectEditedRounds() {
+    var rounds = [];
+    $('#added-rounds .edited-round').each(function() {
+        rounds.push(
+            {
+                'id': $(this).data('id'),
+                'name': $(this).data('name'),
+                'description': $(this).data('description'),
+                'submission-due-date-utc': $(this).data('submission-due-date-utc'),
+                'voting-due-date-utc': $(this).data('voting-due-date-utc')
+            }
+        );
+    });
+    var jsonField = $(document.getElementById('edited-rounds-inp'));
+    jsonField.val(JSON.stringify(rounds));
+};
+
+function collectDeletedRounds() {
+    var rounds = [];
+    $('#added-rounds .deleted-round').each(function() {
+        rounds.push($(this).data('id'));
+    });
+    var jsonField = $(document.getElementById('deleted-rounds-inp'));
+    jsonField.val(JSON.stringify(rounds));
+};
+
 function processFormSubmission() {
     collectAddedMembers();
     collectInvitedMembers();
     collectAddedRounds();
+    collectEditedRounds();
+    collectDeletedRounds();
     return true;
 };
 
@@ -84,13 +112,18 @@ function inviteMember() {
 };
 
 // Add round to league on button click
+function guid() { return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4(); }
+function s4() { return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1); }
+
 function addRound() {
+    // Generate a random id for correlation when editing added round
+    var roundId = guid();
     var roundName = $('#round-name').val();
     var roundDescription = $('#round-description').val();
     var submissionDueDate = $('#submission-due-date-utc').val();
     var votingDueDate = $('#voting-due-date-utc').val();
     $('#added-rounds').append(
-        '<span class="added-round" data-name="'+roundName+'" data-description="'+roundDescription+'" data-submission-due-date-utc="'+submissionDueDate+'" data-voting-due-date-utc="'+votingDueDate+'">'+roundName+'</span>'
+        '<span class="round added-round" data-id="'+roundId+'" data-name="'+roundName+'" data-description="'+roundDescription+'" data-submission-due-date-utc="'+submissionDueDate+'" data-voting-due-date-utc="'+votingDueDate+'">'+roundName+'</span>'
     );
     $('#league-rounds-save-warning').slideDown();
 
@@ -122,11 +155,14 @@ function editRound() {
     modal.find('#edit-name').val(name);
     modal.find('#edit-description').val(description);
     modal.find('#edit-submission-due-date').val(moment(submissionDueDate).format('MM/DD/YY hA'));
+    modal.find('#edit-submission-due-date-utc').val(moment(submissionDueDateUTC, 'MM/DD/YY hA').format('MM/DD/YY hA'));
     modal.find('#edit-voting-due-date').val(moment(votingDueDate).format('MM/DD/YY hA'));
+    modal.find('#edit-voting-due-date-utc').val(moment(votingDueDateUTC, 'MM/DD/YY hA').format('MM/DD/YY hA'));
 
     modal.modal('show');
 };
 
+// Update data properties on round from modal
 function commitEditRound() {
     var modal = $('#edit-round-modal');
     var editedId = modal.find('#edit-id').val();
@@ -157,6 +193,7 @@ function deleteRound() {
     modal.modal('show');
 };
 
+// Update data properties on round from modal
 function commitDeleteRound() {
     var modal = $('#delete-round-modal');
     var deletedId = modal.find('#delete-id').val();
@@ -178,11 +215,11 @@ $(document).ready(function() {
     $('#delete-round-btn').on("click", commitDeleteRound);
 
     $('#the-basics').on('contentchanged', function() { $('#the-basics-save-warning').slideDown(); });
+    $('#the-basics').on('contentunchanged', function() { $('#the-basics-save-warning').slideUp(); });
     $('#league-members').on('contentchanged', function() { $('#league-members-save-warning').slideDown(); });
     $('#league-rounds').on('contentchanged', function() { $('#league-rounds-save-warning').slideDown(); });
     $('#the-basics input').keydown(function() {
-        if ( $(this).val() != $(this).data('og')) {
+        if ( $(this).val() != $(this).data('ov'))
             $('#the-basics').trigger('contentchanged');
-        }
     });
 });
