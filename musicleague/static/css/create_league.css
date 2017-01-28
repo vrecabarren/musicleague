@@ -307,4 +307,5 @@ button[type="submit"] {
     width: 100%;
 }
 
-    button[type="submit"]:hover { color: #fff; }
+    button[type="submit"]:hover,
+    button[type="submit"]:active { color: #fff; }
