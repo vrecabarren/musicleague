@@ -300,7 +300,6 @@ $(document).ready(function() {
     $('.edit-round-btn').on("click", editRound);
     $('#edit-round-btn').on("click", commitEditRound);
     $('.delete-round-btn').on("click", deleteRound);
-    $('#delete-round-btn').on("click", commitDeleteRound);
     $('.undelete-round-btn').on("click", undeleteRound);
 
     $('#the-basics').on('contentchanged', function() { $('#the-basics-save-warning').slideDown(); });
