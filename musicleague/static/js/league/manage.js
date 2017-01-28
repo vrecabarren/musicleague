@@ -111,6 +111,7 @@ function editRound() {
     var votingDueDate = moment.utc(votingDueDateUTC, "MM/DD/YY hA").toDate();
 
     var modal = $('#edit-round-modal');
+    modal.find('#edit-id').val(id);
     modal.find('#edit-name').val(name);
     modal.find('#edit-description').val(description);
     modal.find('#edit-submission-due-date').val(moment(submissionDueDate).format('MM/DD/YY hA'));
@@ -119,30 +120,53 @@ function editRound() {
     modal.modal('show');
 };
 
+function commitEditRound() {
+    var modal = $('#edit-round-modal');
+    var editedId = modal.find('#edit-id').val();
+
+
+    modal.modal('hide');
+};
+
 // Handle delete round modal on button click
 function deleteRound() {
     var round = $(this).parent();
+    var id = round.data('id');
     var name = round.data('name');
 
     var modal = $('#delete-round-modal');
+    modal.find('#delete-id').val(id);
     modal.find('#delete-name').html(name);
 
     modal.modal('show');
 };
 
-// Show save warnings when necessary
-$('#the-basics').on('contentchanged', function() { $('#the-basics-save-warning').slideDown(); });
-$('#league-members').on('contentchanged', function() { $('#league-members-save-warning').slideDown(); });
-$('#league-rounds').on('contentchanged', function() { $('#league-rounds-save-warning').slideDown(); });
-$('#the-basics input').keydown(function() {
-    if ( $(this).val() != $(this).data('og')) {
-        $('#the-basics').trigger('contentchanged');
-    }
+function commitDeleteRound() {
+    var modal = $('#delete-round-modal');
+    var deletedId = modal.find('#delete-id').val();
+    var deletedName = modal.find('#delete-name').html();
+    var round = $('.round[data-id='+deletedId+']');
+    round.html('<s>'+deletedName+'</s>');
+    round.removeClass('current-round').addClass('deleted-round');
+    modal.modal('hide');
+};
+
+// Bind all event handlers
+$(document).ready(function() {
+    $('form').submit(processFormSubmission);
+    $('#send-email-btn').on('click', inviteMember);
+    $('#add-round-btn').on('click', addRound);
+    $('.edit-round-btn').on("click", editRound);
+    $('#edit-round-btn').on("click", commitEditRound);
+    $('.delete-round-btn').on("click", deleteRound);
+    $('#delete-round-btn').on("click", commitDeleteRound);
+
+    $('#the-basics').on('contentchanged', function() { $('#the-basics-save-warning').slideDown(); });
+    $('#league-members').on('contentchanged', function() { $('#league-members-save-warning').slideDown(); });
+    $('#league-rounds').on('contentchanged', function() { $('#league-rounds-save-warning').slideDown(); });
+    $('#the-basics input').keydown(function() {
+        if ( $(this).val() != $(this).data('og')) {
+            $('#the-basics').trigger('contentchanged');
+        }
+    });
 });
-
-
-$('form').submit(processFormSubmission);
-$('#send-email-btn').on('click', inviteMember);
-$('#add-round-btn').on('click', addRound);
-$('.edit-round-btn').on("click", editRound);
-$('.delete-round-btn').on("click", deleteRound);

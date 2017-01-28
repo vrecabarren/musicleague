@@ -296,12 +296,15 @@ body { font-family: 'Nunito', sans-serif; }
         }
 
         #league-rounds #added-rounds .current-round,
-        #league-rounds #added-rounds .added-round {
+        #league-rounds #added-rounds .added-round,
+        #league-rounds #added-rounds .deleted-round {
             color: #02B8EF;
             display: block;
             font-size: 18px;
             line-height: 24px;
         }
+
+        #league-rounds #added-rounds .deleted-round { color: #D21E35; }
 
     #league-rounds #create-round-toggle { margin-top: 20px; }
 
