@@ -242,7 +242,7 @@ function undeleteRound() {
     var deleteButton = $('<a class="btn delete-round-btn">Delete</a>');
     deleteButton.on("click", deleteRound);
     round.append(deleteButton);
-    round.removeClass('deleted-round').addClass('current-round');
+    round.removeClass('deleted-round').addClass('edited-round');
 
     $('#league-rounds').trigger('contentchanged');
 };
