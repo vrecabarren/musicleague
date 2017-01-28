@@ -245,25 +245,11 @@ function commitEditRound() {
     $('#league-rounds').trigger('contentchanged');
 };
 
-// Handle delete round modal on button click
+// Update data properties on round being deleted
 function deleteRound() {
     var round = $(this).parent();
-    var id = round.data('id');
-    var name = round.data('name');
-
-    var modal = $('#delete-round-modal');
-    modal.find('#delete-id').val(id);
-    modal.find('#delete-name').html(name);
-
-    modal.modal('show');
-};
-
-// Update data properties on round from modal
-function commitDeleteRound() {
-    var modal = $('#delete-round-modal');
-    var deletedId = modal.find('#delete-id').val();
-    var deletedName = modal.find('#delete-name').html();
-    var round = $('.round[data-id='+deletedId+']');
+    var deletedId = round.data('id');
+    var deletedName = round.data('name');
     round.find('.round-name').html('<s>'+deletedName+'</s>');
     round.find('.edit-round-btn').remove();
     round.find('.delete-round-btn').remove();
@@ -283,7 +269,6 @@ function commitDeleteRound() {
     }
 
     round.addClass('deleted-round');
-    modal.modal('hide');
 
     $('#league-rounds').trigger('contentchanged');
 };
@@ -300,7 +285,8 @@ function undeleteRound() {
     var deleteButton = $('<a class="btn delete-round-btn">Delete</a>');
     deleteButton.on("click", deleteRound);
     round.append(deleteButton);
-    round.removeClass('deleted-round').addClass('edited-round');
+    var prevClass = round.data('prev-class');
+    round.removeClass('deleted-round').addClass(prevClass);
 
     $('#league-rounds').trigger('contentchanged');
 };
