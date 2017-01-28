@@ -178,6 +178,7 @@ function commitEditRound() {
     round.data('description', editedDescription);
     round.data('submission-due-date-utc', editedSubmissionDueDateUTC);
     round.data('voting-due-date-utc', editedVotingDueDateUTC);
+    round.find('.round-name').html(editedName);
     round.removeClass('current-round').addClass('edited-round');
     modal.modal('hide');
 };
@@ -201,9 +202,24 @@ function commitDeleteRound() {
     var deletedId = modal.find('#delete-id').val();
     var deletedName = modal.find('#delete-name').html();
     var round = $('.round[data-id='+deletedId+']');
-    round.html('<s>'+deletedName+'</s>');
+    round.find('.round-name').html('<s>'+deletedName+'</s>');
+    round.find('.delete-round-btn').remove();
+    var undoButton = $('<a class="btn undelete-round-btn">Undo</a>');
+    undoButton.on("click", undeleteRound);
+    round.append(undoButton);
     round.removeClass('current-round').addClass('deleted-round');
     modal.modal('hide');
+};
+
+function undeleteRound() {
+    var round = $(this).parent();
+    var undeletedName = round.data('name');
+    round.find('.round-name').html(undeletedName);
+    round.find('.undelete-round-btn').remove();
+    var deleteButton = $('<a class="btn delete-round-btn">Delete</a>');
+    deleteButton.on("click", deleteRound);
+    round.append(deleteButton);
+    round.removeClass('deleted-round').addClass('current-round');
 };
 
 // Bind all event handlers
@@ -215,6 +231,7 @@ $(document).ready(function() {
     $('#edit-round-btn').on("click", commitEditRound);
     $('.delete-round-btn').on("click", deleteRound);
     $('#delete-round-btn').on("click", commitDeleteRound);
+    $('.undelete-round-btn').on("click", undeleteRound);
 
     $('#the-basics').on('contentchanged', function() { $('#the-basics-save-warning').slideDown(); });
     $('#the-basics').on('contentunchanged', function() { $('#the-basics-save-warning').slideUp(); });
