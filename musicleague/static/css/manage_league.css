@@ -297,9 +297,9 @@ body { font-family: 'Nunito', sans-serif; }
             margin-bottom: 10px;
         }
 
-        #league-rounds #added-rounds .round .edit-round-btn { border: 1px solid #5FCC34; color: #5FCC34; }
+        #league-rounds #added-rounds .round .edit-round-btn { border: 1px solid #5FCC34; color: #5FCC34; font-family: 'Cubano', sans-serif; }
         #league-rounds #added-rounds .round .delete-round-btn,
-        #league-rounds #added-rounds .round .undelete-round-btn { border: 1px solid #D21E35; color: #D21E35; }
+        #league-rounds #added-rounds .round .undelete-round-btn { border: 1px solid #D21E35; color: #D21E35; font-family: 'Cubano', sans-serif; }
 
         #league-rounds #added-rounds .round {
             color: #02B8EF;
@@ -339,3 +339,53 @@ button[type="submit"] {
 }
 
     button[type="submit"]:hover { color: #fff; }
+
+.modal .modal-title {
+    color: #5FCC34;
+    font-family: 'Cubano', sans-serif;
+    text-transform: uppercase;
+}
+
+#edit-round-modal label {
+    color: #00259A;
+    font-family: 'Cubano', sans-serif;
+    font-size: 18px;
+    line-height: 24px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+#edit-round-modal input[type="text"],
+#edit-round-modal input[type="email"],
+#edit-round-modal textarea {
+    background: #fff;
+    border: 1px solid #02B8EF;
+    border-radius: 8px;
+    font-size: 18px;
+    line-height: 36px;
+}
+
+#edit-round-modal input[type="text"],
+#edit-round-modal input[type="email"] {
+     height: 50px;
+ }
+
+ #edit-round-modal #edit-round-btn,
+ #edit-round-modal #cancel-edit-round-btn,
+ #delete-round-modal #delete-round-btn,
+ #delete-round-modal #cancel-delete-round-btn {
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Cubano', sans-serif;
+ }
+
+#edit-round-modal #edit-round-btn { background-color: #5FCC34; }
+#edit-round-modal #cancel-edit-round-btn { background-color: #02B8EF; }
+#delete-round-modal #delete-round-btn { background-color: #D21E35; }
+#delete-round-modal #cancel-delete-round-btn { background-color: #02B8EF; }
+
+#delete-round-modal span {
+    font-size: 18px;
+    line-height: 24px;
+}
