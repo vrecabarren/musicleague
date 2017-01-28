@@ -286,6 +286,8 @@ body { font-family: 'Nunito', sans-serif; }
 
     #league-rounds #added-rounds { margin-bottom: 20px; }
 
+        #league-rounds #added-rounds .round { margin: 5px 0px; }
+
         #league-rounds #added-rounds .title {
             color: #02B8EF;
             display: block;
