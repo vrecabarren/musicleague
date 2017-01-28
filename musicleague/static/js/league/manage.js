@@ -7,7 +7,7 @@ $('#search').bootcomplete({
 });
 
 // Initialize league round add datetime pickers
-var initializeDatePicker = function(elementId) {
+function initializeDatePicker(elementId) {
     return $(elementId).datetimepicker({
         sideBySide: true,
         format: 'MM/DD/YY hA',
@@ -24,7 +24,7 @@ initializeDatePicker('#voting-due-date').on("dp.change", function(e) {
 });
 
 // Process submission for manage league form
-var collectAddedMembers = function() {
+function collectAddedMembers() {
     var members = [];
     $('#added-members .added-member').each(function() {
         members.push(String($(this).data('id')));
@@ -33,7 +33,7 @@ var collectAddedMembers = function() {
     jsonField.val(JSON.stringify(members));
 };
 
-var collectInvitedMembers = function() {
+function collectInvitedMembers() {
     var invited = [];
     $('#added-members .invited-member').each(function() {
         invited.push(String($(this).data('email')));
@@ -42,7 +42,7 @@ var collectInvitedMembers = function() {
     jsonField.val(JSON.stringify(invited));
 };
 
-var collectAddedRounds = function() {
+function collectAddedRounds() {
     var rounds = [];
     $('#added-rounds .added-round').each(function() {
         rounds.push(
@@ -58,7 +58,7 @@ var collectAddedRounds = function() {
     jsonField.val(JSON.stringify(rounds));
 };
 
-var processFormSubmission = function() {
+function processFormSubmission() {
     collectAddedMembers();
     collectInvitedMembers();
     collectAddedRounds();
@@ -66,7 +66,7 @@ var processFormSubmission = function() {
 };
 
 // Add invited member
-var inviteMember = function() {
+function inviteMember() {
     var email = $('#email').val();
     $('#added-members').append(
         '<span class="invited-member" data-email="'+email+'">'+email+'</span>'
@@ -77,7 +77,7 @@ var inviteMember = function() {
 };
 
 // Add round to league on button click
-var addRound = function() {
+function addRound() {
     var roundName = $('#round-name').val();
     var roundDescription = $('#round-description').val();
     var submissionDueDate = $('#submission-due-date-utc').val();
@@ -100,7 +100,7 @@ var addRound = function() {
 };
 
 // Handle edit round modal on button click
-var editRound = function() {
+function editRound() {
     var round = $(this).parent();
     var id = round.data('id');
     var name = round.data('name');
@@ -120,10 +120,14 @@ var editRound = function() {
 };
 
 // Handle delete round modal on button click
-var deleteRound = function() {
+function deleteRound() {
     var round = $(this).parent();
     var name = round.data('name');
-    alert(name);
+
+    var modal = $('#delete-round-modal');
+    modal.find('#delete-name').html(name);
+
+    modal.modal('show');
 };
 
 // Show save warnings when necessary
