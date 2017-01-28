@@ -49,6 +49,15 @@ function collectInvitedMembers() {
     jsonField.val(JSON.stringify(invited));
 };
 
+function collectDeletedMembers() {
+    var members = [];
+    $('#added-members .deleted-member').each(function() {
+        members.push(String($(this).data('id')));
+    });
+    var jsonField = $(document.getElementById('deleted-members-inp'));
+    jsonField.val(JSON.stringify(members));
+};
+
 function collectAddedRounds() {
     var rounds = [];
     $('#added-rounds .added-round').each(function() {
@@ -70,7 +79,7 @@ function collectEditedRounds() {
     $('#added-rounds .edited-round').each(function() {
         rounds.push(
             {
-                'id': $(this).data('id'),
+                'id': String($(this).data('id')),
                 'name': $(this).data('name'),
                 'description': $(this).data('description'),
                 'submission-due-date-utc': $(this).data('submission-due-date-utc'),
@@ -85,7 +94,7 @@ function collectEditedRounds() {
 function collectDeletedRounds() {
     var rounds = [];
     $('#added-rounds .deleted-round').each(function() {
-        rounds.push($(this).data('id'));
+        rounds.push(String($(this).data('id')));
     });
     var jsonField = $(document.getElementById('deleted-rounds-inp'));
     jsonField.val(JSON.stringify(rounds));
@@ -94,6 +103,7 @@ function collectDeletedRounds() {
 function processFormSubmission() {
     collectAddedMembers();
     collectInvitedMembers();
+    collectDeletedMembers();
     collectAddedRounds();
     collectEditedRounds();
     collectDeletedRounds();

@@ -128,24 +128,25 @@ def post_manage_league(league_id):
     bank_size = request.form.get('point-bank-size')
 
     user_ids = json.loads(request.form.get('added-members', []))
-    members = [get_user(uid) for uid in user_ids]
-
+    added_members = [get_user(uid) for uid in user_ids]
     emails = json.loads(request.form.get('invited-members', []))
+    deleted_members = json.loads(request.form.get('deleted-members', []))
 
     added_rounds = json.loads(request.form.get('added-rounds', []))
     edited_rounds = json.loads(request.form.get('edited-rounds', []))
     deleted_rounds = json.loads(request.form.get('deleted-rounds', []))
 
-    app.logger.warning(deleted_rounds)
-
     league = get_league(league_id)
     league.preferences.name = name
     league.preferences.track_count = int(num_tracks)
     league.preferences.point_bank_size = int(bank_size)
-    league.users.extend(members)
+    league.users.extend(added_members)
 
     for email in emails:
         add_user(league, email, notify=True)
+
+    for deleted_member in deleted_members:
+        remove_user(league, deleted_member)
 
     for added_round in added_rounds:
         submission_due_date_str = added_round['submission-due-date-utc']
