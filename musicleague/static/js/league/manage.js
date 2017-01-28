@@ -239,6 +239,7 @@ function undeleteRound() {
     var editButton = $('<a class="btn edit-round-btn">Edit</a>');
     editButton.on("click", editRound);
     round.append(editButton);
+    round.append('&nbsp;');
     var deleteButton = $('<a class="btn delete-round-btn">Delete</a>');
     deleteButton.on("click", deleteRound);
     round.append(deleteButton);
