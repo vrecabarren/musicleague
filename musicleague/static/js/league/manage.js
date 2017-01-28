@@ -120,7 +120,14 @@ function deleteMember() {
     var undoButton = $('<a class="btn undelete-member-btn">Undo</a>');
     undoButton.on("click", undeleteMember);
     member.append(undoButton);
-    member.removeClass('current-member');
+
+    if (member.hasClass('current-member')) {
+        member.data('prev-class', 'current-member');
+        member.removeClass('current-member');
+    } else if (member.hasClass('added-member')) {
+        member.data('prev-class', 'added-member');
+        member.removeClass('added-member');
+    }
     member.addClass('deleted-member');
 
     $('#league-members').trigger('contentchanged');
@@ -135,7 +142,8 @@ function undeleteMember() {
     var deleteButton = $('<a class="btn delete-member-btn">Delete</a>');
     deleteButton.on("click", deleteMember);
     member.append(deleteButton);
-    member.removeClass('deleted-member').addClass('current-member');
+    var prevClass = member.data('prev-class');
+    member.removeClass('deleted-member').addClass(prevClass);
 
     $('#league-members').trigger('contentchanged');
 };
@@ -262,9 +270,18 @@ function commitDeleteRound() {
     var undoButton = $('<a class="btn undelete-round-btn">Undo</a>');
     undoButton.on("click", undeleteRound);
     round.append(undoButton);
-    round.removeClass('current-round');
-    round.removeClass('added-round');
-    round.removeClass('edited-round');
+
+    if (round.hasClass('current-round')) {
+        round.data('prev-class', 'current-round');
+        round.removeClass('current-round');
+    } else if (round.hasClass('added-round')) {
+        round.data('prev-class', 'added-round');
+        round.removeClass('added-round');
+    } else if (round.hasClass('edited-round')) {
+        round.data('prev-class', 'edited-round');
+        round.removeClass('edited-round');
+    }
+
     round.addClass('deleted-round');
     modal.modal('hide');
 
