@@ -132,9 +132,11 @@ function addRound() {
 
     var nextSubmissionDueDate = moment.utc(submissionDueDate, "MM/DD/YY hA").add(7, 'days');
     $('#submission-due-date').val(moment(nextSubmissionDueDate.toDate()).format('MM/DD/YY hA'));
+    $('#submission-due-date').trigger('dp.change');
+
     var nextVotingDueDate = moment.utc(votingDueDate, "MM/DD/YY hA").add(7, 'days');
     $('#voting-due-date').val(moment(nextVotingDueDate.toDate()).format('MM/DD/YY hA'));
-    $('#submission-due-date, #voting-due-date').trigger('dp.change');
+    $('#voting-due-date').trigger('dp.change');
 
     $('#league-rounds').trigger('contentchanged');
 };
