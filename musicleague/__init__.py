@@ -27,30 +27,11 @@ app = Flask(__name__)
 moment = Moment(app)
 app.secret_key = get_secret_key()
 
-
-class ContextualFilter(logging.Filter):
-
-    def filter(self, log_record):
-        log_record.utcnow = (datetime.utcnow()
-                             .strftime('%Y-%m-%d %H:%M:%S,%f %Z'))
-        log_record.url = request.path
-        log_record.method = request.method
-        log_record.user_id = g.user.id
-        log_record.ip = request.environ.get('HTTP_X_REAL_IP',
-                                            request.remote_addr)
-        return True
-
-log_format = ("%(utcnow)s\tl=%(levelname)s\tu=%(user_id)s\tip=%(ip)s"
-              "\tm=%(method)s\turl=%(url)s\tmsg=%(message)s")
-formatter = logging.Formatter(log_format)
-
 streamHandler = logging.StreamHandler()
 streamHandler.setLevel(logging.INFO)
-streamHandler.setFormatter(formatter)
 
 log = app.logger
 log.setLevel(logging.DEBUG)
-log.addFilter(ContextualFilter())
 log.addHandler(streamHandler)
 
 if is_deployed():
