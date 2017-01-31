@@ -187,13 +187,13 @@
                                             <span class="title">Rounds:</span>
                                             {% for round in league.submission_periods %}
                                             <span class="row round current-round" data-id="{{ round.id }}" data-name="{{ round.name }}" data-description="{{ round.description }}" data-submission-due-date-utc="{{ round.submission_due_date.strftime('%m/%d/%y %-I%p') }}" data-voting-due-date-utc="{{ round.vote_due_date.strftime('%m/%d/%y %-I%p') }}">
-                                                <div class="col-xs-7 round-name-wrapper">
+                                                <div class="col-xs-6 col-sm-8 col-md-7 round-name-wrapper">
                                                     <span class="round-name">{{ round.name }}</span>
                                                 </div>
-                                                <div class="col-xs-2 button-wrapper">
+                                                <div class="col-xs-3 col-sm-2 button-wrapper">
                                                     <a class="btn edit-round-btn">Edit</a>
                                                 </div>
-                                                <div class="col-xs-3 button-wrapper">
+                                                <div class="col-xs-3 col-sm-2 col-md-3 button-wrapper">
                                                     <a class="btn delete-round-btn">Delete</a>
                                                 </div>
                                             </span>
