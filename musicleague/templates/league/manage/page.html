@@ -91,6 +91,9 @@
                                 <span class="row member current-member" data-id="{{ member.id }}" data-name="{{ member.name }}">
                                     <div class="col-xs-9 member-name-wrapper">
                                         <span class="member-name">{{ member.name }}</span>
+                                        {% if league.has_owner(member) %}
+                                        <span class="owner-star"></span>
+                                        {% endif %}
                                     </div>
                                     {% if not league.has_owner(member) %}
                                     <div class="col-xs-3 button-wrapper">
