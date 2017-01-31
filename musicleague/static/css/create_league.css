@@ -240,6 +240,14 @@ body { font-family: 'Nunito', sans-serif; }
             margin-bottom: 10px;
         }
 
+        #league-members #search-members-wrapper #added-members .member {
+            color: #02B8EF;
+            display: block;
+            font-size: 18px;
+            line-height: 24px;
+            margin: 5px 0px;
+        }
+
         #league-members #search-members-wrapper #added-members .added-member,
         #league-members #search-members-wrapper #added-members .current-member,
         #league-members #search-members-wrapper #added-members .invited-member {
@@ -247,7 +255,17 @@ body { font-family: 'Nunito', sans-serif; }
             display: block;
             font-size: 18px;
             line-height: 24px;
+            margin: 5px 0px;
         }
+        #league-members #search-members-wrapper #added-members .added-member { color: #5FCC34; }
+        #league-members #search-members-wrapper #added-members .deleted-member { color: #D21E35; }
+
+        #league-members #search-members-wrapper #added-members .member .member-name-wrapper { padding: 0px; }
+        #league-members #search-members-wrapper #added-members .member .member-name-wrapper .member-name { font-size: 18px; line-height: 32px; }
+
+        #league-members #search-members-wrapper #added-members .member .button-wrapper { text-align: right; }
+        #league-members #search-members-wrapper #added-members .member .button-wrapper .delete-member-btn,
+        #league-members #search-members-wrapper #added-members .member .button-wrapper .undelete-member-btn { border: 1px solid #D21E35; color: #D21E35; font-family: 'Cubano', sans-serif; }
 
     #league-members #invite-members-wrapper {
         background: #efefef;
@@ -259,6 +277,8 @@ body { font-family: 'Nunito', sans-serif; }
 
     #league-rounds #added-rounds { margin-bottom: 20px; }
 
+        #league-rounds #added-rounds .round { margin: 5px 0px; padding: 0px; }
+
         #league-rounds #added-rounds .title {
             color: #02B8EF;
             display: block;
@@ -268,9 +288,13 @@ body { font-family: 'Nunito', sans-serif; }
             margin-bottom: 10px;
         }
 
-        #league-rounds #added-rounds .round .edit-round-btn { border: 1px solid #5FCC34; color: #5FCC34; }
-        #league-rounds #added-rounds .round .delete-round-btn,
-        #league-rounds #added-rounds .round .undelete-round-btn { border: 1px solid #D21E35; color: #D21E35; }
+        #league-rounds #added-rounds .round-name-wrapper { padding: 0px; }
+        #league-rounds #added-rounds .round-name { font-size: 18px; line-height: 32px; }
+
+        #league-rounds #added-rounds .round .button-wrapper { text-align: right; }
+        #league-rounds #added-rounds .round .button-wrapper .edit-round-btn { border: 1px solid #5FCC34; color: #5FCC34; font-family: 'Cubano', sans-serif; }
+        #league-rounds #added-rounds .round .button-wrapper .delete-round-btn,
+        #league-rounds #added-rounds .round .button-wrapper .undelete-round-btn { border: 1px solid #D21E35; color: #D21E35; font-family: 'Cubano', sans-serif; }
 
         #league-rounds #added-rounds .round {
             color: #02B8EF;

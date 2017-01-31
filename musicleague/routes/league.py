@@ -175,7 +175,11 @@ def post_manage_league(league_id):
             edited_round['description'], submission_due_date, vote_due_date)
 
     for deleted_round in deleted_rounds:
-        remove_submission_period(deleted_round)
+        try:
+            remove_submission_period(deleted_round)
+        except Exception as e:
+            app.logger.warning('Error while attempting to delete round %s: %s',
+                               deleted_round, str(e))
 
     league.save()
     return redirect(url_for('view_league', league_id=league_id))
