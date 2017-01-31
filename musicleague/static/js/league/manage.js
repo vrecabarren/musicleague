@@ -169,23 +169,18 @@ function addRound() {
     var submissionDueDate = $('#submission-due-date-utc').val();
     var votingDueDate = $('#voting-due-date-utc').val();
 
-    var newRound = $('<span class="round added-round"></span>');
+    var newRound = $('<span class="row round added-round" data-id="'+roundId+'" data-name="'+roundName+'" data-description="'+roundDescription+'" data-submission-due-date-utc="'+submissionDueDate+'" data-voting-due-date-utc="'+votingDueDate+'"></span>');
     $('#added-rounds').append(newRound);
     newRound = $('#added-rounds').children().last();
-    newRound.data('id', roundId);
-    newRound.data('name', roundName);
-    newRound.data('description', roundDescription);
-    newRound.data('submission-due-date-utc', submissionDueDate);
-    newRound.data('voting-due-date-utc', votingDueDate);
-    newRound.append('<span class="round-name">'+roundName+'</span>');
+    newRound.append('<div class="col-xs-7 round-name-wrapper"><span class="round-name">'+roundName+'</span></div><div class="col-xs-2 button-wrapper"></div><div class="col-xs-3 button-wrapper"></div>');
 
-    // var editRoundButton = $('<a class="btn edit-round-btn">Edit</a>');
-    // editRoundButton.on("click", editRound);
-    // newRound.append(editRoundButton);
-    //
-    // var deleteRoundButton = $('<a class="btn delete-round-btn">Delete</a>');
-    // deleteRoundButton.on("click", deleteRound);
-    // newRound.append(deleteRoundButton);
+    var editRoundButton = $('<a class="btn edit-round-btn">Edit</a>');
+    editRoundButton.on("click", editRound);
+    newRound.find('.button-wrapper').eq(0).append(editRoundButton);
+
+    var deleteRoundButton = $('<a class="btn delete-round-btn">Delete</a>');
+    deleteRoundButton.on("click", deleteRound);
+    newRound.find('.button-wrapper').eq(1).append(deleteRoundButton);
 
     $('#league-rounds input, #league-rounds textarea').val("");
     $('#round-name').focus();
@@ -239,7 +234,8 @@ function commitEditRound() {
     round.data('submission-due-date-utc', editedSubmissionDueDateUTC);
     round.data('voting-due-date-utc', editedVotingDueDateUTC);
     round.find('.round-name').html(editedName);
-    round.removeClass('current-round').addClass('edited-round');
+    if (round.hasClass('current-round'))
+        round.removeClass('current-round').addClass('edited-round');
     modal.modal('hide');
 
     $('#league-rounds').trigger('contentchanged');
