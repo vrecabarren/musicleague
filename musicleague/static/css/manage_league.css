@@ -279,7 +279,7 @@ body { font-family: 'Nunito', sans-serif; }
 
         #league-members #search-members-wrapper #added-members .member .member-name-wrapper { padding: 0px; }
         #league-members #search-members-wrapper #added-members .member .member-name-wrapper .member-name { font-size: 18px; line-height: 32px; }
-        
+
         #league-members #search-members-wrapper #added-members .member .button-wrapper { text-align: right; }
         #league-members #search-members-wrapper #added-members .member .button-wrapper .delete-member-btn,
         #league-members #search-members-wrapper #added-members .member .button-wrapper .undelete-member-btn { border: 1px solid #D21E35; color: #D21E35; font-family: 'Cubano', sans-serif; }
@@ -351,9 +351,10 @@ button[type="submit"] {
 }
 
     button[type="submit"]:hover,
-    button[type="submit"]:active { color: #fff; }
+    button[type="submit"]:active,
+    button[type="submit"]:focus { color: #fff; }
 
-.modal .modal-title {
+#edit-round-modal .modal-title {
     color: #5FCC34;
     font-family: 'Cubano', sans-serif;
     text-transform: uppercase;
@@ -395,10 +396,3 @@ button[type="submit"] {
 
 #edit-round-modal #edit-round-btn { background-color: #5FCC34; }
 #edit-round-modal #cancel-edit-round-btn { background-color: #02B8EF; }
-#delete-round-modal #delete-round-btn { background-color: #D21E35; }
-#delete-round-modal #cancel-delete-round-btn { background-color: #02B8EF; }
-
-#delete-round-modal span {
-    font-size: 18px;
-    line-height: 24px;
-}
