@@ -177,7 +177,7 @@ function addRound() {
     var newRound = $('<span class="row round added-round" data-id="'+roundId+'" data-name="'+roundName+'" data-description="'+roundDescription+'" data-submission-due-date-utc="'+submissionDueDate+'" data-voting-due-date-utc="'+votingDueDate+'"></span>');
     $('#added-rounds').append(newRound);
     newRound = $('#added-rounds').children().last();
-    newRound.append('<div class="col-xs-7 round-name-wrapper"><span class="round-name">'+roundName+'</span></div><div class="col-xs-2 button-wrapper"></div><div class="col-xs-3 button-wrapper"></div>');
+    newRound.append('<div class="col-xs-6 col-sm-8 col-md-7 round-name-wrapper"><span class="round-name">'+roundName+'</span></div><div class="col-xs-3 col-sm-2 button-wrapper"></div><div class="col-xs-3 col-sm-2 col-md-3 button-wrapper"></div>');
 
     var editRoundButton = $('<a class="btn edit-round-btn">Edit</a>');
     editRoundButton.on("click", editRound);
