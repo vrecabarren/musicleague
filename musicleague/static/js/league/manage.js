@@ -203,7 +203,7 @@ function addRound() {
 
 // Handle edit round modal on button click
 function editRound() {
-    var round = $(this).parent();
+    var round = $(this).parent().parent();
     var id = round.data('id');
     var name = round.data('name');
     var description = round.data('description');
@@ -247,7 +247,7 @@ function commitEditRound() {
 
 // Update data properties on round being deleted
 function deleteRound() {
-    var round = $(this).parent();
+    var round = $(this).parent().parent();
     var deletedId = round.data('id');
     var deletedName = round.data('name');
     round.find('.round-name').html('<s>'+deletedName+'</s>');
@@ -255,7 +255,7 @@ function deleteRound() {
     round.find('.delete-round-btn').remove();
     var undoButton = $('<a class="btn undelete-round-btn">Undo</a>');
     undoButton.on("click", undeleteRound);
-    round.append(undoButton);
+    round.find('.button-wrapper').eq(1).append(undoButton);
 
     if (round.hasClass('current-round')) {
         round.data('prev-class', 'current-round');
@@ -274,17 +274,16 @@ function deleteRound() {
 };
 
 function undeleteRound() {
-    var round = $(this).parent();
+    var round = $(this).parent().parent();
     var undeletedName = round.data('name');
     round.find('.round-name').html(undeletedName);
     round.find('.undelete-round-btn').remove();
     var editButton = $('<a class="btn edit-round-btn">Edit</a>');
     editButton.on("click", editRound);
-    round.append(editButton);
-    round.append('&nbsp;');
+    round.find('.button-wrapper').eq(0).append(editButton);
     var deleteButton = $('<a class="btn delete-round-btn">Delete</a>');
     deleteButton.on("click", deleteRound);
-    round.append(deleteButton);
+    round.find('.button-wrapper').eq(1).append(deleteButton);
     var prevClass = round.data('prev-class');
     round.removeClass('deleted-round').addClass(prevClass);
 

@@ -290,20 +290,24 @@ body { font-family: 'Nunito', sans-serif; }
 
     #league-rounds #added-rounds { margin-bottom: 20px; }
 
-        #league-rounds #added-rounds .round { margin: 5px 0px; }
+        #league-rounds #added-rounds .round { margin: 5px 0px; padding: 0px; }
 
         #league-rounds #added-rounds .title {
             color: #02B8EF;
             display: block;
             font-family: 'Cubano', sans-serif;
             font-size: 18px;
-            line-height: 24px;
+            line-height: 32px;
             margin-bottom: 10px;
         }
 
-        #league-rounds #added-rounds .round .edit-round-btn { border: 1px solid #5FCC34; color: #5FCC34; font-family: 'Cubano', sans-serif; }
-        #league-rounds #added-rounds .round .delete-round-btn,
-        #league-rounds #added-rounds .round .undelete-round-btn { border: 1px solid #D21E35; color: #D21E35; font-family: 'Cubano', sans-serif; }
+        #league-rounds #added-rounds .round-name-wrapper { padding: 0px; }
+        #league-rounds #added-rounds .round-name { font-size: 18px; line-height: 32px; }
+
+        #league-rounds #added-rounds .round .button-wrapper { text-align: right; }
+        #league-rounds #added-rounds .round .button-wrapper .edit-round-btn { border: 1px solid #5FCC34; color: #5FCC34; font-family: 'Cubano', sans-serif; }
+        #league-rounds #added-rounds .round .button-wrapper .delete-round-btn,
+        #league-rounds #added-rounds .round .button-wrapper .undelete-round-btn { border: 1px solid #D21E35; color: #D21E35; font-family: 'Cubano', sans-serif; }
 
         #league-rounds #added-rounds .round {
             color: #02B8EF;
