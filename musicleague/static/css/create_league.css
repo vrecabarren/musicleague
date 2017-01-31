@@ -304,6 +304,8 @@ body { font-family: 'Nunito', sans-serif; }
         }
 
         #league-rounds #added-rounds .added-round { color: #5FCC34; }
+        #league-rounds #added-rounds .edited-round { color: #00259A; }
+        #league-rounds #added-rounds .deleted-round { color: #D21E35; }
 
     #league-rounds #create-round-toggle { margin-top: 20px; }
 
