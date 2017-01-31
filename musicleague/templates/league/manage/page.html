@@ -88,10 +88,14 @@
                             <div id="added-members" class="form-group">
                                 <span class="title">Members:</span>
                                 {% for member in league.users %}
-                                <span class="member current-member" data-id="{{ member.id }}" data-name="{{ member.name }}">
-                                    <span class="member-name">{{ member.name }}</span>&nbsp;
+                                <span class="row member current-member" data-id="{{ member.id }}" data-name="{{ member.name }}">
+                                    <div class="col-xs-9 member-name-wrapper">
+                                        <span class="member-name">{{ member.name }}</span>
+                                    </div>
                                     {% if not league.has_owner(member) %}
-                                    <a class="btn delete-member-btn">Delete</a>
+                                    <div class="col-xs-3 button-wrapper">
+                                        <a class="btn delete-member-btn">Delete</a>
+                                    </div>
                                     {% endif %}
                                 </span>
                                 {% endfor %}

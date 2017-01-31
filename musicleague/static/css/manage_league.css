@@ -277,8 +277,12 @@ body { font-family: 'Nunito', sans-serif; }
         #league-members #search-members-wrapper #added-members .added-member { color: #5FCC34; }
         #league-members #search-members-wrapper #added-members .deleted-member { color: #D21E35; }
 
-        #league-members #search-members-wrapper #added-members .member .delete-member-btn,
-        #league-members #search-members-wrapper #added-members .member .undelete-member-btn { border: 1px solid #D21E35; color: #D21E35; font-family: 'Cubano', sans-serif; }
+        #league-members #search-members-wrapper #added-members .member .member-name-wrapper { padding: 0px; }
+        #league-members #search-members-wrapper #added-members .member .member-name-wrapper .member-name { font-size: 18px; line-height: 32px; }
+        
+        #league-members #search-members-wrapper #added-members .member .button-wrapper { text-align: right; }
+        #league-members #search-members-wrapper #added-members .member .button-wrapper .delete-member-btn,
+        #league-members #search-members-wrapper #added-members .member .button-wrapper .undelete-member-btn { border: 1px solid #D21E35; color: #D21E35; font-family: 'Cubano', sans-serif; }
 
     #league-members #invite-members-wrapper {
         background: #efefef;

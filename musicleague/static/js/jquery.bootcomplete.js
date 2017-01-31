@@ -113,12 +113,12 @@
             if (settings.idField) {
                 var inputs = $(that).parent().parent().find('input[name="' + settings.idFieldName + '"]');
                 if (inputs.length !== 0) {
-                    var addedMember = '<span class="member added-member" data-id="'+$(this).data('id')+'" data-name="'+$(this).data('label') +'"><span class="member-name">'+$(this).data('label')+'</span>&nbsp;</span>';
+                    var addedMember = '<span class="row member added-member" data-id="'+$(this).data('id')+'" data-name="'+$(this).data('label') +'"><div class="col-xs-9 member-name-wrapper"><span class="member-name">'+$(this).data('label')+'</span></div><div class="col-xs-3 button-wrapper"></div></span>';
                     $('#added-members').append(addedMember);
                     addedMember = $('#added-members').children().last();
                     var deleteButton = $('<a class="btn delete-member-btn">Delete</a>');
                     deleteButton.on("click", deleteMember);
-                    addedMember.append(deleteButton);
+                    addedMember.find('.button-wrapper').append(deleteButton);
                     $('#added-members').trigger('contentchanged');
                 }
             }

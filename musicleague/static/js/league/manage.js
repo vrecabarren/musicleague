@@ -112,14 +112,14 @@ function processFormSubmission() {
 
 // Remove member
 function deleteMember() {
-    var member = $(this).parent();
+    var member = $(this).parent().parent();
     var deletedId = member.data('id');
     var deletedName = member.data('name');
     member.find('.member-name').html('<s>'+deletedName+'</s>');
     member.find('.delete-member-btn').remove();
     var undoButton = $('<a class="btn undelete-member-btn">Undo</a>');
     undoButton.on("click", undeleteMember);
-    member.append(undoButton);
+    member.find('.button-wrapper').append(undoButton);
 
     if (member.hasClass('current-member')) {
         member.data('prev-class', 'current-member');
@@ -134,14 +134,14 @@ function deleteMember() {
 };
 
 function undeleteMember() {
-    var member = $(this).parent();
+    var member = $(this).parent().parent();
     var undeletedId = member.data('id');
     var undeletedName = member.data('name');
     member.find('.member-name').html(undeletedName);
     member.find('.undelete-member-btn').remove();
     var deleteButton = $('<a class="btn delete-member-btn">Delete</a>');
     deleteButton.on("click", deleteMember);
-    member.append(deleteButton);
+    member.find('.button-wrapper').append(deleteButton);
     var prevClass = member.data('prev-class');
     member.removeClass('deleted-member').addClass(prevClass);
 
