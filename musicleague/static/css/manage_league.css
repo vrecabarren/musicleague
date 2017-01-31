@@ -179,6 +179,7 @@ body { font-family: 'Nunito', sans-serif; }
     font-size: 18px;
     line-height: 22px;
     padding: 10px 0px;
+    text-transform: uppercase;
 }
 
 .section { padding: 15px 0px; }
