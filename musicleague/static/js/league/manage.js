@@ -127,6 +127,9 @@ function deleteMember() {
     } else if (member.hasClass('added-member')) {
         member.data('prev-class', 'added-member');
         member.removeClass('added-member');
+    } else if (member.hasClass('invited-member')) {
+        member.data('prev-class', 'invited-member');
+        member.removeClass('invited-member');
     }
     member.addClass('deleted-member');
 
@@ -151,11 +154,13 @@ function undeleteMember() {
 // Add invited member
 function inviteMember() {
     var email = $('#email').val();
-    $('#added-members').append(
-        '<span class="invited-member" data-email="'+email+'">'+email+'</span>'
-    );
+    var addedMember = '<span class="row member invited-member" data-name="'+email+'" data-email="'+email+'"><div class="col-xs-9 member-name-wrapper"><span class="member-name">'+email+'</span></div><div class="col-xs-3 button-wrapper"></div></span>';
+    $('#added-members').append(addedMember);
+    addedMember = $('#added-members').children().last();
+    var deleteButton = $('<a class="btn delete-member-btn">Delete</a>');
+    deleteButton.on("click", deleteMember);
+    addedMember.find('.button-wrapper').append(deleteButton);
     $('#email').val("");
-
     $('#league-members').trigger('contentchanged');
 };
 

@@ -249,15 +249,7 @@ body { font-family: 'Nunito', sans-serif; }
         }
 
         #league-members #search-members-wrapper #added-members .added-member,
-        #league-members #search-members-wrapper #added-members .current-member,
-        #league-members #search-members-wrapper #added-members .invited-member {
-            color: #02B8EF;
-            display: block;
-            font-size: 18px;
-            line-height: 24px;
-            margin: 5px 0px;
-        }
-        #league-members #search-members-wrapper #added-members .added-member { color: #5FCC34; }
+        #league-members #search-members-wrapper #added-members .invited-member { color: #5FCC34; }
         #league-members #search-members-wrapper #added-members .deleted-member { color: #D21E35; }
 
         #league-members #search-members-wrapper #added-members .member .member-name-wrapper { padding: 0px; }

@@ -119,7 +119,7 @@
                     var deleteButton = $('<a class="btn delete-member-btn">Delete</a>');
                     deleteButton.on("click", deleteMember);
                     addedMember.find('.button-wrapper').append(deleteButton);
-                    $('#added-members').trigger('contentchanged');
+                    $('#league-members').trigger('contentchanged');
                 }
             }
             $(that).next('.' + settings.menuClass).hide();

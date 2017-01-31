@@ -274,7 +274,8 @@ body { font-family: 'Nunito', sans-serif; }
             line-height: 24px;
             margin: 5px 0px;
         }
-        #league-members #search-members-wrapper #added-members .added-member { color: #5FCC34; }
+        #league-members #search-members-wrapper #added-members .added-member,
+        #league-members #search-members-wrapper #added-members .invited-member { color: #5FCC34; }
         #league-members #search-members-wrapper #added-members .deleted-member { color: #D21E35; }
 
         #league-members #search-members-wrapper #added-members .member .member-name-wrapper { padding: 0px; }
