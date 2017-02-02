@@ -399,3 +399,20 @@ button[type="submit"] {
 
 #edit-round-modal #edit-round-btn { background-color: #5FCC34; }
 #edit-round-modal #cancel-edit-round-btn { background-color: #02B8EF; }
+
+.datepicker .next,
+.datepicker .prev { color: #01249A; }
+
+.datepicker .day.active,
+.datepicker .day.active:hover { background-color: #01249A; }
+
+.datepicker table td.today:before { border-bottom-color: #01249A !important; }
+
+.timepicker .btn { color: #01249A; }
+.timepicker .btn-primary {
+    background-color: #01249A;
+    border: 3px solid #01249A;
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Cubano', sans-serif;
+}
