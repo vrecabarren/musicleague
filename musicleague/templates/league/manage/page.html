@@ -233,87 +233,78 @@
 </form>
 
 <div id="edit-round-modal" class="modal" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h3 class="modal-title">Editing Round</h3>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" id="edit-id">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="form-group">
-                                <label for="edit-name">Round Name</label>
-                                <input type="text" name="edit-name" id="edit-name" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="form-group">
-                                <label for="edit-description">Description (Optional)</label>
-                                <textarea name="edit-description" id="edit-description" class="form-control" rows="2"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <div class="form-group">
-                                <label for="edit-submission-due-date">Songs Due Date</label>
-                                <input type="text" class="form-control" id="edit-submission-due-date" name="edit-submission-due-date">
-                                <input type="hidden" id="edit-submission-due-date-utc" name="edit-submission-due-date-utc">
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-md-6">
-                            <div class="form-group">
-                                <label for="edit-voting-due-date">Votes Due Date</label>
-                                <input type="text" class="form-control" id="edit-voting-due-date" name="edit-voting-due-date">
-                                <input type="hidden" id="edit-voting-due-date-utc" name="edit-voting-due-date-utc">
-                            </div>
-                        </div>
+    <div class="modal-header text-left">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 class="modal-title">Editing Round</h3>
+    </div>
+    <div class="modal-body text-left">
+        <input type="hidden" id="edit-id">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="edit-name">Round Name</label>
+                        <input type="text" name="edit-name" id="edit-name" class="form-control">
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-lg btn-default" id="cancel-edit-round-btn" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-lg btn-success" id="edit-round-btn">Save</button>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="edit-description">Description (Optional)</label>
+                        <textarea name="edit-description" id="edit-description" class="form-control" rows="2"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <div class="form-group">
+                        <label for="edit-submission-due-date">Songs Due Date</label>
+                        <input type="text" class="form-control" id="edit-submission-due-date" name="edit-submission-due-date">
+                        <input type="hidden" id="edit-submission-due-date-utc" name="edit-submission-due-date-utc">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <div class="form-group">
+                        <label for="edit-voting-due-date">Votes Due Date</label>
+                        <input type="text" class="form-control" id="edit-voting-due-date" name="edit-voting-due-date">
+                        <input type="hidden" id="edit-voting-due-date-utc" name="edit-voting-due-date-utc">
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-lg btn-default" id="cancel-edit-round-btn" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-lg btn-success" id="edit-round-btn">Save</button>
     </div>
 </div>
 
-<div id="submission-due-date-modal" class="modal" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Songs Due Date</h3>
-            </div>
-            <div class="modal-body">
-                <div class="dtp"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-lg btn-default" id="cancel-submission-due-date-btn">Cancel</button>
-                <button type="button" class="btn btn-lg btn-success" id="submission-due-date-btn">Done</button>
-            </div>
-        </div>
+<link href="http://jschr.github.io/bootstrap-modal/css/bootstrap-modal-bs3patch.css" rel="stylesheet" />
+<link href="http://jschr.github.io/bootstrap-modal/css/bootstrap-modal.css" rel="stylesheet" />
+
+<div id="submission-due-date-modal" tabindex="-1" class="modal" role="dialog">
+    <div class="modal-header text-left">
+        <h3 class="modal-title">Songs Due Date</h3>
+    </div>
+    <div class="modal-body text-left">
+        <div class="dtp"></div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-lg btn-default" id="cancel-submission-due-date-btn">Cancel</button>
+        <button type="button" class="btn btn-lg btn-success" id="submission-due-date-btn">Done</button>
     </div>
 </div>
 <div id="voting-due-date-modal" class="modal" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Votes Due Date</h3>
-            </div>
-            <div class="modal-body">
-                <div class="dtp"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-lg btn-default" id="cancel-voting-due-date-btn">Cancel</button>
-                <button type="button" class="btn btn-lg btn-success" id="voting-due-date-btn">Done</button>
-            </div>
-        </div>
+    <div class="modal-header text-left">
+        <h3 class="modal-title">Votes Due Date</h3>
+    </div>
+    <div class="modal-body text-left">
+        <div class="dtp"></div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-lg btn-default" id="cancel-voting-due-date-btn">Cancel</button>
+        <button type="button" class="btn btn-lg btn-success" id="voting-due-date-btn">Done</button>
     </div>
 </div>
 {% endblock %}
@@ -321,5 +312,7 @@
 {% block js %}
 <script type="text/javascript" src="/static/js/jquery.bootcomplete.js"></script>
 <script type="text/javascript" src="/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script src="http://jschr.github.io/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
+<script src="http://jschr.github.io/bootstrap-modal/js/bootstrap-modal.js"></script>
 <script type="text/javascript" src="/static/js/league/manage.js"></script>
 {% endblock %}
