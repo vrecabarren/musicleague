@@ -357,7 +357,9 @@ button[type="submit"] {
     button[type="submit"]:active,
     button[type="submit"]:focus { color: #fff; }
 
-#edit-round-modal .modal-title {
+#edit-round-modal .modal-title,
+#submission-due-date-modal .modal-title,
+#voting-due-date-modal .modal-title {
     color: #5FCC34;
     font-family: 'Cubano', sans-serif;
     text-transform: uppercase;
@@ -389,16 +391,23 @@ button[type="submit"] {
 
  #edit-round-modal #edit-round-btn,
  #edit-round-modal #cancel-edit-round-btn,
- #delete-round-modal #delete-round-btn,
- #delete-round-modal #cancel-delete-round-btn {
+ #submission-due-date-modal #submission-due-date-btn,
+ #submission-due-date-modal #cancel-submission-due-date-btn,
+ #voting-due-date-modal #voting-due-date-btn,
+ #voting-due-date-modal #cancel-voting-due-date-btn {
     border: none;
     border-radius: 8px;
     color: #fff;
     font-family: 'Cubano', sans-serif;
  }
 
-#edit-round-modal #edit-round-btn { background-color: #5FCC34; }
-#edit-round-modal #cancel-edit-round-btn { background-color: #02B8EF; }
+#edit-round-modal #edit-round-btn,
+#submission-due-date-modal #submission-due-date-btn,
+#voting-due-date-modal #voting-due-date-btn { background-color: #5FCC34; }
+
+#edit-round-modal #cancel-edit-round-btn,
+#submission-due-date-modal #cancel-submission-due-date-btn,
+#voting-due-date-modal #cancel-voting-due-date-btn { background-color: #02B8EF; }
 
 .datepicker .next,
 .datepicker .prev { color: #01249A; }

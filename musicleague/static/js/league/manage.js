@@ -6,6 +6,14 @@ $('#search').bootcomplete({
     minLength: 3
 });
 
+$('.dtp').datetimepicker({
+    sideBySide: true,
+    format: 'MM/DD/YY hA',
+    useStrict: true,
+    showClose: false,
+    inline: true
+});
+
 // Initialize league round add datetime pickers
 function initializeDatePicker(elementId) {
     return $(elementId).datetimepicker({
@@ -14,7 +22,7 @@ function initializeDatePicker(elementId) {
         useStrict: true,
         showClose: true
     });
-};
+}
 initializeDatePicker('#submission-due-date').on("dp.change", function(e) {
     $('#submission-due-date-utc').val(moment(e.date.utc()).format('MM/DD/YY hA'));
     $('#voting-due-date').data("DateTimePicker").minDate(e.date.add(1, 'hours').toDate());
@@ -22,13 +30,58 @@ initializeDatePicker('#submission-due-date').on("dp.change", function(e) {
 initializeDatePicker('#voting-due-date').on("dp.change", function(e) {
     $('#voting-due-date-utc').val(moment(e.date.utc()).format('MM/DD/YY hA'));
 });
-initializeDatePicker('#edit-submission-due-date').on("dp.change", function(e) {
-    $('#edit-submission-due-date-utc').val(moment(e.date.utc()).format('MM/DD/YY hA'));
-    $('#edit-voting-due-date').data("DateTimePicker").minDate(e.date.add(1, 'hours').toDate());
-});
-initializeDatePicker('#edit-voting-due-date').on("dp.change", function(e) {
-    $('#edit-voting-due-date-utc').val(moment(e.date.utc()).format('MM/DD/YY hA'));
-});
+
+function onEditSubmissionDueDateFocus() {
+    $('#edit-round-modal').modal('hide');
+    $('#submission-due-date-modal .dtp').data('DateTimePicker').date($('#edit-submission-due-date').val());
+    $('#submission-due-date-modal').modal('show');
+}
+
+function onSubmissionDueDate() {
+    var d = $('#submission-due-date-modal .dtp').data('DateTimePicker').date();
+    $('#edit-submission-due-date').val(d.format('MM/DD/YY hA'));
+    $('#edit-submission-due-date-utc').val(moment(d.utc()).format('MM/DD/YY hA'));
+    onCancelEditSubmissionDueDate();
+}
+
+function onCancelEditSubmissionDueDate() {
+    $('#submission-due-date-modal').modal('hide');
+    $('#edit-round-modal').modal('show');
+    $('#edit-submission-due-date').unbind("focus");
+    $('#edit-submission-due-date').focus();
+    $('#edit-submission-due-date').on("focus", onEditSubmissionDueDateFocus);
+}
+
+function onEditVotingDueDateFocus() {
+    $('#edit-round-modal').modal('hide');
+    var mvdd = moment($('#edit-submission-due-date').val(), 'MM/DD/YY hA').add(1, 'hours');
+    $('#voting-due-date-modal .dtp').data('DateTimePicker').minDate(mvdd);
+    $('#voting-due-date-modal .dtp').data('DateTimePicker').date($('#edit-voting-due-date').val());
+    $('#voting-due-date-modal').modal('show');
+}
+
+function onVotingDueDate() {
+    var d = $('#voting-due-date-modal .dtp').data('DateTimePicker').date();
+    $('#edit-voting-due-date').val(d.format('MM/DD/YY hA'));
+    $('#edit-voting-due-date-utc').val(moment(d.utc()).format('MM/DD/YY hA'));
+    onCancelEditVotingDueDate();
+}
+
+function onCancelEditVotingDueDate() {
+    $('#voting-due-date-modal').modal('hide');
+    $('#edit-round-modal').modal('show');
+    $('#edit-voting-due-date').unbind("focus");
+    $('#edit-voting-due-date').focus();
+    $('#edit-voting-due-date').on("focus", onEditVotingDueDateFocus);
+}
+
+$('#edit-submission-due-date').on("focus", onEditSubmissionDueDateFocus);
+$('#submission-due-date-btn').on("click", onSubmissionDueDate);
+$('#cancel-submission-due-date-btn').on("click", onCancelEditSubmissionDueDate);
+
+$('#edit-voting-due-date').on("focus", onEditVotingDueDateFocus);
+$('#voting-due-date-btn').on("click", onVotingDueDate);
+$('#cancel-voting-due-date-btn').on("click", onCancelEditVotingDueDate);
 
 // Process submission for manage league form
 function collectAddedMembers() {
@@ -38,7 +91,7 @@ function collectAddedMembers() {
     });
     var jsonField = $(document.getElementById('added-members-inp'));
     jsonField.val(JSON.stringify(members));
-};
+}
 
 function collectInvitedMembers() {
     var invited = [];
@@ -47,7 +100,7 @@ function collectInvitedMembers() {
     });
     var jsonField = $(document.getElementById('invited-members-inp'));
     jsonField.val(JSON.stringify(invited));
-};
+}
 
 function collectDeletedMembers() {
     var members = [];
@@ -56,7 +109,7 @@ function collectDeletedMembers() {
     });
     var jsonField = $(document.getElementById('deleted-members-inp'));
     jsonField.val(JSON.stringify(members));
-};
+}
 
 function collectAddedRounds() {
     var rounds = [];
@@ -72,7 +125,7 @@ function collectAddedRounds() {
     });
     var jsonField = $(document.getElementById('added-rounds-inp'));
     jsonField.val(JSON.stringify(rounds));
-};
+}
 
 function collectEditedRounds() {
     var rounds = [];
@@ -89,7 +142,7 @@ function collectEditedRounds() {
     });
     var jsonField = $(document.getElementById('edited-rounds-inp'));
     jsonField.val(JSON.stringify(rounds));
-};
+}
 
 function collectDeletedRounds() {
     var rounds = [];
@@ -98,7 +151,7 @@ function collectDeletedRounds() {
     });
     var jsonField = $(document.getElementById('deleted-rounds-inp'));
     jsonField.val(JSON.stringify(rounds));
-};
+}
 
 function processFormSubmission() {
     collectAddedMembers();
@@ -108,7 +161,7 @@ function processFormSubmission() {
     collectEditedRounds();
     collectDeletedRounds();
     return true;
-};
+}
 
 // Remove member
 function deleteMember() {
@@ -134,7 +187,7 @@ function deleteMember() {
     member.addClass('deleted-member');
 
     $('#league-members').trigger('contentchanged');
-};
+}
 
 function undeleteMember() {
     var member = $(this).parent().parent();
@@ -149,7 +202,7 @@ function undeleteMember() {
     member.removeClass('deleted-member').addClass(prevClass);
 
     $('#league-members').trigger('contentchanged');
-};
+}
 
 // Add invited member
 function inviteMember() {
@@ -162,7 +215,7 @@ function inviteMember() {
     addedMember.find('.button-wrapper').append(deleteButton);
     $('#email').val("");
     $('#league-members').trigger('contentchanged');
-};
+}
 
 // Add round to league on button click
 function guid() { return Math.floor((1 + Math.random()) * 0x10000).toString(16); }
@@ -199,7 +252,7 @@ function addRound() {
     $('#voting-due-date-utc').val(nextVotingDueDate.format('MM/DD/YY hA'));
 
     $('#league-rounds').trigger('contentchanged');
-};
+}
 
 // Handle edit round modal on button click
 $('#edit-round-modal').on('shown.bs.modal', function(){
@@ -225,7 +278,7 @@ function editRound() {
     modal.find('#edit-voting-due-date-utc').val(moment(votingDueDateUTC, 'MM/DD/YY hA').format('MM/DD/YY hA'));
 
     modal.modal('show');
-};
+}
 
 // Update data properties on round from modal
 function commitEditRound() {
@@ -247,7 +300,7 @@ function commitEditRound() {
     modal.modal('hide');
 
     $('#league-rounds').trigger('contentchanged');
-};
+}
 
 // Update data properties on round being deleted
 function deleteRound() {
@@ -275,7 +328,7 @@ function deleteRound() {
     round.addClass('deleted-round');
 
     $('#league-rounds').trigger('contentchanged');
-};
+}
 
 function undeleteRound() {
     var round = $(this).parent().parent();
@@ -292,7 +345,7 @@ function undeleteRound() {
     round.removeClass('deleted-round').addClass(prevClass);
 
     $('#league-rounds').trigger('contentchanged');
-};
+}
 
 // Bind all event handlers
 $(document).ready(function() {
