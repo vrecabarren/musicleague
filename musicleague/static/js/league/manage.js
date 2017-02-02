@@ -202,6 +202,9 @@ function addRound() {
 };
 
 // Handle edit round modal on button click
+$('#edit-round-modal').on('shown.bs.modal', function(){
+    $('#edit-name').focus();
+});
 function editRound() {
     var round = $(this).parent().parent();
     var id = round.data('id');
