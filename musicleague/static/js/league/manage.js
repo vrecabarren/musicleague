@@ -244,11 +244,11 @@ function addRound() {
     $('#round-name').focus();
 
     var nextSubmissionDueDate = moment.utc(submissionDueDate, "MM/DD/YY hA").add(7, 'days');
-    $('#submission-due-date').val(moment(nextSubmissionDueDate.toDate()).format('MM/DD/YY hA'));
+    $('#submission-due-date').data('DateTimePicker').date(moment(nextSubmissionDueDate.toDate()).format('MM/DD/YY hA'));
     $('#submission-due-date-utc').val(nextSubmissionDueDate.format('MM/DD/YY hA'));
 
     var nextVotingDueDate = moment.utc(votingDueDate, "MM/DD/YY hA").add(7, 'days');
-    $('#voting-due-date').val(moment(nextVotingDueDate.toDate()).format('MM/DD/YY hA'));
+    $('#voting-due-date').data('DateTimePicker').date(moment(nextVotingDueDate.toDate()).format('MM/DD/YY hA'));
     $('#voting-due-date-utc').val(nextVotingDueDate.format('MM/DD/YY hA'));
 
     $('#league-rounds').trigger('contentchanged');
