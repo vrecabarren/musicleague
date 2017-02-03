@@ -181,7 +181,8 @@ body { font-family: 'Nunito', sans-serif; }
             border: 1px solid #02B8EF;
             border-radius: 8px;
             font-size: 18px;
-            line-height: 36px;
+            line-height: 24px;
+            resize: none;
         }
 
         .section .form-group input[type="text"],
@@ -302,7 +303,9 @@ body { font-family: 'Nunito', sans-serif; }
 
     #league-rounds #create-round-toggle { margin-top: 20px; }
 
-a.btn.btn-lg {
+a.btn.btn-lg,
+#add-round-btn,
+#send-email-btn {
     background: #02B8EF;
     border: none;
     border-radius: 8px;
@@ -354,7 +357,8 @@ button[type="submit"] {
     border: 1px solid #02B8EF;
     border-radius: 8px;
     font-size: 18px;
-    line-height: 36px;
+    line-height: 24px;
+    resize: none;
 }
 
 #edit-round-modal input[type="text"],

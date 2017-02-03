@@ -31,6 +31,20 @@ initializeDatePicker('#voting-due-date').on("dp.change", function(e) {
     $('#voting-due-date-utc').val(moment(e.date.utc()).format('MM/DD/YY hA'));
 });
 
+function initializeDueDates() {
+    if ($('.round').length > 0) {
+        var lastRound = $('.round').last();
+
+        var submissionDueDate = moment.utc(lastRound.data('submission-due-date-utc'), 'MM/DD/YY hA');
+        var nextSubmissionDueDate = submissionDueDate.add(7, 'days').toDate();
+        $('#submission-due-date').data('DateTimePicker').date(nextSubmissionDueDate);
+
+        var votingDueDate = moment.utc(lastRound.data('voting-due-date-utc'), 'MM/DD/YY hA');
+        var nextVotingDueDate = votingDueDate.add(7, 'days').toDate();
+        $('#voting-due-date').data('DateTimePicker').date(nextVotingDueDate);
+    }
+}
+
 function onEditSubmissionDueDateFocus() {
     $('#edit-round-modal').modal('hide');
     $('#submission-due-date-modal .dtp').data('DateTimePicker').date($('#edit-submission-due-date').val());
@@ -213,7 +227,7 @@ function inviteMember() {
     var deleteButton = $('<a class="btn delete-member-btn">Delete</a>');
     deleteButton.on("click", deleteMember);
     addedMember.find('.button-wrapper').append(deleteButton);
-    $('#email').val("");
+    $('#email').val("").focus();
     $('#league-members').trigger('contentchanged');
 }
 
@@ -366,4 +380,6 @@ $(document).ready(function() {
         if ( $(this).val() != $(this).data('ov'))
             $('#the-basics').trigger('contentchanged');
     });
+
+    initializeDueDates();
 });
