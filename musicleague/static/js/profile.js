@@ -32,13 +32,17 @@ var randomize_tile_backgrounds = function() {
     });
 };
 
+$('.control[data-remove-url]').on("click", function(e){
+    e.preventDefault();
+    var name = $(this).data('name');
+    var url = $(this).data('remove-url');
+    var modal = $('#delete-league-modal');
+    modal.find('#league-name').html(name);
+    modal.find('#delete-league-btn').attr('href', url);
+    modal.modal('show');
+});
+
 $(window).load(function(){
     make_tile_size_consistent();
     randomize_tile_backgrounds();
-
-    $(".league-item").hover(function() {
-        $(this).find('.manage-league').collapse('show');
-    }, function() {
-        $(this).find('.manage-league').collapse('hide');
-    });
 });

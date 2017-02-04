@@ -360,3 +360,20 @@ body { font-family: 'Nunito', sans-serif; }
                     height: 32px;
                     width: 32px;
                 }
+
+#delete-league-modal .modal-title {
+    color: #5FCC34;
+    font-family: 'Cubano', sans-serif;
+    text-transform: uppercase;
+}
+
+#delete-league-modal #delete-league-btn,
+#delete-league-modal #cancel-delete-league-btn {
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Cubano', sans-serif;
+}
+
+#delete-league-modal #delete-league-btn { background-color: #D21E35; }
+#delete-league-modal #cancel-delete-league-btn { background-color: #02B8EF; }

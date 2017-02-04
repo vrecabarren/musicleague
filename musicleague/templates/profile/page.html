@@ -3,6 +3,8 @@
 {% block title %}Music League | {{ page_user.name }}{% endblock %}
 
 {% block css %}
+<link href="http://jschr.github.io/bootstrap-modal/css/bootstrap-modal-bs3patch.css" rel="stylesheet" />
+<link href="http://jschr.github.io/bootstrap-modal/css/bootstrap-modal.css" rel="stylesheet" />
 <link rel="stylesheet" href="/static/css/profile.css">
 {% endblock %}
 
@@ -48,7 +50,7 @@
                         <a class="admin-toggle collapsed" title="Admin Controls" data-toggle="collapse" data-target="#{{ league.id }}-controls"></a>
                         <span id="{{ league.id }}-controls" class="admin-controls collapse width">
                             <a href="{{ url_for('get_manage_league', league_id=league.id) }}" title="Manage League" class="control"><span class="manage"></span></a>
-                            <a data-remove-url="{{ url_for('get_remove_league', league_id=league.id) }}" title="Remove League" class="control"><span class="remove"></span></a>
+                            <a href="#" data-name="{{ league.name }}" data-remove-url="{{ url_for('get_remove_league', league_id=league.id) }}" title="Remove League" class="control"><span class="remove"></span></a>
                         </span>
                     </div>
                     {% endif %}
@@ -61,8 +63,24 @@
 
 </div>
 
+<div id="delete-league-modal" class="modal" role="dialog">
+    <div class="modal-header text-left">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 class="modal-title">Delete League</h3>
+    </div>
+    <div class="modal-body text-left">
+        <span>Are you sure you want to delete <strong id="league-name">League Name</strong>?</span>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-lg btn-default" id="cancel-delete-league-btn" data-dismiss="modal">Cancel</button>
+        <a href="#" class="btn btn-lg btn-danger" id="delete-league-btn">Delete</a>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block js %}
+<script src="http://jschr.github.io/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
+<script src="http://jschr.github.io/bootstrap-modal/js/bootstrap-modal.js"></script>
 <script type="text/javascript" src="/static/js/profile.js"></script>
 {% endblock %}
