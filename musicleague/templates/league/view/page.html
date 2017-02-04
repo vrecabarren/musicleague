@@ -13,6 +13,9 @@
 <div style="padding: 50px;">
     <div class="container">
         {% for round in league.submission_periods %}
+            {% if loop.index0 > 0 %}
+                {% set prev_round = league.submission_periods[loop.index0 - 1] %}
+            {% endif %}
             {% include "league/view/_round.html" %}
         {% endfor %}
     </div>
