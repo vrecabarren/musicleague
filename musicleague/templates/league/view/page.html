@@ -10,12 +10,12 @@
 
 {% include "league/view/header.html" %}
 
-<div class="container">
-
-    {% for round in league.submission_periods %}
-        {% include "league/view/_round.html" %}
-    {% endfor %}
-
+<div style="padding: 50px;">
+    <div class="container">
+        {% for round in league.submission_periods %}
+            {% include "league/view/_round.html" %}
+        {% endfor %}
+    </div>
 </div>
 
 {% endblock %}

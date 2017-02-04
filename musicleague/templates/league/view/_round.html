@@ -1,21 +1,22 @@
-<div class="row round-bar">
+<div class="row round-bar"><!--
     {% if round.is_complete %}
-    <div class="col-xs-12 col-sm-2 text-center linked" data-href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=round.id) }}">
+--><div class="col-xs-12 col-sm-2 text-center vcenter linked" data-href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=round.id) }}">
     {% else %}
-    <div class="col-xs-12 col-sm-2 text-center">
+--><div class="col-xs-12 col-sm-2 text-center vcenter">
     {% endif %}
         <span alt="" class="round-status-icon{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}"></span>
-    </div>
+        <div class="spacer visible-xs"></div>
+    </div><!--
     {% if round.is_complete %}
-    <div class="col-xs-12 col-sm-5 linked" data-href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=round.id) }}">
+--><div class="col-xs-12 col-sm-5 linked vcenter" data-href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=round.id) }}">
     {% else %}
-    <div class="col-xs-12 col-sm-5">
+--><div class="col-xs-12 col-sm-5 vcenter">
     {% endif %}
         <div class="row">
-            <div class="col-xs-12 text-center-xs">
+            <div class="text-center-xs">
                 <span class="round-title{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ round.name }}</span>
-            </div>
-            <div class="col-xs-12 text-center-xs">
+            </div><!--
+            --><div class="text-center-xs">
                 {% if round.is_complete %}
                     <span class="status-text complete">{{ moment(round.vote_due_date).format('[Completed on] MM.DD.YY [at] hhA') }}</span>
                 {% elif round.is_current_v2 %}
@@ -26,8 +27,8 @@
                     {% endif %}
                 {% else %}
                 {% endif %}
-            </div>
-            <div id="current-round-progress" class="col-xs-12 text-center-xs action-progress">
+            </div><!--
+            --><div id="current-round-progress" class="text-center-xs action-progress">
                 <div class="visible-xs">
                     {% if round.accepting_submissions %}
                     <span class="text-progress progress-toggle"><span class="emphasize">{{ round.submissions|length }} of {{ league.users|length }}</span> Have Submitted</span>
@@ -55,8 +56,8 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="{% if round.is_current_v2 %}col-xs-6{% else %}hidden-xs{% endif %} col-sm-2 col-sm-offset-1 text-center">
+    </div><!--
+    --><div class="{% if round.is_current_v2 %}col-xs-6{% else %}hidden-xs{% endif %} col-sm-2 col-sm-offset-1 text-center vcenter">
         {% if round.is_current_v2 %}
             {% if round.accepting_submissions %}
                 {% if my_submission %}
@@ -71,8 +72,8 @@
             </a>
             {% endif %}
         {% endif %}
-    </div>
-    <div class="{% if round.is_current_v2 %}col-xs-6{% else %}col-xs-12{% endif %} col-sm-2 text-center">
+    </div><!--
+    --><div class="{% if round.is_current_v2 %}col-xs-6{% else %}col-xs-12{% endif %} col-sm-2 text-center vcenter" style="border-left: 3px solid #fff; padding-top: 11px; padding-bottom: 5px;">
         {% if round.is_complete %}
             <a href="{{ round.playlist_url }}" target="_blank" class="action-link" title="Listen to Playlist">
                 <span alt="" class="action-button playlist"></span>

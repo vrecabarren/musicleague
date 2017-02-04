@@ -11,6 +11,12 @@
 
 body { font-family: 'Nunito', sans-serif; }
 
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
 #nav-bar {
     background: none;
     border-bottom: 3px solid #fff;
@@ -215,7 +221,7 @@ body { font-family: 'Nunito', sans-serif; }
         background: url("/static/icons/clock_gray.svg");
         display: inline-block;
         height: 90px;
-        margin-bottom: 25px;
+        margin: 0px;
         width: 90px;
     }
 
@@ -227,6 +233,7 @@ body { font-family: 'Nunito', sans-serif; }
 
     .round-bar .round-title {
         color: #d4d4d4;
+        display: inline-block;
         font-family: 'Cubano', sans-serif;
         font-size: 24px;
         line-height: 29px;
@@ -241,25 +248,24 @@ body { font-family: 'Nunito', sans-serif; }
         display: inline-block;
         font-size: 14px;
         line-height: 19px;
-        margin: 25px 0px;
+        margin: 10px 0px;
     }
 
         .round-bar .status-text.current { color: #02B8EF; }
         .round-bar .status-text.complete { color: #00259A; }
 
-    .round-bar .action-progress {
-        display: none;
-        margin-bottom: 25px;
-    }
+    .round-bar .action-progress { display: none; }
 
         .round-bar .action-progress a:hover,
         .round-bar .action-progress a:active,
         .round-bar .action-progress a:focus { text-decoration: none; }
 
         .round-bar .action-progress .text-progress {
+            display: block;
             font-family: 'Cubano', sans-serif;
             font-size: 18px;
             line-height: 22px;
+            padding: 10px 0px;
         }
 
             .round-bar .action-progress .text-progress .emphasize {
@@ -269,7 +275,7 @@ body { font-family: 'Nunito', sans-serif; }
                 line-height: 40px;
             }
 
-        .round-bar .action-progress .bar-progress { border: none; border-radius: 0px; }
+        .round-bar .action-progress .bar-progress { border: none; border-radius: 0px; margin-bottom: 0px; }
             .round-bar .action-progress .bar-progress .progress-bar { background-color: #F8C62C; border: none; }
 
     .round-bar .action-required-wrapper { height: 120px; }
