@@ -48,7 +48,7 @@
                         <a class="admin-toggle collapsed" title="Admin Controls" data-toggle="collapse" data-target="#{{ league.id }}-controls"></a>
                         <span id="{{ league.id }}-controls" class="admin-controls collapse width">
                             <a href="{{ url_for('get_manage_league', league_id=league.id) }}" title="Manage League" class="control"><span class="manage"></span></a>
-                            <a href="{{ url_for('get_remove_league', league_id=league.id) }}" title="Remove League" class="control"><span class="remove"></span></a>
+                            <a data-remove-url="{{ url_for('get_remove_league', league_id=league.id) }}" title="Remove League" class="control"><span class="remove"></span></a>
                         </span>
                     </div>
                     {% endif %}
