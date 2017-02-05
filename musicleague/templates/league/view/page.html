@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Music League | {{ league.name }}{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/league.css">
+{% endblock %}
+
+{% block content %}
+
+{% include "league/view/header.html" %}
+
+<div style="padding: 50px;">
+    <div class="container">
+        {% for round in league.submission_periods %}
+            {% if loop.index0 > 0 %}
+                {% set prev_round = league.submission_periods[loop.index0 - 1] %}
+            {% endif %}
+            {% include "league/view/_round.html" %}
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#members-toggle').popover({placement: 'bottom', content: $('#members-popover-wrapper').html(), html: true, container: '.members'});
+        $('.progress-toggle').popover({placement: 'bottom', content: $('#progress-popover-wrapper').html(), html: true, container: '#current-round-progress'});
+    });
+</script>
+{% endblock %}

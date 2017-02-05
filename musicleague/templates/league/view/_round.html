@@ -1,0 +1,119 @@
+<div class="row round-bar"><!--
+    {% if round.is_complete %}
+--><div class="col-xs-12 col-sm-2 text-center vcenter linked" data-href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=round.id) }}">
+    {% else %}
+--><div class="col-xs-12 col-sm-2 text-center vcenter">
+    {% endif %}
+        <span alt="" class="round-status-icon{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}"></span>
+        <div class="spacer visible-xs"></div>
+    </div><!--
+    {% if round.is_complete %}
+--><div class="col-xs-12 col-sm-5 linked vcenter" data-href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=round.id) }}">
+    {% else %}
+--><div class="col-xs-12 col-sm-5 vcenter">
+    {% endif %}
+        <div class="row">
+            <div class="text-center-xs">
+                <span class="round-title{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ round.name }}</span>
+            </div><!--
+            --><div class="text-center-xs">
+                {% if round.is_complete %}
+                    <span class="status-text complete">{{ moment(round.vote_due_date).format('[Completed on] MM.DD.YY [at] ha') }}</span>
+                {% elif round.is_current_v2 %}
+                    {% if round.accepting_submissions %}
+                    <span class="status-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ moment(round.submission_due_date).format('[Submissions due by] ha [on] dddd, MMMM D') }}</span>
+                    {% elif round.accepting_votes %}
+                    <span class="status-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ moment(round.vote_due_date).format('[Votes due by] ha [on] dddd, MMMM D') }}</span>
+                    {% endif %}
+                {% else %}
+                    <span class="status-text">{{ moment(prev_round.vote_due_date).format('[Begins on] dddd, MMMM D [at] ha') }}</span>
+                {% endif %}
+            </div><!--
+            --><div id="current-round-progress" class="text-center-xs action-progress">
+                <div class="visible-xs">
+                    {% if round.accepting_submissions %}
+                    <span class="text-progress progress-toggle"><span class="emphasize">{{ round.submissions|length }} of {{ league.users|length }}</span> Have Submitted</span>
+                    {% else %}
+                    <span class="text-progress progress-toggle"><span class="emphasize">{{ round.votes|length }} of {{ league.users|length }}</span> Have Voted</span>
+                    {% endif %}
+                    <br>
+                    <!-- <span class="progress-toggle">
+                        <img src="/static/icons/expand_icon.svg" alt="" height="32" width="32">
+                    </span> -->
+                </div>
+                <div class="hidden-xs">
+                    {% if round.accepting_submissions %}
+                        {% set progress_perc = (round.submissions|length / league.users|length * 100)|int %}
+                        {% set content = "<strong>Submitted:</strong><br>" + round.have_submitted|map(attribute='name')|join('<br>') + "<hr><strong>Waiting for:</strong><br>" + round.have_not_submitted|map(attribute='name')|join('<br>') %}
+                    {% else %}
+                        {% set progress_perc = (round.votes|length / league.users|length * 100)|int %}
+                        {% set content = "<strong>Voted:</strong><br>" + round.have_voted|map(attribute='name')|join('<br>') + "<hr><strong>Waiting for:</strong><br>" + round.have_not_voted|map(attribute='name')|join('<br>') %}
+                    {% endif %}
+                    <div class="bar-progress progress progress-toggle" data-trigger="hover">
+                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{ progress_perc }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress_perc }}%">
+                            <span class="sr-only">{{ progress_perc }}% Complete</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!--
+    --><div class="{% if round.is_current_v2 %}col-xs-6{% else %}hidden-xs{% endif %} col-sm-2 col-sm-offset-1 text-center vcenter">
+        {% if round.is_current_v2 %}
+            {% if round.accepting_submissions %}
+                {% if my_submission %}
+                <span class="action-required">You <span class="emphasize">Have</span> Submitted</span>
+                {% else %}
+                <span class="action-required">You Have <span class="emphasize">Not</span> Submitted</span>
+                {% endif %}
+            {% elif round.accepting_votes %}
+            <a href="{{ round.playlist_url }}" target="_blank" class="action-link" title="Listen to Playlist">
+                <span alt="" class="action-button playlist current"></span>
+                <span class="action-text current">Listen to Playlist!</span>
+            </a>
+            {% endif %}
+        {% endif %}
+    </div><!--
+    --><div class="{% if round.is_current_v2 %}col-xs-6{% else %}col-xs-12{% endif %} col-sm-2 text-center vcenter" style="border-left: 3px solid #fff; padding-top: 11px; padding-bottom: 5px;">
+        {% if round.is_complete %}
+            <a href="{{ round.playlist_url }}" target="_blank" class="action-link" title="Listen to Playlist">
+                <span alt="" class="action-button playlist"></span>
+                <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Listen to Playlist!</span>
+            </a>
+        {% elif round.is_current_v2 %}
+            {% if round.accepting_submissions %}
+                <a href="{{ url_for('view_submit', league_id=league.id, submission_period_id=round.id) }}" class="action-link" title="Submit or Change Submission">
+                    {% if my_submission %}
+                    <span alt="" class="action-button change"></span>
+                    <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Change Submissions!</span>
+                    {% else %}
+                    <span alt="" class="action-button submit"></span>
+                    <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Let's Do This!</span>
+                    {% endif %}
+                </a>
+            {% elif round.accepting_votes %}
+                <a href="{{ url_for('view_vote', league_id=league.id, submission_period_id=round.id) }}" class="action-link" title="Vote or Change Votes">
+                    {% if my_vote %}
+                    <span alt="" class="action-button change"></span>
+                    <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Change Votes!</span>
+                    {% else %}
+                    <span alt="" class="action-button vote"></span>
+                    <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Submit Votes!</span>
+                    {% endif %}
+                </a>
+            {% endif %}
+        {% else %}
+            <a href="#" class="action-link hidden-xs" title="Future Round">
+                <span alt="" class="action-button clock"></span>
+                <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Waiting!</span>
+            </a>
+        {% endif %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-sm-10 col-sm-offset-2 text-center-xs">
+        <svg class="round-divider{% if round.is_complete %} complete{% elif round.is_current_v2 %} current{% endif %}" width="100" height="5" viewBox="0 0 124 7" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <line stroke-linecap="round" x1="0" y1="2" x2="124" y2="2" stroke="#d4d4d4" stroke-width="3"/>
+        </svg>
+    </div>
+</div>

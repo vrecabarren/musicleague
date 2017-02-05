@@ -1,4 +1,3 @@
-import logging
 import os
 import re
 
@@ -24,7 +23,6 @@ def get_environment_setting(env_setting):
     env_setting.default
     """
     setting = os.environ.get(env_setting.key, env_setting.default)
-    logging.debug('GET SETTING %s: %s', env_setting.key, setting)
     return _cast_value(env_setting, setting)
 
 

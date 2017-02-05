@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+
+{% block title %}Music League | Create A League{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+<link href="http://jschr.github.io/bootstrap-modal/css/bootstrap-modal-bs3patch.css" rel="stylesheet" />
+<link href="http://jschr.github.io/bootstrap-modal/css/bootstrap-modal.css" rel="stylesheet" />
+<link rel="stylesheet" href="/static/css/bootcomplete.css">
+<link rel="stylesheet" href="/static/css/create_league.css">
+{% endblock %}
+
+{% block content %}
+
+{% include "league/create/header.html" %}
+
+<form action="" method="post">
+
+    <div id="the-basics-header" class="section-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <img src="/static/icons/01.svg" alt="" class="img img-circle count">
+                    <span class="title">The Basics</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="the-basics" class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="form-group">
+                        <label for="league-name">League Name</label>
+                        <input type="text" class="form-control" id="league-name" name="league-name" autofocus="true">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5 col-md-offset-1">
+                    <div class="form-group">
+                        <label for="league-name">Number of Tracks Submitted</label>
+                        <input type="text" class="form-control" id="tracks-submitted" name="tracks-submitted">
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="point-bank-size">Point Bank Size</label>
+                        <input type="text" class="form-control" id="point-bank-size" name="point-bank-size">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="league-members-header" class="section-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <img src="/static/icons/02.svg" alt="" class="img img-circle count">
+                    <span class="title">League Members</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="league-members" class="section">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-xs-12">
+                    <span class="directive">Find League Members By Searching Below Or Inviting Them By Email</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5 col-md-offset-1">
+                    <div id="search-members-wrapper">
+                        <div class="form-group">
+                            <label for="search">Search</label>
+                            <input type="text" class="form-control" id="search" name="search" placeholder="Type A Name">
+                        </div>
+                        <div id="added-members" class="form-group">
+                            <span class="title">Members:</span>
+                            <span class="row member current-member" data-id="{{ g.user.id }}" data-name="{{ g.user.name }}">
+                                <div class="col-xs-9 member-name-wrapper">
+                                    <span class="member-name">{{ g.user.name }}</span>
+                                    <span class="owner-star"></span>
+                                </div>
+                            </span>
+                        </div>
+                        <input type="hidden" id="added-members-inp" name="added-members">
+                        <input type="hidden" id="invited-members-inp" name="invited-members">
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div id="invite-members-wrapper">
+                        <div class="form-group">
+                            <label for="email">Or Invite Them By Email...</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email Address">
+                        </div>
+                        <button type="button" id="send-email-btn" class="btn btn-lg">Send Email</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="league-rounds-header" class="section-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <img src="/static/icons/03.svg" alt="" class="img img-circle count">
+                    <span class="title">Rounds</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="league-rounds" class="section">
+        <div class="container">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div style="padding: 0px">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="round-name">Round Name</label>
+                                        <input type="text" class="form-control" id="round-name" name="round-name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="round-description">Description (Optional)</label>
+                                        <textarea type="text" rows="3" class="form-control" id="round-description" name="round-description"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="submission-due-date">Songs Due Date</label>
+                                        <input type="text" class="form-control" id="submission-due-date" name="submission-due-date">
+                                        <input type="hidden" id="submission-due-date-utc" name="submission-due-date-utc">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="voting-due-date">Voting Due Date</label>
+                                        <input type="text" class="form-control" id="voting-due-date" name="voting-due-date">
+                                        <input type="hidden" id="voting-due-date-utc" name="voting-due-date-utc">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-md-offset-6">
+                                    <button type="button" id="add-round-btn" class="btn btn-lg">Add Round</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div style="padding: 30px 0px">
+                                    <div id="added-rounds" class="col-md-12">
+                                        <span class="title">Rounds:</span>
+                                    </div>
+                                    <input type="hidden" id="added-rounds-inp" name="added-rounds">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="complete-header" class="section-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <img src="/static/icons/04.svg" alt="" class="img img-circle count">
+                    <span class="title">All Done?</span>
+                </div>
+                <div class="spacer visible-xs visible-sm"></div>
+                <div class="col-md-4 text-right">
+                    <button type="submit" class="btn btn-lg">Create League</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</form>
+
+<div id="edit-round-modal" class="modal" role="dialog">
+    <div class="modal-header text-left">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 class="modal-title">Editing Round</h3>
+    </div>
+    <div class="modal-body text-left">
+        <input type="hidden" id="edit-id">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="edit-name">Round Name</label>
+                        <input type="text" name="edit-name" id="edit-name" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="edit-description">Description (Optional)</label>
+                        <textarea name="edit-description" id="edit-description" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <div class="form-group">
+                        <label for="edit-submission-due-date">Songs Due Date</label>
+                        <input type="text" class="form-control" id="edit-submission-due-date" name="edit-submission-due-date">
+                        <input type="hidden" id="edit-submission-due-date-utc" name="edit-submission-due-date-utc">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <div class="form-group">
+                        <label for="edit-voting-due-date">Votes Due Date</label>
+                        <input type="text" class="form-control" id="edit-voting-due-date" name="edit-voting-due-date">
+                        <input type="hidden" id="edit-voting-due-date-utc" name="edit-voting-due-date-utc">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-lg btn-default" id="cancel-edit-round-btn" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-lg btn-success" id="edit-round-btn">Save</button>
+    </div>
+</div>
+
+<div id="submission-due-date-modal" tabindex="-1" class="modal" role="dialog">
+    <div class="modal-header text-left">
+        <h3 class="modal-title">Songs Due Date</h3>
+    </div>
+    <div class="modal-body text-left">
+        <div class="dtp"></div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-lg btn-default" id="cancel-submission-due-date-btn">Cancel</button>
+        <button type="button" class="btn btn-lg btn-success" id="submission-due-date-btn">Done</button>
+    </div>
+</div>
+<div id="voting-due-date-modal" class="modal" role="dialog">
+    <div class="modal-header text-left">
+        <h3 class="modal-title">Votes Due Date</h3>
+    </div>
+    <div class="modal-body text-left">
+        <div class="dtp"></div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-lg btn-default" id="cancel-voting-due-date-btn">Cancel</button>
+        <button type="button" class="btn btn-lg btn-success" id="voting-due-date-btn">Done</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="/static/js/jquery.bootcomplete.js"></script>
+<script type="text/javascript" src="/static/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script src="http://jschr.github.io/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
+<script src="http://jschr.github.io/bootstrap-modal/js/bootstrap-modal.js"></script>
+<script type="text/javascript" src="/static/js/create_manage_league.js"></script>
+{% endblock %}

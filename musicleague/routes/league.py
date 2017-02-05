@@ -1,6 +1,7 @@
 from datetime import datetime
 from datetime import timedelta
-import logging
+import json
+from pytz import utc
 
 from flask import g
 from flask import redirect
@@ -10,17 +11,24 @@ from flask import url_for
 from musicleague import app
 from musicleague.league import add_user
 from musicleague.league import create_league
+from musicleague.league import get_league
 from musicleague.league import remove_league
 from musicleague.league import remove_user
+from musicleague.notify.flash import flash_error
 from musicleague.routes.decorators import league_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 from musicleague.submission import get_submission
+from musicleague.submission_period import create_submission_period
+from musicleague.submission_period import remove_submission_period
+from musicleague.submission_period import update_submission_period
+from musicleague.user import get_user
 
 
 ADD_USER_FOR_LEAGUE_URL = '/l/<league_id>/users/add/'
 CREATE_LEAGUE_URL = '/l/create/'
 JOIN_LEAGUE_URL = '/l/<league_id>/join/'
+MANAGE_LEAGUE_URL = '/l/<league_id>/manage/'
 REMOVE_LEAGUE_URL = '/l/<league_id>/remove/'
 REMOVE_SUBMISSION_URL = '/l/<league_id>/<submission_period_id>/<submission_id>/remove/'  # noqa
 REMOVE_USER_FOR_LEAGUE_URL = '/l/<league_id>/users/remove/<user_id>/'
@@ -51,14 +59,130 @@ def remove_user_for_league(league_id, user_id, **kwargs):
 
 
 @app.route(CREATE_LEAGUE_URL, methods=['GET'])
+@templated('league/create/page.html')
 @login_required
 def get_create_league():
-    try:
-        league = create_league(g.user)
-        return redirect(
-            url_for(view_league.__name__, league_id=league.id))
-    except Exception as e:
-        logging.exception('There was an exception: %s', e)
+    return {'user': g.user}
+
+
+@app.route(CREATE_LEAGUE_URL, methods=['POST'])
+@login_required
+def post_create_league():
+    name = request.form.get('league-name')
+    num_tracks = request.form.get('tracks-submitted')
+    bank_size = request.form.get('point-bank-size')
+
+    user_ids = json.loads(request.form.get('added-members', []))
+    members = [get_user(uid) for uid in user_ids]
+
+    emails = json.loads(request.form.get('invited-members', []))
+
+    rounds = json.loads(request.form.get('added-rounds', []))
+
+    league = create_league(g.user, name=name, users=members)
+    league.preferences.track_count = int(num_tracks)
+    league.preferences.point_bank_size = int(bank_size)
+
+    for email in emails:
+        add_user(league, email, notify=True)
+
+    for new_round in rounds:
+        submission_due_date_str = new_round['submission-due-date-utc']
+        submission_due_date = utc.localize(
+            datetime.strptime(submission_due_date_str, '%m/%d/%y %I%p'))
+
+        vote_due_date_str = new_round['voting-due-date-utc']
+        vote_due_date = utc.localize(
+            datetime.strptime(vote_due_date_str, '%m/%d/%y %I%p'))
+
+        create_submission_period(
+            league, new_round['name'], new_round['description'],
+            submission_due_date, vote_due_date)
+
+    league.save()
+
+    app.logger.info('Creating league: %s', league.id)
+
+    return redirect(url_for('view_league', league_id=league.id))
+
+
+@app.route(MANAGE_LEAGUE_URL, methods=['GET'])
+@templated('league/manage/page.html')
+@login_required
+def get_manage_league(league_id):
+    league = get_league(league_id)
+    if not league or not league.has_owner(g.user):
+        app.logger.warning('Unauthorized user attempted access')
+        flash_error('You must be owner of the league to access that page')
+        return redirect(url_for('view_league', league_id=league_id))
+
+    return {'user': g.user,
+            'league': league}
+
+
+@app.route(MANAGE_LEAGUE_URL, methods=['POST'])
+@login_required
+def post_manage_league(league_id):
+    name = request.form.get('league-name')
+    num_tracks = request.form.get('tracks-submitted')
+    bank_size = request.form.get('point-bank-size')
+
+    user_ids = json.loads(request.form.get('added-members', []))
+    added_members = [get_user(uid) for uid in user_ids]
+    emails = json.loads(request.form.get('invited-members', []))
+    deleted_members = json.loads(request.form.get('deleted-members', []))
+
+    added_rounds = json.loads(request.form.get('added-rounds', []))
+    edited_rounds = json.loads(request.form.get('edited-rounds', []))
+    deleted_rounds = json.loads(request.form.get('deleted-rounds', []))
+
+    league = get_league(league_id)
+    league.preferences.name = name
+    league.preferences.track_count = int(num_tracks)
+    league.preferences.point_bank_size = int(bank_size)
+    league.users.extend(added_members)
+
+    for email in emails:
+        add_user(league, email, notify=True)
+
+    for deleted_member in deleted_members:
+        remove_user(league, deleted_member)
+
+    for added_round in added_rounds:
+        submission_due_date_str = added_round['submission-due-date-utc']
+        submission_due_date = utc.localize(
+            datetime.strptime(submission_due_date_str, '%m/%d/%y %I%p'))
+
+        vote_due_date_str = added_round['voting-due-date-utc']
+        vote_due_date = utc.localize(
+            datetime.strptime(vote_due_date_str, '%m/%d/%y %I%p'))
+
+        create_submission_period(
+            league, added_round['name'], added_round['description'],
+            submission_due_date, vote_due_date)
+
+    for edited_round in edited_rounds:
+        submission_due_date_str = edited_round['submission-due-date-utc']
+        submission_due_date = utc.localize(
+            datetime.strptime(submission_due_date_str, '%m/%d/%y %I%p'))
+
+        vote_due_date_str = edited_round['voting-due-date-utc']
+        vote_due_date = utc.localize(
+            datetime.strptime(vote_due_date_str, '%m/%d/%y %I%p'))
+
+        update_submission_period(
+            edited_round['id'], edited_round['name'],
+            edited_round['description'], submission_due_date, vote_due_date)
+
+    for deleted_round in deleted_rounds:
+        try:
+            remove_submission_period(deleted_round)
+        except Exception as e:
+            app.logger.warning('Error while attempting to delete round %s: %s',
+                               deleted_round, str(e))
+
+    league.save()
+    return redirect(url_for('view_league', league_id=league_id))
 
 
 @app.route(JOIN_LEAGUE_URL, methods=['GET'])
@@ -76,6 +200,8 @@ def join_league(league_id, **kwargs):
         if invited_user:
             invited_user.delete()
 
+    app.logger.info('User joined league: %s', league.id)
+
     return redirect(url_for('view_league', league_id=league_id))
 
 
@@ -85,6 +211,7 @@ def join_league(league_id, **kwargs):
 def get_remove_league(league_id, **kwargs):
     league = kwargs.get('league')
     if league and league.has_owner(g.user):
+        app.logger.info('Removing league: %s', league.id)
         league = remove_league(league_id, league=league)
 
     return redirect(url_for('profile'))
@@ -124,7 +251,7 @@ def save_league_settings(league_id, **kwargs):
 
 
 @app.route(VIEW_LEAGUE_URL, methods=['GET'])
-@templated('league.html')
+@templated('league/view/page.html')
 @login_required
 @league_required
 def view_league(league_id, **kwargs):

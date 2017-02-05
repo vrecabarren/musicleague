@@ -3,7 +3,9 @@
 {% block title %}Music League | {{ page_user.name }}{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="/static/profile.css">
+<link href="http://jschr.github.io/bootstrap-modal/css/bootstrap-modal-bs3patch.css" rel="stylesheet" />
+<link href="http://jschr.github.io/bootstrap-modal/css/bootstrap-modal.css" rel="stylesheet" />
+<link rel="stylesheet" href="/static/css/profile.css">
 {% endblock %}
 
 {% block content %}
@@ -13,82 +15,72 @@
 <div class="container">
 
     <div id="leagues">
-        {% for league in leagues %}
-        <div class="col-sm-6 col-md-4">
-            <div class="league-item">
-                <div class="league-tile linked" data-href="{{ url_for('view_league', league_id=league.id) }}">
-                    <div class="league-tile-inner">
-                        {% if league.is_inactive %}
-                        <img class="league-icon inactive" src="/static/icons/clock_gray.svg" alt="">
-                        <div class="league-title inactive">{{ league.name }}</div>
-                        {% elif league.is_complete %}
-                        <img class="league-icon complete" src="/static/icons/completed_league_icon.svg" alt="">
-                        <div class="league-title complete">{{ league.name }}</div>
-                        {% else %}
-                        <img class="league-icon" src="/static/icons/live_league_icon.svg" alt="">
-                        <div class="league-title">{{ league.name }}</div>
-                        {% endif %}
+        {% for row in leagues|batch(3) %}
+        <div class="row">
+            {% for league in row %}
+            <div class="col-sm-6 col-md-4">
+                <div class="league-item">
+                    <div class="league-tile linked" data-href="{{ url_for('view_league', league_id=league.id) }}">
+                        <div class="league-tile-inner">
+                            {% if league.is_inactive %}
+                            <img class="league-icon inactive" src="/static/icons/clock_gray.svg" alt="">
+                            <div class="league-title inactive">{{ league.name }}</div>
+                            {% elif league.is_complete %}
+                            <img class="league-icon complete" src="/static/icons/completed_league_icon.svg" alt="">
+                            <div class="league-title complete">{{ league.name }}</div>
+                            {% else %}
+                            <img class="league-icon" src="/static/icons/live_league_icon.svg" alt="">
+                            <div class="league-title">{{ league.name }}</div>
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
-                <div class="created-by">
-                    Created by <a href="{{ url_for('view_user', user_id=league.owner.id )}}" class="creator-name">{{ league.owner.name }}</a> on {{ moment(league.created).format('MM.DD.YY') }}
-                </div>
-                <div class="members">
-                    <div class="images">
-                        {% for member in league.users if member.image_url %}
-                        <img src="{{ member.image_url }}" alt="{{ member.name }}" class="img img-circle">
-                        {% endfor %}
+                    <div class="created-by">
+                        Created by <a href="{{ url_for('view_user', user_id=league.owner.id )}}" class="creator-name">{% if league.has_owner(user) %}YOU{% else %}{{ league.owner.name }}{% endif %}</a> on {{ moment(league.created).format('MM.DD.YY') }}
                     </div>
-                    <a href="#" data-toggle="popover" data-trigger="hover" data-placement="right" data-container="body" data-content="{{ league.users|map(attribute='name')|join('<br>') }}">{{ league.users|length }} Member{% if league.users|length != 1 %}s{% endif %}</a>
+                    <div class="members">
+                        <div class="images">
+                            {% for member in league.users if member.image_url %}
+                            <img src="{{ member.image_url }}" alt="{{ member.name }}" class="img img-circle">
+                            {% endfor %}
+                        </div>
+                        <a href="#" data-toggle="popover" data-trigger="hover" data-placement="right" data-container="body" data-content="{{ league.users|map(attribute='name')|join('<br>') }}">{{ league.users|length }} Member{% if league.users|length != 1 %}s{% endif %}</a>
+                    </div>
+                    {% if league.has_owner(user) %}
+                    <div class="admin">
+                        <a class="admin-toggle collapsed" title="Admin Controls" data-toggle="collapse" data-target="#{{ league.id }}-controls"></a>
+                        <span id="{{ league.id }}-controls" class="admin-controls collapse width">
+                            <a href="{{ url_for('get_manage_league', league_id=league.id) }}" title="Manage League" class="control"><span class="manage"></span></a>
+                            <a href="#" data-name="{{ league.name }}" data-remove-url="{{ url_for('get_remove_league', league_id=league.id) }}" title="Remove League" class="control"><span class="remove"></span></a>
+                        </span>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
+            {% endfor %}
         </div>
         {% endfor %}
     </div>
 
 </div>
 
+<div id="delete-league-modal" class="modal" role="dialog">
+    <div class="modal-header text-left">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 class="modal-title">Delete League</h3>
+    </div>
+    <div class="modal-body text-left">
+        <span>Are you sure you want to delete <strong id="league-name">League Name</strong>?</span>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-lg btn-default" id="cancel-delete-league-btn" data-dismiss="modal">Cancel</button>
+        <a href="#" class="btn btn-lg btn-danger" id="delete-league-btn">Delete</a>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block js %}
-<script type="text/javascript">
-    var make_tile_size_consistent = function() {
-        // Make all league titles center vertically w/ the tallest
-        var maxTitleHeight = 0;
-        $('.league-title').each(function(){
-            var height = $(this).height();
-            if (height > maxTitleHeight) maxTitleHeight = height;
-        });
-        $('.league-title').css('min-height', maxTitleHeight + 'px');
-
-        // Make innter tile a square at minimum height
-        var tileHeight = $('.league-tile-inner').first().height();
-        var tileWidth = $('.league-tile-inner').first().width();
-        if (tileWidth != null && tileHeight < tileWidth ) {
-            $('.league-tile-inner').css('min-height', tileWidth + 'px');
-        }
-
-        // After resizing things, make sure the league items are consistent
-        var maxItemHeight = 0;
-        $('.league-item').each(function() {
-            var height = $(this).height();
-            if (height > maxItemHeight) maxItemHeight = height;
-        });
-        $('.league-item').css('min-height', maxItemHeight + 'px');
-    };
-
-    var randomize_tile_backgrounds = function() {
-        // Use single league tile background shifted to random positions
-        $('.league-tile').each(function(){
-            var horizontalPosition = Math.floor((Math.random() * 100));
-            var verticalPosition = Math.floor((Math.random() * 100));
-            $(this).css('background-position', horizontalPosition + '% ' + verticalPosition + '%');
-        });
-    };
-
-    $(window).load(function(){
-        make_tile_size_consistent();
-        randomize_tile_backgrounds();
-    });
-</script>
+<script src="http://jschr.github.io/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
+<script src="http://jschr.github.io/bootstrap-modal/js/bootstrap-modal.js"></script>
+<script type="text/javascript" src="/static/js/profile.js"></script>
 {% endblock %}

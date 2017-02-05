@@ -1,5 +1,3 @@
-import logging
-
 from musicleague import app
 from musicleague.models import League
 from musicleague.models import Submission
@@ -23,7 +21,7 @@ def clean_submission_periods():
 
     for sp in SubmissionPeriod.objects().all():
         if sp.id not in valid_periods:
-            logging.warning('Removing Submission Period %s', sp.id)
+            app.logger.warning('Removing Submission Period %s', sp.id)
             sp.delete()
 
 
@@ -38,5 +36,5 @@ def clean_submissions():
 
     for sub in Submission.objects().all():
         if sub.id not in valid_submissions:
-            logging.warning('Removing Submission %s', sub.id)
+            app.logger.warning('Removing Submission %s', sub.id)
             sub.delete()

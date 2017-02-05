@@ -1,0 +1,431 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,900');
+
+@font-face {
+    font-family: 'Cubano';
+    src: url("/static/fonts/Cubano/cubano-regular-webfont.ttf");
+}
+
+/* REMOVE THE NAVBAR AND SPACING UP TOP */
+.navbar { display: none; margin: 0px; }
+.spacer { display: none; }
+
+body { font-family: 'Nunito', sans-serif; }
+
+#nav-bar {
+    background: none;
+    border-bottom: 3px solid #fff;
+    color: #fff;
+    font-size: 14px;
+    height: 120px;
+    line-height: 19px;
+    padding-left: 50px;
+    padding-right: 50px;
+    text-align: right;
+    width: 100%;
+}
+
+    #nav-bar .brand-wrapper {
+        float: left;
+        line-height: 120px;
+    }
+
+        #nav-bar .brand-wrapper .brand-icon {
+            height: 86px;
+            width: 70px;
+        }
+
+    #nav-bar .add-league-wrapper {
+        display: inline-block;
+        line-height: 120px;
+        text-align: right;
+        vertical-align: top;
+    }
+
+        #nav-bar .add-league-wrapper .add-league-text { margin-right: 10px; }
+
+        #nav-bar .add-league-wrapper .add-league-icon {
+            height: 32px;
+            width: 32px;
+        }
+
+    #nav-bar .account-divider {
+        display: inline-block;;
+        margin-left: 25px;
+        margin-right: 25px;
+    }
+
+    #nav-bar .account-wrapper {
+        display: inline-block;
+        line-height: 120px;
+        text-align: right;
+        vertical-align: top;
+    }
+
+        #nav-bar .account-wrapper .dropdown-menu {
+            background-color: rgba(0, 37, 154, 0.85);
+            border: 3px solid #fff;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 18px;
+            line-height: 40px;
+            margin-top: 25px;
+            padding: 25px 0px;
+        }
+
+        #nav-bar .account-wrapper .dropdown-menu > li > a {
+            color: #fff;
+            line-height: 40px;
+            vertical-align: middle;
+        }
+
+            #nav-bar .account-wrapper .dropdown-menu > li > a > .text { vertical-align: middle; }
+
+            #nav-bar .account-wrapper .dropdown-menu > li > a > .icon {
+                background-position: 50% 50%;
+                background-repeat: no-repeat;
+                display: inline-block;
+                height: 16px;
+                margin-right: 10px;
+                vertical-align: middle;
+                width: 16px;
+            }
+
+            #nav-bar .account-wrapper .dropdown-menu > li > a > #profile-icon { background: url("/static/icons/profile_icon.svg"); width: 12px; }
+            #nav-bar .account-wrapper .dropdown-menu > li > a:hover > #profile-icon { background: url("/static/icons/profile_icon_blue.svg"); }
+
+            #nav-bar .account-wrapper .dropdown-menu > li > a > #settings-icon { background: url("/static/icons/settings_icon.svg"); }
+            #nav-bar .account-wrapper .dropdown-menu > li > a:hover > #settings-icon { background: url("/static/icons/settings_icon_blue.svg"); }
+
+            #nav-bar .account-wrapper .dropdown-menu > li > a > #logout-icon { background: url("/static/icons/logout_icon.svg"); }
+            #nav-bar .account-wrapper .dropdown-menu > li > a:hover > #logout-icon { background: url("/static/icons/logout_icon_blue.svg"); }
+
+            #nav-bar .account-wrapper .dropdown-menu > li > a > #admin-icon { background: url("/static/icons/admin_icon.svg"); height: 9px;;}
+            #nav-bar .account-wrapper .dropdown-menu > li > a:hover > #admin-icon { background: url("/static/icons/admin_icon_blue.svg"); }
+
+        #nav-bar .account-wrapper .dropdown-menu > li > a:hover {
+            background-color: #fff;
+            color: #02b8ef;
+        }
+
+        #nav-bar .account-wrapper .account-name { margin-right:10px; }
+
+        #nav-bar .account-wrapper .account-icon {
+            cursor: pointer;
+            height: 32px;
+            width: 32px;
+        }
+
+#img-bar {
+    background: url("/static/images/ml_header06.jpg");
+    background-attachment: scroll;
+    background-position: 50% 40%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#title-bar {
+    background: none;
+    color: #fff;
+    padding: 50px 0px;
+    text-align: center;
+}
+
+    #title-bar .title-text {
+        display: block;
+        font-family: 'Cubano', sans-serif;
+        font-size: 60px;
+        line-height: 72px;
+    }
+
+.section-header {
+    background: #02B8EF;
+    padding: 40px 0px;
+}
+
+    .section-header .count {
+        background-color: #fff;
+        display: inline-block;
+        height: 60px;
+        margin-right: 10px;
+        width: 60px;
+    }
+
+    .section-header .title {
+        color: #fff;
+        font-family: 'Cubano', sans-serif;
+        font-size: 24px;
+        line-height: 29px;
+        vertical-align: middle;
+    }
+
+    .section-header .collapse-toggle {
+        background: url('/static/icons/collapse_icon.svg');
+        cursor: pointer;
+        display: inline-block;
+        height: 40px;
+        margin: 10px 0px;
+        width: 40px;
+    }
+
+    .section-header .collapse-toggle.collapsed {
+        background: url('/static/icons/expand_icon.svg');
+    }
+
+.save-warning {
+    background-color: #5FCC34;
+    color: #fff;
+    display: none;
+    font-family: 'Cubano', sans-serif;
+    font-size: 18px;
+    line-height: 22px;
+    padding: 10px 0px;
+    text-transform: uppercase;
+}
+
+.section { padding: 15px 0px; }
+
+.section .collapse { margin: 35px 0px; }
+
+    .section .form-group { margin-bottom: 25px; }
+
+        .section .form-group label,
+        .section .checkbox label {
+            color: #00259A;
+            font-family: 'Cubano', sans-serif;
+            font-size: 18px;
+            line-height: 24px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .section .form-group input[type="text"],
+        .section .form-group input[type="email"],
+        .section .form-group textarea {
+            background: #fff;
+            border: 1px solid #02B8EF;
+            border-radius: 8px;
+            font-size: 18px;
+            line-height: 24px;
+            resize: none;
+        }
+
+        .section .form-group input[type="text"],
+        .section .form-group input[type="email"] {
+             height: 50px;
+         }
+
+            .section .form-group input::-webkit-input-placeholder {
+                color: #d4d4d4;
+                font-family: 'Cubano', sans-serif;
+            }
+
+            .section .form-group input::-moz-placeholder {
+                color: #d4d4d4;
+                font-family: 'Cubano', sans-serif;
+                opacity: 1;
+            }
+
+            .section .form-group input:-ms-input-placeholder {
+                color: #d4d4d4;
+                font-family: 'Cubano', sans-serif;
+            }
+
+            .section .form-group input:-moz-placeholder {
+                color: #d4d4d4;
+                font-family: 'Cubano', sans-serif;
+                opacity: 1;
+            }
+
+        .section .form-group input[type="checkbox"] {
+            border: 1px solid #02B8EF;
+            height: 32px;
+            margin-right: 10px;
+            width: 32px;
+        }
+
+#the-basics,
+#league-members,
+#league-rounds { margin-top: 20px; }
+
+#league-members {}
+
+    #league-members .directive {
+        color: #02B8EF;
+        display: block;
+        font-family: 'Cubano', sans-serif;
+        font-size: 18px;
+        line-height: 24px;
+        margin: 0px 0px 50px 0px;
+    }
+
+    #league-members #search-members-wrapper { padding: 30px; }
+
+        #league-members #search-members-wrapper #added-members .title {
+            color: #02B8EF;
+            display: block;
+            font-family: 'Cubano', sans-serif;
+            font-size: 18px;
+            line-height: 24px;
+            margin-bottom: 10px;
+        }
+
+        #league-members #search-members-wrapper #added-members .member {
+            color: #02B8EF;
+            display: block;
+            font-size: 18px;
+            line-height: 24px;
+            margin: 5px 0px;
+        }
+        #league-members #search-members-wrapper #added-members .added-member,
+        #league-members #search-members-wrapper #added-members .invited-member { color: #5FCC34; }
+        #league-members #search-members-wrapper #added-members .deleted-member { color: #D21E35; }
+
+        #league-members #search-members-wrapper #added-members .member .member-name-wrapper { padding: 0px; }
+        #league-members #search-members-wrapper #added-members .member .member-name-wrapper .member-name { font-size: 18px; line-height: 32px; vertical-align: middle; }
+        #league-members #search-members-wrapper #added-members .member .member-name-wrapper .owner-star { background: url('/static/icons/star_lightblue.svg'); display: inline-block; height: 17px; margin-left: 5px; vertical-align: middle; width: 18px; }
+
+        #league-members #search-members-wrapper #added-members .member .button-wrapper { text-align: right; }
+        #league-members #search-members-wrapper #added-members .member .button-wrapper .delete-member-btn,
+        #league-members #search-members-wrapper #added-members .member .button-wrapper .undelete-member-btn { border: 1px solid #D21E35; color: #D21E35; font-family: 'Cubano', sans-serif; }
+
+    #league-members #invite-members-wrapper {
+        background: #efefef;
+        border-radius: 8px;
+        padding: 30px;
+    }
+
+#league-rounds {}
+
+    #league-rounds #added-rounds { margin-bottom: 20px; }
+
+        #league-rounds #added-rounds .round { margin: 5px 0px; padding: 0px; }
+
+        #league-rounds #added-rounds .title {
+            color: #02B8EF;
+            display: block;
+            font-family: 'Cubano', sans-serif;
+            font-size: 18px;
+            line-height: 32px;
+            margin-bottom: 10px;
+        }
+
+        #league-rounds #added-rounds .round-name-wrapper { padding: 0px; }
+        #league-rounds #added-rounds .round-name { font-size: 18px; line-height: 32px; }
+
+        #league-rounds #added-rounds .round .button-wrapper { text-align: right; }
+        #league-rounds #added-rounds .round .button-wrapper .edit-round-btn { border: 1px solid #5FCC34; color: #5FCC34; font-family: 'Cubano', sans-serif; }
+        #league-rounds #added-rounds .round .button-wrapper .delete-round-btn,
+        #league-rounds #added-rounds .round .button-wrapper .undelete-round-btn { border: 1px solid #D21E35; color: #D21E35; font-family: 'Cubano', sans-serif; }
+
+        #league-rounds #added-rounds .round {
+            color: #02B8EF;
+            display: block;
+            font-size: 18px;
+            line-height: 24px;
+        }
+
+        #league-rounds #added-rounds .added-round { color: #5FCC34; }
+        #league-rounds #added-rounds .edited-round { color: #00259A; }
+        #league-rounds #added-rounds .deleted-round { color: #D21E35; }
+
+    #league-rounds #create-round-toggle { margin-top: 20px; }
+
+a.btn.btn-lg,
+#add-round-btn,
+#send-email-btn {
+    background: #02B8EF;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Cubano', sans-serif;
+    padding: 15px 0px;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+button[type="submit"] {
+    background: #5FCC34;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Cubano', sans-serif;
+    font-size: 24px;
+    line-height: 29px;
+    padding: 15px 0px;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+    button[type="submit"]:hover,
+    button[type="submit"]:active,
+    button[type="submit"]:focus { color: #fff; }
+
+#edit-round-modal .modal-title,
+#submission-due-date-modal .modal-title,
+#voting-due-date-modal .modal-title {
+    color: #5FCC34;
+    font-family: 'Cubano', sans-serif;
+    text-transform: uppercase;
+}
+
+#edit-round-modal label {
+    color: #00259A;
+    font-family: 'Cubano', sans-serif;
+    font-size: 18px;
+    line-height: 24px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+#edit-round-modal input[type="text"],
+#edit-round-modal input[type="email"],
+#edit-round-modal textarea {
+    background: #fff;
+    border: 1px solid #02B8EF;
+    border-radius: 8px;
+    font-size: 18px;
+    line-height: 24px;
+    resize: none;
+}
+
+#edit-round-modal input[type="text"],
+#edit-round-modal input[type="email"] {
+     height: 50px;
+ }
+
+ #edit-round-modal #edit-round-btn,
+ #edit-round-modal #cancel-edit-round-btn,
+ #submission-due-date-modal #submission-due-date-btn,
+ #submission-due-date-modal #cancel-submission-due-date-btn,
+ #voting-due-date-modal #voting-due-date-btn,
+ #voting-due-date-modal #cancel-voting-due-date-btn {
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Cubano', sans-serif;
+ }
+
+#edit-round-modal #edit-round-btn,
+#submission-due-date-modal #submission-due-date-btn,
+#voting-due-date-modal #voting-due-date-btn { background-color: #5FCC34; }
+
+#edit-round-modal #cancel-edit-round-btn,
+#submission-due-date-modal #cancel-submission-due-date-btn,
+#voting-due-date-modal #cancel-voting-due-date-btn { background-color: #02B8EF; }
+
+.datepicker .next,
+.datepicker .prev { color: #01249A; }
+
+.datepicker .day.active,
+.datepicker .day.active:hover { background-color: #01249A; }
+
+.datepicker table td.today:before { border-bottom-color: #01249A !important; }
+
+.timepicker .btn { color: #01249A; }
+.timepicker .btn-primary {
+    background-color: #01249A;
+    border: 3px solid #01249A;
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Cubano', sans-serif;
+}
