@@ -66,7 +66,7 @@
                 {% else %}
                 <span class="action-required">You Have <span class="emphasize">Not</span> Submitted</span>
                 {% endif %}
-            {% elif round.accepting_votes %}
+            {% elif round.accepting_votes and league.has_user(user) %}
             <a href="{{ round.playlist_url }}" target="_blank" class="action-link" title="Listen to Playlist">
                 <span alt="" class="action-button playlist current"></span>
                 <span class="action-text current">Listen to Playlist!</span>
@@ -100,6 +100,11 @@
                     <span alt="" class="action-button vote"></span>
                     <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Submit Votes!</span>
                     {% endif %}
+                </a>
+            {% elif round.accepting_votes %}
+                <a href="{{ round.playlist_url }}" target="_blank" class="action-link" title="Listen to Playlist">
+                    <span alt="" class="action-button playlist current"></span>
+                    <span class="action-text current">Listen to Playlist!</span>
                 </a>
             {% endif %}
         {% else %}
