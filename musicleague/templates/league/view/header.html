@@ -166,7 +166,7 @@
                     {% endfor %}
                 {% elif round and round.accepting_votes %}
                     {% for user in round.have_not_voted %}
-                    <span>{{ user.name }}</span>
+                    <span class="member-name">{{ user.name }}</span>
                     {% endfor %}
                 {% endif %}
             </div>

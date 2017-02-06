@@ -401,6 +401,7 @@ body { font-family: 'Nunito', sans-serif; }
 
         #progress-popover #acted .member-name,
         #progress-popover #waiting .member-name {
+            display: block;
             font-size: 14px;
             line-height: 18px;
             display: block;
