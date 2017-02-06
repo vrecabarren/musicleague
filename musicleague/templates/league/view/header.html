@@ -61,10 +61,11 @@
                         {% for member in league.users %}
                         <img src="{{ member.image_url }}" alt="{{ member.name }}" class="img img-circle">
                         {% endfor %}
-                        <span id="member-count">{{ league.users|length }} Members</span>
-                        <a href="#" id="members-toggle">
-                            <img src="/static/icons/expand_icon.svg" alt="" class="account-icon">
-                        </a>
+                        <span id="member-count">{{ league.users|length }} Members
+                            <a href="#" id="members-toggle">
+                                <img src="/static/icons/expand_icon.svg" alt="" class="account-icon">
+                            </a>
+                        </span>
                     </div><!-- #members -->
                 </div>
             </div><!-- .row -->

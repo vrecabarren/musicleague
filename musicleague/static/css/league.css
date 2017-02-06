@@ -163,7 +163,8 @@ body { font-family: 'Nunito', sans-serif; }
 
         #title-bar .members img:last-of-type { margin-right: 0px !important; }
 
-        #title-bar .members #member-count { margin: 0px 10px; }
+        #title-bar .members #member-count { display: inline-block; margin: 0px 10px; }
+        #title-bar .members #member-count #members-toggle { margin-left: 10px; }
 
         #title-bar .members #members-collapse #members-container {
             background-color: rgba(0, 37, 154, 0.85);
