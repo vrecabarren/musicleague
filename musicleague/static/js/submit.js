@@ -1,3 +1,7 @@
+function pad(n) {
+    return (n < 10) ? ("0" + n) : n;
+}
+
 function setSongStateFound(song, track) {
     var id = track.id;
     var uri = track.uri;
@@ -15,6 +19,9 @@ function setSongStateFound(song, track) {
     song.find('.find-song-inp').val("");
     song.find('.find-song-btn').html('Change It!');
     song.addClass('found');
+
+    var numSelected = parseInt($('#progress #num-selected').html());
+    $('#progress #num-selected').html(pad(++numSelected));
 }
 
 $('.find-song-btn').on("click", function(){
