@@ -47,7 +47,7 @@ def view_submit(league_id, submission_period_id):
     return {
         'user': g.user,
         'league': league,
-        'submission_period': submission_period,
+        'round': submission_period,
         'my_submission': my_submission,
     }
 

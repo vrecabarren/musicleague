@@ -127,12 +127,6 @@ body { font-family: 'Nunito', sans-serif; }
                 font-family: 'Cubano', sans-serif;
             }
 
-            .section .form-group input:-moz-placeholder {
-                color: #d4d4d4;
-                font-family: 'Cubano', sans-serif;
-                opacity: 1;
-            }
-
         .section .form-group input[type="checkbox"] {
             border: 1px solid #02B8EF;
             height: 32px;

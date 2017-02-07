@@ -1,5 +1,5 @@
 @import url('/static/css/_navbar.css');
-@import url('https://fonts.googleapis.com/css?family=Nunito:400,900');
+@import url('https://fonts.googleapis.com/css?family=Nunito:400');
 
 @font-face {
     font-family: 'Cubano';
@@ -33,6 +33,16 @@ body { font-family: 'Nunito', sans-serif; }
     text-align: center;
 }
 
+    #title-bar .round-title,
+    #title-bar .round-action {
+        display: inline-block;
+        font-family: 'Cubano', sans-serif;
+        font-size: 20px;
+        line-height: 24px;
+    }
+
+        #title-bar .round-title { color: #F8C62C; }
+
     #title-bar .league-title {
         display: block;
         font-family: 'Cubano', sans-serif;
@@ -40,44 +50,64 @@ body { font-family: 'Nunito', sans-serif; }
         line-height: 72px;
     }
 
-    #title-bar .league-created {
-        display: block;
-        font-size: 18px;
-        line-height: 19px;
-        margin: 50px 0px;
-    }
-
-    #title-bar .members {
-        font-size: 18px;
-        line-height: 40px;
-    }
-
-        #title-bar .members img {
-            height: 40px;
-            margin-right: -25px;
-            width: 40px;
-        }
-
-        #title-bar .members img:last-of-type { margin-right: 0px !important; }
-
-        #title-bar .members #member-count { display: inline-block; margin: 0px 10px; }
-        #title-bar .members #member-count #members-toggle { margin-left: 10px; }
-
-        #title-bar .members #members-collapse #members-container {
-            background-color: rgba(0, 37, 154, 0.85);
+#status-bar {
+    background-color: #02B8EF;
+    color: #fff;
+    font-family: 'Cubano', sans-serif;
+    font-size: 20px;
+    line-height: 24px;
+    margin-bottom: 50px;
+    padding: 0px;
+    width: 100%;
+}
+    #status-bar .row { padding: 0px; }
+    #status-bar #progress { font-size: 36px; line-height: 40px; }
+    #status-bar #progress #num-selected { color: #F8C62C; }
+    #status-bar #submit-songs-btn-wrapper { background-color: #D8D8D8; padding: 20px 0px; }
+        #status-bar #submit-songs-btn-wrapper #submit-songs-btn {
+            background: none;
             border: 3px solid #fff;
             border-radius: 8px;
             color: #fff;
-            font-size: 14px;
-            line-height: 19px;
-            margin-top: 25px;
-            padding: 25px 0px;
+            font-size: 20px;
+            line-height: 24px;
         }
 
-#current-round-bar {
-    background-color: #02B8EF;
-    color: #fff;
+.song {
+    background-color: #efefef;
+    border-radius: 8px;
+    color: #01249A;
     margin-bottom: 50px;
-    padding: 50px;
-    width: 100%;
+    padding: 20px 0px;
 }
+
+    .song .song-header {
+        display: block;
+        font-family: 'Cubano', sans-serif;
+        font-size: 36px;
+        line-height: 40px;
+        margin-bottom: 20px;
+    }
+
+    .song .find-song-inp {
+        background: #fff;
+        border: 1px solid #02B8EF;
+        border-radius: 8px;
+        font-size: 20px;
+        height: 44px;
+        line-height: 24px;
+        vertical-align: middle;
+    }
+        .song .find-song-inp::-webkit-input-placeholder { color: #02B8EF; }
+        .song .find-song-inp::-moz-placeholder { color: #02B8EF; opacity: 1; }
+        .song .find-song-inp:-ms-input-placeholder { color: #02B8EF; }
+
+    .song .find-song-btn {
+        background: #02B8EF;
+        border: none;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 20px;
+        line-height: 24px;
+        width: 100%;
+    }

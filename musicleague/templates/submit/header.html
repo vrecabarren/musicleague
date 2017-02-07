@@ -11,7 +11,6 @@
                 <img src="/static/icons/add_icon.svg" alt="" class="add-league-icon">
             </a>
         </div>
-        <!-- <div class="account-divider"></div> -->
         <svg class="account-divider" width="7" height="120" viewBox="0 0 3 120" version="1.1" xmlns="http://www.w3.org/2000/svg">
             <line stroke-linecap="round" x1="1" y1="0" x2="1" y2="90" stroke="white" stroke-width="3"/>
         </svg>
@@ -53,9 +52,25 @@
         </div>
     </div>
     <div id="title-bar">
-
+        <span class="round-title">{{ round.name }}:&nbsp;</span>
+        <span class="round-action">Submitting</span>
+        <span class="league-title">{{ league.name }}</span>
     </div>
 </div>
 <div id="status-bar">
-
+    <div class="container">
+        <div class="row">
+            <div class="hidden-xs col-sm-4 vcenter text-center">
+                <span id="paste-directive">Paste A Link Below And Tap “Find It” To Begin!</span>
+            </div><!--
+            --><div class="col-xs-6 col-sm-4 vcenter text-center">
+                <span id="progress"><span id="num-selected">0</span> of {{ "%02d" % league.preferences.track_count }}</span>
+                <br>
+                <span>Tracks Selected</span>
+            </div><!--
+            --><div class="col-xs-6 col-sm-4 vcenter text-center" id="submit-songs-btn-wrapper">
+                <button type="button" id="submit-songs-btn" class="btn btn-lg">Submit Songs!</button>
+            </div>
+        </div>
+    </div>
 </div>
