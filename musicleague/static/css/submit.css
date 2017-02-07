@@ -1,0 +1,83 @@
+@import url('/static/css/_navbar.css');
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,900');
+
+@font-face {
+    font-family: 'Cubano';
+    src: url("/static/fonts/Cubano/cubano-regular-webfont.ttf");
+}
+
+/* REMOVE THE NAVBAR AND SPACING UP TOP */
+.navbar { display: none; margin: 0px; }
+.spacer { display: none; }
+
+body { font-family: 'Nunito', sans-serif; }
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+#img-bar {
+    background: url("/static/images/ml_header06.jpg");
+    background-attachment: scroll;
+    background-position: 50% 40%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#title-bar {
+    background: none;
+    color: #fff;
+    padding: 50px 0px;
+    text-align: center;
+}
+
+    #title-bar .league-title {
+        display: block;
+        font-family: 'Cubano', sans-serif;
+        font-size: 60px;
+        line-height: 72px;
+    }
+
+    #title-bar .league-created {
+        display: block;
+        font-size: 18px;
+        line-height: 19px;
+        margin: 50px 0px;
+    }
+
+    #title-bar .members {
+        font-size: 18px;
+        line-height: 40px;
+    }
+
+        #title-bar .members img {
+            height: 40px;
+            margin-right: -25px;
+            width: 40px;
+        }
+
+        #title-bar .members img:last-of-type { margin-right: 0px !important; }
+
+        #title-bar .members #member-count { display: inline-block; margin: 0px 10px; }
+        #title-bar .members #member-count #members-toggle { margin-left: 10px; }
+
+        #title-bar .members #members-collapse #members-container {
+            background-color: rgba(0, 37, 154, 0.85);
+            border: 3px solid #fff;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            line-height: 19px;
+            margin-top: 25px;
+            padding: 25px 0px;
+        }
+
+#current-round-bar {
+    background-color: #02B8EF;
+    color: #fff;
+    margin-bottom: 50px;
+    padding: 50px;
+    width: 100%;
+}
