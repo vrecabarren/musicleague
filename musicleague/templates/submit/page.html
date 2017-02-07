@@ -24,9 +24,22 @@
                 <div class="form-group">
                     <input type="text" class="form-control find-song-inp" placeholder="Paste Your Spotify Song Link or URI" {% if loop.first %}autofocus="true"{% endif %}>
                 </div>
-            </div><!--
-            --><div class="col-sm-4 text-center">
+            </div>
+            <div class="col-sm-4 text-center">
                 <button type="button" class="btn btn-lg find-song-btn">Find It!</button>
+            </div>
+        </div>
+        <div class="col-xs-12 song-info">
+            <div class="col-xs-12">
+                <span class="you-selected">You Selected:</span>
+            </div>
+            <div class="col-xs-12">
+                <img src="" alt="" class="img img-rounded">
+                <span>
+                    <span class="name"></span>
+                    <span class="artist"></span>
+                    <span class="album"></span>
+                </span>
             </div>
         </div>
     </div>

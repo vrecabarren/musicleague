@@ -107,7 +107,58 @@ body { font-family: 'Nunito', sans-serif; }
         border: none;
         border-radius: 8px;
         color: #fff;
+        font-family: 'Cubano', sans-serif;
         font-size: 20px;
         line-height: 24px;
         width: 100%;
     }
+
+    .song .song-info { display: none; }
+
+    .song.found { background-color: #5FCC34; }
+        .song.found .song-header { color: #fff; }
+        .song.found .find-song-inp { border: 3px solid #5FCC34; }
+        .song.found .find-song-btn {
+            background: none;
+            border: 3px solid #fff;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 20px;
+            line-height: 24px;
+            width: 100%;
+        }
+
+        .song.found .song-info {
+            color: #fff;
+            display: block;
+        }
+
+            .song.found .song-info .you-selected {
+                display: block;
+                font-family: 'Cubano', sans-serif;
+                font-size: 22px;
+                line-height: 24px;
+                margin: 20px 0px;
+            }
+
+            .song.found .song-info img {
+                display: inline-block;
+                height: 100px;
+                margin-right: 10px;
+                vertical-align: top;
+                width: 100px;
+            }
+
+            .song.found .song-info span {
+                display: inline-block;
+            }
+
+            .song.found .song-info span .name,
+            .song.found .song-info span .artist,
+            .song.found .song-info span .album {
+                display: block;
+                font-size: 22px;
+                line-height: 24px;
+            }
+
+            .song.found .song-info .name { font-family: 'Cubano', sans-serif; }
