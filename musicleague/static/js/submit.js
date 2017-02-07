@@ -12,6 +12,8 @@ function setSongStateFound(song, track) {
     song.find('.song-info .name').html(name);
     song.find('.song-info .artist').html(artist);
     song.find('.song-info .album').html(album);
+    song.find('.find-song-inp').val("");
+    song.find('.find-song-btn').html('Change It!');
     song.addClass('found');
 }
 
