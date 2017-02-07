@@ -50,3 +50,21 @@ $('.find-song-btn').on("click", function(){
             });
         }
 });
+
+function collectSongs() {
+    var songs = [];
+    $('.song').each(function() {
+        songs.push(String($(this).data('uri')));
+    });
+    var jsonField = $(document.getElementById('songs-inp'));
+    jsonField.val(JSON.stringify(songs));
+}
+
+function processFormSubmission() {
+    collectSongs();
+    return true;
+}
+
+$(document).ready(function() {
+    $('form').submit(processFormSubmission);
+});
