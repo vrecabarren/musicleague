@@ -9,7 +9,9 @@ from flask import url_for
 
 from musicleague import app
 from musicleague.league import get_league
+from musicleague.notify.flash import flash_error
 from musicleague.notify.flash import flash_success
+from musicleague.notify.flash import flash_warning
 from musicleague.routes.decorators import league_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
@@ -101,6 +103,15 @@ def view_submission_period(league_id, submission_period_id):
         return redirect(request.referrer)
     league = get_league(league_id)
     submission_period = get_submission_period(submission_period_id)
+    if not submission_period:
+        flash_error('Round not found')
+        return redirect(url_for('view_league', league_id=league.id))
+
+    if not (submission_period.is_complete or
+            league.has_owner(g.user) or g.user.is_admin):
+        flash_warning('You do not have access to this page right now')
+        return redirect(url_for('view_league', league_id=league.id))
+
     tracks = submission_period.all_tracks
     if tracks:
         tracks = g.spotify.tracks(submission_period.all_tracks).get('tracks')
