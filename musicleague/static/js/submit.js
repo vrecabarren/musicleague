@@ -44,8 +44,6 @@ $('.find-song-btn').on("click", function(){
         // Get info from Spotify API
         $.ajax({url: 'https://api.spotify.com/v1/tracks/' + trackId}).success(
             function(response){
-                var name = response.name;
-                var artist = response.artists[0].name;
                 setSongStateFound(song, response);
             });
         }
@@ -65,6 +63,21 @@ function processFormSubmission() {
     return true;
 }
 
+function setPreviousSubmissionState() {
+    $('.song.found').each(function(){
+        var song = $(this);
+        var uri = song.data('uri');
+        var uri_regex = /spotify\:track\:([a-zA-Z0-9]{22})/;
+        var trackId = uri.match(uri_regex)[1];
+        $.ajax({url: 'https://api.spotify.com/v1/tracks/' + trackId}).success(
+            function(response){
+                setSongStateFound(song, response);
+            }
+        );
+    });
+}
+
 $(document).ready(function() {
     $('form').submit(processFormSubmission);
+    setPreviousSubmissionState();
 });
