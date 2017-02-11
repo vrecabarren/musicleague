@@ -103,7 +103,10 @@ body { font-family: 'Nunito', sans-serif; }
         .song .find-song-inp::-moz-placeholder { color: #02B8EF; opacity: 1; }
         .song .find-song-inp:-ms-input-placeholder { color: #02B8EF; }
 
-    .song .find-song-btn {
+    .song .find-song-btn,
+    .song .find-song-btn:active,
+    .song .find-song-btn:hover,
+    .song .find-song-btn:visited {
         background: #02B8EF;
         border: 3px solid #02B8EF;;
         border-radius: 8px;
@@ -111,6 +114,7 @@ body { font-family: 'Nunito', sans-serif; }
         font-family: 'Cubano', sans-serif;
         font-size: 20px;
         line-height: 24px;
+        outline: none;
         width: 100%;
     }
 
