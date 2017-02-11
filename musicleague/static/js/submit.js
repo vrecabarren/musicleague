@@ -15,7 +15,7 @@ function setSongStateFound(song, track) {
     song.find('.song-info .artist').html(artist);
     song.find('.song-info .album').html(album);
     song.find('.find-song-inp').val("");
-    song.find('.find-song-btn').html('Change It!');
+    song.find('.find-song-btn.hidden-xs').html('Change It!');
     song.removeClass('error').addClass('found');
 }
 
@@ -28,7 +28,7 @@ function setSongStateNotFound(song) {
     song.find('.song-info .artist').html("");
     song.find('.song-info .album').html('');
     song.find('.find-song-inp').val("");
-    song.find('.find-song-btn').html("Let's Try This Again!");
+    song.find('.find-song-btn.hidden-xs').html("Let's Try This Again!");
     song.removeClass('found').addClass('error').addClass('not-found');
 }
 
@@ -41,7 +41,7 @@ function setSongStateDuplicateArtist(song) {
     song.find('.song-info .artist').html("");
     song.find('.song-info .album').html('');
     song.find('.find-song-inp').val("");
-    song.find('.find-song-btn').html("Let's Try This Again!");
+    song.find('.find-song-btn.hidden-xs').html("Let's Try This Again!");
     song.removeClass('found').addClass('error').addClass('duplicate-artist');
 }
 
@@ -54,7 +54,7 @@ function setSongStateDuplicateSong(song) {
     song.find('.song-info .artist').html("");
     song.find('.song-info .album').html('');
     song.find('.find-song-inp').val("");
-    song.find('.find-song-btn').html("Let's Try This Again!");
+    song.find('.find-song-btn.hidden-xs').html("Let's Try This Again!");
     song.removeClass('found').addClass('error').addClass('duplicate-song');
 }
 
