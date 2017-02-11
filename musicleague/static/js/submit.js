@@ -9,16 +9,53 @@ function setSongStateFound(song, track) {
 
     song.data('id', id);
     song.data('uri', uri);
+    song.find('.you-selected').html('You Selected:');
     song.find('.song-info img').attr('src', img_src);
     song.find('.song-info .name').html(name);
     song.find('.song-info .artist').html(artist);
     song.find('.song-info .album').html(album);
     song.find('.find-song-inp').val("");
     song.find('.find-song-btn').html('Change It!');
-    song.addClass('found');
+    song.removeClass('error').addClass('found');
+}
 
-    setSelectedSongCount();
-    setSubmitButtonState();
+function setSongStateNotFound(song) {
+    song.data('id', '');
+    song.data('uri', '');
+    song.find('.you-selected').html('No Result:');
+    song.find('.song-info img').attr('src', '/static/icons/attentionicon.svg');
+    song.find('.song-info .name').html("No luck.<br>We couldn't<br>find that.");
+    song.find('.song-info .artist').html("");
+    song.find('.song-info .album').html('');
+    song.find('.find-song-inp').val("");
+    song.find('.find-song-btn').html("Let's Try This Again!");
+    song.removeClass('found').addClass('error').addClass('not-found');
+}
+
+function setSongStateDuplicateArtist(song) {
+    song.data('id', '');
+    song.data('uri', '');
+    song.find('.you-selected').html('Great Minds Think Alike:');
+    song.find('.song-info img').attr('src', '/static/icons/attentionicon.svg');
+    song.find('.song-info .name').html("Artist<br>Already<br>Submitted.");
+    song.find('.song-info .artist').html("");
+    song.find('.song-info .album').html('');
+    song.find('.find-song-inp').val("");
+    song.find('.find-song-btn').html("Let's Try This Again!");
+    song.removeClass('found').addClass('error').addClass('duplicate-artist');
+}
+
+function setSongStateDuplicateSong(song) {
+    song.data('id', '');
+    song.data('uri', '');
+    song.find('.you-selected').html('Great Minds Think Alike:');
+    song.find('.song-info img').attr('src', '/static/icons/attentionicon.svg');
+    song.find('.song-info .name').html("Song<br>Already<br>Submitted.");
+    song.find('.song-info .artist').html("");
+    song.find('.song-info .album').html('');
+    song.find('.find-song-inp').val("");
+    song.find('.find-song-btn').html("Let's Try This Again!");
+    song.removeClass('found').addClass('error').addClass('duplicate-song');
 }
 
 $('.find-song-btn').on("click", function(){
@@ -39,10 +76,22 @@ $('.find-song-btn').on("click", function(){
 
     if (trackId != null) {
         // Get info from Spotify API
-        $.ajax({url: 'https://api.spotify.com/v1/tracks/' + trackId}).success(
-            function(response){
-                setSongStateFound(song, response);
-            });
+        $.ajax(
+                {url: 'https://api.spotify.com/v1/tracks/' + trackId}
+            ).done(
+                function(response){
+                    setSongStateFound(song, response);
+                }
+            ).fail(
+                function(){
+                    setSongStateNotFound(song);
+                }
+            ).always(
+                function(){
+                    setSelectedSongCount();
+                    setSubmitButtonState();
+                }
+            );
         }
 });
 
@@ -61,6 +110,8 @@ function processFormSubmission() {
 }
 
 function setPreviousSubmissionState() {
+    $('.song.error.duplicate-artist').each(setSongStateDuplicateArtist);
+    $('.song.error.duplicate-song').each(setSongStateDuplicateSong);
     $('.song.found').each(function(){
         var song = $(this);
         var uri = song.data('uri');
