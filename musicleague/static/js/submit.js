@@ -1,6 +1,3 @@
-function pad(n) {
-    return (n < 10) ? ("0" + n) : n;
-}
 
 function setSongStateFound(song, track) {
     var id = track.id;
@@ -20,8 +17,8 @@ function setSongStateFound(song, track) {
     song.find('.find-song-btn').html('Change It!');
     song.addClass('found');
 
-    var numSelected = parseInt($('#progress #num-selected').html());
-    $('#progress #num-selected').html(pad(++numSelected));
+    setSelectedSongCount();
+    setSubmitButtonState();
 }
 
 $('.find-song-btn').on("click", function(){
@@ -77,7 +74,35 @@ function setPreviousSubmissionState() {
     });
 }
 
+function pad(n) {
+    return (n < 10) ? ("0" + n) : n;
+}
+
+function setSelectedSongCount() {
+    var numSelected = $('.song.found').length;
+    $('#progress #num-selected').html(pad(numSelected));
+    return numSelected;
+}
+
+function setSubmitButtonState() {
+    var numSelected = $('.song.found').length;
+    var numTotal = $('.song').length;
+
+    // If not all songs selected, disable submit button. Otherwise, enable.
+    if (numSelected != numTotal) {
+        $('#submit-songs-btn-wrapper').addClass('disabled');
+        $('#submit-songs-btn').addClass('disabled');
+        $('#submit-songs-btn').attr('disabled', 'disabled');
+    } else {
+        $('#submit-songs-btn').removeAttr('disabled');
+        $('#submit-songs-btn').removeClass('disabled');
+        $('#submit-songs-btn-wrapper').removeClass('disabled');
+    }
+}
+
 $(document).ready(function() {
     $('form').submit(processFormSubmission);
     setPreviousSubmissionState();
+    setSelectedSongCount();
+    setSubmitButtonState();
 });
