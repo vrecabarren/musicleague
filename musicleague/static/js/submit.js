@@ -110,8 +110,8 @@ function processFormSubmission() {
 }
 
 function setPreviousSubmissionState() {
-    $('.song.error.duplicate-artist').each(setSongStateDuplicateArtist);
-    $('.song.error.duplicate-song').each(setSongStateDuplicateSong);
+    $('.song.error.duplicate-artist').each(function(){setSongStateDuplicateArtist($(this));});
+    $('.song.error.duplicate-song').each(function(){setSongStateDuplicateSong($(this))});
     $('.song.found').each(function(){
         var song = $(this);
         var uri = song.data('uri');

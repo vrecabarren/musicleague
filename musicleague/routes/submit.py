@@ -3,6 +3,7 @@ import json
 
 from flask import g
 from flask import redirect
+from flask import render_template
 from flask import request
 from flask import url_for
 
@@ -99,23 +100,15 @@ def submit(league_id, submission_period_id):
         my_tracks = s_tracks[:len(tracks)]
         their_tracks = s_tracks[len(tracks):]
 
-        # Don't allow user to submit already submitted track
-        duplicate_track = check_duplicate_track(my_tracks, their_tracks)
-        if duplicate_track is not None:
-            track_name = duplicate_track['name']
-            flash_error("<strong>{}</strong> has already been submitted. "
-                        "Please choose another track to submit."
-                        .format(track_name))
-            return redirect(request.referrer)
-
-        # Warn user if submitting already submitted artist
-        duplicate_track = check_duplicate_artist(my_tracks, their_tracks)
-        if duplicate_track is not None:
-            artist_name = duplicate_track['artists'][0]['name']
-            flash_warning("Your submission was accepted, but we thought you'd "
-                          "like to know that another track by "
-                          "<strong>{}</strong> has already been submitted."
-                          .format(artist_name))
+        # Don't allow user to submit already submitted track or artist
+        duplicate_tracks = check_duplicate_tracks(my_tracks, their_tracks)
+        duplicate_artists = check_duplicate_artists(my_tracks, their_tracks)
+        if duplicate_tracks or duplicate_artists:
+            return render_template(
+                'submit/page.html',
+                user=g.user, league=league, round=submission_period,
+                previous_tracks=tracks, duplicate_songs=duplicate_tracks,
+                duplicate_artists=duplicate_artists)
 
     submission = create_or_update_submission(tracks, submission_period, league,
                                              g.user)
@@ -143,19 +136,19 @@ def submit(league_id, submission_period_id):
     return redirect(url_for('view_league', league_id=league_id))
 
 
-def check_duplicate_track(my_tracks, their_tracks):
-    duplicate_track = None
+def check_duplicate_tracks(my_tracks, their_tracks):
+    duplicate_tracks = []
     their_ids = [track['id'] for track in their_tracks]
     for my_track in my_tracks:
         if my_track['id'] in their_ids:
-            duplicate_track = my_track
-    return duplicate_track
+            duplicate_tracks.append(my_track['uri'])
+    return duplicate_tracks
 
 
-def check_duplicate_artist(my_tracks, their_tracks):
-    duplicate_track = None
+def check_duplicate_artists(my_tracks, their_tracks):
+    duplicate_tracks = []
     their_ids = [track['artists'][0]['id'] for track in their_tracks]
     for my_track in my_tracks:
         if my_track['artists'][0]['id'] in their_ids:
-            duplicate_track = my_track
-    return duplicate_track
+            duplicate_tracks.append(my_track['uri'])
+    return duplicate_tracks
