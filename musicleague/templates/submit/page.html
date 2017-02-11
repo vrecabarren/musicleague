@@ -88,7 +88,8 @@
     <div class="container">
 
         {% for song_num in range(league.preferences.track_count) %}
-        <div class="song row{% if my_submission %} found{% endif %}" {% if my_submission %}data-uri="{{ my_submission.tracks[song_num] }}"{% endif %}>
+        {% set submitted_uri  = my_submission.tracks[song_num] if (my_submission and my_submission.tracks|length >= (song_num + 1)) else "" %}
+        <div class="song row{% if submitted_uri %} found{% endif %}" {% if my_submission %}data-uri="{{ submitted_uri }}"{% endif %}>
             <div class="col-xs-12">
                 <div class="col-xs-12">
                     <span class="song-header">Song {{ "%02d" % (song_num + 1) }}</span>
