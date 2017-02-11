@@ -152,7 +152,7 @@ function setSubmitButtonState() {
 }
 
 $(document).ready(function() {
-    $('form').submit(processFormSubmission);
+    $('form').trigger("reset").submit(processFormSubmission);
     setPreviousSubmissionState();
     setSelectedSongCount();
     setSubmitButtonState();
