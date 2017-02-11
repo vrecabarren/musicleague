@@ -152,6 +152,7 @@ function setSubmitButtonState() {
 }
 
 $(document).ready(function() {
+    $("#status-bar").stick_in_parent();
     $('form').trigger("reset").submit(processFormSubmission);
     setPreviousSubmissionState();
     setSelectedSongCount();

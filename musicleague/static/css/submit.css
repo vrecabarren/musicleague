@@ -59,7 +59,9 @@ body { font-family: 'Nunito', sans-serif; }
     margin-bottom: 50px;
     padding: 0px;
     width: 100%;
+    z-index: 100;
 }
+
     #status-bar .row { padding: 0px; }
     #status-bar #progress { font-size: 36px; line-height: 40px; }
     #status-bar #progress #num-selected { color: #F8C62C; }
