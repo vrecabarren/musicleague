@@ -120,6 +120,13 @@ body { font-family: 'Nunito', sans-serif; }
         width: 100%;
     }
 
+    .song .find-song-btn.visible-xs .search-icon {
+        background: url("/static/icons/magnifying_glass_icon_white.svg");
+        display: inline-block;
+        height: 24px;
+        width: 20px;
+    }
+
     .song .song-info { display: none; }
 
     .song.found { background-color: #5FCC34; }
@@ -156,13 +163,9 @@ body { font-family: 'Nunito', sans-serif; }
                 width: 100px;
             }
 
-            .song.found .song-info span {
-                display: inline-block;
-            }
-
-            .song.found .song-info span .name,
-            .song.found .song-info span .artist,
-            .song.found .song-info span .album {
+            .song.found .song-info .name,
+            .song.found .song-info .artist,
+            .song.found .song-info .album {
                 display: block;
                 font-size: 22px;
                 line-height: 24px;
@@ -181,6 +184,9 @@ body { font-family: 'Nunito', sans-serif; }
                 font-size: 20px;
                 line-height: 24px;
                 width: 100%;
+            }
+            .song.error .find-song-btn.visible-xs .search-icon {
+                background: url("/static/icons/magnifying_glass_icon_blue.svg");
             }
             .song.error .song-info {
                 color: #01249A;
