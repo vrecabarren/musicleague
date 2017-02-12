@@ -92,7 +92,11 @@ $('.find-song-btn').on("click", function(){
                     setSubmitButtonState();
                 }
             );
-        }
+    } else {
+        setSongStateNotFound(song);
+        setSelectedSongCount();
+        setSubmitButtonState();
+    }
 });
 
 function collectSongs() {
