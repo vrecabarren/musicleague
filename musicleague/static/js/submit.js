@@ -78,7 +78,7 @@ $.fn.filterByData = function(prop, val) {
 }
 
 $('.find-song-btn').on("click", function(){
-    var song = $(this).parent().parent().parent();
+    var song = $(this).parent().parent();
     var url_or_uri = song.find('.find-song-inp').val();
 
     var url_play_regex = /play\.spotify\.com\/track\/([a-zA-Z0-9]{22})/;
@@ -92,6 +92,10 @@ $('.find-song-btn').on("click", function(){
         trackId = url_or_uri.match(url_play_regex)[1];
     else if (url_or_uri.match(uri_regex))
         trackId = url_or_uri.match(uri_regex)[1];
+
+    // Clear this song's URI/ID so it doesn't appear as a duplicate
+    song.data('id', '');
+    song.data('uri', '');
 
     if (trackId && $('.song').filterByData('id', trackId).length > 0) {
         setSongStateDuplicateSubmission(song);
