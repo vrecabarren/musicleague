@@ -213,9 +213,9 @@ body { font-family: 'Nunito', sans-serif; }
                     display: inline-block;
                 }
 
-                .song.error .song-info span .name,
-                .song.error .song-info span .artist,
-                .song.error .song-info span .album {
+                .song.error .song-info .name,
+                .song.error .song-info .artist,
+                .song.error .song-info .album {
                     display: block;
                     font-size: 22px;
                     line-height: 24px;

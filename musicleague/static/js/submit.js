@@ -58,6 +58,25 @@ function setSongStateDuplicateSong(song) {
     song.removeClass('found').addClass('error').addClass('duplicate-song');
 }
 
+function setSongStateDuplicateSubmission(song) {
+    song.data('id', '');
+    song.data('uri', '');
+    song.find('.you-selected').html('There Must Be An Echo In Here:');
+    song.find('.song-info img').attr('src', '/static/icons/attentionicon.svg');
+    song.find('.song-info .name').html("Duplicate<br>Submissions<br>Not Allowed.");
+    song.find('.song-info .artist').html("");
+    song.find('.song-info .album').html('');
+    song.find('.find-song-inp').val("");
+    song.find('.find-song-btn.hidden-xs').html("Let's Try This Again!");
+    song.removeClass('found').addClass('error').addClass('duplicate-submission');
+}
+
+$.fn.filterByData = function(prop, val) {
+    return this.filter(
+        function() { return $(this).data(prop)==val; }
+    );
+}
+
 $('.find-song-btn').on("click", function(){
     var song = $(this).parent().parent().parent();
     var url_or_uri = song.find('.find-song-inp').val();
@@ -74,7 +93,14 @@ $('.find-song-btn').on("click", function(){
     else if (url_or_uri.match(uri_regex))
         trackId = url_or_uri.match(uri_regex)[1];
 
-    if (trackId != null) {
+    if (trackId && $('.song').filterByData('id', trackId).length > 0) {
+        setSongStateDuplicateSubmission(song);
+        setSelectedSongCount();
+        setSubmitButtonState();
+        return
+    }
+
+    if (trackId) {
         // Get info from Spotify API
         $.ajax(
                 {url: 'https://api.spotify.com/v1/tracks/' + trackId}
