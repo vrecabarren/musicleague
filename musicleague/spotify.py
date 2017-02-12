@@ -4,6 +4,7 @@ import re
 from spotipy import oauth2
 
 from musicleague.environment import get_setting
+from musicleague.environment import is_deployed
 from musicleague.environment.variables import ADD_BOT_REDIRECT_URI
 from musicleague.environment.variables import SPOTIFY_CLIENT_ID
 from musicleague.environment.variables import SPOTIFY_CLIENT_SECRET
@@ -30,7 +31,7 @@ def get_spotify_oauth(bot=False):
 
 
 def create_playlist(submission_period):
-    if not submission_period:
+    if not submission_period or not is_deployed():
         return
 
     from musicleague.bot import get_botify
@@ -57,6 +58,9 @@ def update_playlist(submission_period):
     if not submission_period or not submission_period.playlist_id:
         return
 
+    if not is_deployed():
+        return
+
     from musicleague.bot import get_botify
     bot_id, botify = get_botify()
 
@@ -72,7 +76,7 @@ def update_playlist(submission_period):
 
 
 def create_or_update_playlist(submission_period):
-    if not submission_period:
+    if not submission_period or not is_deployed():
         return
 
     if not submission_period.playlist_created:

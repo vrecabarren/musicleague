@@ -1,3 +1,4 @@
+@import url('/static/css/_navbar.css');
 @import url('https://fonts.googleapis.com/css?family=Nunito:400,900');
 
 @font-face {
@@ -10,110 +11,6 @@
 .spacer { display: none; }
 
 body { font-family: 'Nunito', sans-serif; }
-
-#nav-bar {
-    background: none;
-    border-bottom: 3px solid #fff;
-    color: #fff;
-    font-size: 14px;
-    height: 120px;
-    line-height: 19px;
-    padding-left: 50px;
-    padding-right: 50px;
-    text-align: right;
-    width: 100%;
-}
-
-    #nav-bar .brand-wrapper {
-        float: left;
-        line-height: 120px;
-    }
-
-        #nav-bar .brand-wrapper .brand-icon {
-            height: 86px;
-            width: 70px;
-        }
-
-    #nav-bar .add-league-wrapper {
-        display: inline-block;
-        line-height: 120px;
-        text-align: right;
-        vertical-align: top;
-    }
-
-        #nav-bar .add-league-wrapper .add-league-text { margin-right: 10px; }
-
-        #nav-bar .add-league-wrapper .add-league-icon {
-            height: 32px;
-            width: 32px;
-        }
-
-    #nav-bar .account-divider {
-        display: inline-block;;
-        margin-left: 25px;
-        margin-right: 25px;
-    }
-
-    #nav-bar .account-wrapper {
-        display: inline-block;
-        line-height: 120px;
-        text-align: right;
-        vertical-align: top;
-    }
-
-        #nav-bar .account-wrapper .dropdown-menu {
-            background-color: rgba(0, 37, 154, 0.85);
-            border: 3px solid #fff;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 18px;
-            line-height: 40px;
-            margin-top: 25px;
-            padding: 25px 0px;
-        }
-
-        #nav-bar .account-wrapper .dropdown-menu > li > a {
-            color: #fff;
-            line-height: 40px;
-            vertical-align: middle;
-        }
-
-            #nav-bar .account-wrapper .dropdown-menu > li > a > .text { vertical-align: middle; }
-
-            #nav-bar .account-wrapper .dropdown-menu > li > a > .icon {
-                background-position: 50% 50%;
-                background-repeat: no-repeat;
-                display: inline-block;
-                height: 16px;
-                margin-right: 10px;
-                vertical-align: middle;
-                width: 16px;
-            }
-
-            #nav-bar .account-wrapper .dropdown-menu > li > a > #profile-icon { background: url("/static/icons/profile_icon.svg"); width: 12px; }
-            #nav-bar .account-wrapper .dropdown-menu > li > a:hover > #profile-icon { background: url("/static/icons/profile_icon_blue.svg"); }
-
-            #nav-bar .account-wrapper .dropdown-menu > li > a > #settings-icon { background: url("/static/icons/settings_icon.svg"); }
-            #nav-bar .account-wrapper .dropdown-menu > li > a:hover > #settings-icon { background: url("/static/icons/settings_icon_blue.svg"); }
-
-            #nav-bar .account-wrapper .dropdown-menu > li > a > #logout-icon { background: url("/static/icons/logout_icon.svg"); }
-            #nav-bar .account-wrapper .dropdown-menu > li > a:hover > #logout-icon { background: url("/static/icons/logout_icon_blue.svg"); }
-
-            #nav-bar .account-wrapper .dropdown-menu > li > a > #admin-icon { background: url("/static/icons/admin_icon.svg"); height: 9px;;}
-            #nav-bar .account-wrapper .dropdown-menu > li > a:hover > #admin-icon { background: url("/static/icons/admin_icon_blue.svg"); }
-
-        #nav-bar .account-wrapper .dropdown-menu > li > a:hover {
-            background-color: #fff;
-            color: #02b8ef;
-        }
-
-        #nav-bar .account-wrapper .account-name { margin-right:10px; }
-
-        #nav-bar .account-wrapper .account-icon {
-            cursor: pointer;
-            height: 32px;
-            width: 32px;
-        }
 
 #img-bar {
     background: url("/static/images/ml_header06.jpg");
