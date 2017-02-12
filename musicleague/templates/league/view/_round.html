@@ -1,4 +1,4 @@
-<div class="row round-bar"><!--
+<div class="row round-bar {%if round.is_complete %}complete{% elif round.is_current_v2 %}current{% endif %}"><!--
     {% if round.is_complete or league.has_owner(user) %}
 --><div class="col-xs-12 col-sm-2 text-center vcenter linked" data-href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=round.id) }}">
     {% else %}
@@ -74,7 +74,7 @@
             {% endif %}
         {% endif %}
     </div><!--
-    --><div class="{% if round.is_current_v2 %}col-xs-6{% else %}col-xs-12{% endif %} col-sm-2 text-center vcenter" style="border-left: 3px solid #fff; padding-top: 11px; padding-bottom: 5px;">
+    --><div class="{% if round.is_current_v2 %}col-xs-6{% else %}col-xs-12{% endif %} col-sm-2 text-center vcenter right-action">
         {% if round.is_complete %}
             <a href="{{ round.playlist_url }}" target="_blank" class="action-link" title="Listen to Playlist">
                 <span alt="" class="action-button playlist"></span>

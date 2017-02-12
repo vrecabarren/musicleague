@@ -32,47 +32,43 @@ body { font-family: 'Nunito', sans-serif; }
     padding: 50px 0px;
     text-align: center;
 }
+#title-bar .league-title {
+    display: block;
+    font-family: 'Cubano', sans-serif;
+    font-size: 60px;
+    line-height: 72px;
+}
+#title-bar .league-created {
+    display: block;
+    font-size: 18px;
+    line-height: 19px;
+    margin: 50px 0px;
+}
+#title-bar .members {
+    font-size: 18px;
+    line-height: 40px;
+}
+#title-bar .members img {
+    height: 40px;
+    margin-right: -25px;
+    width: 40px;
+}
 
-    #title-bar .league-title {
-        display: block;
-        font-family: 'Cubano', sans-serif;
-        font-size: 60px;
-        line-height: 72px;
-    }
+#title-bar .members img:last-of-type { margin-right: 0px !important; }
 
-    #title-bar .league-created {
-        display: block;
-        font-size: 18px;
-        line-height: 19px;
-        margin: 50px 0px;
-    }
+#title-bar .members #member-count { display: inline-block; margin: 0px 10px; }
+#title-bar .members #member-count #members-toggle { margin-left: 10px; }
 
-    #title-bar .members {
-        font-size: 18px;
-        line-height: 40px;
-    }
-
-        #title-bar .members img {
-            height: 40px;
-            margin-right: -25px;
-            width: 40px;
-        }
-
-        #title-bar .members img:last-of-type { margin-right: 0px !important; }
-
-        #title-bar .members #member-count { display: inline-block; margin: 0px 10px; }
-        #title-bar .members #member-count #members-toggle { margin-left: 10px; }
-
-        #title-bar .members #members-collapse #members-container {
-            background-color: rgba(0, 37, 154, 0.85);
-            border: 3px solid #fff;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 14px;
-            line-height: 19px;
-            margin-top: 25px;
-            padding: 25px 0px;
-        }
+#title-bar .members #members-collapse #members-container {
+    background-color: rgba(0, 37, 154, 0.85);
+    border: 3px solid #fff;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    line-height: 19px;
+    margin-top: 25px;
+    padding: 25px 0px;
+}
 
 #current-round-bar {
     background-color: #02B8EF;
@@ -81,149 +77,142 @@ body { font-family: 'Nunito', sans-serif; }
     padding: 50px;
     width: 100%;
 }
+#current-round-bar .call-for-action {
+    color: #fff;
+    display: block;
+    font-family: 'Cubano', sans-serif;
+    font-size: 24px;
+    line-height: 29px;
+    margin-bottom: 25px;
+}
+#current-round-bar .round-bar .round-status-icon.current { background: url("/static/icons/swords_white.svg"); }
+#current-round-bar .round-bar .round-title {
+    color: #fff;
+    font-size: 18px;
+    line-height: 22px;
+}
+#current-round-bar .round-bar .status-text { color: #fff; margin: 15px 0px; }
 
-    #current-round-bar .call-for-action {
-        color: #fff;
-        display: block;
-        font-family: 'Cubano', sans-serif;
-        font-size: 24px;
-        line-height: 29px;
-        margin-bottom: 25px;
-    }
+#current-round-bar .action-progress { display: block; }
 
-    #current-round-bar .round-bar .round-status-icon.current { background: url("/static/icons/swords_white.svg"); }
+#current-round-bar .round-bar .action-required { color: #fff; }
+#current-round-bar .round-bar .action-link .action-button.change { background: url("/static/icons/change_white.svg"); }
+#current-round-bar .round-bar .action-link .action-button.clock { background: url("/static/icons/clock_gray.svg"); }
+#current-round-bar .round-bar .action-link .action-button.playlist { background: url("/static/icons/playlist_icon_white.svg"); }
+#current-round-bar .round-bar .action-link .action-button.submit { background: url("/static/icons/submit_white.svg"); width: 79px; }
+#current-round-bar .round-bar .action-link .action-button.vote { background: url("/static/icons/vote_white.svg"); }
+#current-round-bar .round-bar .action-text { color: #fff; }
 
-    #current-round-bar .round-bar .round-title {
-        color: #fff;
-        font-size: 18px;
-        line-height: 22px;
-    }
+#current-round-bar .round-bar.current .right-action { border-left: 3px solid #FFF; }
 
-    #current-round-bar .round-bar .status-text { color: #fff; margin: 15px 0px; }
-
-    #current-round-bar .action-progress { display: block; }
-
-    #current-round-bar .round-bar .action-required { color: #fff; }
-    #current-round-bar .round-bar .action-link .action-button.change { background: url("/static/icons/change_white.svg"); }
-    #current-round-bar .round-bar .action-link .action-button.clock { background: url("/static/icons/clock_gray.svg"); }
-    #current-round-bar .round-bar .action-link .action-button.playlist { background: url("/static/icons/playlist_icon_white.svg"); }
-    #current-round-bar .round-bar .action-link .action-button.submit { background: url("/static/icons/submit_white.svg"); width: 79px; }
-    #current-round-bar .round-bar .action-link .action-button.vote { background: url("/static/icons/vote_white.svg"); }
-    #current-round-bar .round-bar .action-text { color: #fff; }
-
-    #current-round-bar .round-divider { display: none; }
+#current-round-bar .round-divider { display: none; }
 
 .round-bar {}
+.round-bar .round-status-icon {
+    background: url("/static/icons/clock_gray.svg");
+    display: inline-block;
+    height: 90px;
+    margin: 0px;
+    width: 90px;
+}
+.round-bar .round-status-icon.complete { background: url("/static/icons/completed_league_icon.svg") }
+.round-bar .round-status-icon.current {
+    background: url("/static/icons/live_league_icon.svg");
+    width: 86px;
+}
 
-    .round-bar .round-status-icon {
-        background: url("/static/icons/clock_gray.svg");
-        display: inline-block;
-        height: 90px;
-        margin: 0px;
-        width: 90px;
-    }
+.round-bar .round-title {
+    color: #d4d4d4;
+    display: inline-block;
+    font-family: 'Cubano', sans-serif;
+    font-size: 24px;
+    line-height: 29px;
+    vertical-align: top;
+}
+.round-bar .round-title.current { color: #02B8EF; }
+.round-bar .round-title.complete { color: #00259A; }
 
-        .round-bar .round-status-icon.complete { background: url("/static/icons/completed_league_icon.svg") }
-        .round-bar .round-status-icon.current {
-            background: url("/static/icons/live_league_icon.svg");
-            width: 86px;
-        }
+.round-bar .status-text {
+    color: #d4d4d4;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 19px;
+    margin: 10px 0px;
+}
+.round-bar .status-text.current { color: #02B8EF; }
+.round-bar .status-text.complete { color: #00259A; }
 
-    .round-bar .round-title {
-        color: #d4d4d4;
-        display: inline-block;
-        font-family: 'Cubano', sans-serif;
-        font-size: 24px;
-        line-height: 29px;
-        vertical-align: top;
-    }
+.round-bar .action-progress { display: none; }
+.round-bar .action-progress a:hover,
+.round-bar .action-progress a:active,
+.round-bar .action-progress a:focus { text-decoration: none; }
 
-        .round-bar .round-title.current { color: #02B8EF; }
-        .round-bar .round-title.complete { color: #00259A; }
+.round-bar .action-progress .text-progress {
+    display: block;
+    font-family: 'Cubano', sans-serif;
+    font-size: 18px;
+    line-height: 22px;
+    padding: 10px 0px;
+}
 
-    .round-bar .status-text {
-        color: #d4d4d4;
-        display: inline-block;
-        font-size: 14px;
-        line-height: 19px;
-        margin: 10px 0px;
-    }
+.round-bar .action-progress .text-progress .emphasize {
+    color: #F8C62C;
+    display: block;
+    font-size: 36px;
+    line-height: 40px;
+}
 
-        .round-bar .status-text.current { color: #02B8EF; }
-        .round-bar .status-text.complete { color: #00259A; }
+.round-bar .action-progress .bar-progress { border: none; border-radius: 0px; margin-bottom: 0px; }
+.round-bar .action-progress .bar-progress .progress-bar { background-color: #F8C62C; border: none; }
 
-    .round-bar .action-progress { display: none; }
+.round-bar .action-required-wrapper { height: 120px; }
+.round-bar .action-required {
+    color: #02B8EF;
+    display: table-cell;
+    font-family: 'Cubano', sans-serif;
+    font-size: 14px;
+    height: 90px;
+    line-height: 17px;
+    vertical-align: middle;
+}
 
-        .round-bar .action-progress a:hover,
-        .round-bar .action-progress a:active,
-        .round-bar .action-progress a:focus { text-decoration: none; }
+.round-bar .action-required .emphasize { color: #F8C62C; }
 
-        .round-bar .action-progress .text-progress {
-            display: block;
-            font-family: 'Cubano', sans-serif;
-            font-size: 18px;
-            line-height: 22px;
-            padding: 10px 0px;
-        }
+.round-bar .action-link:visited,
+.round-bar .action-link:hover,
+.round-bar .action-link:active,
+.round-bar .action-link:visited .action-text,
+.round-bar .action-link:hover .action-text,
+.round-bar .action-link:active .action-text { text-decoration: none; }
 
-            .round-bar .action-progress .text-progress .emphasize {
-                color: #F8C62C;
-                display: block;
-                font-size: 36px;
-                line-height: 40px;
-            }
+.round-bar .action-link .action-button {
+    background: url("/static/icons/clock_gray.svg");
+    display: inline-block;
+    height: 80px;
+    width: 80px;
+}
+.round-bar .action-link .action-button.change { background: url("/static/icons/change_lightblue.svg"); }
+.round-bar .action-link .action-button.playlist { background: url("/static/icons/playlist_icon_blue.svg"); }
+.round-bar .action-link .action-button.playlist.current { background: url("/static/icons/playlist_icon_lightblue.svg"); }
+.round-bar .action-link .action-button.submit { background: url("/static/icons/submit_lightblue.svg"); width: 79px; }
+.round-bar .action-link .action-button.vote { background: url("/static/icons/vote_lightblue.svg"); }
 
-        .round-bar .action-progress .bar-progress { border: none; border-radius: 0px; margin-bottom: 0px; }
-            .round-bar .action-progress .bar-progress .progress-bar { background-color: #F8C62C; border: none; }
+.round-bar .action-link .action-text {
+    color: #d4d4d4;
+    display: block;
+    font-family: 'Cubano', sans-serif;
+    font-size: 12px;
+    line-height: 17px;
+}
+.round-bar .action-link .action-text.current { color: #02B8EF; }
+.round-bar .action-link .action-text.complete { color: #00259A; }
 
-    .round-bar .action-required-wrapper { height: 120px; }
-    .round-bar .action-required {
-        color: #02B8EF;
-        display: table-cell;
-        font-family: 'Cubano', sans-serif;
-        font-size: 14px;
-        height: 90px;
-        line-height: 17px;
-        vertical-align: middle;
-    }
-
-        .round-bar .action-required .emphasize { color: #F8C62C; }
-
-    .round-bar .action-link:visited,
-    .round-bar .action-link:hover,
-    .round-bar .action-link:active,
-    .round-bar .action-link:visited .action-text,
-    .round-bar .action-link:hover .action-text,
-    .round-bar .action-link:active .action-text { text-decoration: none; }
-
-        .round-bar .action-link .action-button {
-            background: url("/static/icons/clock_gray.svg");
-            display: inline-block;
-            height: 80px;
-            width: 80px;
-        }
-
-            .round-bar .action-link .action-button.change { background: url("/static/icons/change_lightblue.svg"); }
-            .round-bar .action-link .action-button.playlist { background: url("/static/icons/playlist_icon_blue.svg"); }
-            .round-bar .action-link .action-button.playlist.current { background: url("/static/icons/playlist_icon_lightblue.svg"); }
-            .round-bar .action-link .action-button.submit { background: url("/static/icons/submit_lightblue.svg"); width: 79px; }
-            .round-bar .action-link .action-button.vote { background: url("/static/icons/vote_lightblue.svg"); }
-
-        .round-bar .action-link .action-text {
-            color: #d4d4d4;
-            display: block;
-            font-family: 'Cubano', sans-serif;
-            font-size: 12px;
-            line-height: 25px;
-        }
-
-            .round-bar .action-link .action-text.current { color: #02B8EF; }
-            .round-bar .action-link .action-text.complete { color: #00259A; }
+.round-bar.current .right-action { border-left: 3px solid #02B8EF; padding-top: 11px; padding-bottom: 5px; }
 
 .round-divider { margin: 25px 0px; }
-    .round-divider line { stroke: #d4d4d4; }
-    .round-divider.current line { stroke: #02B8EF; }
-    .round-divider.complete line { stroke: #00259A; }
+.round-divider line { stroke: #d4d4d4; }
+.round-divider.current line { stroke: #02B8EF; }
+.round-divider.complete line { stroke: #00259A; }
 
 
 .popover-content-wrapper { display: none; }
@@ -241,74 +230,60 @@ body { font-family: 'Nunito', sans-serif; }
     width: 100%;
 }
 
-    .popover > .arrow { display: none;}
-    .popover > .popover-content {
-        background: none;
-        padding: 0px;
-    }
+.popover > .arrow { display: none;}
+.popover > .popover-content {
+    background: none;
+    padding: 0px;
+}
 
 #members-popover {
     background-color: rgba(0, 37, 154, .85);
     color: #fff;
     padding: 25px 25px;
 }
+#members-popover .member {
+    display: inline-block;
+    margin: 10px 0px;
+}
+#members-popover .member img {
+    background: #fff;
+    border: 1px solid #fff;
+    display: inline-block;
+    height: 50px;
+    width: 50px;
+}
+#members-popover .member .owner-star {
+    background: url("/static/icons/star_lightblue.svg");
+    display: inline-block;
+    height: 19px;
+    position: absolute;
+        left: 6px;
+        top: 0px;
+    width: 20px;
+}
 
-    #members-popover .member {
-        display: inline-block;
-        margin: 10px 0px;
-    }
-
-    #members-popover .member img {
-        background: #fff;
-        border: 1px solid #fff;
-        display: inline-block;
-        height: 50px;
-        width: 50px;
-    }
-
-    #members-popover .member .owner-star {
-        background: url("/static/icons/star_lightblue.svg");
-        display: inline-block;
-        height: 19px;
-        position: absolute;
-            left: 6px;
-            top: 0px;
-        width: 20px;
-    }
-
-    #members-popover .member .member-name {
-        color: #fff;
-        margin-left: 10px;
-    }
+#members-popover .member .member-name {
+    color: #fff;
+    margin-left: 10px;
+}
 
 .progress-toggle { cursor: pointer; }
 
 #progress-popover {}
-
-    #progress-popover .progress-title {
-        display: block;
-        font-family: 'Cubano', sans-serif;
-        font-size: 18px;
-        line-height: 24px;
-        margin-bottom: 20px;
-    }
-
-    #progress-popover #acted, #progress-popover #waiting {
-        padding: 20px;
-    }
-
-        #progress-popover #acted .member-name,
-        #progress-popover #waiting .member-name {
-            display: block;
-            font-size: 14px;
-            line-height: 18px;
-            display: block;
-        }
-
-    #progress-popover #acted {
-        background: #F8C62C
-    }
-
-    #progress-popover #waiting {
-        background: rgba(0,37,154,.85)
-    }
+#progress-popover .progress-title {
+    display: block;
+    font-family: 'Cubano', sans-serif;
+    font-size: 18px;
+    line-height: 24px;
+    margin-bottom: 20px;
+}
+#progress-popover #acted, #progress-popover #waiting { padding: 20px; }
+#progress-popover #acted .member-name,
+#progress-popover #waiting .member-name {
+    display: block;
+    font-size: 14px;
+    line-height: 18px;
+    display: block;
+}
+#progress-popover #acted { background: #F8C62C }
+#progress-popover #waiting { background: rgba(0,37,154,.85) }
