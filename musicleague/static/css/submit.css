@@ -139,14 +139,23 @@ body { font-family: 'Nunito', sans-serif; }
     vertical-align: top;
     width: 100px;
 }
-.song .song-info .name,
-.song .song-info .artist,
-.song .song-info .album {
-    display: block;
-    font-size: 22px;
-    line-height: 24px;
+.song .song-info .text-info {
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100px;
 }
-.song.found .song-info .name { font-family: 'Cubano', sans-serif; }
+.song .song-info .text-info .name,
+.song .song-info .text-info .artist,
+.song .song-info .text-info .album {
+    display: block;
+    font-size: 18px;
+    line-height: 22px;
+}
+.song.found .song-info .text-info .name {
+    flex: 1;
+    font-family: 'Cubano', sans-serif;
+}
 
 /* State: Song successfully returned from Spotify, not a duplicate */
 .song.found { background-color: #5FCC34; }
