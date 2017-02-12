@@ -152,7 +152,7 @@ body { font-family: 'Nunito', sans-serif; }
     font-size: 18px;
     line-height: 22px;
 }
-.song.found .song-info .text-info .name {
+.song .song-info .text-info .name {
     flex: 1;
     font-family: 'Cubano', sans-serif;
 }
@@ -193,3 +193,4 @@ body { font-family: 'Nunito', sans-serif; }
     color: #01249A;
     display: block;
 }
+.song.error .song-info .text-info { color: #01249A; }
