@@ -117,13 +117,21 @@ body { font-family: 'Nunito', sans-serif; }
     outline: none;
     width: 100%;
 }
+.song .find-song-btn.visible-xs {
+    padding-left: 0px;
+    padding-right: 0px;
+}
 .song .find-song-btn.visible-xs .search-icon {
     background: url("/static/icons/magnifying_glass_icon_white.svg");
     display: inline-block;
     height: 24px;
+    vertical-align: middle;
     width: 20px;
 }
-.song .song-info { display: none; }
+.song .song-info {
+    display: none;
+    float: left;
+    position: relative; }
 .song .song-info .you-selected {
     display: block;
     font-family: 'Cubano', sans-serif;
@@ -133,9 +141,10 @@ body { font-family: 'Nunito', sans-serif; }
     vertical-align: middle;
 }
 .song .song-info img {
-    display: inline-block;
+    display: block;
+    float: left;
     height: 100px;
-    margin-right: 10px;
+    margin-right: 20px;
     vertical-align: top;
     width: 100px;
 }
