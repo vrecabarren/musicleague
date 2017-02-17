@@ -138,7 +138,7 @@ def submit(league_id, submission_period_id):
 
 def check_duplicate_tracks(my_tracks, their_tracks):
     duplicate_tracks = []
-    their_ids = [track['id'] for track in their_tracks]
+    their_ids = [track['id'] for track in their_tracks if track]
     for my_track in my_tracks:
         if my_track['id'] in their_ids:
             duplicate_tracks.append(my_track['uri'])
@@ -147,7 +147,7 @@ def check_duplicate_tracks(my_tracks, their_tracks):
 
 def check_duplicate_artists(my_tracks, their_tracks):
     duplicate_tracks = []
-    their_ids = [track['artists'][0]['id'] for track in their_tracks]
+    their_ids = [track['artists'][0]['id'] for track in their_tracks if track]
     for my_track in my_tracks:
         if my_track['artists'][0]['id'] in their_ids:
             duplicate_tracks.append(my_track['uri'])
