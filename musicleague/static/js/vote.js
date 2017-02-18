@@ -4,40 +4,43 @@ function pad(n) {
 
 function setSongStateUpvote(song) {
     var wrapper = song.find('.up-down-btn-wrapper');
-    var voteCount = wrapper.find('.vote-count');
-    var votes = Number(voteCount.html()) + 1;
-    var currentVotes = $('#num-spent');
-    var numMaxVotes = Number($('#max-votes').html());
+    var totalSpentContainer = $('#num-spent');
+    var songSpentContainer = wrapper.find('.vote-count');
 
-    if (votes <= numMaxVotes) {
+    var maxTotalSpent = Number($('#max-votes').html());
+    var currentTotalSpent = Number(totalSpentContainer.html());
+    var currentSongSpent = Number(songSpentContainer.html());
+    var remaining = maxTotalSpent - currentTotalSpent;
+
+
+    if (remaining >= 1) {
+        currentSongSpent += 1;
+        songSpentContainer.html(currentSongSpent);
+        currentTotalSpent += 1;
+        totalSpentContainer.html(pad(currentTotalSpent));
         wrapper.addClass("voted");
-        voteCount.html(votes);
-        var newCurrentVotes = Number(currentVotes.html()) + 1;
-        currentVotes.html(pad(newCurrentVotes));
-    } else if (votes > numMaxVotes) {
-        wrapper.addClass("voted");
-    } else {
-        wrapper.removeClass("voted");
     }
 }
 
 function setSongStateDownvote(song) {
     var wrapper = song.find('.up-down-btn-wrapper');
-    var voteCount = wrapper.find('.vote-count');
-    var votes = Number(voteCount.html()) - 1;
-    var currentVotes = $('#num-spent');
+    var totalSpentContainer = $('#num-spent');
+    var songSpentContainer = wrapper.find('.vote-count');
 
-    if (votes > 0) {
-        wrapper.addClass("voted");
-        voteCount.html(votes);
-        var newCurrentVotes = Number(currentVotes.html()) - 1;
-        currentVotes.html(pad(newCurrentVotes));
-    } else if (votes == 0) {
-        wrapper.removeClass("voted");
-        voteCount.html(votes);
-        var newCurrentVotes = Number(currentVotes.html()) - 1;
-        currentVotes.html(pad(newCurrentVotes));
-    } else {
+    var maxTotalSpent = Number($('#max-votes').html());
+    var currentTotalSpent = Number(totalSpentContainer.html());
+    var currentSongSpent = Number(songSpentContainer.html());
+    var remaining = maxTotalSpent - currentTotalSpent;
+
+
+    if (currentSongSpent > 0 && currentTotalSpent > 0) {
+        currentSongSpent -= 1;
+        songSpentContainer.html(currentSongSpent);
+        currentTotalSpent -= 1;
+        totalSpentContainer.html(pad(currentTotalSpent));
+    }
+
+    if (currentSongSpent == 0) {
         wrapper.removeClass("voted");
     }
 }
