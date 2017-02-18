@@ -18,6 +18,15 @@ body { font-family: 'Nunito', sans-serif; }
     float: none;
 }
 
+div, span {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 /* Header image */
 #img-bar {
     background: url("/static/images/ml_header06.jpg");
@@ -82,8 +91,8 @@ body { font-family: 'Nunito', sans-serif; }
 .song {
     background-color: #fff;
     color: #02B8EF;
-    margin-bottom: 50px;
-    padding: 20px 0px;
+    margin-bottom: 0px;
+    padding: 30px 0px;
 }
 
 .song .song-info {
