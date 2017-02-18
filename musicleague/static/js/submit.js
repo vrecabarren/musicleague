@@ -12,7 +12,7 @@ function setSongStateFound(song, track) {
     song.find('.you-selected').html('You Selected:');
     song.find('.song-info img').attr('src', img_src);
     song.find('.song-info .name').html(name);
-    song.find('.song-info .artist').html(artist);
+    song.find('.song-info .artist').html("By " + artist);
     song.find('.song-info .album').html(album);
     song.find('.find-song-inp').val("");
     song.find('.find-song-btn.hidden-xs').html('Change It!');
@@ -20,52 +20,52 @@ function setSongStateFound(song, track) {
 }
 
 function setSongStateNotFound(song) {
-    song.data('id', '');
-    song.data('uri', '');
+    song.data('id', "");
+    song.data('uri', "");
     song.find('.you-selected').html('No Result:');
     song.find('.song-info img').attr('src', '/static/icons/attentionicon.svg');
     song.find('.song-info .name').html("No luck.<br>We couldn't<br>find that.");
     song.find('.song-info .artist').html("");
-    song.find('.song-info .album').html('');
+    song.find('.song-info .album').html("");
     song.find('.find-song-inp').val("");
     song.find('.find-song-btn.hidden-xs').html("Let's Try This Again!");
     song.removeClass('found').addClass('error').addClass('not-found');
 }
 
 function setSongStateDuplicateArtist(song) {
-    song.data('id', '');
-    song.data('uri', '');
+    song.data('id', "");
+    song.data('uri', "");
     song.find('.you-selected').html('Great Minds Think Alike:');
     song.find('.song-info img').attr('src', '/static/icons/attentionicon.svg');
     song.find('.song-info .name').html("Artist<br>Already<br>Submitted.");
     song.find('.song-info .artist').html("");
-    song.find('.song-info .album').html('');
+    song.find('.song-info .album').html("");
     song.find('.find-song-inp').val("");
     song.find('.find-song-btn.hidden-xs').html("Let's Try This Again!");
     song.removeClass('found').addClass('error').addClass('duplicate-artist');
 }
 
 function setSongStateDuplicateSong(song) {
-    song.data('id', '');
-    song.data('uri', '');
+    song.data('id', "");
+    song.data('uri', "");
     song.find('.you-selected').html('Great Minds Think Alike:');
     song.find('.song-info img').attr('src', '/static/icons/attentionicon.svg');
     song.find('.song-info .name').html("Song<br>Already<br>Submitted.");
     song.find('.song-info .artist').html("");
-    song.find('.song-info .album').html('');
+    song.find('.song-info .album').html("");
     song.find('.find-song-inp').val("");
     song.find('.find-song-btn.hidden-xs').html("Let's Try This Again!");
     song.removeClass('found').addClass('error').addClass('duplicate-song');
 }
 
 function setSongStateDuplicateSubmission(song) {
-    song.data('id', '');
-    song.data('uri', '');
+    song.data('id', "");
+    song.data('uri', "");
     song.find('.you-selected').html('There Must Be An Echo In Here:');
     song.find('.song-info img').attr('src', '/static/icons/attentionicon.svg');
     song.find('.song-info .name').html("Duplicate<br>Submissions<br>Not Allowed.");
     song.find('.song-info .artist').html("");
-    song.find('.song-info .album').html('');
+    song.find('.song-info .album').html("");
     song.find('.find-song-inp').val("");
     song.find('.find-song-btn.hidden-xs').html("Let's Try This Again!");
     song.removeClass('found').addClass('error').addClass('duplicate-submission');
@@ -94,8 +94,8 @@ $('.find-song-btn').on("click", function(){
         trackId = url_or_uri.match(uri_regex)[1];
 
     // Clear this song's URI/ID so it doesn't appear as a duplicate
-    song.data('id', '');
-    song.data('uri', '');
+    song.data('id', "");
+    song.data('uri', "");
 
     if (trackId && $('.song').filterByData('id', trackId).length > 0) {
         setSongStateDuplicateSubmission(song);
