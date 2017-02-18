@@ -86,8 +86,8 @@
         </div>
     </div>
     <div class="container">
-        {% for _, song in tracks_by_uri.iteritems() %}
-        <div class="song row" data-uri="{{ song['uri'] }}">
+        {% for uri, song in tracks_by_uri.iteritems() %}
+        <div class="song row" data-uri="{{ uri }}" {% if uri in my_vote.tracks %}data-votes="{{ my_vote.tracks[uri] }}"{% endif %}>
             <div class="song-info col-xs-6 col-sm-7 col-md-8">
                 <img src="{{ song['album']['images'][1]['url'] }}" alt="" class="img img-rounded">
                 <div class="text-info">
@@ -104,7 +104,7 @@
         </div>
 
         {% endfor %}
-        <input type="hidden" id="votes-inp" name="songs">
+        <input type="hidden" id="votes-inp" name="votes">
     </div>
 </form>
 

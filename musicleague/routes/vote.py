@@ -1,4 +1,5 @@
 import httplib
+import json
 
 from flask import g
 from flask import redirect
@@ -112,6 +113,47 @@ def vote(league_id, submission_period_id):
         return "Not a member of this league", httplib.UNAUTHORIZED
 
     votes = {uri: int(votes or 0) for uri, votes in request.form.iteritems()}
+
+    if not submission_period.accepting_votes:
+        flash_error("Votes are no longer being accepted.")
+        return redirect(request.referrer)
+
+    # Process votes
+    league = submission_period.league
+    vote = create_or_update_vote(votes, submission_period, league, g.user)
+
+    flash_success("Your votes have been recorded.")
+
+    # If someone besides owner is submitting, notify the owner
+    if g.user.id != league.owner.id:
+        owner_user_voted_notification(vote)
+
+    voted_users = set([v.user for v in submission_period.votes])
+    remaining = set(league.users) - voted_users
+
+    if not remaining:
+        owner_all_users_voted_notification(submission_period)
+        cancel_vote_reminders(submission_period)
+        submission_period.save()
+
+    elif len(remaining) == 1:
+        last_user = remaining = list(remaining)[0]
+        user_last_to_vote_notification(last_user, submission_period)
+
+    return redirect(url_for('view_league', league_id=league_id))
+
+
+@app.route(VOTE_URL + 'new/', methods=['POST'])
+@login_required
+def new_vote(league_id, submission_period_id):
+    submission_period = get_submission_period(submission_period_id)
+    if not submission_period or not submission_period.league:
+        return "No submission period or league", httplib.INTERNAL_SERVER_ERROR
+
+    if not submission_period.league.has_user(g.user):
+        return "Not a member of this league", httplib.UNAUTHORIZED
+
+    votes = json.loads(request.form.get('votes'))
 
     if not submission_period.accepting_votes:
         flash_error("Votes are no longer being accepted.")

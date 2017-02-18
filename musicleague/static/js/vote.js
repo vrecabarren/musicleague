@@ -2,24 +2,6 @@ function pad(n) {
     return (n < 10) ? ("0" + n) : n;
 }
 
-function setSubmitButtonState() {
-    var maxTotalSpent = Number($('#max-votes').html());
-    var currentTotalSpent = Number($('#num-spent').html());
-
-    var submitVotesBtnWrapper = $('#submit-votes-btn-wrapper');
-    var submitVotesBtn = submitVotesBtnWrapper.find('#submit-votes-btn');
-
-    if (currentTotalSpent == maxTotalSpent) {
-        submitVotesBtnWrapper.removeClass("disabled");
-        submitVotesBtn.removeClass("disabled");
-        submitVotesBtn.removeAttr("disabled");
-    } else {
-        submitVotesBtnWrapper.addClass("disabled");
-        submitVotesBtn.addClass("disabled");
-        submitVotesBtn.attr("disabled", "true");
-    }
-}
-
 function setSongStateUpvote(song) {
     var wrapper = song.find('.up-down-btn-wrapper');
     var totalSpentContainer = $('#num-spent');
@@ -36,11 +18,10 @@ function setSongStateUpvote(song) {
         currentSongSpent += 1;
         songSpentContainer.html(currentSongSpent);
         song.data("votes", currentSongSpent);
-        currentTotalSpent += 1;
-        totalSpentContainer.html(pad(currentTotalSpent));
         wrapper.addClass("voted");
     }
 
+    setSpentVotesCount();
     setSubmitButtonState();
 }
 
@@ -59,14 +40,13 @@ function setSongStateDownvote(song) {
         currentSongSpent -= 1;
         songSpentContainer.html(currentSongSpent);
         song.data("votes", currentSongSpent);
-        currentTotalSpent -= 1;
-        totalSpentContainer.html(pad(currentTotalSpent));
     }
 
     if (currentSongSpent == 0) {
         wrapper.removeClass("voted");
     }
 
+    setSpentVotesCount();
     setSubmitButtonState();
 }
 
@@ -84,9 +64,39 @@ function setPreviousVoteState() {
     $('.song').each(function() {
         var numVotes = Number($(this).data("votes"));
         if (numVotes) {
-            alert(numVotes);
+            $(this).find('.up-down-btn-wrapper').addClass("voted");
+            $(this).find('.vote-count').html(numVotes);
         }
     });
+}
+
+function setSpentVotesCount() {
+    var total = 0;
+    $('.song').each(function() {
+        var numVotes = Number($(this).data("votes"));
+        if (numVotes > 0) {
+            total += numVotes;
+        }
+    });
+    $('#num-spent').html(pad(total));
+}
+
+function setSubmitButtonState() {
+    var maxTotalSpent = Number($('#max-votes').html());
+    var currentTotalSpent = Number($('#num-spent').html());
+
+    var submitVotesBtnWrapper = $('#submit-votes-btn-wrapper');
+    var submitVotesBtn = submitVotesBtnWrapper.find('#submit-votes-btn');
+
+    if (currentTotalSpent == maxTotalSpent) {
+        submitVotesBtnWrapper.removeClass("disabled");
+        submitVotesBtn.removeClass("disabled");
+        submitVotesBtn.removeAttr("disabled");
+    } else {
+        submitVotesBtnWrapper.addClass("disabled");
+        submitVotesBtn.addClass("disabled");
+        submitVotesBtn.attr("disabled", "true");
+    }
 }
 
 function collectVotes() {
@@ -110,5 +120,6 @@ $(document).ready(function() {
     $("#status-bar").stick_in_parent();
     $('form').trigger("reset").submit(processFormSubmission);
     setPreviousVoteState();
+    setSpentVotesCount();
     setSubmitButtonState();
 });
