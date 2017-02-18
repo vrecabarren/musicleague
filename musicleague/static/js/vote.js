@@ -35,6 +35,7 @@ function setSongStateUpvote(song) {
         remaining -= 1;
         currentSongSpent += 1;
         songSpentContainer.html(currentSongSpent);
+        song.data("votes", currentSongSpent);
         currentTotalSpent += 1;
         totalSpentContainer.html(pad(currentTotalSpent));
         wrapper.addClass("voted");
@@ -57,6 +58,7 @@ function setSongStateDownvote(song) {
     if (currentSongSpent > 0 && currentTotalSpent > 0) {
         currentSongSpent -= 1;
         songSpentContainer.html(currentSongSpent);
+        song.data("votes", currentSongSpent);
         currentTotalSpent -= 1;
         totalSpentContainer.html(pad(currentTotalSpent));
     }
@@ -76,4 +78,37 @@ $('.up-btn').on("click", function() {
 $('.down-btn').on("click", function() {
     var song = $(this).parent().parent();
     setSongStateDownvote(song);
+});
+
+function setPreviousVoteState() {
+    $('.song').each(function() {
+        var numVotes = Number($(this).data("votes"));
+        if (numVotes) {
+            alert(numVotes);
+        }
+    });
+}
+
+function collectVotes() {
+    var votes = {};
+    $('.song').each(function() {
+        var uri = $(this).data("uri");
+        var numVotes = Number($(this).data("votes"));
+        votes[uri] = numVotes;
+    });
+
+    var jsonField = $(document.getElementById('votes-inp'));
+    jsonField.val(JSON.stringify(votes));
+}
+
+function processFormSubmission() {
+    collectVotes();
+    return true;
+}
+
+$(document).ready(function() {
+    $("#status-bar").stick_in_parent();
+    $('form').trigger("reset").submit(processFormSubmission);
+    setPreviousVoteState();
+    setSubmitButtonState();
 });
