@@ -99,11 +99,24 @@ body { font-family: 'Nunito', sans-serif; }
     vertical-align: top;
     width: 100px;
 }
+.song .song-info img.visible-xs {
+    display: block;
+    float: none;
+    height: 50px;
+    margin-bottom: 10px;
+    margin-right: 0px;
+    vertical-align: top;
+    width: 50px;
+}
 .song .song-info .text-info {
     color: #02B8EF;
     display: flex;
     flex-direction: column;
     min-height: 100px;
+}
+.song .song-info .text-info.visible-xs {
+    display: block;
+    min-height: inherit;
 }
 .song .song-info .text-info .name,
 .song .song-info .text-info .artist,
@@ -120,7 +133,7 @@ body { font-family: 'Nunito', sans-serif; }
 .up-down-btn-wrapper {
     background-color: #EFEFEF;
     border-radius: 8px;
-    padding: 25px 0px;
+    padding: 15px 0px;
     text-align: center;
 }
 .up-down-btn-wrapper .down-btn,

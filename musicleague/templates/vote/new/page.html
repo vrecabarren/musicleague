@@ -89,8 +89,14 @@
         {% for uri, song in tracks_by_uri.iteritems() %}
         <div class="song row" data-uri="{{ uri }}" {% if my_vote and uri in my_vote.votes %}data-votes="{{ my_vote.votes[uri] }}"{% endif %}>
             <div class="song-info col-xs-6 col-sm-7 col-md-8">
-                <img src="{{ song['album']['images'][1]['url'] }}" alt="" class="img img-rounded">
-                <div class="text-info">
+                <img src="{{ song['album']['images'][1]['url'] }}" alt="" class="img img-rounded hidden-xs">
+                <img src="{{ song['album']['images'][1]['url'] }}" alt="" class="img img-rounded visible-xs">
+                <div class="text-info hidden-xs">
+                    <span class="vcenter name">{{ song['name'] }}</span>
+                    <span class="vcenter artist">{{ song['artists'][0]['name'] }}</span>
+                    <span class="vcenter album">{{ song['album']['name'] }}</span>
+                </div>
+                <div class="text-info visible-xs">
                     <span class="vcenter name">{{ song['name'] }}</span>
                     <span class="vcenter artist">{{ song['artists'][0]['name'] }}</span>
                     <span class="vcenter album">{{ song['album']['name'] }}</span>
