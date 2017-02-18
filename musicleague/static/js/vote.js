@@ -30,12 +30,12 @@ function setSongStateDownvote(song) {
     if (votes > 0) {
         wrapper.addClass("voted");
         voteCount.html(votes);
-        var newCurrentVotes = Number(currentVotes.html()) + 1;
+        var newCurrentVotes = Number(currentVotes.html()) - 1;
         currentVotes.html(pad(newCurrentVotes));
     } else if (votes == 0) {
         wrapper.removeClass("voted");
         voteCount.html(votes);
-        var newCurrentVotes = Number(currentVotes.html()) + 1;
+        var newCurrentVotes = Number(currentVotes.html()) - 1;
         currentVotes.html(pad(newCurrentVotes));
     } else {
         wrapper.removeClass("voted");
