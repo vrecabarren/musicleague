@@ -2,6 +2,24 @@ function pad(n) {
     return (n < 10) ? ("0" + n) : n;
 }
 
+function setSubmitButtonState() {
+    var maxTotalSpent = Number($('#max-votes').html());
+    var currentTotalSpent = Number($('#num-spent').html());
+
+    var submitVotesBtnWrapper = $('#submit-votes-btn-wrapper');
+    var submitVotesBtn = submitVotesBtnWrapper.find('#submit-votes-btn');
+
+    if (currentTotalSpent == maxTotalSpent) {
+        submitVotesBtnWrapper.removeClass("disabled");
+        submitVotesBtn.removeClass("disabled");
+        submitVotesBtn.removeAttr("disabled");
+    } else {
+        submitVotesBtnWrapper.addClass("disabled");
+        submitVotesBtn.addClass("disabled");
+        submitVotesBtn.attr("disabled", "true");
+    }
+}
+
 function setSongStateUpvote(song) {
     var wrapper = song.find('.up-down-btn-wrapper');
     var totalSpentContainer = $('#num-spent');
@@ -14,12 +32,15 @@ function setSongStateUpvote(song) {
 
 
     if (remaining >= 1) {
+        remaining -= 1;
         currentSongSpent += 1;
         songSpentContainer.html(currentSongSpent);
         currentTotalSpent += 1;
         totalSpentContainer.html(pad(currentTotalSpent));
         wrapper.addClass("voted");
     }
+
+    setSubmitButtonState();
 }
 
 function setSongStateDownvote(song) {
@@ -43,6 +64,8 @@ function setSongStateDownvote(song) {
     if (currentSongSpent == 0) {
         wrapper.removeClass("voted");
     }
+
+    setSubmitButtonState();
 }
 
 $('.up-btn').on("click", function() {

@@ -64,9 +64,9 @@ body { font-family: 'Nunito', sans-serif; }
 #status-bar .row { padding: 0px; }
 #status-bar #progress { font-size: 36px; line-height: 40px; }
 #status-bar #progress #num-spent { color: #F8C62C; }
-#status-bar #submit-songs-btn-wrapper { background-color: #5FCC34; padding: 20px; }
-#status-bar #submit-songs-btn-wrapper.disabled { background-color: #D8D8D8; }
-#status-bar #submit-songs-btn-wrapper #submit-songs-btn {
+#status-bar #submit-votes-btn-wrapper { background-color: #5FCC34; padding: 20px; }
+#status-bar #submit-votes-btn-wrapper.disabled { background-color: #D8D8D8; }
+#status-bar #submit-votes-btn-wrapper #submit-votes-btn {
     background: none;
     border: 3px solid #fff;
     border-radius: 8px;
