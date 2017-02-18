@@ -142,7 +142,8 @@ div, span {
 .up-down-btn-wrapper {
     background-color: #EFEFEF;
     border-radius: 8px;
-    padding: 15px 0px;
+    max-height: 100px;
+    padding: 25px 0px;
     text-align: center;
 }
 .up-down-btn-wrapper .down-btn,
@@ -165,6 +166,7 @@ div, span {
 .up-down-btn-wrapper .vote-count {
     font-family: 'Cubano', sans-serif;
     font-size: 70px;
+    line-height: 50px;
 }
 
 .up-down-btn-wrapper.voted {
