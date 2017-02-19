@@ -51,12 +51,12 @@ function setSongStateDownvote(song) {
 }
 
 $('.up-btn').on("click", function() {
-    var song = $(this).parent().parent().parent();
+    var song = $(this).parent().parent().parent().parent();
     setSongStateUpvote(song);
 });
 
 $('.down-btn').on("click", function() {
-    var song = $(this).parent().parent().parent();
+    var song = $(this).parent().parent().parent().parent();
     setSongStateDownvote(song);
 });
 

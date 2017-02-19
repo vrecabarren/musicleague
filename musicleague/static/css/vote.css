@@ -97,7 +97,6 @@ div, span {
 
 .song .song-info {
     color: #02B8EF;
-    float: left;
     position: relative;
 }
 .song .song-info img {
@@ -142,8 +141,6 @@ div, span {
 .song .up-down-btn-wrapper {
     background-color: #EFEFEF;
     border-radius: 8px;
-    display: table;
-    max-height: 100px;
     padding: 20px;
     text-align: center;
     vertical-align: middle;
@@ -189,4 +186,25 @@ div, span {
 .song .up-down-btn-wrapper.voted .up-btn {
     background: url('/static/icons/upvote_white.svg');
     color: #fff;
+}
+
+.row-height {
+  display: table;
+  table-layout: fixed;
+  height: 100%;
+  width: 100%;
+}
+.col-height {
+  display: table-cell;
+  float: none;
+  height: 100%;
+}
+.col-top {
+  vertical-align: top;
+}
+.col-middle {
+  vertical-align: middle;
+}
+.col-bottom {
+  vertical-align: bottom;
 }

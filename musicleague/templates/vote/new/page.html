@@ -88,8 +88,8 @@
     <div class="container">
         {% for uri, song in tracks_by_uri.iteritems() %}
         <div class="song row" data-uri="{{ uri }}" {% if my_vote and uri in my_vote.votes %}data-votes="{{ my_vote.votes[uri] }}"{% else %}data-votes="0"{% endif %}>
-            <div class="visible-xs">
-                <div class="song-info col-xs-6">
+            <div class="row-height visible-xs">
+                <div class="song-info col-xs-6 col-height">
                     <img src="{{ song['album']['images'][1]['url'] }}" alt="" class="img img-rounded">
                     <div class="text-info visible-xs">
                         <span class="vcenter name">{{ song['name'] }}</span>
@@ -97,14 +97,16 @@
                         <span class="vcenter album">{{ song['album']['name'] }}</span>
                     </div>
                 </div>
-                <div class="up-down-btn-wrapper col-xs-6">
-                    <span class="down-btn"></span>
-                    <span class="vote-count">0</span>
-                    <span class="up-btn"></span>
+                <div class="up-down-btn-wrapper col-xs-6 col-height">
+                    <div style="display: table; width: 100%;">
+                        <span class="down-btn"></span>
+                        <span class="vote-count">0</span>
+                        <span class="up-btn"></span>
+                    </div>
                 </div>
             </div>
-            <div class="hidden-xs">
-                <div class="song-info col-sm-7 col-md-8">
+            <div class="row-height hidden-xs">
+                <div class="song-info col-sm-7 col-md-8 col-height">
                     <img src="{{ song['album']['images'][1]['url'] }}" alt="" class="img img-rounded hidden-xs">
                     <div class="text-info hidden-xs">
                         <span class="vcenter name">{{ song['name'] }}</span>
@@ -112,10 +114,12 @@
                         <span class="vcenter album">{{ song['album']['name'] }}</span>
                     </div>
                 </div>
-                <div class="up-down-btn-wrapper col-sm-5 col-md-4" unselectable="on">
-                    <span class="down-btn"></span>
-                    <span class="vote-count">0</span>
-                    <span class="up-btn"></span>
+                <div class="up-down-btn-wrapper col-sm-5 col-md-4 col-height" unselectable="on">
+                    <div style="display: table; width: 100%;">
+                        <span class="down-btn"></span>
+                        <span class="vote-count">0</span>
+                        <span class="up-btn"></span>
+                    </div>
                 </div>
             </div>
         </div>
