@@ -108,7 +108,7 @@ div, span {
     vertical-align: top;
     width: 100px;
 }
-.song .song-info img.visible-xs {
+.song .visible-xs .song-info img {
     display: block;
     float: none;
     height: 50px;
@@ -123,7 +123,7 @@ div, span {
     flex-direction: column;
     min-height: 100px;
 }
-.song .song-info .text-info.visible-xs {
+.song .visible-xs .song-info .text-info {
     display: block;
     min-height: inherit;
 }
@@ -139,45 +139,54 @@ div, span {
     font-family: 'Cubano', sans-serif;
 }
 
-.up-down-btn-wrapper {
+.song .up-down-btn-wrapper {
     background-color: #EFEFEF;
     border-radius: 8px;
+    display: table;
     max-height: 100px;
-    padding: 25px 0px;
+    padding: 20px;
     text-align: center;
+    vertical-align: middle;
 }
-.up-down-btn-wrapper .down-btn,
-.up-down-btn-wrapper .up-btn {
+.song .up-down-btn-wrapper .down-btn,
+.song .up-down-btn-wrapper .up-btn {
     color: #01249A;
     cursor: pointer;
-    display: inline-block;
+    display: table-cell;
     height: 50px;
+    vertical-align: middle;
     width: 50px;
 }
-.up-down-btn-wrapper .down-btn {
+.song .up-down-btn-wrapper .down-btn {
     background: url('/static/icons/downvote_blue.svg');
     margin-right: 10px;
 }
-.up-down-btn-wrapper .up-btn {
+.song .up-down-btn-wrapper .up-btn {
     background: url('/static/icons/upvote_blue.svg');
     margin-left: 10px;
 }
 
-.up-down-btn-wrapper .vote-count {
+.song .up-down-btn-wrapper .vote-count {
+    display: table-cell;
     font-family: 'Cubano', sans-serif;
     font-size: 70px;
     line-height: 50px;
+    vertical-align: middle;
+}
+.song .visible-xs .up-down-btn-wrapper .vote-count {
+    font-size: 40px;
+    line-height: 50px;
 }
 
-.up-down-btn-wrapper.voted {
+.song .up-down-btn-wrapper.voted {
     background-color: #5FCC34;
     color: #fff;
 }
-.up-down-btn-wrapper.voted .down-btn {
+.song .up-down-btn-wrapper.voted .down-btn {
     background: url('/static/icons/downvote_white.svg');
     color: #fff;
 }
-.up-down-btn-wrapper.voted .up-btn {
+.song .up-down-btn-wrapper.voted .up-btn {
     background: url('/static/icons/upvote_white.svg');
     color: #fff;
 }
