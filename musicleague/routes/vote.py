@@ -155,6 +155,9 @@ def new_vote(league_id, submission_period_id):
 
     votes = json.loads(request.form.get('votes'))
 
+    # Remove all unnecessary zero-values
+    votes = {k: v for k, v in votes.iteritems() if v}
+
     if not submission_period.accepting_votes:
         flash_error("Votes are no longer being accepted.")
         return redirect(request.referrer)
