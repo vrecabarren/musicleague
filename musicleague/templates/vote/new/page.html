@@ -87,7 +87,7 @@
     </div>
     <div class="container">
         {% for uri, song in tracks_by_uri.iteritems() %}
-        <div class="song row" data-uri="{{ uri }}" {% if my_vote and uri in my_vote.votes %}data-votes="{{ my_vote.votes[uri] }}"{% endif %}>
+        <div class="song row" data-uri="{{ uri }}" {% if my_vote and uri in my_vote.votes %}data-votes="{{ my_vote.votes[uri] }}"{% else %}data-votes="0"{% endif %}>
             <div class="visible-xs">
                 <div class="song-info col-xs-6">
                     <img src="{{ song['album']['images'][1]['url'] }}" alt="" class="img img-rounded">
