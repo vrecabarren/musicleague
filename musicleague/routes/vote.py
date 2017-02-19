@@ -1,4 +1,5 @@
 import httplib
+import json
 
 from flask import g
 from flask import redirect
@@ -45,6 +46,7 @@ def view_vote(league_id, submission_period_id):
         tracks = g.spotify.tracks(submission_period.all_tracks).get('tracks')
     tracks_by_uri = {track.get('uri'): track for track in tracks if track}
 
+    # Remove user's own submitted songs from tracks shown on page
     if my_submission:
         for uri in my_submission.tracks:
             tracks_by_uri.pop(uri, None)
@@ -52,7 +54,7 @@ def view_vote(league_id, submission_period_id):
     return {
         'user': g.user,
         'league': league,
-        'submission_period': submission_period,
+        'round': submission_period,
         'tracks_by_uri': tracks_by_uri,
         'my_vote': my_vote
     }
@@ -68,7 +70,10 @@ def vote(league_id, submission_period_id):
     if not submission_period.league.has_user(g.user):
         return "Not a member of this league", httplib.UNAUTHORIZED
 
-    votes = {uri: int(votes or 0) for uri, votes in request.form.iteritems()}
+    votes = json.loads(request.form.get('votes'))
+
+    # Remove all unnecessary zero-values
+    votes = {k: v for k, v in votes.iteritems() if v}
 
     if not submission_period.accepting_votes:
         flash_error("Votes are no longer being accepted.")

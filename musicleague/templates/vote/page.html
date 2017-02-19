@@ -1,74 +1,151 @@
 {% extends "base.html" %}
 
-{% block title %}Music League | {{ submission_period.name }}{% endblock %}
+{% block title %}Music League | {{ league.name }}{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/vote.css">
+{% endblock %}
 
 {% block content %}
 
-<div class="container">
-
-    {% include "vote/header.html" %}
-
-    <div class="row">
-        <div class="container col-md-8 col-md-offset-2">
-            <p class="text-muted">Click songs to add to staging area and vote</p>
-            <form action="{{ url_for('vote', league_id=league.id, submission_period_id=submission_period.id) }}" method="post">
-                <div class="row">
-                    <div class="col-md-6 fade-wrapper">
-                        <div id="selection" class="fade-inner">
-                        {% for uri, track in tracks_by_uri.iteritems() %}
-                            <div class="row track" id="{{ uri }}" style="margin-bottom: 20px; cursor: pointer;" draggable="true" ondragstart="drag(event)">
-                                <div class="col-xs-4 col-sm-2">
-                                    <img src="{{ track['album']['images'][0]['url'] }}" alt="" class="img img-rounded" width="100%" draggable="false">
-                                </div>
-                                <div class="col-xs-6 col-sm-8">
-                                    <strong>{{ track['name'] }}</strong>
-                                    <br>
-                                    <span class="text-muted">{{ track['artists'][0]['name'] }}</span>
-                                    <br>
-                                    <span class="text-muted">{{ track['album']['name'] }}</span>
-                                </div>
-                                <div class="col-xs-2 col-sm-2 voting-controls" style="display: none; cursor: default">
-                                    <div class="text-center" style="border: 1px solid #b7b7b7; border-radius: 5px; padding: 0px 10px">
-                                        <div class="text-center">
-                                            <i class="fa fa-caret-up vote-up" style="cursor: pointer"></i>
-                                        </div>
-                                        <div class="text-center vote-count">
-                                            {% if my_vote %}{{ my_vote.votes.get(uri) }}{% else %}0{% endif %}
-                                        </div>
-                                        <div class="text-center">
-                                            <i class="fa fa-caret-down vote-down" style="cursor: pointer"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                        </div>
-                        <div class="fade-gradient"></div>
-                    </div>
-                    <div class="col-md-6 fade-wrapper border-left">
-                        <div id="staging" class="fade-inner" ondrop="dropStaging(event)" ondragover="allowDrop(event)">
-                            {% for uri in tracks_by_uri %}
-                            <input type="hidden" name="{{ uri }}" id="{{ uri }}">
-                            {% endfor %}
-                        </div>
-                        <div class="fade-gradient"></div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="pull-left"><span class="text-muted"><span id="remaining"></span> Votes Left to Give</span></div>
-                    <button type="submit" class="btn btn-success">Submit</button>
-                    <a href="{{ url_for('view_league', league_id=league.id) }}" class="btn btn-link" id="cancel">Cancel</a>
-                </div>
-            </form>
+<div id="img-bar" style="background-image: url('/static/images/{{ user.profile_background }}')">
+    <div id="nav-bar">
+        <div class="brand-wrapper">
+            <a href="/">
+                <img src="/static/icons/site_logo.svg" alt="" class="brand-icon">
+            </a>
+        </div>
+        <div class="add-league-wrapper">
+            <span class="add-league-text hidden-xs">Add League</span>
+            <a href="{{ url_for('get_create_league') }}">
+                <img src="/static/icons/add_icon.svg" alt="" class="add-league-icon">
+            </a>
+        </div>
+        <svg class="account-divider" width="7" height="120" viewBox="0 0 3 120" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <line stroke-linecap="round" x1="1" y1="0" x2="1" y2="90" stroke="white" stroke-width="3"/>
+        </svg>
+        <div class="account-wrapper">
+            <span class="account-name hidden-xs">{{ user.first_name }}</span>
+            <div class="dropdown" style="display: inline;">
+                <a type="button" class="dropdown-toggle account-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="/static/icons/account_icon.svg" alt="" class="account-icon">
+                </a>
+                <ul class="dropdown-menu pull-right">
+                    <li>
+                        <a href="{{ url_for('profile') }}">
+                            <span id="profile-icon" class="icon"></span>
+                            <span class="text">Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('view_profile_settings') }}">
+                            <span id="settings-icon" class="icon"></span>
+                            <span class="text">Settings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('logout') }}">
+                            <span id="logout-icon" class="icon"></span>
+                            <span class="text">Log Out</span>
+                        </a>
+                    </li>
+                    {% if user.is_admin %}
+                    <li>
+                        <a href="{{ url_for('admin') }}">
+                            <span id="admin-icon" class="icon"></span>
+                            <span class="text">Admin</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
     </div>
-
+    <div id="title-bar">
+        <span class="round-title">{{ round.name }}:&nbsp;</span>
+        <span class="round-action">Voting</span>
+        <span class="league-title">{{ league.name }}</span>
+    </div>
 </div>
+<form method="post">
+    <div id="status-bar">
+        <div class="container">
+            <div class="row">
+                <div class="hidden-xs col-sm-4 col-md-4 vcenter text-center">
+                    <span id="paste-directive">Choose A Song And Add Points To Begin!</span>
+                </div><!--
+                --><div class="col-xs-6 col-sm-3 col-md-4 vcenter text-center">
+                    <span id="progress"><span id="num-spent">00</span> of <span id="max-votes">{{ "%02d" % league.preferences.point_bank_size }}</span></span>
+                    <br>
+                    <span><span class="hidden-xs">Points </span>Spent</span>
+                </div><!--
+                --><div class="col-xs-6 col-sm-5 col-md-4 vcenter text-center disabled" id="submit-votes-btn-wrapper">
+                    <button type="submit" id="submit-votes-btn" class="btn btn-lg disabled" disabled>Submit<span class="hidden-xs"> Votes</span>!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        {% for uri, song in tracks_by_uri.iteritems() %}
+        <div class="song row" data-uri="{{ uri }}" {% if my_vote and uri in my_vote.votes %}data-votes="{{ my_vote.votes[uri] }}"{% else %}data-votes="0"{% endif %}>
+            <div class="visible-xs">
+                <div class="row-height">
+                    <div class="song-info col-xs-6 col-height">
+                        <img src="{{ song['album']['images'][1]['url'] }}" alt="" class="img img-rounded">
+                        <div class="text-info visible-xs">
+                            <span class="vcenter name">{{ song['name'] }}</span>
+                            <span class="vcenter artist">By {{ song['artists'][0]['name'] }}</span>
+                            <span class="vcenter album">{{ song['album']['name'] }}</span>
+                        </div>
+                    </div>
+                    <div class="up-down-btn-wrapper col-xs-6 col-height">
+                        <div style="display: table; width: 100%;">
+                            <span class="down-btn"></span>
+                            <span class="vote-count">0</span>
+                            <span class="up-btn"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hidden-xs">
+                <div class="row-height">
+                    <div class="song-info col-sm-7 col-md-8 col-height">
+                        <img src="{{ song['album']['images'][1]['url'] }}" alt="" class="img img-rounded hidden-xs">
+                        <div class="text-info hidden-xs">
+                            <span class="vcenter name">{{ song['name'] }}</span>
+                            <span class="vcenter artist">By {{ song['artists'][0]['name'] }}</span>
+                            <span class="vcenter album">{{ song['album']['name'] }}</span>
+                        </div>
+                    </div>
+                    <div class="up-down-btn-wrapper col-sm-5 col-md-4 col-height" unselectable="on">
+                        <div style="display: table; width: 100%;">
+                            <span class="down-btn"></span>
+                            <span class="vote-count">0</span>
+                            <span class="up-btn"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 25px; margin-bottom: 25px;">
+            <div class="col-sm-12 hidden-xs">
+                <svg width="275" height="5" viewBox="0 0 372 7" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                    <line stroke-linecap="round" x1="0" y1="2" x2="372" y2="2" stroke="#02B8EF" stroke-width="3"/>
+                </svg>
+            </div>
+            <div class="col-xs-12 visible-xs" style="border-bottom: 3px solid #02B8EF">
+            </div>
+        </div>
+
+        {% endfor %}
+        <input type="hidden" id="votes-inp" name="votes">
+    </div>
+</form>
 
 {% endblock %}
 
 {% block js %}
-<script type="text/javascript">
-{% include "vote/vote.js" %}
-</script>
+<script type="text/javascript" src="/static/js/jquery.sticky-kit.min.js"></script>
+<script type="text/javascript" src="/static/js/vote.js"></script>
 {% endblock %}
