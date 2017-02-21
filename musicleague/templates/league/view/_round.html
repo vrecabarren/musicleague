@@ -18,15 +18,15 @@
             </div><!--
             --><div class="text-center-xs">
                 {% if round.is_complete %}
-                    <span class="status-text complete">{{ moment(round.vote_due_date).format('[Completed on] MM.DD.YY [at] ha') }}</span>
+                    <span class="status-text complete">{{ moment(round.vote_due_date).format('[Completed on] MM.DD.YY [at] hA') }}</span>
                 {% elif round.is_current_v2 %}
                     {% if round.accepting_submissions %}
-                    <span class="status-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ moment(round.submission_due_date).format('[Submissions due by] ha [on] dddd, MMMM D') }}</span>
+                    <span class="status-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ moment(round.submission_due_date).format('[Submissions due on] MM.DD.YY [at] hA') }}</span>
                     {% elif round.accepting_votes %}
-                    <span class="status-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ moment(round.vote_due_date).format('[Votes due by] ha [on] dddd, MMMM D') }}</span>
+                    <span class="status-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ moment(round.vote_due_date).format('[Votes due on] MM.DD.YY [at] hA') }}</span>
                     {% endif %}
                 {% else %}
-                    <span class="status-text">{{ moment(prev_round.vote_due_date).format('[Begins on] dddd, MMMM D [at] ha') }}</span>
+                    <span class="status-text">{{ moment(prev_round.vote_due_date).format('[Live on] MM.DD.YY [at] hA') }}</span>
                 {% endif %}
             </div><!--
             --><div id="current-round-progress" class="text-center-xs action-progress">
@@ -37,9 +37,6 @@
                     <span class="text-progress progress-toggle"><span class="emphasize">{{ round.votes|length }} of {{ league.users|length }}</span> Have Voted</span>
                     {% endif %}
                     <br>
-                    <!-- <span class="progress-toggle">
-                        <img src="/static/icons/expand_icon.svg" alt="" height="32" width="32">
-                    </span> -->
                 </div>
                 <div class="hidden-xs">
                     {% if round.accepting_submissions %}
