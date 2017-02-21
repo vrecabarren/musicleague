@@ -18,7 +18,7 @@
             </div><!--
             --><div class="text-center-xs">
                 {% if round.is_complete %}
-                    <span class="status-text complete">{{ moment(round.vote_due_date).format('[Completed on] MM.DD.YY [at] hA') }}</span>
+                    <span class="status-text complete">{{ moment(round.vote_due_date).format('[Completed on] MM.DD.YY') }}</span>
                 {% elif round.is_current_v2 %}
                     {% if round.accepting_submissions %}
                     <span class="status-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ moment(round.submission_due_date).format('[Submissions due on] MM.DD.YY [at] hA') }}</span>
