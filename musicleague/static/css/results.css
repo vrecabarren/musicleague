@@ -1,0 +1,168 @@
+@import url('/static/css/_navbar.css');
+@import url('https://fonts.googleapis.com/css?family=Nunito:400');
+
+@font-face {
+    font-family: 'Cubano';
+    src: url("/static/fonts/Cubano/cubano-regular-webfont.ttf");
+}
+
+/* REMOVE THE NAVBAR AND SPACING UP TOP */
+.navbar { display: none; margin: 0px; }
+.spacer { display: none; }
+
+body { font-family: 'Nunito', sans-serif; }
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+div, span {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Header image */
+#img-bar {
+    background: url("/static/images/ml_header06.jpg");
+    background-attachment: scroll;
+    background-position: 50% 40%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* League/Round title inside header image */
+#title-bar {
+    background: none;
+    color: #fff;
+    padding: 50px 0px;
+    text-align: center;
+}
+#title-bar .round-title,
+#title-bar .round-action {
+    display: inline-block;
+    font-family: 'Cubano', sans-serif;
+    font-size: 20px;
+    line-height: 24px;
+}
+#title-bar .round-title { color: #F8C62C; }
+#title-bar .league-title {
+    display: block;
+    font-family: 'Cubano', sans-serif;
+    font-size: 60px;
+    line-height: 72px;
+}
+
+/* Status Bar */
+#status-bar {
+    background-color: #02B8EF;
+    color: #fff;
+    font-family: 'Cubano', sans-serif;
+    font-size: 20px;
+    line-height: 24px;
+    margin-bottom: 50px;
+    padding: 25px 0px;
+    width: 100%;
+    z-index: 100;
+}
+
+#status-bar .song {
+    background-color: #02B8EF;
+    color: #fff;
+}
+#status-bar .song-info { color: #fff; }
+#status-bar .song-info .text-info { color: #fff; }
+#status-bar .song-info .text-info .artist,
+#status-bar .song-info .text-info .submitter { font-family: 'Nunito', sans-serif; }
+
+#status-bar .song .stats-wrapper { border-left: 3px solid #fff; }
+#status-bar .song .stats-wrapper .voters-wrapper .voter-count { font-family: 'Nunito', sans-serif; }
+#status-bar .song .stats-wrapper .points-wrapper { border-top: 3px solid #fff; }
+
+/* Default song panel state */
+.song {
+    background-color: #fff;
+    color: #02B8EF;
+    margin-bottom: 0px;
+    padding: 15px 0px;
+}
+
+.song .song-info {
+    color: #02B8EF;
+    position: relative;
+}
+.song .song-info img {
+    display: block;
+    float: left;
+    height: 100px;
+    margin-right: 20px;
+    vertical-align: top;
+    width: 100px;
+}
+.song .visible-xs .song-info img {
+    display: inline-block;
+    float: none;
+    margin: 0px;
+    margin-bottom: 20px;
+}
+.song .song-info .text-info {
+    color: #02B8EF;
+    display: flex;
+    flex-direction: column;
+    min-height: 100px;
+}
+.song .visible-xs .song-info .text-info {
+    display: block;
+    min-height: inherit;
+}
+.song .song-info .text-info .name,
+.song .song-info .text-info .artist,
+.song .song-info .text-info .submitter {
+    display: block;
+    font-size: 18px;
+    line-height: 22px;
+}
+.song .song-info .text-info .name {
+    flex: 1;
+    font-family: 'Cubano', sans-serif;
+}
+.song .visible-xs .song-info .text-info .name {
+    flex: none;
+    margin-bottom: 20px;
+}
+
+.song .visible-xs .song-info .text-info .submitter { margin-bottom: 20px; }
+
+.song .stats-wrapper {
+    border-left: 3px solid #02B8EF;
+    height: 100px;
+    padding: 0px;
+}
+.song .stats-wrapper .voters-wrapper {
+    display: table-cell;
+    height: 34px;
+    padding: 0px 0px 5px 20px;
+    vertical-align: bottom;
+}
+.song .stats-wrapper .voters-wrapper .voter-count {
+    font-size: 14px;
+    line-height: 14px;
+}
+.song .stats-wrapper .points-wrapper {
+    border-top: 3px solid #02B8EF;
+    display: table;
+    height: 66px;
+    margin-left: 0px;
+    padding: 5px 0px 0px 20px;
+    width: 100%;
+}
+.song .stats-wrapper .points-wrapper .point-count {
+    font-family: 'Cubano', sans-serif;
+    font-size: 70px;
+    line-height: 50px;
+}
