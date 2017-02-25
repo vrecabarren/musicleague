@@ -112,9 +112,15 @@ class Vote(Document):
 
 class ScoreboardEntry(EmbeddedDocument):
     uri = StringField(required=True)
-    points = IntField(default=0)
-    submission = ReferenceField(Submission, required=True,
-                                reverse_delete_rule=PULL)
+    submission = ReferenceField(Submission, reverse_delete_rule=PULL)
+    votes = ListField(ReferenceField(Vote, reverse_delete_rule=PULL))
+
+    @property
+    def points(self):
+        points = 0
+        for vote in self.votes:
+            points += self.votes.get(self.uri, 0)
+        return points
 
 
 class SubmissionPeriod(Document):
