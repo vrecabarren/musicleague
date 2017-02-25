@@ -1,0 +1,33 @@
+<div class="song row" data-uri="{{ uri }}">
+    <div class="hidden-xs">
+        <div class="song-info col-sm-7">
+            <img src="{{ song['album']['images'][1]['url'] }}" alt="" class="img img-rounded">
+            <div class="text-info">
+                <span class="vcenter name">{{ song['name'] }}</span>
+                <span class="vcenter artist">By {{ song['artists'][0]['name'] }}</span>
+                <span class="vcenter submitter">Submitted by {{ entry.submission.user.name }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="visible-xs text-center">
+        <div class="song-info">
+            <img src="{{ song['album']['images'][1]['url'] }}" alt="" class="img img-rounded">
+            <div class="text-info">
+                <span class="vcenter name">{{ song['name'] }}</span>
+                <span class="vcenter artist">By {{ song['artists'][0]['name'] }}</span>
+                <span class="vcenter submitter">Submitted by {{ entry.submission.user.name }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="trophy-wrapper col-xs-4 col-xs-offset-1 col-sm-2">
+        <div class="trophy {% if place == 1 %}first{% elif place == 2 %}second{% elif place == 3 %}third{% endif %}"></div>
+    </div>
+    <div class="stats-wrapper col-xs-6 col-sm-3 col-md-2">
+        <div class="voters-wrapper">
+            <span class="voter-count">{{ entry.votes|length }} {% if entry.votes|length == 1 %}Person{% else %}People{% endif %} Voted for This</span>
+        </div>
+        <div class="points-wrapper">
+            <span class="point-count">{{ entry.points }}</span>
+        </div>
+    </div>
+</div>
