@@ -13,9 +13,11 @@ from musicleague.league import get_league
 from musicleague.notify.flash import flash_error
 from musicleague.notify.flash import flash_success
 from musicleague.notify.flash import flash_warning
+from musicleague.routes.decorators import admin_required
 from musicleague.routes.decorators import league_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
+from musicleague.scoring import calculate_round_scoreboard
 from musicleague.submission_period import create_submission_period
 from musicleague.submission_period import get_submission_period
 from musicleague.submission_period import remove_submission_period
@@ -23,8 +25,8 @@ from musicleague.submission_period import update_submission_period
 
 
 CREATE_SUBMISSION_PERIOD_URL = '/l/<league_id>/submission_period/create/'
-MODIFY_SUBMISSION_PERIOD_URL = '/l/<league_id>/<submission_period_id>/modify/'  # noqa
-REMOVE_SUBMISSION_PERIOD_URL = '/l/<league_id>/<submission_period_id>/remove/'  # noqa
+MODIFY_SUBMISSION_PERIOD_URL = '/l/<league_id>/<submission_period_id>/modify/'
+REMOVE_SUBMISSION_PERIOD_URL = '/l/<league_id>/<submission_period_id>/remove/'
 SETTINGS_URL = '/l/<league_id>/<submission_period_id>/settings/'
 VIEW_SUBMISSION_PERIOD_URL = '/l/<league_id>/<submission_period_id>/'
 
@@ -232,3 +234,12 @@ def new_view_submission_period(league_id, submission_period_id):
         'results': results,
         'total_points': total_points
     }
+
+
+@app.route(VIEW_SUBMISSION_PERIOD_URL + 'score/')
+@login_required
+@admin_required
+def score_round(league_id, submission_period_id):
+    submission_period = get_submission_period(submission_period_id)
+    submission_period = calculate_round_scoreboard(submission_period)
+    return str(len(submission_period.scoreboard)), 200

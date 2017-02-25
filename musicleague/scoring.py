@@ -25,14 +25,14 @@ def calculate_round_scoreboard(round):
 
     # Determine ranking for each ScoreboardEntry
     entries_by_points = defaultdict(list)
-    for entry in entries:
+    for _, entry in entries.iteritems():
         entries_by_points[entry.points].append(entry)
 
-    # Create Scoreboard
+    # Create Scoreboard. Though rankings use ints, keys must be strings.
     point_ranking = sorted(entries_by_points.keys(), reverse=True)
     scoreboard = {}
     for i in range(len(point_ranking)):
-        scoreboard[i + 1] = entries_by_points[point_ranking[i]]
+        scoreboard[str(i + 1)] = entries_by_points[point_ranking[i]]
 
     round.scoreboard = scoreboard
     round.save()
