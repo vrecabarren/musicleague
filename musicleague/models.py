@@ -110,6 +110,13 @@ class Vote(Document):
     votes = DictField()
 
 
+class ScoreboardEntry(EmbeddedDocument):
+    uri = StringField(required=True)
+    points = IntField(default=0)
+    submission = ReferenceField(Submission, required=True,
+                                reverse_delete_rule=PULL)
+
+
 class SubmissionPeriod(Document):
     created = DateTimeField()
     complete = BooleanField(default=False)
