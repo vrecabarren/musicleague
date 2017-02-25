@@ -122,6 +122,7 @@ class SubmissionPeriod(Document):
     pending_tasks = DictField()
     playlist_id = StringField()
     playlist_url = StringField(default='')
+    scoreboard = DictField()
     submissions = ListField(ReferenceField(Submission,
                                            reverse_delete_rule=PULL))
     votes = ListField(ReferenceField(Vote, reverse_delete_rule=PULL))
@@ -228,6 +229,7 @@ class League(Document):
     invited_users = ListField(ReferenceField(InvitedUser,
                                              reverse_delete_rule=PULL))
     preferences = EmbeddedDocumentField(LeaguePreferences)
+    scoreboard = DictField()
 
     @property
     def name(self):
