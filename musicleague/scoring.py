@@ -1,5 +1,6 @@
 from collections import defaultdict
 
+from musicleague.models import Scoreboard
 from musicleague.models import ScoreboardEntry
 
 
@@ -34,7 +35,7 @@ def calculate_round_scoreboard(round):
     for i in range(len(point_ranking)):
         scoreboard[str(i + 1)] = entries_by_points[point_ranking[i]]
 
-    round.scoreboard = scoreboard
+    round.scoreboard = Scoreboard(_rankings=scoreboard)
     round.save()
 
     return round
