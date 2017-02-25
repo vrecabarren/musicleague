@@ -173,66 +173,32 @@ def view_submission_period(league_id, submission_period_id):
 @templated('results/page.html')
 @login_required
 def new_view_submission_period(league_id, submission_period_id):
-    if submission_period_id is None:
-        raise Exception(request.referrer)
-        return redirect(request.referrer)
     league = get_league(league_id)
     submission_period = get_submission_period(submission_period_id)
     if not submission_period:
         flash_error('Round not found')
         return redirect(url_for('view_league', league_id=league.id))
 
-    if not (submission_period.is_complete or
-            league.has_owner(g.user) or g.user.is_admin):
+    is_owner = league.has_owner(g.user)
+    is_admin = g.user.is_admin
+    can_view = submission_period.is_complete or is_owner or is_admin
+    if not can_view:
         flash_warning('You do not have access to this page right now')
         return redirect(url_for('view_league', league_id=league.id))
 
+    # Get Spotify track objects
     tracks = submission_period.all_tracks
     if tracks:
         tracks = g.spotify.tracks(submission_period.all_tracks).get('tracks')
 
-    submissions_by_uri = {}
-    for submission in submission_period.submissions:
-        for uri in submission.tracks:
-            submissions_by_uri[uri] = submission
-
-    total_points = 0
-    points_by_uri = defaultdict(int)
-    voters_by_uri = defaultdict(int)
-    votes_by_uri = defaultdict(list)
-    for vote in submission_period.votes:
-        total_points += sum(vote.votes.values())
-        for uri, points in vote.votes.iteritems():
-            points_by_uri[uri] += points
-            if points:
-                voters_by_uri[uri] += 1
-                votes_by_uri[uri].append(vote)
-    votes_by_uri
-
-    tracks_by_uri = {track.get('uri'): track for track in tracks}
-
-    results = [
-        {
-            'track': tracks_by_uri.get(uri),
-            'submission': submission,
-            'votes': sorted(votes_by_uri[uri] or [],
-                            key=lambda v: v.votes[uri], reverse=True),
-            'points': points_by_uri.get(uri) or 0,
-            'voters': voters_by_uri.get(uri) or 0
-        } for uri, submission in submissions_by_uri.iteritems()]
-
-    # Sort results by number of points and then by number of voters.
-    # TODO Allow owner to modify order of rules applied in this sorting.
-    results = sorted(results,
-                     key=(lambda r: (r['points'], r['voters'])),
-                     reverse=True)
+    # Make sure this round has a computed scoreboard
+    if not submission_period.scoreboard:
+        submission_period = calculate_round_scoreboard(submission_period)
 
     return {
         'user': g.user,
         'league': league,
-        'round': submission_period,
-        'results': results,
-        'total_points': total_points
+        'round': submission_period
     }
 
 
