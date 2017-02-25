@@ -190,15 +190,17 @@ def new_view_submission_period(league_id, submission_period_id):
     tracks = submission_period.all_tracks
     if tracks:
         tracks = g.spotify.tracks(submission_period.all_tracks).get('tracks')
+    tracks_by_uri = {track['uri']: track for track in tracks if track}
 
-    # Make sure this round has a computed scoreboard
-    if not submission_period.scoreboard:
+    # Make sure this round has an up-to-date scoreboard
+    if not submission_period.scoreboard or not submission_period.is_complete:
         submission_period = calculate_round_scoreboard(submission_period)
 
     return {
         'user': g.user,
         'league': league,
-        'round': submission_period
+        'round': submission_period,
+        'tracks_by_uri': tracks_by_uri
     }
 
 

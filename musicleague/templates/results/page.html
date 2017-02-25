@@ -69,13 +69,9 @@
 </div>
 <div id="status-bar">
     <div class="container">
-        {% set result = results[0] %}
-        {% set song = result['track'] %}
-        {% set uri = song['uri'] %}
-        {% set id = song['id'] %}
-        {% set submission = result['submission'] %}
-        {% set votes = result['votes'] %}
-        {% set points = result['points'] %}
+        {% set first_place_entries = round.scoreboard.rankings[1] %}
+        {% for entry in first_place_entries %}
+        {% set song = tracks_by_uri[entry['uri']] %}
         <div class="song row" data-uri="{{ uri }}">
             <div class="hidden-xs">
                 <div class="song-info col-sm-7">
@@ -83,7 +79,7 @@
                     <div class="text-info">
                         <span class="vcenter name">{{ song['name'] }}</span>
                         <span class="vcenter artist">By {{ song['artists'][0]['name'] }}</span>
-                        <span class="vcenter submitter">Submitted by {{ submission.user.name }}</span>
+                        <span class="vcenter submitter">Submitted by {{ entry.submission.user.name }}</span>
                     </div>
                 </div>
             </div>
@@ -93,7 +89,7 @@
                     <div class="text-info">
                         <span class="vcenter name">{{ song['name'] }}</span>
                         <span class="vcenter artist">By {{ song['artists'][0]['name'] }}</span>
-                        <span class="vcenter submitter">Submitted by {{ submission.user.name }}</span>
+                        <span class="vcenter submitter">Submitted by {{ entry.submission.user.name }}</span>
                     </div>
                 </div>
             </div>
@@ -102,23 +98,20 @@
             </div>
             <div class="stats-wrapper col-xs-6 col-sm-3 col-md-2">
                 <div class="voters-wrapper">
-                    <span class="voter-count">{{ votes|length }} {% if votes|length == 1 %}Person{% else %}People{% endif %} Voted for This</span>
+                    <span class="voter-count">{{ entry.votes|length }} {% if entry.votes|length == 1 %}Person{% else %}People{% endif %} Voted for This</span>
                 </div>
                 <div class="points-wrapper">
-                    <span class="point-count">{{ points }}</span>
+                    <span class="point-count">{{ entry.points }}</span>
                 </div>
             </div>
         </div>
+        {% endfor %}
     </div>
 </div>
 <div class="container">
-    {% for result in results[1:] %}
-        {% set song = result['track'] %}
-        {% set uri = song['uri'] %}
-        {% set id = song['id'] %}
-        {% set submission = result['submission'] %}
-        {% set votes = result['votes'] %}
-        {% set points = result['points'] %}
+    {% for place, entries in round.scoreboard.rankings.iteritems() if place != 1 %}
+        {% for entry in entries %}
+        {% set song = tracks_by_uri[entry.uri] %}
     <div class="song row" data-uri="{{ uri }}">
         <div class="hidden-xs">
             <div class="song-info col-sm-7">
@@ -126,7 +119,7 @@
                 <div class="text-info">
                     <span class="vcenter name">{{ song['name'] }}</span>
                     <span class="vcenter artist">By {{ song['artists'][0]['name'] }}</span>
-                    <span class="vcenter submitter">Submitted by {{ submission.user.name }}</span>
+                    <span class="vcenter submitter">Submitted by {{ entry.submission.user.name }}</span>
                 </div>
             </div>
         </div>
@@ -136,19 +129,19 @@
                 <div class="text-info">
                     <span class="vcenter name">{{ song['name'] }}</span>
                     <span class="vcenter artist">By {{ song['artists'][0]['name'] }}</span>
-                    <span class="vcenter submitter">Submitted by {{ submission.user.name }}</span>
+                    <span class="vcenter submitter">Submitted by {{ entry.submission.user.name }}</span>
                 </div>
             </div>
         </div>
         <div class="trophy-wrapper col-xs-4 col-xs-offset-1 col-sm-2">
-
+            <div class="trophy {% if place == 2 %}second{% elif place == 3 %}third{% endif %}"></div>
         </div>
         <div class="stats-wrapper col-xs-6 col-sm-3 col-md-2">
             <div class="voters-wrapper">
-                <span class="voter-count">{{ votes|length }} {% if votes|length == 1 %}Person{% else %}People{% endif %} Voted for This</span>
+                <span class="voter-count">{{ entry.votes|length }} {% if entry.votes|length == 1 %}Person{% else %}People{% endif %} Voted for This</span>
             </div>
             <div class="points-wrapper">
-                <span class="point-count">{{ points }}</span>
+                <span class="point-count">{{ entry.points }}</span>
             </div>
         </div>
     </div>
@@ -162,7 +155,7 @@
         <div class="col-xs-12 visible-xs" style="border-bottom: 3px solid #02B8EF">
         </div>
     </div>
-
+    {% endfor %}
     {% endfor %}
 </div>
 

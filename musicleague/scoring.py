@@ -11,6 +11,7 @@ def calculate_round_scoreboard(round):
     length of 1; however, if two or more songs are tied, the list will grow
     in length for a particular ranking.
     """
+    round.scoreboard = Scoreboard()
 
     # Create a ScoreboardEntry for each song with corresponding Submission
     entries = {}
@@ -31,13 +32,12 @@ def calculate_round_scoreboard(round):
 
     # Create Scoreboard. Though rankings use ints, keys must be strings.
     point_ranking = sorted(entries_by_points.keys(), reverse=True)
-    scoreboard = {}
     for i in range(len(point_ranking)):
-        scoreboard[str(i + 1)] = entries_by_points[point_ranking[i]]
+        points_for_ranking = point_ranking[i]
+        rank_entries = entries_by_points[points_for_ranking]
+        round.scoreboard._rankings[str(i + 1)] = rank_entries
 
-    round.scoreboard = Scoreboard(_rankings=scoreboard)
     round.save()
-
     return round
 
 
