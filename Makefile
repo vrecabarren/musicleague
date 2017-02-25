@@ -1,5 +1,8 @@
 ci: install lint unit
 
+cleandb:
+	mongo test --eval "db.dropDatabase();"
+
 install:
 	pip install -r requirements_dev.txt
 	pip install -r requirements.txt
