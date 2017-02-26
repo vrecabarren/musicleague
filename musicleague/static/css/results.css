@@ -253,14 +253,21 @@ div, span {
     line-height: 20px;
 }
 
-.song .vote-breakdown .vote { margin-bottom: 10px; }
+.song .vote-breakdown .vote {
+    line-height: 32px;
+    margin-bottom: 10px;
+    padding: 0px;
+    vertical-align: top;
+}
 
 .song .vote-breakdown .vote .vote-count-wrapper {
     background: #01249A;
     border-radius: 8px;
+    display: block;
     font-size: 20px;
     line-height: 24px;
     padding: 5px 20px;
+    text-align: center;
     vertical-align: middle;
     width: 100%;
 }
