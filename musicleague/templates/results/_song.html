@@ -29,6 +29,7 @@
         </div>
         <div class="points-wrapper">
             <span class="point-count">{{ entry.points }}</span>
+            <span class="collapse-toggle collapsed" data-toggle="collapse" data-target="#{{ song['id'] }}" data-trigger="click"></span>
         </div>
     </div>
     {% else %}
@@ -38,7 +39,25 @@
         </div>
         <div class="points-wrapper">
             <span class="point-count">{{ entry.points }}</span>
+            <span class="collapse-toggle collapsed" data-toggle="collapse" data-target="#{{ song['id'] }}" data-trigger="click"></span>
         </div>
     </div>
     {% endif %}
+    <div id="{{ song['id'] }}" class="row collapse">
+        <div class="col-xs-12">
+            <div class="vote-breakdown">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="total-points-banner">
+                            <span class="total-points">{{ entry.points }}</span>
+                            <div class="total-points-divider-wrapper">
+                                <span class="total-points-divider"></span>
+                            </div>
+                            <span class="total-points-label">Total Points</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

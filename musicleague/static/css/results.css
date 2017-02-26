@@ -83,6 +83,8 @@ div, span {
 #status-bar .song .stats-wrapper.with-trophy { border-left: 3px solid #fff; }
 #status-bar .song .stats-wrapper .voters-wrapper .voter-count { font-family: 'Nunito', sans-serif; }
 #status-bar .song .stats-wrapper .points-wrapper { border-top: 3px solid #fff; }
+#status-bar .song .stats-wrapper .points-wrapper .collapse-toggle { background: url('/static/icons/collapse_icon.svg'); }
+#status-bar .song .stats-wrapper .points-wrapper .collapse-toggle.collapsed { background: url('/static/icons/expand_icon.svg'); }
 
 /* Default song panel state */
 .song {
@@ -180,14 +182,67 @@ div, span {
 }
 .song .stats-wrapper .points-wrapper {
     border-top: 3px solid #02B8EF;
-    display: table;
+    display: inline-block;
     margin-left: 0px;
     padding: 5px 0px 10px 0px;
     text-align: center;
     width: 100%;
 }
 .song .stats-wrapper .points-wrapper .point-count {
+    display: inline-block;
     font-family: 'Cubano', sans-serif;
     font-size: 70px;
     line-height: 50px;
+    vertical-align: middle;
+}
+.song .stats-wrapper .points-wrapper .collapse-toggle {
+    background: url('/static/icons/collapse_icon_blue.svg');
+    cursor: pointer;
+    display: inline-block;
+    height: 30px;
+    margin-left: 10px;
+    vertical-align: middle;
+    width: 30px;
+}
+.song .stats-wrapper .points-wrapper .collapse-toggle.collapsed {
+    background: url('/static/icons/expand_icon_blue.svg');
+}
+
+.song .vote-breakdown {
+    background: #F1F1F1;
+    border-radius: 8px;
+    color: #01249A;
+    font-family: 'Cubano', sans-serif;
+    margin-top: 20px;
+    padding: 20px
+}
+
+.song .vote-breakdown .total-points-banner {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+}
+
+.song .vote-breakdown .total-points-banner .total-points {
+    color: #F8C62C;
+    display: block;
+    font-size: 70px;
+    line-height: 70px;
+}
+
+.song .vote-breakdown .total-points-banner .total-points-divider-wrapper {
+    display: block;
+    margin: 10px 0px;
+}
+.song .vote-breakdown .total-points-banner .total-points-divider-wrapper .total-points-divider {
+    background: url('/static/icons/star_blue.svg');
+    display: inline-block;
+    height: 20px;
+    width: 126px;
+}
+
+.song .vote-breakdown .total-points-banner .total-points-label {
+    color: #02B8EF;
+    font-size: 20px;
 }
