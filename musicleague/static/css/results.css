@@ -258,11 +258,14 @@ div, span {
 .song .vote-breakdown .vote .vote-count-wrapper {
     background: #01249A;
     border-radius: 8px;
+    font-size: 20px;
+    line-height: 24px;
     padding: 5px 20px;
     vertical-align: middle;
+    width: 100%;
 }
 
-.song .vote-breakdown .vote .vote-count {
+.song .vote-breakdown .vote .vote-count-wrapper .vote-count {
     color: #F8C62C;
     font-size: 22px;
     line-height: 24px;
