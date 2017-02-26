@@ -86,6 +86,10 @@ div, span {
 #status-bar .song .stats-wrapper .points-wrapper .collapse-toggle { background: url('/static/icons/collapse_icon.svg'); }
 #status-bar .song .stats-wrapper .points-wrapper .collapse-toggle.collapsed { background: url('/static/icons/expand_icon.svg'); }
 
+#status-bar .song .vote-breakdown .vote .vote-count-wrapper { background: #fff; }
+#status-bar .song .vote-breakdown .vote .vote-count-wrapper .vote-count { color: #01249A; }
+#status-bar .song .vote-breakdown .vote .voter { color: #fff; }
+
 #status-bar .song .vote-breakdown {
     background: rgba(255, 255, 255, 0.25);
 }
