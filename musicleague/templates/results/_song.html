@@ -56,6 +56,14 @@
                             <span class="total-points-label">Total Points</span>
                         </div>
                     </div>
+                    <div class="col-sm-8">
+                        {% for vote in entry.votes %}
+                        <span class="vote col-sm-6">
+                            <span class="vote-count">{{ vote.votes[entry.uri] }}</span>
+                            <span class="voter">{{ vote.user.name }}</span>
+                        </span>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
