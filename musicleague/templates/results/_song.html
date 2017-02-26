@@ -19,10 +19,11 @@
             </div>
         </div>
     </div>
-    <div class="trophy-wrapper col-xs-4 col-xs-offset-1 col-sm-2">
+    {% if place == 1 or place == 2 or place == 3 %}
+    <div class="trophy-wrapper col-xs-4 col-xs-offset-1 col-sm-2 col-sm-offset-0">
         <div class="trophy {% if place == 1 %}first{% elif place == 2 %}second{% elif place == 3 %}third{% endif %}"></div>
     </div>
-    <div class="stats-wrapper col-xs-6 col-sm-3 col-md-2">
+    <div class="stats-wrapper with-trophy col-xs-6 col-sm-3">
         <div class="voters-wrapper">
             <span class="voter-count">{{ entry.votes|length }} {% if entry.votes|length == 1 %}Person{% else %}People{% endif %} Voted for This</span>
         </div>
@@ -30,4 +31,14 @@
             <span class="point-count">{{ entry.points }}</span>
         </div>
     </div>
+    {% else %}
+    <div class="stats-wrapper col-xs-6 col-xs-offset-3 col-sm-3 col-sm-offset-2">
+        <div class="voters-wrapper">
+            <span class="voter-count">{{ entry.votes|length }} {% if entry.votes|length == 1 %}Person{% else %}People{% endif %} Voted for This</span>
+        </div>
+        <div class="points-wrapper">
+            <span class="point-count">{{ entry.points }}</span>
+        </div>
+    </div>
+    {% endif %}
 </div>

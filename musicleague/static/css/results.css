@@ -80,7 +80,7 @@ div, span {
 #status-bar .song-info .text-info .artist,
 #status-bar .song-info .text-info .submitter { font-family: 'Nunito', sans-serif; }
 
-#status-bar .song .stats-wrapper { border-left: 3px solid #fff; }
+#status-bar .song .stats-wrapper.with-trophy { border-left: 3px solid #fff; }
 #status-bar .song .stats-wrapper .voters-wrapper .voter-count { font-family: 'Nunito', sans-serif; }
 #status-bar .song .stats-wrapper .points-wrapper { border-top: 3px solid #fff; }
 
@@ -141,7 +141,7 @@ div, span {
 .song .trophy-wrapper {
     height: 100px;
     padding: 10px 20px 10px 0px;
-    text-align: center;
+    text-align: right;
 }
 
 .song .trophy-wrapper .trophy {
@@ -162,13 +162,16 @@ div, span {
 }
 
 .song .stats-wrapper {
-    border-left: 3px solid #02B8EF;
     height: 100px;
     padding: 0px;
 }
+.song .stats-wrapper.with-trophy {
+    border-left: 3px solid #02B8EF;
+}
 .song .stats-wrapper .voters-wrapper {
     height: 28px;
-    padding: 10px 0px 5px 20px;
+    padding: 10px 0px 5px 0px;
+    text-align: center;
 }
 .song .stats-wrapper .voters-wrapper .voter-count {
     font-size: 14px;
@@ -179,7 +182,8 @@ div, span {
     border-top: 3px solid #02B8EF;
     display: table;
     margin-left: 0px;
-    padding: 5px 0px 10px 20px;
+    padding: 5px 0px 10px 0px;
+    text-align: center;
     width: 100%;
 }
 .song .stats-wrapper .points-wrapper .point-count {
