@@ -25,6 +25,12 @@ def calculate_round_scoreboard(round):
             if points > 0:
                 entries[uri].votes.append(vote)
 
+    # Sort votes by number of points awarded
+    for entry in entries.values():
+        entry.votes = sorted(entry.votes,
+                             key=lambda x: x.votes[entry.uri],
+                             reverse=True)
+
     # Determine ranking for each ScoreboardEntry
     entries_by_points = defaultdict(list)
     for _, entry in entries.iteritems():
