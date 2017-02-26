@@ -104,7 +104,6 @@ div, span {
 
 .song .song-info {
     color: #02B8EF;
-    padding: 0px;
     position: relative;
 }
 .song .song-info img {
@@ -174,7 +173,7 @@ div, span {
 
 .song .stats-wrapper {
     height: 100px;
-    padding: 0px;
+    padding-left: 0px;
 }
 .song .stats-wrapper.with-trophy {
     border-left: 3px solid #02B8EF;
@@ -191,11 +190,10 @@ div, span {
 }
 .song .stats-wrapper .points-wrapper {
     border-top: 3px solid #02B8EF;
-    display: inline-block;
+    display: block;
     margin-left: 0px;
     padding: 5px 0px 10px 0px;
     text-align: center;
-    width: 100%;
 }
 .song .stats-wrapper .points-wrapper .point-count {
     display: inline-block;
@@ -270,7 +268,7 @@ div, span {
     display: block;
     font-size: 20px;
     line-height: 24px;
-    padding: 5px 20px;
+    padding: 5px;
     text-align: center;
     vertical-align: middle;
     width: 100%;
