@@ -220,6 +220,7 @@ div, span {
 .song .vote-breakdown .total-points-banner {
     background: #fff;
     border-radius: 8px;
+    margin-bottom: 5px;
     padding: 20px;
     text-align: center;
 }
@@ -247,13 +248,15 @@ div, span {
     font-size: 20px;
 }
 
+.song .vote-breakdown .vote { padding: 5px 0px; }
+
 .song .vote-breakdown .vote .vote-count {
     background: #01249A;
     border-radius: 8px;
     color: #F8C62C;
-    display: inline-block;
+    /*display: inline-block;*/
     font-size: 22px;
-    margin-right: 20px;
+    /*margin-right: 20px;*/
     padding: 5px 20px;
     vertical-align: middle;
 }

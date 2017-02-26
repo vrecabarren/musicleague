@@ -58,10 +58,16 @@
                     </div>
                     <div class="col-sm-8">
                         {% for vote in entry.votes %}
-                        <span class="vote col-sm-6">
-                            <span class="vote-count">{{ vote.votes[entry.uri] }}</span>
-                            <span class="voter">{{ vote.user.name }}</span>
-                        </span>
+                        <div class="vote col-xs-12 col-sm-6">
+                            <div class="row">
+                                <div class="col-xs-4 col-sm-3 text-center">
+                                    <span class="vote-count">
+                                        {{ vote.votes[entry.uri] }}
+                                    </span>
+                                </div>
+                                <div class="col-xs-8 col-sm-9 voter">{{ vote.user.name }}</div>
+                            </div>
+                        </div>
                         {% endfor %}
                     </div>
                 </div>
