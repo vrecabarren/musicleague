@@ -1,5 +1,3 @@
-from collections import defaultdict
-
 from itertools import groupby
 
 from musicleague.models import Scoreboard
@@ -33,7 +31,7 @@ def calculate_round_scoreboard(round):
                              reverse=True)
 
     # Rank entries and assign to round scoreboard with string keys
-    rankings = rank_entries(entries)
+    rankings = rank_entries(entries.values())
     for rank, entries in rankings.iteritems():
         round.scoreboard._rankings[str(rank)] = entries
 
@@ -42,77 +40,44 @@ def calculate_round_scoreboard(round):
 
 
 def rank_entries(entries):
-    entries = entries.values()
+    entries = rank_by_points(entries)
+    entries = rank_by_num_voters(entries)
 
+    # Index entries by ranking
+    rankings = {}
+    for i, entries in enumerate(entries):
+        rankings[i + 1] = entries
+
+    return rankings
+
+
+def rank_by_points(entries):
     # Rank entries by number of points
-    ranked_by_points = []
+    ranked = []
     key_func = lambda x: x.points
     entries = sorted(entries, key=key_func, reverse=True)
     entries = groupby(entries, key=key_func)
     for _, group in entries:
-        ranked_by_points.append(list(group))
+        ranked.append(list(group))
 
-    entries = ranked_by_points
+    return ranked
 
+
+def rank_by_num_voters(entries):
     # Rank entries by number of voters
-    ranked_by_voters = []
+    ranked = []
     for entries_for_rank in entries:
         if len(entries_for_rank) == 1:
-            ranked_by_voters.append(entries_for_rank)
+            ranked.append(entries_for_rank)
             continue
 
         key_func = lambda x: len(x.votes)
         entries_for_rank = sorted(entries_for_rank, key=key_func, reverse=True)
         entries_for_rank = groupby(entries_for_rank, key=key_func)
         for _, group in entries_for_rank:
-            ranked_by_voters.append(list(group))
+            ranked.append(list(group))
 
-    # Index entries by ranking
-    rankings = {}
-    for i in range(len(ranked_by_voters)):
-        rankings[i + 1] = ranked_by_voters[i]
-
-    return rankings
-
-
-def _rank_entries(entries):
-    rankings = {}
-
-    # Determine ranking for each ScoreboardEntry
-    entries_by_points = defaultdict(list)
-    for _, entry in entries.iteritems():
-        entries_by_points[entry.points].append(entry)
-
-    # Ranking entries by number of points
-    point_ranking = sorted(entries_by_points.keys(), reverse=True)
-    ranked_by_points = []
-    for i in range(len(point_ranking)):
-        points_for_ranking = point_ranking[i]
-        rank_entries = entries_by_points[points_for_ranking]
-        ranked_by_points.append(rank_entries)
-
-    # Break ties by number of voters
-    ranked_by_voters = []
-    for i in range(len(ranked_by_points)):
-        entries = ranked_by_points[i]
-        if len(entries) == 1:
-            ranked_by_voters.append(entries)
-            continue
-
-        # When we encounter a tie, group the tied members by number of voters
-        entries = sorted(entries, key=lambda x: len(x.votes), reverse=True)
-        entries = groupby(entries, key=lambda x: len(x.votes))
-        for _, group in entries:
-            ranked_by_voters.append(list(group))
-
-        import logging
-        logging.warning(ranked_by_voters)
-
-    # Index entries by ranking
-    for i in range(len(ranked_by_voters)):
-        rankings[i + 1] = ranked_by_voters[i]
-
-    return rankings
+    return ranked
 
 
 def calculate_league_scoreboard(league):
