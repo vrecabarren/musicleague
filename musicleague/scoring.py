@@ -1,5 +1,7 @@
 from collections import defaultdict
 
+from itertools import groupby
+
 from musicleague.models import Scoreboard
 from musicleague.models import ScoreboardEntry
 
@@ -40,6 +42,40 @@ def calculate_round_scoreboard(round):
 
 
 def rank_entries(entries):
+    entries = entries.values()
+
+    # Rank entries by number of points
+    ranked_by_points = []
+    key_func = lambda x: x.points
+    entries = sorted(entries, key=key_func, reverse=True)
+    entries = groupby(entries, key=key_func)
+    for _, group in entries:
+        ranked_by_points.append(list(group))
+
+    entries = ranked_by_points
+
+    # Rank entries by number of voters
+    ranked_by_voters = []
+    for entries_for_rank in entries:
+        if len(entries_for_rank) == 1:
+            ranked_by_voters.append(entries_for_rank)
+            continue
+
+        key_func = lambda x: len(x.votes)
+        entries_for_rank = sorted(entries_for_rank, key=key_func, reverse=True)
+        entries_for_rank = groupby(entries_for_rank, key=key_func)
+        for _, group in entries_for_rank:
+            ranked_by_voters.append(list(group))
+
+    # Index entries by ranking
+    rankings = {}
+    for i in range(len(ranked_by_voters)):
+        rankings[i + 1] = ranked_by_voters[i]
+
+    return rankings
+
+
+def _rank_entries(entries):
     rankings = {}
 
     # Determine ranking for each ScoreboardEntry
@@ -64,7 +100,6 @@ def rank_entries(entries):
             continue
 
         # When we encounter a tie, group the tied members by number of voters
-        from itertools import groupby
         entries = sorted(entries, key=lambda x: len(x.votes), reverse=True)
         entries = groupby(entries, key=lambda x: len(x.votes))
         for _, group in entries:
