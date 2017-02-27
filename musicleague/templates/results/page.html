@@ -74,6 +74,18 @@
             {% set place = 1 %}
             {% set song = tracks_by_uri[entry['uri']] %}
             {% include "results/_song.html" %}
+
+            {% if not loop.last %}
+            <div class="row" style="margin-top: 25px; margin-bottom: 25px;">
+                <div class="hidden-xs col-sm-12">
+                    <svg width="275" height="5" viewBox="0 0 372 7" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                        <line stroke-linecap="round" x1="0" y1="2" x2="372" y2="2" stroke="#FFFFFF" stroke-width="3"/>
+                    </svg>
+                </div>
+                <div class="col-xs-12 visible-xs" style="border-bottom: 3px solid #FFFFFF">
+                </div>
+            </div>
+            {% endif %}
         {% endfor %}
     </div>
 </div>
