@@ -1,0 +1,296 @@
+@import url('/static/css/_navbar.css');
+@import url('https://fonts.googleapis.com/css?family=Nunito:400');
+
+@font-face {
+    font-family: 'Cubano';
+    src: url("/static/fonts/Cubano/cubano-regular-webfont.ttf");
+}
+
+/* REMOVE THE NAVBAR AND SPACING UP TOP */
+.navbar { display: none; margin: 0px; }
+.spacer { display: none; }
+
+body { font-family: 'Nunito', sans-serif; }
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+div, span {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Header image */
+#img-bar {
+    background: url("/static/images/ml_header06.jpg");
+    background-attachment: scroll;
+    background-position: 50% 40%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* League/Round title inside header image */
+#title-bar {
+    background: none;
+    color: #fff;
+    padding: 50px 0px;
+    text-align: center;
+}
+#title-bar .round-title,
+#title-bar .round-action {
+    display: inline-block;
+    font-family: 'Cubano', sans-serif;
+    font-size: 20px;
+    line-height: 24px;
+}
+#title-bar .round-title { color: #F8C62C; }
+#title-bar .league-title {
+    display: block;
+    font-family: 'Cubano', sans-serif;
+    font-size: 60px;
+    line-height: 72px;
+}
+
+/* Status Bar */
+#status-bar {
+    background-color: #02B8EF;
+    color: #fff;
+    font-family: 'Cubano', sans-serif;
+    font-size: 20px;
+    line-height: 24px;
+    margin-bottom: 50px;
+    padding: 25px 0px;
+    width: 100%;
+    z-index: 100;
+}
+
+#status-bar .song {
+    background-color: #02B8EF;
+    color: #fff;
+}
+#status-bar .song-info { color: #fff; }
+#status-bar .song-info .text-info { color: #fff; }
+#status-bar .song-info .text-info .artist,
+#status-bar .song-info .text-info .submitter { font-family: 'Nunito', sans-serif; }
+
+#status-bar .song .stats-wrapper.with-trophy { border-left: 3px solid #fff; }
+#status-bar .song .stats-wrapper .voters-wrapper .voter-count { font-family: 'Nunito', sans-serif; }
+#status-bar .song .stats-wrapper .points-wrapper { border-top: 3px solid #fff; }
+#status-bar .song .stats-wrapper .points-wrapper .collapse-toggle { background: url('/static/icons/collapse_icon.svg'); }
+#status-bar .song .stats-wrapper .points-wrapper .collapse-toggle.collapsed { background: url('/static/icons/expand_icon.svg'); }
+
+#status-bar .song .vote-breakdown .vote .vote-count-wrapper { background: #fff; }
+#status-bar .song .vote-breakdown .vote .vote-count-wrapper .vote-count { color: #01249A; }
+#status-bar .song .vote-breakdown .vote .voter { color: #fff; }
+
+#status-bar .song .vote-breakdown {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* Default song panel state */
+.song {
+    background-color: #fff;
+    color: #02B8EF;
+    margin-bottom: 0px;
+    padding: 15px 0px;
+}
+
+.song .song-info {
+    color: #02B8EF;
+    position: relative;
+}
+.song .song-info img {
+    display: block;
+    float: left;
+    height: 100px;
+    margin-right: 20px;
+    vertical-align: top;
+    width: 100px;
+}
+.song .visible-xs .song-info img {
+    display: inline-block;
+    float: none;
+    margin: 0px;
+    margin-bottom: 20px;
+}
+.song .song-info .text-info {
+    color: #02B8EF;
+    display: flex;
+    flex-direction: column;
+    min-height: 100px;
+}
+.song .visible-xs .song-info .text-info {
+    display: block;
+    min-height: inherit;
+}
+.song .song-info .text-info .name,
+.song .song-info .text-info .artist,
+.song .song-info .text-info .submitter {
+    display: block;
+    font-size: 18px;
+    line-height: 22px;
+}
+.song .song-info .text-info .name {
+    flex: 1;
+    font-family: 'Cubano', sans-serif;
+}
+.song .visible-xs .song-info .text-info .name {
+    flex: none;
+    margin-bottom: 20px;
+}
+
+.song .visible-xs .song-info .text-info .submitter { margin-bottom: 20px; }
+
+.song .trophy-wrapper {
+    height: 100px;
+    padding: 10px 20px 10px 0px;
+    text-align: left;
+}
+
+.song .trophy-wrapper .trophy {
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+    height: 80px;
+    width: 80px;
+}
+.song .trophy-wrapper .trophy.first { background-image: url('/static/icons/1st.svg'); }
+.song .trophy-wrapper .trophy.second {
+    background-image: url('/static/icons/2nd.svg');
+    width: 65px;
+}
+.song .trophy-wrapper .trophy.third {
+    background-image: url('/static/icons/3rd.svg');
+    width: 65px;
+}
+
+.song .stats-wrapper {
+    height: 100px;
+    padding-left: 0px;
+}
+.song .stats-wrapper.with-trophy {
+    border-left: 3px solid #02B8EF;
+}
+.song .stats-wrapper .voters-wrapper {
+    height: 28px;
+    padding: 10px 0px 5px 0px;
+    text-align: center;
+}
+.song .stats-wrapper .voters-wrapper .voter-count {
+    font-size: 14px;
+    line-height: 12px;
+    vertical-align: top;
+}
+.song .stats-wrapper .points-wrapper {
+    border-top: 3px solid #02B8EF;
+    display: block;
+    margin-left: 0px;
+    padding: 5px 0px 10px 0px;
+    text-align: center;
+}
+.song .stats-wrapper .points-wrapper .point-count {
+    display: inline-block;
+    font-family: 'Cubano', sans-serif;
+    font-size: 70px;
+    line-height: 50px;
+    vertical-align: middle;
+}
+.song .stats-wrapper .points-wrapper .collapse-toggle {
+    background: url('/static/icons/collapse_icon_blue.svg');
+    cursor: pointer;
+    display: inline-block;
+    height: 30px;
+    margin-left: 10px;
+    vertical-align: middle;
+    width: 30px;
+}
+.song .stats-wrapper .points-wrapper .collapse-toggle.collapsed {
+    background: url('/static/icons/expand_icon_blue.svg');
+}
+
+.song .vote-breakdown {
+    background: #F1F1F1;
+    border-radius: 8px;
+    color: #01249A;
+    font-family: 'Cubano', sans-serif;
+    margin-top: 20px;
+    padding: 20px
+}
+
+.song .vote-breakdown .total-points-banner {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+}
+
+.song .vote-breakdown .total-points-banner .total-points {
+    color: #F8C62C;
+    display: block;
+    font-size: 70px;
+    line-height: 70px;
+}
+
+.song .vote-breakdown .total-points-banner .total-points-divider-wrapper {
+    display: block;
+    margin: 10px 0px;
+}
+.song .vote-breakdown .total-points-banner .total-points-divider-wrapper .total-points-divider {
+    background: url('/static/icons/star_blue.svg');
+    display: inline-block;
+    height: 20px;
+    width: 126px;
+}
+
+.song .vote-breakdown .total-points-banner .total-points-label {
+    color: #02B8EF;
+    font-size: 20px;
+    line-height: 20px;
+}
+
+.song .vote-breakdown .vote {
+    line-height: 32px;
+    margin-bottom: 10px;
+    padding: 0px;
+    vertical-align: top;
+}
+
+.song .vote-breakdown .vote .vote-count-wrapper {
+    background: #01249A;
+    border-radius: 8px;
+    display: block;
+    font-size: 20px;
+    line-height: 24px;
+    padding: 5px;
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+}
+
+.song .vote-breakdown .vote .vote-count-wrapper .vote-count {
+    color: #F8C62C;
+    font-size: 22px;
+    line-height: 24px;
+    vertical-align: middle;
+}
+
+.song .vote-breakdown .vote .voter {
+    font-size: 18px;
+    line-height: 18px;
+    padding-left: 0px;
+    vertical-align: middle;
+}
+
+.row-height {
+  display: table;
+  table-layout: fixed;
+  height: 100%;
+  width: 100%;
+}

@@ -110,6 +110,31 @@ class Vote(Document):
     votes = DictField()
 
 
+class ScoreboardEntry(EmbeddedDocument):
+    uri = StringField(required=True)
+    submission = ReferenceField(Submission)
+    votes = ListField(ReferenceField(Vote))
+
+    @property
+    def points(self):
+        points = 0
+        for vote in self.votes:
+            points += vote.votes.get(self.uri, 0)
+        return points
+
+
+class Scoreboard(EmbeddedDocument):
+    _rankings = DictField()
+
+    @property
+    def rankings(self):
+        rankings = {}
+        int_keys = sorted([int(key) for key in self._rankings])
+        for key in int_keys:
+            rankings[key] = self._rankings[str(key)]
+        return rankings
+
+
 class SubmissionPeriod(Document):
     created = DateTimeField()
     complete = BooleanField(default=False)
@@ -122,6 +147,7 @@ class SubmissionPeriod(Document):
     pending_tasks = DictField()
     playlist_id = StringField()
     playlist_url = StringField(default='')
+    scoreboard = EmbeddedDocumentField(Scoreboard)
     submissions = ListField(ReferenceField(Submission,
                                            reverse_delete_rule=PULL))
     votes = ListField(ReferenceField(Vote, reverse_delete_rule=PULL))
@@ -228,6 +254,7 @@ class League(Document):
     invited_users = ListField(ReferenceField(InvitedUser,
                                              reverse_delete_rule=PULL))
     preferences = EmbeddedDocumentField(LeaguePreferences)
+    scoreboard = EmbeddedDocumentField(Scoreboard)
 
     @property
     def name(self):

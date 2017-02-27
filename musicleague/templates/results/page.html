@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Music League | {{ league.name }}{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/results.css">
+{% endblock %}
+
+{% block content %}
+
+<div id="img-bar" style="background-image: url('/static/images/{{ user.profile_background }}')">
+    <div id="nav-bar">
+        <div class="brand-wrapper">
+            <a href="/">
+                <img src="/static/icons/site_logo.svg" alt="" class="brand-icon">
+            </a>
+        </div>
+        <div class="add-league-wrapper">
+            <span class="add-league-text hidden-xs">Add League</span>
+            <a href="{{ url_for('get_create_league') }}">
+                <img src="/static/icons/add_icon.svg" alt="" class="add-league-icon">
+            </a>
+        </div>
+        <svg class="account-divider" width="7" height="120" viewBox="0 0 3 120" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <line stroke-linecap="round" x1="1" y1="0" x2="1" y2="90" stroke="white" stroke-width="3"/>
+        </svg>
+        <div class="account-wrapper">
+            <span class="account-name hidden-xs">{{ user.first_name }}</span>
+            <div class="dropdown" style="display: inline;">
+                <a type="button" class="dropdown-toggle account-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="/static/icons/account_icon.svg" alt="" class="account-icon">
+                </a>
+                <ul class="dropdown-menu pull-right">
+                    <li>
+                        <a href="{{ url_for('profile') }}">
+                            <span id="profile-icon" class="icon"></span>
+                            <span class="text">Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('view_profile_settings') }}">
+                            <span id="settings-icon" class="icon"></span>
+                            <span class="text">Settings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('logout') }}">
+                            <span id="logout-icon" class="icon"></span>
+                            <span class="text">Log Out</span>
+                        </a>
+                    </li>
+                    {% if user.is_admin %}
+                    <li>
+                        <a href="{{ url_for('admin') }}">
+                            <span id="admin-icon" class="icon"></span>
+                            <span class="text">Admin</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="title-bar">
+        <span class="round-title">{{ round.name }}:&nbsp;</span>
+        <span class="round-action">Results</span>
+        <span class="league-title">{{ league.name }}</span>
+    </div>
+</div>
+<div id="status-bar">
+    <div class="container">
+        {% set first_place_entries = round.scoreboard.rankings[1] %}
+        {% for entry in first_place_entries %}
+            {% set place = 1 %}
+            {% set song = tracks_by_uri[entry['uri']] %}
+            {% include "results/_song.html" %}
+
+            {% if not loop.last %}
+            <div class="row" style="margin-top: 25px; margin-bottom: 25px;">
+                <div class="hidden-xs col-sm-12">
+                    <svg width="275" height="5" viewBox="0 0 372 7" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                        <line stroke-linecap="round" x1="0" y1="2" x2="372" y2="2" stroke="#FFFFFF" stroke-width="3"/>
+                    </svg>
+                </div>
+                <div class="col-xs-12 visible-xs" style="border-bottom: 3px solid #FFFFFF">
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+<div class="container">
+    {% for place, entries in round.scoreboard.rankings.iteritems() if place != 1 %}
+        {% for entry in entries %}
+            {% set song = tracks_by_uri[entry.uri] %}
+            {% include "results/_song.html" %}
+
+            <div class="row" style="margin-top: 25px; margin-bottom: 25px;">
+                <div class="hidden-xs col-sm-12">
+                    <svg width="275" height="5" viewBox="0 0 372 7" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                        <line stroke-linecap="round" x1="0" y1="2" x2="372" y2="2" stroke="#02B8EF" stroke-width="3"/>
+                    </svg>
+                </div>
+                <div class="col-xs-12 visible-xs" style="border-bottom: 3px solid #02B8EF">
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="/static/js/jquery.sticky-kit.min.js"></script>
+{% endblock %}
