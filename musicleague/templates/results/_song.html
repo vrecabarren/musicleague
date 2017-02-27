@@ -60,8 +60,7 @@
                                     <span class="total-points-label">Total Points</span>
                                 </div>
                             </div>
-                            <div class="col-xs-12 visible-xs" style="padding: 10px 0px"></div>
-                            <div class="col-xs-12 col-sm-8" style="padding: 0px inherit">
+                            <div class="hidden-xs col-sm-8" style="padding: 0px inherit">
                                 {% for vote in entry.votes %}
                                 <div class="vote col-xs-12 col-sm-6">
                                     <div class="row-fluid">
@@ -78,6 +77,23 @@
                                 {% endfor %}
                             </div>
                         </div>
+                    </div>
+                    <div class="visible-xs">
+                        <div style="padding: 10px 0px"></div>
+                        {% for vote in entry.votes %}
+                        <div class="vote">
+                            <div class="row">
+                                <div class="row-height">
+                                    <div class="col-xs-3 col-sm-4 col-md-3 text-left vcenter">
+                                        <span class="vote-count-wrapper">
+                                            <span class="vote-count">{{ "%02d" % vote.votes[entry.uri] }}</span>
+                                        </span>
+                                    </div>
+                                    <div class="col-xs-9 col-sm-8 col-md-9 voter text-left vcenter">{{ vote.user.name }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
