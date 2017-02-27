@@ -40,6 +40,11 @@ def calculate_round_scoreboard(round):
 
 
 def rank_entries(entries):
+    """ Given a list of ScoreboardEntry entities, return a dict where the key
+    is the ranking and the value is a list of ScoreboardEntry entities for that
+    ranking. In general, we aim for this list to have a length of 1 for each
+    key since a list with length > 1 means there is a tie for the ranking.
+    """
     entries = rank_by_points(entries)
     entries = rank_by_num_voters(entries)
 
@@ -52,7 +57,11 @@ def rank_entries(entries):
 
 
 def rank_by_points(entries):
-    # Rank entries by number of points
+    """ Given a list of ScoreboardEntry entities, group by number of points.
+    The returned list will have a list of entities at each index. A list with
+    length > 1 indicates that two ScoreboardEntries are tied where the ranking
+    is the index + 1.
+    """
     ranked = []
     key_func = lambda x: x.points
     entries = sorted(entries, key=key_func, reverse=True)
@@ -64,7 +73,11 @@ def rank_by_points(entries):
 
 
 def rank_by_num_voters(entries):
-    # Rank entries by number of voters
+    """ Given a list of lists of ScoreboardEntry entities, group any lists of
+    length > 1 by number of voters to break ties. The returned list will have
+    a list of entities at each index. A list with length > 1 indicates that
+    two ScoreboardEntries are tied where the ranking is the index + 1.
+    """
     ranked = []
     for entries_for_rank in entries:
         if len(entries_for_rank) == 1:
