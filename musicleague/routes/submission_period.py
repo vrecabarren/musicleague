@@ -15,7 +15,7 @@ from musicleague.routes.decorators import admin_required
 from musicleague.routes.decorators import league_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
-from musicleague.scoring import calculate_round_scoreboard
+from musicleague.scoring.round import calculate_round_scoreboard
 from musicleague.submission_period import create_submission_period
 from musicleague.submission_period import get_submission_period
 from musicleague.submission_period import remove_submission_period
