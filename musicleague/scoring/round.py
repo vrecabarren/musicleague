@@ -40,6 +40,33 @@ def calculate_round_scoreboard(round):
     return round
 
 
+def cmp_to_key(mycmp):
+    'Convert a cmp= function into a key= function'
+    class K:
+        def __init__(self, obj, *args):
+            self.obj = obj
+
+        def __lt__(self, other):
+            return mycmp(self.obj, other.obj) < 0
+
+        def __gt__(self, other):
+            return mycmp(self.obj, other.obj) > 0
+
+        def __eq__(self, other):
+            return mycmp(self.obj, other.obj) == 0
+
+        def __le__(self, other):
+            return mycmp(self.obj, other.obj) <= 0
+
+        def __ge__(self, other):
+            return mycmp(self.obj, other.obj) >= 0
+
+        def __ne__(self, other):
+            return mycmp(self.obj, other.obj) != 0
+
+    return K
+
+
 def rank_entries(entries):
     """ Given a list of ScoreboardEntry entities, return a dict where the key
     is the ranking and the value is a list of ScoreboardEntry entities for that
@@ -47,7 +74,7 @@ def rank_entries(entries):
     key since a list with length > 1 means there is a tie for the ranking.
     """
     entries = sorted(entries, cmp=entry_sort_cmp, reverse=True)
-    grouped_entries = groupby(entries, key=entry_group_key)
+    grouped_entries = groupby(entries, key=cmp_to_key(entry_sort_cmp))
     entries = [list(group) for _, group in grouped_entries]
 
     # Index entries by ranking
@@ -65,8 +92,8 @@ def entry_sort_cmp(entry1, entry2):
         _cmp_entry_highest_vote
     ]
 
-    for cmp in cmp_order:
-        diff = cmp(entry1, entry2)
+    for _cmp in cmp_order:
+        diff = _cmp(entry1, entry2)
         if diff != 0:
             return diff
 
