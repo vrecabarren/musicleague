@@ -40,41 +40,14 @@ def calculate_round_scoreboard(round):
     return round
 
 
-def cmp_to_key(mycmp):
-    'Convert a cmp= function into a key= function'
-    class K:
-        def __init__(self, obj, *args):
-            self.obj = obj
-
-        def __lt__(self, other):
-            return mycmp(self.obj, other.obj) < 0
-
-        def __gt__(self, other):
-            return mycmp(self.obj, other.obj) > 0
-
-        def __eq__(self, other):
-            return mycmp(self.obj, other.obj) == 0
-
-        def __le__(self, other):
-            return mycmp(self.obj, other.obj) <= 0
-
-        def __ge__(self, other):
-            return mycmp(self.obj, other.obj) >= 0
-
-        def __ne__(self, other):
-            return mycmp(self.obj, other.obj) != 0
-
-    return K
-
-
 def rank_entries(entries):
     """ Given a list of ScoreboardEntry entities, return a dict where the key
     is the ranking and the value is a list of ScoreboardEntry entities for that
     ranking. In general, we aim for this list to have a length of 1 for each
     key since a list with length > 1 means there is a tie for the ranking.
     """
-    entries = sorted(entries, cmp=entry_sort_cmp, reverse=True)
-    grouped_entries = groupby(entries, key=cmp_to_key(entry_sort_cmp))
+    entries = sorted(entries, key=ScoreboardEntrySortKey, reverse=True)
+    grouped_entries = groupby(entries, key=ScoreboardEntrySortKey)
     entries = [list(group) for _, group in grouped_entries]
 
     # Index entries by ranking
@@ -85,66 +58,83 @@ def rank_entries(entries):
     return rankings
 
 
-def entry_sort_cmp(entry1, entry2):
-    cmp_order = [
-        _cmp_entry_points,
-        _cmp_entry_num_voters,
-        _cmp_entry_highest_vote
-    ]
+class ScoreboardEntrySortKey:
 
-    for _cmp in cmp_order:
-        diff = _cmp(entry1, entry2)
-        if diff != 0:
-            return diff
+    def __init__(self, obj, **args):
+        self.obj = obj
 
-    return 0
+    def __lt__(self, other):
+        return self._ordered_cmp(other.obj) < 0
 
+    def __gt__(self, other):
+        return self._ordered_cmp(other.obj) > 0
 
-def _cmp_entry_points(entry1, entry2):
-    """ Compare two ScoreboardEntry objects based on the raw number of points.
-    """
-    if entry1.points > entry2.points:
-        return 1
-    elif entry1.points < entry2.points:
-        return -1
-    return 0
+    def __eq__(self, other):
+        return self._ordered_cmp(other.obj) == 0
 
+    def __le__(self, other):
+        return self._ordered_cmp(other.obj) <= 0
 
-def _cmp_entry_num_voters(entry1, entry2):
-    """ Compare two ScoreboardEntry objects based on the number of users who
-    voted for each.
-    """
-    if len(entry1.votes) > len(entry2.votes):
-        return 1
-    elif len(entry1.votes) < len(entry2.votes):
-        return -1
-    return 0
+    def __ge__(self, other):
+        return self._ordered_cmp(other.obj) >= 0
 
+    def __ne__(self, other):
+        return self._ordered_cmp(other.obj) != 0
 
-def _cmp_entry_highest_vote(entry1, entry2):
-    """ Compare two ScoreboardEntry objects based on the highest asymmetric
-    individual vote received.
-    """
-    entry1_votes = set([vote.votes[entry1.uri] for vote in entry1.votes])
-    entry2_votes = set([vote.votes[entry2.uri] for vote in entry2.votes])
+    def _ordered_cmp(self, other):
+        _cmp_order = [
+            self._cmp_entry_points,
+            self._cmp_entry_num_voters,
+            self._cmp_entry_highest_vote
+        ]
 
-    # Get sorted lists of asymmetric votes. We can't use set() for this as
-    # duplicates should be kept intact when doing the diff.
-    entry1_counter = Counter(entry1_votes)
-    entry1_counter.subtract(Counter(entry2_votes))
-    entry1_asym = sorted(list(entry1_counter.elements()), reverse=True)
+        for _cmp in _cmp_order:
+            diff = _cmp(other)
+            if diff != 0:
+                return diff
 
-    entry2_counter = Counter(entry2_votes)
-    entry2_counter.subtract(Counter(entry1_votes))
-    entry2_asym = sorted(list(entry2_counter.elements()), reverse=True)
+        return 0
 
-    if next(iter(entry1_asym), 0) > next(iter(entry2_asym), 0):
-        return 1
-    elif next(iter(entry1_asym), 0) < next(iter(entry2_asym), 0):
-        return -1
+    def _cmp_entry_points(self, other):
+        """ Compare two ScoreboardEntry objects based on the raw number of
+        points.
+        """
+        if self.obj.points > other.points:
+            return 1
+        elif self.obj.points < other.points:
+            return -1
+        return 0
 
-    return 0
+    def _cmp_entry_num_voters(self, other):
+        """ Compare two ScoreboardEntry objects based on the number of users
+        who voted for each.
+        """
+        if len(self.obj.votes) > len(other.votes):
+            return 1
+        elif len(self.obj.votes) < len(other.votes):
+            return -1
+        return 0
 
+    def _cmp_entry_highest_vote(self, other):
+        """ Compare two ScoreboardEntry objects based on the highest
+        individual asymmetric vote received.
+        """
+        self_votes = set([v.votes[self.obj.uri] for v in self.obj.votes])
+        other_votes = set([v.votes[other.uri] for v in other.votes])
 
-def entry_group_key(entry):
-    return (entry.points, len(entry.votes))
+        # Get sorted lists of asymmetric votes. We can't use set() for this as
+        # duplicates should be kept intact when doing the diff.
+        self_counter = Counter(self_votes)
+        self_counter.subtract(Counter(other_votes))
+        self_asym = sorted(list(self_counter.elements()), reverse=True)
+
+        other_counter = Counter(other_votes)
+        other_counter.subtract(Counter(self_votes))
+        other_asym = sorted(list(other_counter.elements()), reverse=True)
+
+        if next(iter(self_asym), 0) > next(iter(other_asym), 0):
+            return 1
+        elif next(iter(self_asym), 0) < next(iter(other_asym), 0):
+            return -1
+
+        return 0
