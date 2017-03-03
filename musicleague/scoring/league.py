@@ -15,7 +15,7 @@ def calculate_league_scoreboard(league):
     league.scoreboard = Scoreboard()
 
     # Create a RankingEntry for each song with corresponding User
-    entries = {user.id: RankingEntry(user=user)
+    entries = {user.id: RankingEntry(league=league, user=user)
                for user in league.users}
 
     # Get song entries for each entry

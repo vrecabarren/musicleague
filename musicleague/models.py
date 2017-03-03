@@ -121,8 +121,9 @@ class ScoreboardEntry(EmbeddedDocument):
 
 
 class RankingEntry(EmbeddedDocument):
-    user = ReferenceField(User)
     entries = ListField(EmbeddedDocumentField(ScoreboardEntry))
+    league = ReferenceField('League')
+    user = ReferenceField(User)
 
     @property
     def points(self):
