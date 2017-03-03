@@ -104,7 +104,6 @@ class RankingEntrySortKey(EntrySortKey):
         user received.
         """
         self_rankings, other_rankings = [], []
-
         for round in self.obj.league.submission_periods:
             for rank, rank_entries in round.scoreboard.rankings.iteritems():
                 for entry in rank_entries:
@@ -113,6 +112,8 @@ class RankingEntrySortKey(EntrySortKey):
                     elif entry.submission.user.id == other.user.id:
                         other_rankings.append(rank)
 
+        # Get sorted lists of asymmetric rankings. We can't use set() for this
+        # as duplicates should be kept intact when doing the diff.
         self_counter = Counter(self_rankings)
         self_counter.subtract(Counter(other_rankings))
         self_asym = sorted(list(self_counter.elements()), reverse=True)
