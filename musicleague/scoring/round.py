@@ -1,4 +1,5 @@
 from collections import Counter
+
 from itertools import groupby
 
 from musicleague.models import Scoreboard

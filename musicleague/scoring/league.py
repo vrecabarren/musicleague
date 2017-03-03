@@ -1,3 +1,5 @@
+from collections import Counter
+
 from itertools import groupby
 
 from musicleague.models import RankingEntry
@@ -60,7 +62,8 @@ class RankingEntrySortKey(EntrySortKey):
     def _ordered_cmp(self, other):
         _cmp_order = [
             self._cmp_entry_points,
-            self._cmp_entry_num_voters
+            self._cmp_entry_num_voters,
+            self._cmp_entry_highest_rank
         ]
 
         for _cmp in _cmp_order:
@@ -94,4 +97,33 @@ class RankingEntrySortKey(EntrySortKey):
             return 1
         elif len(self_voters) < len(other_voters):
             return -1
+        return 0
+
+    def _cmp_entry_highest_rank(self, other):
+        """ Compare two RankingEntry objects based on the highest rank each
+        user received.
+        """
+        self_rankings, other_rankings = [], []
+
+        for round in self.obj.league.submission_periods:
+            for rank, rank_entries in round.scoreboard.rankings.iteritems():
+                for entry in rank_entries:
+                    if entry.submission.user.id == self.obj.user.id:
+                        self_rankings.append(rank)
+                    elif entry.submission.user.id == other.user.id:
+                        other_rankings.append(rank)
+
+        self_counter = Counter(self_rankings)
+        self_counter.subtract(Counter(other_rankings))
+        self_asym = sorted(list(self_counter.elements()), reverse=True)
+
+        other_counter = Counter(other_rankings)
+        other_counter.subtract(Counter(self_rankings))
+        other_asym = sorted(list(other_counter.elements()), reverse=True)
+
+        if next(iter(self_asym), 0) > next(iter(other_asym), 0):
+            return 1
+        elif next(iter(self_asym), 0) < next(iter(other_asym), 0):
+            return -1
+
         return 0
