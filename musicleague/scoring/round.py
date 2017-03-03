@@ -119,8 +119,8 @@ class ScoreboardEntrySortKey:
         """ Compare two ScoreboardEntry objects based on the highest
         individual asymmetric vote received.
         """
-        self_votes = set([v.votes[self.obj.uri] for v in self.obj.votes])
-        other_votes = set([v.votes[other.uri] for v in other.votes])
+        self_votes = [v.votes[self.obj.uri] for v in self.obj.votes]
+        other_votes = [v.votes[other.uri] for v in other.votes]
 
         # Get sorted lists of asymmetric votes. We can't use set() for this as
         # duplicates should be kept intact when doing the diff.
