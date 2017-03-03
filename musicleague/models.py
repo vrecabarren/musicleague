@@ -120,6 +120,15 @@ class ScoreboardEntry(EmbeddedDocument):
         return sum([vote.votes.get(self.uri, 0) for vote in self.votes])
 
 
+class RankingEntry(EmbeddedDocument):
+    user = ReferenceField(User)
+    entries = ListField(EmbeddedDocumentField(ScoreboardEntry))
+
+    @property
+    def points(self):
+        return sum([entry.points for entry in self.entries])
+
+
 class Scoreboard(EmbeddedDocument):
     _rankings = DictField()
 
