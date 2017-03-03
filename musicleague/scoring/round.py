@@ -86,8 +86,8 @@ class ScoreboardEntrySortKey(EntrySortKey):
         return 0
 
     def _cmp_entry_num_voters(self, other):
-        """ Compare two ScoreboardEntry objects based on the number of users
-        who voted for each.
+        """ Compare two ScoreboardEntry objects based on the number of unique
+        users who voted for each.
         """
         if len(self.obj.votes) > len(other.votes):
             return 1

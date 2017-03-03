@@ -59,7 +59,8 @@ class RankingEntrySortKey(EntrySortKey):
 
     def _ordered_cmp(self, other):
         _cmp_order = [
-            self._cmp_entry_points
+            self._cmp_entry_points,
+            self._cmp_entry_num_voters
         ]
 
         for _cmp in _cmp_order:
@@ -76,5 +77,21 @@ class RankingEntrySortKey(EntrySortKey):
         if self.obj.points > other.points:
             return 1
         elif self.obj.points < other.points:
+            return -1
+        return 0
+
+    def _cmp_entry_num_voters(self, other):
+        """ Compare two RankingEntry objects based on the number of unique
+        users who voted for each.
+        """
+        self_voters = set(
+            [v.user.id for entry in self.obj.entries for v in entry.votes])
+
+        other_voters = set(
+            [v.user.id for entry in other.entries for v in entry.votes])
+
+        if len(self_voters) > len(other_voters):
+            return 1
+        elif len(self_voters) < len(other_voters):
             return -1
         return 0
