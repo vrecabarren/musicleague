@@ -117,10 +117,7 @@ class ScoreboardEntry(EmbeddedDocument):
 
     @property
     def points(self):
-        points = 0
-        for vote in self.votes:
-            points += vote.votes.get(self.uri, 0)
-        return points
+        return sum([vote.votes.get(self.uri, 0) for vote in self.votes])
 
 
 class Scoreboard(EmbeddedDocument):
