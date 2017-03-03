@@ -15,9 +15,11 @@ from musicleague.league import get_league
 from musicleague.league import remove_league
 from musicleague.league import remove_user
 from musicleague.notify.flash import flash_error
+from musicleague.routes.decorators import admin_required
 from musicleague.routes.decorators import league_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
+from musicleague.scoring.league import calculate_league_scoreboard
 from musicleague.submission import get_submission
 from musicleague.submission_period import create_submission_period
 from musicleague.submission_period import remove_submission_period
@@ -283,3 +285,13 @@ def view_league(league_id, **kwargs):
         'next_submission_due_date': next_submission_due_date,
         'next_vote_due_date': next_vote_due_date
     }
+
+
+@app.route(VIEW_LEAGUE_URL + 'score/')
+@login_required
+@admin_required
+@league_required
+def score_league(league_id, **kwargs):
+    league = kwargs.get('league')
+    league = calculate_league_scoreboard(league)
+    return str(len(league.scoreboard)), 200
