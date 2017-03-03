@@ -294,4 +294,6 @@ def view_league(league_id, **kwargs):
 def score_league(league_id, **kwargs):
     league = kwargs.get('league')
     league = calculate_league_scoreboard(league)
-    return str(len(league.scoreboard)), 200
+    ret = {rank: [entry.user.id for entry in entries]
+           for rank, entries in league.scoreboard.rankings.iteritems()}
+    return json.dumps(ret), 200
