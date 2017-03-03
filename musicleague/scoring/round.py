@@ -3,6 +3,7 @@ from itertools import groupby
 
 from musicleague.models import Scoreboard
 from musicleague.models import ScoreboardEntry
+from musicleague.scoring import EntrySortKey
 
 
 def calculate_round_scoreboard(round):
@@ -58,28 +59,7 @@ def rank_entries(entries):
     return rankings
 
 
-class ScoreboardEntrySortKey:
-
-    def __init__(self, obj, **args):
-        self.obj = obj
-
-    def __lt__(self, other):
-        return self._ordered_cmp(other.obj) < 0
-
-    def __gt__(self, other):
-        return self._ordered_cmp(other.obj) > 0
-
-    def __eq__(self, other):
-        return self._ordered_cmp(other.obj) == 0
-
-    def __le__(self, other):
-        return self._ordered_cmp(other.obj) <= 0
-
-    def __ge__(self, other):
-        return self._ordered_cmp(other.obj) >= 0
-
-    def __ne__(self, other):
-        return self._ordered_cmp(other.obj) != 0
+class ScoreboardEntrySortKey(EntrySortKey):
 
     def _ordered_cmp(self, other):
         _cmp_order = [
