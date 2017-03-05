@@ -30,6 +30,7 @@ from musicleague.user import get_user
 ADD_USER_FOR_LEAGUE_URL = '/l/<league_id>/users/add/'
 CREATE_LEAGUE_URL = '/l/create/'
 JOIN_LEAGUE_URL = '/l/<league_id>/join/'
+LEADERBOARD_URL = '/l/<league_id>/leaderboard/'
 MANAGE_LEAGUE_URL = '/l/<league_id>/manage/'
 REMOVE_LEAGUE_URL = '/l/<league_id>/remove/'
 REMOVE_SUBMISSION_URL = '/l/<league_id>/<submission_period_id>/<submission_id>/remove/'  # noqa
@@ -297,3 +298,12 @@ def score_league(league_id, **kwargs):
     ret = {rank: [entry.user.id for entry in entries]
            for rank, entries in league.scoreboard.rankings.iteritems()}
     return json.dumps(ret), 200
+
+
+@app.route(LEADERBOARD_URL)
+@templated('leaderboard/page.html')
+@login_required
+@league_required
+def view_leaderboard(league_id, **kwargs):
+    league = kwargs.get('league')
+    return {'user': g.user, 'league': league}

@@ -1,0 +1,124 @@
+@import url('/static/css/_navbar.css');
+@import url('https://fonts.googleapis.com/css?family=Nunito:400');
+
+@font-face {
+    font-family: 'Cubano';
+    src: url("/static/fonts/Cubano/cubano-regular-webfont.ttf");
+}
+
+/* REMOVE THE NAVBAR AND SPACING UP TOP */
+.navbar { display: none; margin: 0px; }
+.spacer { display: none; }
+
+body { font-family: 'Nunito', sans-serif; }
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+div, span {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Header image */
+#img-bar {
+    background: url("/static/images/ml_header06.jpg");
+    background-attachment: scroll;
+    background-position: 50% 40%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* League/Round title inside header image */
+#title-bar {
+    background: none;
+    color: #fff;
+    padding: 50px 0px;
+    text-align: center;
+}
+#title-bar .round-title,
+#title-bar .round-action {
+    display: inline-block;
+    font-family: 'Cubano', sans-serif;
+    font-size: 20px;
+    line-height: 24px;
+}
+#title-bar .round-title { color: #F8C62C; }
+#title-bar .league-title {
+    display: block;
+    font-family: 'Cubano', sans-serif;
+    font-size: 60px;
+    line-height: 72px;
+}
+
+/* Status Bar */
+#status-bar {
+    background-color: #02B8EF;
+    color: #fff;
+    font-family: 'Cubano', sans-serif;
+    font-size: 40px;
+    line-height: 48px;
+    margin-bottom: 50px;
+    padding: 50px;
+    text-align: center;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+.row .ranking-entry {
+    color: #02B8EF;
+    font-family: 'Cubano', sans-serif;
+}
+.row:nth-child(even) .ranking-entry {
+    background-color: #F1F1F1;
+    border-radius: 8px;
+}
+
+.row .ranking-entry .points-wrapper {
+    padding: 20px;
+    text-align: center;
+}
+
+.row .ranking-entry .points-wrapper .points {
+    font-size: 48px;
+    line-height: 52px;
+}
+
+.row .ranking-entry .name-wrapper {
+    border-left: 3px solid #02B8EF;
+    padding: 20px 10px 20px 40px;
+    text-align: left;
+}
+
+.row .ranking-entry .name-wrapper .name {
+    font-size: 32px;
+    line-height: 36px;
+}
+
+.row-height {
+  display: table;
+  table-layout: fixed;
+  height: 100%;
+  width: 100%;
+}
+.col-height {
+  display: table-cell;
+  float: none;
+  height: 100%;
+}
+.col-top {
+  vertical-align: top;
+}
+.col-middle {
+  vertical-align: middle;
+}
+.col-bottom {
+  vertical-align: bottom;
+}
