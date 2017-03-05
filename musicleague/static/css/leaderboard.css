@@ -51,7 +51,6 @@ div, span {
     font-family: 'Cubano', sans-serif;
     font-size: 48px;
     line-height: 52px;
-    vertical-align: middle;
 }
 
 #title-bar .top-rankings .name {
@@ -59,7 +58,6 @@ div, span {
     font-family: 'Cubano', sans-serif;
     font-size: 20px;
     line-height: 24px;
-    vertical-align: middle;
 }
 
 /* Status Bar */

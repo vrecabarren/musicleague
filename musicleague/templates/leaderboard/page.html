@@ -18,29 +18,59 @@
             <div class="row-fluid top-rankings">
                 <div class="row-height">
                     {% set top = league.scoreboard.top %}
-                    <div class="col-xs-4 vcenter col-height">
-                        <span class="rank first"></span>
-                        {% if top|length >= 1 %}
-                            {% set first = top[0] %}
-                            <span class="point-count">{{ first.points }}</span>
-                            <span class="name">{{ first.user.name }}</span>
-                        {% endif %}
+                    <div class="col-xs-12 col-md-4 vcenter">
+                        <div class="row-fluid">
+                            <div class="row-height">
+                                <div class="col-xs-2 col-sm-1 col-md-2 vcenter col-height text-left">
+                                    <span class="rank first"></span>
+                                </div>
+                                {% if top|length >= 1 %}
+                                    {% set first = top[0] %}
+                                    <div class="col-xs-3 col-sm-2 col-md-4 vcenter col-height">
+                                        <span class="point-count">{{ first.points }}</span>
+                                    </div>
+                                    <div class="col-xs-7 col-sm-9 col-md-6 vcenter col-height">
+                                        <span class="name">{{ first.user.name }}</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-xs-4 vcenter col-height">
-                        <span class="rank second"></span>
-                        {% if top|length >= 2 %}
-                            {% set second = top[1] %}
-                            <span class="point-count">{{ second.points }}</span>
-                            <span class="name">{{ second.user.name }}</span>
-                        {% endif %}
+                    <div class="col-xs-12 col-md-4 vcenter">
+                        <div class="row-fluid">
+                            <div class="row-height">
+                                <div class="col-xs-2 col-sm-1 col-md-2 vcenter col-height text-left">
+                                    <span class="rank second"></span>
+                                </div>
+                                {% if top|length >= 2 %}
+                                    {% set second = top[1] %}
+                                    <div class="col-xs-3 col-sm-2 col-md-4 vcenter col-height">
+                                        <span class="point-count">{{ second.points }}</span>
+                                    </div>
+                                    <div class="col-xs-7 col-sm-9 col-md-6 vcenter col-height">
+                                        <span class="name">{{ second.user.name }}</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-xs-4 vcenter col-height">
-                        <span class="rank third"></span>
-                        {% if top|length >= 3 %}
-                            {% set third = top[2] %}
-                            <span class="point-count">{{ third.points }}</span>
-                            <span class="name">{{ third.user.name }}</span>
-                        {% endif %}
+                    <div class="col-xs-12 col-md-4 vcenter">
+                        <div class="row-fluid">
+                            <div class="row-height">
+                                <div class="col-xs-2 col-sm-1 col-md-2 vcenter col-height text-left">
+                                    <span class="rank third"></span>
+                                </div>
+                                {% if top|length >= 3 %}
+                                    {% set third = top[2] %}
+                                    <div class="col-xs-3 col-sm-2 col-md-4 vcenter col-height">
+                                        <span class="point-count">{{ third.points }}</span>
+                                    </div>
+                                    <div class="col-xs-7 col-sm-9 col-md-6 vcenter col-height">
+                                        <span class="name">{{ third.user.name }}</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
