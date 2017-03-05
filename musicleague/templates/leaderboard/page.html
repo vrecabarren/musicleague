@@ -7,7 +7,20 @@
 {% endblock %}
 
 {% block title_bar_content %}
-<span class="league-title">{{ league.name }}</span>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <span class="league-title">{{ league.name }}</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="row-fluid">
+                <div id="mountMiniLeaderboard"></div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block status_bar_content %}
@@ -37,4 +50,9 @@
         {% endfor %}
     {% endfor %}
 </div>
+{% endblock %}
+
+{% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+<script type="text/babel" src="/static/js/leaderboard.jsx"></script>
 {% endblock %}
