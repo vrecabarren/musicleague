@@ -5,6 +5,7 @@ from itertools import groupby
 from musicleague.models import RankingEntry
 from musicleague.models import Scoreboard
 from musicleague.scoring import EntrySortKey
+from musicleague.scoring.round import calculate_round_scoreboard
 
 
 def calculate_league_scoreboard(league):
@@ -22,6 +23,11 @@ def calculate_league_scoreboard(league):
 
     # Get song entries for each entry
     for round in league.submission_periods:
+
+        # Ensure each round has had its scoreboard calculated
+        if not round.scoreboard:
+            round = calculate_round_scoreboard(round)
+
         for entry_list in round.scoreboard.rankings.values():
             for entry in entry_list:
                 user_id = entry.submission.user.id
