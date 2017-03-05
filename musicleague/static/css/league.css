@@ -44,6 +44,36 @@ body { font-family: 'Nunito', sans-serif; }
     line-height: 19px;
     margin: 50px 0px;
 }
+#title-bar .top-rankings {
+    background-color: rgba(1, 36, 154, 0.85);
+    border-radius: 8px;
+    margin-bottom: 30px;
+    padding: 20px;
+    text-align: left;
+}
+#title-bar .top-rankings .rank {
+    display: inline-block;
+    height: 25px;
+    vertical-align: middle;
+    width: 25px;
+}
+#title-bar .top-rankings .rank.first { background: url('/static/icons/01.svg'); }
+#title-bar .top-rankings .rank.second { background: url('/static/icons/02.svg'); }
+#title-bar .top-rankings .rank.third { background: url('/static/icons/03.svg'); }
+
+#title-bar .top-rankings .point-count {
+    color: #F8C62C;
+    font-family: 'Cubano', sans-serif;
+    font-size: 48px;
+    line-height: 52px;
+}
+
+#title-bar .top-rankings .name {
+    color: #fff;
+    font-family: 'Cubano', sans-serif;
+    font-size: 20px;
+    line-height: 24px;
+}
 #title-bar .members {
     font-size: 18px;
     line-height: 40px;
@@ -57,7 +87,7 @@ body { font-family: 'Nunito', sans-serif; }
 #title-bar .members img:last-of-type { margin-right: 0px !important; }
 
 #title-bar .members #member-count { display: inline-block; margin: 0px 10px; }
-#title-bar .members #member-count #members-toggle { margin-left: 10px; }
+#title-bar .members #member-count #members-toggle { cursor: pointer; margin-left: 10px; }
 
 #title-bar .members #members-collapse #members-container {
     background-color: rgba(0, 37, 154, 0.85);
@@ -247,7 +277,7 @@ body { font-family: 'Nunito', sans-serif; }
 }
 #members-popover .member img {
     background: #fff;
-    border: 1px solid #fff;
+    /*border: 2px solid #fff;*/
     display: inline-block;
     height: 50px;
     width: 50px;
@@ -287,3 +317,24 @@ body { font-family: 'Nunito', sans-serif; }
 }
 #progress-popover #acted { background: #F8C62C }
 #progress-popover #waiting { background: rgba(0,37,154,.85) }
+
+.row-height {
+  display: table;
+  table-layout: fixed;
+  height: 100%;
+  width: 100%;
+}
+.col-height {
+  display: table-cell;
+  float: none;
+  height: 100%;
+}
+.col-top {
+  vertical-align: top;
+}
+.col-middle {
+  vertical-align: middle;
+}
+.col-bottom {
+  vertical-align: bottom;
+}
