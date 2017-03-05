@@ -99,23 +99,25 @@
 
 {% block page_content %}
 <div class="container">
-    {% for ranking, ranking_entries in league.scoreboard.rankings.iteritems() %}
-        {% for entry in ranking_entries %}
-        <div class="row">
-            <div class="col-xs-12 col-sm-10 col-sm-offset-1">
-                <div class="row-fluid ranking-entry">
-                    <div class="row-height">
-                        <div class="col-xs-4 col-sm-3 col-md-2 points-wrapper vcenter col-height">
-                            <span class="points">{{ "%02d" % entry.points }}</span>
-                        </div>
-                        <div class="col-xs-8 col-sm-9 col-md-10 name-wrapper vcenter col-height">
-                            <span class="name">{{ entry.user.name }}</span>
+    {% if league.scoreboard %}
+        {% for ranking, ranking_entries in league.scoreboard.rankings.iteritems() %}
+            {% for entry in ranking_entries %}
+            <div class="row">
+                <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+                    <div class="row-fluid ranking-entry">
+                        <div class="row-height">
+                            <div class="col-xs-4 col-sm-3 col-md-2 points-wrapper vcenter col-height">
+                                <span class="points">{{ "%02d" % entry.points }}</span>
+                            </div>
+                            <div class="col-xs-8 col-sm-9 col-md-10 name-wrapper vcenter col-height">
+                                <span class="name">{{ entry.user.name }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
+    {% endif %}
 </div>
 {% endblock %}
