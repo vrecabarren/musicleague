@@ -7,7 +7,46 @@
 {% endblock %}
 
 {% block title_bar_content %}
-<span class="league-title">{{ league.name }}</span>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <span class="league-title">{{ league.name }}</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+            <div class="row-fluid top-rankings">
+                <div class="row-height">
+                    {% set top = league.scoreboard.top %}
+                    <div class="col-xs-4 vcenter col-height">
+                        <span class="rank first"></span>
+                        {% if top|length >= 1 %}
+                            {% set first = top[0] %}
+                            <span class="point-count">{{ first.points }}</span>
+                            <span class="name">{{ first.user.name }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="col-xs-4 vcenter col-height">
+                        <span class="rank second"></span>
+                        {% if top|length >= 2 %}
+                            {% set second = top[1] %}
+                            <span class="point-count">{{ second.points }}</span>
+                            <span class="name">{{ second.user.name }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="col-xs-4 vcenter col-height">
+                        <span class="rank third"></span>
+                        {% if top|length >= 3 %}
+                            {% set third = top[2] %}
+                            <span class="point-count">{{ third.points }}</span>
+                            <span class="name">{{ third.user.name }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block status_bar_content %}

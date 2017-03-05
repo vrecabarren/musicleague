@@ -23,19 +23,43 @@ div, span {
     padding: 50px 0px;
     text-align: center;
 }
-#title-bar .round-title,
-#title-bar .round-action {
-    display: inline-block;
-    font-family: 'Cubano', sans-serif;
-    font-size: 20px;
-    line-height: 24px;
-}
-#title-bar .round-title { color: #F8C62C; }
 #title-bar .league-title {
     display: block;
     font-family: 'Cubano', sans-serif;
     font-size: 60px;
     line-height: 72px;
+}
+#title-bar .top-rankings {
+    background-color: rgba(1, 36, 154, 0.85);
+    border-radius: 8px;
+    margin-top: 25px;
+    padding: 20px;
+    text-align: left;
+}
+#title-bar .top-rankings .rank {
+    display: inline-block;
+    height: 25px;
+    vertical-align: middle;
+    width: 25px;
+}
+#title-bar .top-rankings .rank.first { background: url('/static/icons/01.svg'); }
+#title-bar .top-rankings .rank.second { background: url('/static/icons/02.svg'); }
+#title-bar .top-rankings .rank.third { background: url('/static/icons/03.svg'); }
+
+#title-bar .top-rankings .point-count {
+    color: #F8C62C;
+    font-family: 'Cubano', sans-serif;
+    font-size: 48px;
+    line-height: 52px;
+    vertical-align: middle;
+}
+
+#title-bar .top-rankings .name {
+    color: #fff;
+    font-family: 'Cubano', sans-serif;
+    font-size: 20px;
+    line-height: 24px;
+    vertical-align: middle;
 }
 
 /* Status Bar */

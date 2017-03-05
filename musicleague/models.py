@@ -141,6 +141,27 @@ class Scoreboard(EmbeddedDocument):
             rankings[key] = self._rankings[str(key)]
         return rankings
 
+    @property
+    def top(self):
+        top = []
+
+        if 1 in self.rankings:
+            top.extend(self.rankings[1])
+            if len(top) >= 3:
+                return top[:3]
+
+        if 2 in self.rankings:
+            top.extend(self.rankings[2])
+            if len(top) >= 3:
+                return top[:3]
+
+        if 3 in self.rankings:
+            top.extend(self.rankings[3])
+            if len(top) >= 3:
+                return top[:3]
+
+        return top
+
 
 class SubmissionPeriod(Document):
     created = DateTimeField()
