@@ -1,37 +1,3 @@
-@import url('/static/css/_navbar.css');
-@import url('https://fonts.googleapis.com/css?family=Nunito:400,900');
-
-@font-face {
-    font-family: 'Cubano';
-    src: url("/static/fonts/Cubano/cubano-regular-webfont.ttf");
-}
-
-/* REMOVE THE NAVBAR AND SPACING UP TOP */
-.navbar { display: none; margin: 0px; }
-.spacer { display: none; }
-
-body { font-family: 'Nunito', sans-serif; }
-
-.vcenter {
-    display: inline-block;
-    vertical-align: middle;
-    float: none;
-}
-
-#img-bar {
-    background: url("/static/images/ml_header06.jpg");
-    background-attachment: scroll;
-    background-position: 50% 40%;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-#title-bar {
-    background: none;
-    color: #fff;
-    padding: 50px 0px;
-    text-align: center;
-}
 #title-bar .league-title {
     display: block;
     font-family: 'Cubano', sans-serif;
@@ -112,14 +78,14 @@ body { font-family: 'Nunito', sans-serif; }
     padding: 25px 0px;
 }
 
-#current-round-bar {
+#status-bar {
     background-color: #02B8EF;
     color: #fff;
     margin-bottom: 50px;
     padding: 50px;
     width: 100%;
 }
-#current-round-bar .call-for-action {
+#status-bar .call-for-action {
     color: #fff;
     display: block;
     font-family: 'Cubano', sans-serif;
@@ -127,27 +93,27 @@ body { font-family: 'Nunito', sans-serif; }
     line-height: 29px;
     margin-bottom: 25px;
 }
-#current-round-bar .round-bar .round-status-icon.current { background: url("/static/icons/swords_white.svg"); }
-#current-round-bar .round-bar .round-title {
+#status-bar .round-bar .round-status-icon.current { background: url("/static/icons/swords_white.svg"); }
+#status-bar .round-bar .round-title {
     color: #fff;
     font-size: 18px;
     line-height: 22px;
 }
-#current-round-bar .round-bar .status-text { color: #fff; margin: 15px 0px; }
+#status-bar .round-bar .status-text { color: #fff; margin: 15px 0px; }
 
-#current-round-bar .action-progress { display: block; }
+#status-bar .action-progress { display: block; }
 
-#current-round-bar .round-bar .action-required { color: #fff; }
-#current-round-bar .round-bar .action-link .action-button.change { background: url("/static/icons/change_white.svg"); }
-#current-round-bar .round-bar .action-link .action-button.clock { background: url("/static/icons/clock_gray.svg"); }
-#current-round-bar .round-bar .action-link .action-button.playlist { background: url("/static/icons/playlist_icon_white.svg"); }
-#current-round-bar .round-bar .action-link .action-button.submit { background: url("/static/icons/submit_white.svg"); width: 79px; }
-#current-round-bar .round-bar .action-link .action-button.vote { background: url("/static/icons/vote_white.svg"); }
-#current-round-bar .round-bar .action-text { color: #fff; }
+#status-bar .round-bar .action-required { color: #fff; }
+#status-bar .round-bar .action-link .action-button.change { background: url("/static/icons/change_white.svg"); }
+#status-bar .round-bar .action-link .action-button.clock { background: url("/static/icons/clock_gray.svg"); }
+#status-bar .round-bar .action-link .action-button.playlist { background: url("/static/icons/playlist_icon_white.svg"); }
+#status-bar .round-bar .action-link .action-button.submit { background: url("/static/icons/submit_white.svg"); width: 79px; }
+#status-bar .round-bar .action-link .action-button.vote { background: url("/static/icons/vote_white.svg"); }
+#status-bar .round-bar .action-text { color: #fff; }
 
-#current-round-bar .round-bar.current .right-action { border-left: 3px solid #FFF; }
+#status-bar .round-bar.current .right-action { border-left: 3px solid #FFF; }
 
-#current-round-bar .round-divider { display: none; }
+#status-bar .round-divider { display: none; }
 
 .round-bar {}
 .round-bar .round-status-icon {

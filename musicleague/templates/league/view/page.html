@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "frame.html" %}
 
 {% block title %}Music League | {{ league.name }}{% endblock %}
 
@@ -6,9 +6,225 @@
 <link rel="stylesheet" href="/static/css/league.css">
 {% endblock %}
 
-{% block content %}
+{% block title_bar_content %}
+<span class="league-title">{{ league.name }}</span>
+<span class="league-created">Public League Created {{ moment(league.created).format('MM.DD.YY') }}</span>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 text-left text-center-xs">
+            <div class="row-fluid">
+                <div class="col-xs-12">
+                    <span class="leaderboard-label">Leaderboard:</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="row-fluid top-rankings">
+                <div class="row-height">
+                    {% set top = league.scoreboard.top %}
+                    <div class="col-xs-12 col-md-4 vcenter">
+                        <div class="row-fluid">
+                            <div class="row-height">
+                                <div class="col-xs-2 col-sm-1 col-md-2 vcenter col-height text-left">
+                                    <span class="rank first"></span>
+                                </div>
+                                {% if top|length >= 1 %}
+                                    {% set first = top[0] %}
+                                    <div class="col-xs-3 col-sm-2 col-md-4 vcenter col-height">
+                                        <span class="point-count">{{ "%02d" % first.points }}</span>
+                                    </div>
+                                    <div class="col-xs-7 col-sm-9 col-md-6 vcenter col-height">
+                                        <span class="name">{{ first.user.name }}</span>
+                                    </div>
+                                {% else %}
+                                <div class="col-xs-10 col-sm-11 col-md-10 vcenter col-height">
+                                    <span class="point-count">??</span>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-4 vcenter">
+                        <div class="row-fluid">
+                            <div class="row-height">
+                                <div class="col-xs-2 col-sm-1 col-md-2 vcenter col-height text-left">
+                                    <span class="rank second"></span>
+                                </div>
+                                {% if top|length >= 2 %}
+                                    {% set second = top[1] %}
+                                    <div class="col-xs-3 col-sm-2 col-md-4 vcenter col-height">
+                                        <span class="point-count">{{ "%02d" % second.points }}</span>
+                                    </div>
+                                    <div class="col-xs-7 col-sm-9 col-md-6 vcenter col-height">
+                                        <span class="name">{{ second.user.name }}</span>
+                                    </div>
+                                {% else %}
+                                    <div class="col-xs-10 col-sm-11 col-md-10 vcenter col-height">
+                                        <span class="point-count">??</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-4 vcenter">
+                        <div class="row-fluid">
+                            <div class="row-height">
+                                <div class="col-xs-2 col-sm-1 col-md-2 vcenter col-height text-left">
+                                    <span class="rank third"></span>
+                                </div>
+                                {% if top|length >= 3 %}
+                                    {% set third = top[2] %}
+                                    <div class="col-xs-3 col-sm-2 col-md-4 vcenter col-height">
+                                        <span class="point-count">{{ "%02d" % third.points }}</span>
+                                    </div>
+                                    <div class="col-xs-7 col-sm-9 col-md-6 vcenter col-height">
+                                        <span class="name">{{ third.user.name }}</span>
+                                    </div>
+                                {% else %}
+                                    <div class="col-xs-10 col-sm-11 col-md-10 vcenter col-height">
+                                        <span class="point-count">??</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 text-right text-center-xs">
+            <div class="row-fluid">
+                <div class="col-xs-12">
+                    <a href="{{ url_for('view_leaderboard', league_id=league.id) }}" class="leaderboard-link">See All Players&nbsp;&gt;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-md-6 col-md-offset-3">
+            <div class="members">
+                {% for member in league.users %}
+                <img src="{{ member.image_url }}" alt="{{ member.name }}" class="img img-circle">
+                {% endfor %}
+                <span id="member-count">{{ league.users|length }} Members
+                    <span id="members-toggle">
+                        <img src="/static/icons/expand_icon.svg" alt="" class="account-icon">
+                    </span>
+                </span>
+            </div><!-- #members -->
+        </div>
+    </div><!-- .row -->
+</div><!-- .container-fluid -->
+{% endblock %}
 
-{% include "league/view/header.html" %}
+{% block status_bar_content %}
+    {% if league.current_submission_period %}
+    {% set current = league.current_submission_period %}
+    <div class="container">
+        <div class="row">
+            <span class="call-for-action text-center-xs">
+                {% if current.accepting_submissions %}
+                Now Accepting Submissions!
+                {% else %}
+                Now Accepting Votes!
+                {% endif %}
+            </span>
+        </div>
+
+        {% set round = league.current_submission_period %}
+        {% include "league/view/_round.html" %}
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block page_content %}
+<div id="members-popover-wrapper" class="popover-content-wrapper">
+    <div id="members-popover" class="container-fluid">
+        {% for row in league.users|batch(3) %}
+            <div class="row">
+                {% for member in row %}
+                <div class="col-xs-12 col-sm-6 col-lg-4 member text-left">
+                    <a href="{{ url_for('view_user', user_id=member.id) }}" title="{{ member.name }}">
+                        <img src="{{ member.image_url }}" alt="" class="img img-circle">
+                        {% if league.has_owner(member) %}
+                        <span class="owner-star"></span>
+                        {% endif %}
+                        <span class="member-name">{{ member.name }}</span>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div id="progress-popover-wrapper" class="popover-content-wrapper">
+    <div id="progress-popover" class="hidden-xs hidden-sm" style="display: table; width: 100%;">
+        <div id="acted" style="display: table-cell; width: 50%;">
+            {% set round = league.current_submission_period %}
+            {% if round and round.accepting_submissions %}
+            <span class="progress-title">Submitted...</span>
+                {% for user in round.have_submitted %}
+                <span class="member-name">{{ user.name }}</span>
+                {% endfor %}
+            {% elif round and round.accepting_votes %}
+            <span class="progress-title">Voted...</span>
+                {% for user in round.have_voted %}
+                <span class="member-name">{{ user.name }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div id="waiting" style="display: table-cell; width: 50%;">
+            <span class="progress-title">Still Waiting On...</span>
+            {% set round = league.current_submission_period %}
+            {% if round and round.accepting_submissions %}
+                {% for user in round.have_not_submitted %}
+                <span class="member-name">{{ user.name }}</span>
+                {% endfor %}
+            {% elif round and round.accepting_votes %}
+                {% for user in round.have_not_voted %}
+                <span class="member-name">{{ user.name }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div id="progress-popover" class="container-fluid visible-xs visible-sm">
+        <div class="row">
+            <div id="acted" class="col-xs-12 col-md-6">
+                {% set round = league.current_submission_period %}
+                {% if round and round.accepting_submissions %}
+                <span class="progress-title">Submitted...</span>
+                    {% for user in round.have_submitted %}
+                    <span class="member-name">{{ user.name }}</span>
+                    {% endfor %}
+                {% elif round and round.accepting_votes %}
+                <span class="progress-title">Voted...</span>
+                    {% for user in round.have_voted %}
+                    <span class="member-name">{{ user.name }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div id="waiting" class="col-xs-12 col-md-6">
+                <span class="progress-title">Still Waiting On...</span>
+                {% set round = league.current_submission_period %}
+                {% if round and round.accepting_submissions %}
+                    {% for user in round.have_not_submitted %}
+                    <span class="member-name">{{ user.name }}</span>
+                    {% endfor %}
+                {% elif round and round.accepting_votes %}
+                    {% for user in round.have_not_voted %}
+                    <span class="member-name">{{ user.name }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
 
 <div style="padding: 50px;">
     <div class="container">

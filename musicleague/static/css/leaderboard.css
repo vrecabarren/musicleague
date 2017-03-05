@@ -7,32 +7,23 @@ div, span {
     user-select: none;
 }
 
-/* Header image */
-#img-bar {
-    background: url("/static/images/ml_header06.jpg");
-    background-attachment: scroll;
-    background-position: 50% 40%;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-/* League/Round title inside header image */
-#title-bar {
-    background: none;
+#title-bar .leaderboard-label {
     color: #fff;
-    padding: 50px 0px;
-    text-align: center;
+    font-family: 'Cubano', sans-serif;
+    font-size: 18px;
+    line-height: 22px;
 }
 #title-bar .league-title {
     display: block;
     font-family: 'Cubano', sans-serif;
     font-size: 60px;
     line-height: 72px;
+    margin-bottom: 20px;
 }
 #title-bar .top-rankings {
     background-color: rgba(1, 36, 154, 0.85);
     border-radius: 8px;
-    margin-top: 25px;
+    margin-bottom: 30px;
     padding: 20px 0px;
     text-align: left;
 }
