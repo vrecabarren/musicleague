@@ -42,13 +42,24 @@ body { font-family: 'Nunito', sans-serif; }
     display: block;
     font-size: 18px;
     line-height: 19px;
-    margin: 50px 0px;
+    margin: 10px 0px 30px 0px;
+}
+#title-bar .leaderboard-label {
+    color: #fff;
+    font-family: 'Cubano', sans-serif;
+    font-size: 18px;
+    line-height: 22px;
+}
+#title-bar .leaderboard-link {
+    color: #F8C62C;
+    font-family: 'Cubano', sans-serif;
+    font-size: 18px;
+    line-height: 22px;
 }
 #title-bar .top-rankings {
     background-color: rgba(1, 36, 154, 0.85);
     border-radius: 8px;
-    margin-bottom: 30px;
-    padding: 20px;
+    padding: 20px 0px;
     text-align: left;
 }
 #title-bar .top-rankings .rank {
@@ -77,6 +88,7 @@ body { font-family: 'Nunito', sans-serif; }
 #title-bar .members {
     font-size: 18px;
     line-height: 40px;
+    margin-top: 30px;
 }
 #title-bar .members img {
     height: 40px;
