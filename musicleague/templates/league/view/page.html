@@ -11,7 +11,7 @@
 <span class="league-created">Public League Created {{ moment(league.created).format('MM.DD.YY') }}</span>
 <div class="container">
     <div class="row">
-        <div class="col-xs-12 text-left text-center-xs">
+        <div class="col-xs-12 text-left">
             <div class="row-fluid">
                 <div class="col-xs-12">
                     <span class="leaderboard-label">Leaderboard:</span>
@@ -95,7 +95,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-12 text-right text-center-xs">
+        <div class="col-xs-12 text-right">
             <div class="row-fluid">
                 <div class="col-xs-12">
                     <a href="{{ url_for('view_leaderboard', league_id=league.id) }}" class="leaderboard-link">See All Players&nbsp;&gt;</a>
