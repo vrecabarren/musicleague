@@ -27,11 +27,15 @@
                                 {% if top|length >= 1 %}
                                     {% set first = top[0] %}
                                     <div class="col-xs-3 col-sm-2 col-md-4 vcenter col-height">
-                                        <span class="point-count">{{ first.points }}</span>
+                                        <span class="point-count">{{ "%02d" % first.points }}</span>
                                     </div>
                                     <div class="col-xs-7 col-sm-9 col-md-6 vcenter col-height">
                                         <span class="name">{{ first.user.name }}</span>
                                     </div>
+                                {% else %}
+                                <div class="col-xs-10 col-sm-11 col-md-10 vcenter col-height">
+                                    <span class="point-count">??</span>
+                                </div>
                                 {% endif %}
                             </div>
                         </div>
@@ -45,10 +49,14 @@
                                 {% if top|length >= 2 %}
                                     {% set second = top[1] %}
                                     <div class="col-xs-3 col-sm-2 col-md-4 vcenter col-height">
-                                        <span class="point-count">{{ second.points }}</span>
+                                        <span class="point-count">{{ "%02d" % second.points }}</span>
                                     </div>
                                     <div class="col-xs-7 col-sm-9 col-md-6 vcenter col-height">
                                         <span class="name">{{ second.user.name }}</span>
+                                    </div>
+                                {% else %}
+                                    <div class="col-xs-10 col-sm-11 col-md-10 vcenter col-height">
+                                        <span class="point-count">??</span>
                                     </div>
                                 {% endif %}
                             </div>
@@ -63,10 +71,14 @@
                                 {% if top|length >= 3 %}
                                     {% set third = top[2] %}
                                     <div class="col-xs-3 col-sm-2 col-md-4 vcenter col-height">
-                                        <span class="point-count">{{ third.points }}</span>
+                                        <span class="point-count">{{ "%02d" % third.points }}</span>
                                     </div>
                                     <div class="col-xs-7 col-sm-9 col-md-6 vcenter col-height">
                                         <span class="name">{{ third.user.name }}</span>
+                                    </div>
+                                {% else %}
+                                    <div class="col-xs-10 col-sm-11 col-md-10 vcenter col-height">
+                                        <span class="point-count">??</span>
                                     </div>
                                 {% endif %}
                             </div>
@@ -94,7 +106,7 @@
                 <div class="row-fluid ranking-entry">
                     <div class="row-height">
                         <div class="col-xs-4 col-sm-3 col-md-2 points-wrapper vcenter col-height">
-                            <span class="points">{{ entry.points }}</span>
+                            <span class="points">{{ "%02d" % entry.points }}</span>
                         </div>
                         <div class="col-xs-8 col-sm-9 col-md-10 name-wrapper vcenter col-height">
                             <span class="name">{{ entry.user.name }}</span>
