@@ -201,7 +201,7 @@ var SongList = function (_React$Component4) {
                                 { className: "col-md-4 vcenter" },
                                 React.createElement(
                                     "span",
-                                    { id: "pasteDirective" },
+                                    null,
                                     "Choose A Song And Add Points To Begin!"
                                 )
                             ),

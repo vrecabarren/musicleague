@@ -112,7 +112,7 @@ class SongList extends React.Component {
                     <div className="container">
                         <div className="row">
                             <div className="col-md-4 vcenter">
-                                <span id="pasteDirective">Choose A Song And Add Points To Begin!</span>
+                                <span>Choose A Song And Add Points To Begin!</span>
                             </div>
                             <div className="col-md-4 vcenter">
                                 <span className="progressIndicator">
