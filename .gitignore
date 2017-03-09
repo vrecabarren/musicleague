@@ -5,3 +5,4 @@ settingslocal.py
 /.env
 /.coverage
 .DS_Store
+/node_modules
