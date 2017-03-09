@@ -78,6 +78,7 @@ def vote(league_id, submission_period_id):
     except Exception:
         app.logger.exception("Failed to load JSON from form with votes: %s",
                              request.form.get('votes'))
+        return 'There was an error processing your votes', 500
 
     # Remove all unnecessary zero-values
     votes = {k: v for k, v in votes.iteritems() if v}
