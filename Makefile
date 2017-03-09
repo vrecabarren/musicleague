@@ -6,6 +6,7 @@ cleandb:
 install:
 	pip install -r requirements_dev.txt
 	pip install -r requirements.txt
+	npm install
 
 lint:
 	flake8 musicleague app.py --ignore=E731
