@@ -72,7 +72,12 @@ def vote(league_id, submission_period_id):
     if not submission_period.league.has_user(g.user):
         return "Not a member of this league", httplib.UNAUTHORIZED
 
-    votes = json.loads(request.form.get('votes'))
+    try:
+        votes = json.loads(request.form.get('votes'))
+
+    except Exception:
+        app.logger.exception("Failed to load JSON from form with votes: %s",
+                             request.form.get('votes'))
 
     # Remove all unnecessary zero-values
     votes = {k: v for k, v in votes.iteritems() if v}
