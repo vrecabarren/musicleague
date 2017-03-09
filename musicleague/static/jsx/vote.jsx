@@ -182,6 +182,8 @@ class SongList extends React.Component {
 }
 
 ReactDOM.render(
-    <SongList uris={["spotify:track:429EttO8gs0bDo2SQfUNSm", "spotify:track:5Ykzu4eg5UEVJP3LCoxgpF", "spotify:track:6DXFVsLcEvOTSrkG9G1Cb1", "spotify:track:6GyFP1nfCDB8lbD2bG0Hq9", "spotify:track:0x4rW5jv6fkKweBgjE5O8F"]} maxDownVotes={5} maxUpVotes={10}/>,
-    document.getElementById('songControlMount')
+    <SongList
+        uris={["spotify:track:429EttO8gs0bDo2SQfUNSm", "spotify:track:5Ykzu4eg5UEVJP3LCoxgpF", "spotify:track:6DXFVsLcEvOTSrkG9G1Cb1", "spotify:track:6GyFP1nfCDB8lbD2bG0Hq9", "spotify:track:0x4rW5jv6fkKweBgjE5O8F"]}
+        maxDownVotes={5} maxUpVotes={10}/>,
+    document.getElementById('voteFormMount')
 );
