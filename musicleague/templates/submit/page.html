@@ -12,26 +12,25 @@
 <span class="league-title">{{ league.name }}</span>
 {% endblock %}
 
-{% block status_bar_content %}
+{% block page_content %}
 <form method="post">
-    <div class="container">
-        <div class="row">
-            <div class="hidden-xs col-sm-4 col-md-4 vcenter text-center">
-                <span id="paste-directive">Paste A Link Below And Tap “Find It” To Begin!</span>
-            </div><!--
-            --><div class="col-xs-6 col-sm-3 col-md-4 vcenter text-center">
-                <span id="progress"><span id="num-selected">00</span> of {{ "%02d" % league.preferences.track_count }}</span>
-                <br>
-                <span><span class="hidden-xs">Songs </span>Selected</span>
-            </div><!--
-            --><div class="col-xs-6 col-sm-5 col-md-4 vcenter text-center disabled" id="submit-songs-btn-wrapper">
-                <button type="submit" id="submit-songs-btn" class="btn btn-lg disabled" disabled>Submit<span class="hidden-xs"> Songs</span>!</button>
+    <div id="status-bar">
+        <div class="container">
+            <div class="row">
+                <div class="hidden-xs col-sm-4 col-md-4 vcenter text-center">
+                    <span id="paste-directive">Paste A Link Below And Tap “Find It” To Begin!</span>
+                </div><!--
+                --><div class="col-xs-6 col-sm-3 col-md-4 vcenter text-center">
+                    <span id="progress"><span id="num-selected">00</span> of {{ "%02d" % league.preferences.track_count }}</span>
+                    <br>
+                    <span><span class="hidden-xs">Songs </span>Selected</span>
+                </div><!--
+                --><div class="col-xs-6 col-sm-5 col-md-4 vcenter text-center disabled" id="submit-songs-btn-wrapper">
+                    <button type="submit" id="submit-songs-btn" class="btn btn-lg disabled" disabled>Submit<span class="hidden-xs"> Songs</span>!</button>
+                </div>
             </div>
         </div>
     </div>
-{% endblock %}
-
-{% block page_content %}
     <div class="container">
         {% if previous_tracks %}
             {% set tracks = previous_tracks %}

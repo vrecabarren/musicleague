@@ -12,26 +12,26 @@
 <span class="league-title">{{ league.name }}</span>
 {% endblock %}
 
-{% block status_bar_content %}
+{% block page_content %}
 <form method="post">
-    <div class="container">
-        <div class="row">
-            <div class="hidden-xs col-sm-4 col-md-4 vcenter text-center">
-                <span id="paste-directive">Choose A Song And Add Points To Begin!</span>
-            </div><!--
-            --><div class="col-xs-6 col-sm-3 col-md-4 vcenter text-center">
-                <span id="progress"><span id="num-spent">00</span> of <span id="max-votes">{{ "%02d" % league.preferences.point_bank_size }}</span></span>
-                <br>
-                <span><span class="hidden-xs">Points </span>Spent</span>
-            </div><!--
-            --><div class="col-xs-6 col-sm-5 col-md-4 vcenter text-center disabled" id="submit-votes-btn-wrapper">
-                <button type="submit" id="submit-votes-btn" class="btn btn-lg disabled" disabled>Submit<span class="hidden-xs"> Votes</span>!</button>
+    <div id="status-bar">
+        <div class="container">
+            <div class="row">
+                <div class="hidden-xs col-sm-4 col-md-4 vcenter text-center">
+                    <span id="paste-directive">Choose A Song And Add Points To Begin!</span>
+                </div><!--
+                --><div class="col-xs-6 col-sm-3 col-md-4 vcenter text-center">
+                    <span id="progress"><span id="num-spent">00</span> of <span id="max-votes">{{ "%02d" % league.preferences.point_bank_size }}</span></span>
+                    <br>
+                    <span><span class="hidden-xs">Points </span>Spent</span>
+                </div><!--
+                --><div class="col-xs-6 col-sm-5 col-md-4 vcenter text-center disabled" id="submit-votes-btn-wrapper">
+                    <button type="submit" id="submit-votes-btn" class="btn btn-lg disabled" disabled>Submit<span class="hidden-xs"> Votes</span>!</button>
+                </div>
             </div>
         </div>
     </div>
-{% endblock %}
 
-{% block page_content %}
     <div class="container">
         {% for uri, song in tracks_by_uri.iteritems() %}
         <div class="song row" data-uri="{{ uri }}" {% if my_vote and uri in my_vote.votes %}data-votes="{{ my_vote.votes[uri] }}"{% else %}data-votes="0"{% endif %}>
