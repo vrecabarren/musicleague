@@ -75,7 +75,7 @@ def submit(league_id, submission_period_id):
         tracks = json.loads(request.form.get('songs'))
     except Exception:
         app.logger.exception("Failed to load JSON from form with submit: %s",
-                             request.form.get('songs'))
+                             request.form)
         return 'There was an error processing your submission', 500
 
     app.logger.warning(tracks)
