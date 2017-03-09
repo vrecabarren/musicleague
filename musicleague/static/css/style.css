@@ -148,6 +148,21 @@ body {
     width: 32px;
 }
 
+#img-bar {
+    background: url("/static/images/ml_header06.jpg");
+    background-attachment: scroll;
+    background-position: 50% 40%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#title-bar {
+    background: none;
+    color: #fff;
+    padding: 50px 0px;
+    text-align: center;
+}
+
 .vcenter {
     display: inline-block;
     vertical-align: middle;

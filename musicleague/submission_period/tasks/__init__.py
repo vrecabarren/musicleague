@@ -4,6 +4,8 @@ from musicleague import app
 from musicleague import redis_conn
 from musicleague.notify import user_submit_reminder_notification
 from musicleague.notify import user_vote_reminder_notification
+from musicleague.scoring.league import calculate_league_scoreboard
+from musicleague.scoring.round import calculate_round_scoreboard
 from musicleague.spotify import create_or_update_playlist
 
 
@@ -24,9 +26,9 @@ def complete_submission_period(submission_period_id):
     try:
         from musicleague.submission_period import get_submission_period
 
-        get_submission_period(submission_period_id)
-
-        # TODO implement scoring
+        submission_period = get_submission_period(submission_period_id)
+        calculate_round_scoreboard(submission_period)
+        calculate_league_scoreboard(submission_period.league)
     except:
         app.logger.exception(
             'Error occurred while completing submission period!')
