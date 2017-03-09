@@ -14,6 +14,9 @@ lint:
 logs:
 	heroku logs -n 1500
 
+react:
+	babel musicleague/static/jsx -d musicleague/static/js/react
+
 run:
 	heroku local
 
