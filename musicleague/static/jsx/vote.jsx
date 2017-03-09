@@ -25,6 +25,8 @@ class VoteControl extends React.Component {
             var downVoteAllowed = this.props.onDownVote(newPointValue);
             if (downVoteAllowed)
                 this.setState({points: this.state.points - 1});
+        } else {
+            console.log("Down vote count " + Math.abs(newPointValue) + " exceeds per-song allowance. Rejecting.")
         }
     }
 
@@ -34,6 +36,8 @@ class VoteControl extends React.Component {
             var upVoteAllowed = this.props.onUpVote(newPointValue);
             if (upVoteAllowed)
                 this.setState({points: this.state.points + 1});
+        } else {
+            console.log("Up vote count " + newPointValue + " exceeds per-song allowance. Rejecting.")
         }
     }
 }
@@ -107,7 +111,17 @@ class SongList extends React.Component {
                 <div className="songListHeader">
                     <div className="container">
                         <div className="row">
-                            <div className="col-md-4 offset-md-4">{this.state.upVotes} | {this.state.downVotes}</div>
+                            <div className="col-md-4 vcenter">
+                                <span id="pasteDirective">Choose A Song And Add Points To Begin!</span>
+                            </div>
+                            <div className="col-md-4 vcenter">
+                                <span className="progressIndicator">
+                                    <span className="numSpent">{this.state.upVotes}</span> of <span className="maxVotes">{this.state.maxUpVotes}</span>
+                                </span>
+                                <br/>
+                                <span>Points Spent</span>
+                            </div>
+                            <div className="col-md-4 vcenter"></div>
                         </div>
                     </div>
                 </div>
@@ -144,7 +158,7 @@ class SongList extends React.Component {
             }
 
             else {
-                console.log("Up vote count " + newUpVotesValue + " exceeds allowance. Rejecting.");
+                console.log("Up vote count " + newUpVotesValue + " exceeds total allowance. Rejecting.");
                 return false;
             }
         }
@@ -172,7 +186,7 @@ class SongList extends React.Component {
             }
 
             else {
-                console.log("Down vote count " + newDownVotesValue + " exceeds allowance. Rejecting.");
+                console.log("Down vote count " + newDownVotesValue + " exceeds total allowance. Rejecting.");
                 return false;
             }
         }
@@ -185,5 +199,5 @@ ReactDOM.render(
     <SongList
         uris={["spotify:track:429EttO8gs0bDo2SQfUNSm", "spotify:track:5Ykzu4eg5UEVJP3LCoxgpF", "spotify:track:6DXFVsLcEvOTSrkG9G1Cb1", "spotify:track:6GyFP1nfCDB8lbD2bG0Hq9", "spotify:track:0x4rW5jv6fkKweBgjE5O8F"]}
         maxDownVotes={5} maxUpVotes={10}/>,
-    document.getElementById('voteFormMount')
+    document.getElementById('mountVote')
 );

@@ -4,6 +4,109 @@
 
 {% block css %}
 <link rel="stylesheet" href="/static/css/vote.css">
+<style>
+.songListHeader {
+    background-color: #02B8EF;
+    color: #FFFFFF;
+    font-family: 'Cubano', sans-serif;
+    font-size: 20px;
+    line-height: 24px;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.songListHeader .progressIndicator {
+    font-size: 36px;
+    line-height: 40px;
+}
+
+.songListHeader .progressIndicator .numSpent {
+    color: #F8C62C;
+}
+
+.song {
+    margin: 30px 0;
+}
+
+.song .songInfo > img {
+    display: block;
+    float: left;
+    height: 100px;
+    margin-right: 20px;
+    vertical-align: top;
+    width: 100px;
+}
+
+.song .songInfo > .textInfo {
+    color: #02B8EF;
+    display: flex;
+    flex-direction: column;
+    min-height: 100px;
+}
+
+.song .songInfo > .textInfo > .trackName,
+.song .songInfo > .textInfo > .trackArtist {
+    display: block;
+    font-size: 18px;
+    line-height: 22px;
+}
+
+.song .voteControl {
+    background-color: #e1e1e1;
+    border-radius: 8px;
+    color: #01249A;
+    padding: 25px;
+}
+
+.song .voteControl.downVoted,
+.song .voteControl.upVoted {
+    background-color: #5FCC34;
+    color: #FFFFFF;
+}
+
+.song .voteControl.downVoted {
+    background-color: #D21E35;
+}
+
+.song .voteControl > .voteControlInner {
+    display: table;
+    width: 100%;
+}
+
+.song .voteControl > .voteControlInner > .downButton,
+.song .voteControl > .voteControlInner > .upButton {
+    background: url("http://musicleague.xyz/static/icons/downvote_blue.svg");
+    cursor: pointer;
+    display: table-cell;
+    height: 50px;
+    vertical-align: middle;
+    width: 50px;
+}
+
+.song .voteControl.downVoted > .voteControlInner > .downButton,
+.song .voteControl.upVoted > .voteControlInner > .downButton {
+    background: url("http://musicleague.xyz/static/icons/downvote_white.svg");
+}
+
+.song .voteControl > .voteControlInner > .upButton {
+    background: url("http://musicleague.xyz/static/icons/upvote_blue.svg");
+}
+
+.song .voteControl.downVoted > .voteControlInner > .upButton,
+.song .voteControl.upVoted > .voteControlInner > .upButton {
+    background: url("http://musicleague.xyz/static/icons/upvote_white.svg");
+}
+
+.song .voteControl > .voteControlInner > .pointCount {
+    display: table-cell;
+    font-family: 'Cubano', sans-serif;
+    font-size: 50px;
+    font-weight: bold;
+    line-height: 50px;
+    text-align: center;
+    vertical-align: middle;
+}
+</style>
 {% endblock %}
 
 {% block title_bar_content %}
@@ -32,66 +135,14 @@
 {% endblock %}
 
 {% block page_content %}
-    <div class="container">
-        {% for uri, song in tracks_by_uri.iteritems() %}
-        <div class="song row" data-uri="{{ uri }}" {% if my_vote and uri in my_vote.votes %}data-votes="{{ my_vote.votes[uri] }}"{% else %}data-votes="0"{% endif %}>
-            <div class="visible-xs">
-                <div class="row-height">
-                    <div class="song-info col-xs-6 col-height">
-                        <img src="{{ song['album']['images'][1]['url'] }}" alt="" class="img img-rounded">
-                        <div class="text-info visible-xs">
-                            <span class="vcenter name">{{ song['name'] }}</span>
-                            <span class="vcenter artist">By {{ song['artists'][0]['name'] }}</span>
-                            <span class="vcenter album">{{ song['album']['name'] }}</span>
-                        </div>
-                    </div>
-                    <div class="up-down-btn-wrapper col-xs-6 col-height">
-                        <div style="display: table; width: 100%;">
-                            <span class="down-btn"></span>
-                            <span class="vote-count">0</span>
-                            <span class="up-btn"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="hidden-xs">
-                <div class="row-height">
-                    <div class="song-info col-sm-7 col-md-8 col-height">
-                        <img src="{{ song['album']['images'][1]['url'] }}" alt="" class="img img-rounded hidden-xs">
-                        <div class="text-info hidden-xs">
-                            <span class="vcenter name">{{ song['name'] }}</span>
-                            <span class="vcenter artist">By {{ song['artists'][0]['name'] }}</span>
-                            <span class="vcenter album">{{ song['album']['name'] }}</span>
-                        </div>
-                    </div>
-                    <div class="up-down-btn-wrapper col-sm-5 col-md-4 col-height" unselectable="on">
-                        <div style="display: table; width: 100%;">
-                            <span class="down-btn"></span>
-                            <span class="vote-count">0</span>
-                            <span class="up-btn"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row" style="margin-top: 25px; margin-bottom: 25px;">
-            <div class="col-sm-12 hidden-xs">
-                <svg width="275" height="5" viewBox="0 0 372 7" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                    <line stroke-linecap="round" x1="0" y1="2" x2="372" y2="2" stroke="#02B8EF" stroke-width="3"/>
-                </svg>
-            </div>
-            <div class="col-xs-12 visible-xs" style="border-bottom: 3px solid #02B8EF">
-            </div>
-        </div>
-
-        {% endfor %}
-        <input type="hidden" id="votes-inp" name="votes">
-    </div>
+    <div id="mountVote"></div>
 </form>
 {% endblock %}
 
 {% block js %}
 <script type="text/javascript" src="/static/js/jquery.sticky-kit.min.js"></script>
-<script type="text/javascript" src="/static/js/vote.js"></script>
+<script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+<script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.3/axios.min.js"></script>
+<script type="text/javascript" src="/static/js/react/vote.js"></script>
 {% endblock %}

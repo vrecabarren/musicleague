@@ -49,6 +49,8 @@ var VoteControl = function (_React$Component) {
             if (newPointValue >= this.props.minPoints) {
                 var downVoteAllowed = this.props.onDownVote(newPointValue);
                 if (downVoteAllowed) this.setState({ points: this.state.points - 1 });
+            } else {
+                console.log("Down vote count " + Math.abs(newPointValue) + " exceeds per-song allowance. Rejecting.");
             }
         }
     }, {
@@ -58,6 +60,8 @@ var VoteControl = function (_React$Component) {
             if (newPointValue <= this.props.maxPoints) {
                 var upVoteAllowed = this.props.onUpVote(newPointValue);
                 if (upVoteAllowed) this.setState({ points: this.state.points + 1 });
+            } else {
+                console.log("Up vote count " + newPointValue + " exceeds per-song allowance. Rejecting.");
             }
         }
     }]);
@@ -194,11 +198,39 @@ var SongList = function (_React$Component4) {
                             { className: "row" },
                             React.createElement(
                                 "div",
-                                { className: "col-md-4 offset-md-4" },
-                                this.state.upVotes,
-                                " | ",
-                                this.state.downVotes
-                            )
+                                { className: "col-md-4 vcenter" },
+                                React.createElement(
+                                    "span",
+                                    { id: "pasteDirective" },
+                                    "Choose A Song And Add Points To Begin!"
+                                )
+                            ),
+                            React.createElement(
+                                "div",
+                                { className: "col-md-4 vcenter" },
+                                React.createElement(
+                                    "span",
+                                    { className: "progressIndicator" },
+                                    React.createElement(
+                                        "span",
+                                        { className: "numSpent" },
+                                        this.state.upVotes
+                                    ),
+                                    " of ",
+                                    React.createElement(
+                                        "span",
+                                        { className: "maxVotes" },
+                                        this.state.maxUpVotes
+                                    )
+                                ),
+                                React.createElement("br", null),
+                                React.createElement(
+                                    "span",
+                                    null,
+                                    "Points Spent"
+                                )
+                            ),
+                            React.createElement("div", { className: "col-md-4 vcenter" })
                         )
                     )
                 ),
@@ -233,7 +265,7 @@ var SongList = function (_React$Component4) {
                     console.log("Up vote count " + newUpVotesValue + " within allowance. Will allow.");
                     this.setState({ upVotes: this.state.upVotes + 1 });
                 } else {
-                    console.log("Up vote count " + newUpVotesValue + " exceeds allowance. Rejecting.");
+                    console.log("Up vote count " + newUpVotesValue + " exceeds total allowance. Rejecting.");
                     return false;
                 }
             }
@@ -258,7 +290,7 @@ var SongList = function (_React$Component4) {
                     console.log("Down vote count " + newDownVotesValue + " within allowance. Will allow.");
                     this.setState({ downVotes: this.state.downVotes + 1 });
                 } else {
-                    console.log("Down vote count " + newDownVotesValue + " exceeds allowance. Rejecting.");
+                    console.log("Down vote count " + newDownVotesValue + " exceeds total allowance. Rejecting.");
                     return false;
                 }
             }
@@ -272,4 +304,4 @@ var SongList = function (_React$Component4) {
 
 ReactDOM.render(React.createElement(SongList, {
     uris: ["spotify:track:429EttO8gs0bDo2SQfUNSm", "spotify:track:5Ykzu4eg5UEVJP3LCoxgpF", "spotify:track:6DXFVsLcEvOTSrkG9G1Cb1", "spotify:track:6GyFP1nfCDB8lbD2bG0Hq9", "spotify:track:0x4rW5jv6fkKweBgjE5O8F"],
-    maxDownVotes: 5, maxUpVotes: 10 }), document.getElementById('voteFormMount'));
+    maxDownVotes: 5, maxUpVotes: 10 }), document.getElementById('mountVote'));
