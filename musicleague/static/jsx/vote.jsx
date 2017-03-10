@@ -10,7 +10,7 @@ class VoteControl extends React.Component {
     render() {
         var stateClass = (this.state.points < 0) ? "downVoted" : (this.state.points > 0) ? "upVoted" : "";
         return (
-            <div className={"voteControl" + " " + stateClass}>
+            <div className={"col-md-4 voteControl" + " " + stateClass}>
                 <div className="voteControlInner">
                     <span className="downButton" onClick={this.downVote.bind(this)}></span>
                     <span className="pointCount">{Math.abs(this.state.points)}</span>
@@ -68,7 +68,7 @@ class SongInfo extends React.Component {
 
     render() {
         return (
-            <div className="songInfo">
+            <div className="col-md-8 songInfo">
                 <img src={this.state.track.album.images[1].url} className="img img-rounded"/>
                 <div className="textInfo">
                     <span className="trackName">{this.state.track.name}</span>
@@ -83,13 +83,9 @@ class SongInfo extends React.Component {
 class Song extends React.Component {
     render() {
         return (
-            <div className="song row" style={{paddingRight: "0"}}>
-                <div className="col-md-8">
-                    <SongInfo uri={this.props.uri}/>
-                </div>
-                <div className="col-md-4" style={{padding: "0"}}>
-                    <VoteControl maxPoints={null} minPoints={null} uri={this.props.uri} onUpVote={this.props.onUpVote} onDownVote={this.props.onDownVote}/>
-                </div>
+            <div className="song row">
+                <SongInfo uri={this.props.uri}/>
+                <VoteControl maxPoints={null} minPoints={null} uri={this.props.uri} onUpVote={this.props.onUpVote} onDownVote={this.props.onDownVote}/>
             </div>
          );
     }
@@ -178,8 +174,8 @@ class SongList extends React.Component {
             <div>
                 <form onSubmit={this.handleFormSubmission.bind(this)}>
                     {listHeader}
-                    <div className="container">
-                        <div className="songList">
+                    <div className="songList">
+                        <div className="container">
                             {
                                 // TODO: Pass min/max points allowed per song, null if not set
                                 this.props.uris.map(function(uri) {

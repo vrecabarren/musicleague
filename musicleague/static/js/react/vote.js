@@ -29,7 +29,7 @@ var VoteControl = function (_React$Component) {
             var stateClass = this.state.points < 0 ? "downVoted" : this.state.points > 0 ? "upVoted" : "";
             return React.createElement(
                 "div",
-                { className: "voteControl" + " " + stateClass },
+                { className: "col-md-4 voteControl" + " " + stateClass },
                 React.createElement(
                     "div",
                     { className: "voteControlInner" },
@@ -109,7 +109,7 @@ var SongInfo = function (_React$Component2) {
         value: function render() {
             return React.createElement(
                 "div",
-                { className: "songInfo" },
+                { className: "col-md-8 songInfo" },
                 React.createElement("img", { src: this.state.track.album.images[1].url, className: "img img-rounded" }),
                 React.createElement(
                     "div",
@@ -152,17 +152,9 @@ var Song = function (_React$Component3) {
         value: function render() {
             return React.createElement(
                 "div",
-                { className: "song row", style: { paddingRight: "0" } },
-                React.createElement(
-                    "div",
-                    { className: "col-md-8" },
-                    React.createElement(SongInfo, { uri: this.props.uri })
-                ),
-                React.createElement(
-                    "div",
-                    { className: "col-md-4", style: { padding: "0" } },
-                    React.createElement(VoteControl, { maxPoints: null, minPoints: null, uri: this.props.uri, onUpVote: this.props.onUpVote, onDownVote: this.props.onDownVote })
-                )
+                { className: "song row" },
+                React.createElement(SongInfo, { uri: this.props.uri }),
+                React.createElement(VoteControl, { maxPoints: null, minPoints: null, uri: this.props.uri, onUpVote: this.props.onUpVote, onDownVote: this.props.onDownVote })
             );
         }
     }]);
@@ -378,10 +370,10 @@ var SongList = function (_React$Component6) {
                     listHeader,
                     React.createElement(
                         "div",
-                        { className: "container" },
+                        { className: "songList" },
                         React.createElement(
                             "div",
-                            { className: "songList" },
+                            { className: "container" },
 
                             // TODO: Pass min/max points allowed per song, null if not set
                             this.props.uris.map(function (uri) {
