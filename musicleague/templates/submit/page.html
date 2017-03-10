@@ -58,7 +58,7 @@
                 <span class="song-header">Song {{ "%02d" % (song_num + 1) }}</span>
             </div>
             <div class="col-xs-9 col-sm-7 col-md-8">
-                <input type="text" class="form-control find-song-inp" placeholder="Paste Your Spotify Song Link or URI" {% if loop.first %}autofocus="true"{% endif %}>
+                <input type="text" class="form-control find-song-inp" placeholder="Spotify Song Link" {% if loop.first %}autofocus="true"{% endif %}>
             </div>
             <div class="col-xs-3 col-sm-5 col-md-4 text-center find-song-btn-wrapper">
                 <button type="button" class="hidden-xs btn btn-lg find-song-btn">Find It!</button>
