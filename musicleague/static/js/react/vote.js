@@ -186,7 +186,7 @@ var SongList = function (_React$Component4) {
     }, {
         key: "render",
         value: function render() {
-            var buttonEnabled = this.state.upVotes == this.state.maxUpVotes && this.state.downVotes == this.state.maxDownVotes;
+            var buttonEnabled = this.state.upVotes == this.state.maxUpVotes && (this.state.maxDownVotes == null || this.state.downVotes == this.state.maxDownVotes);
             return React.createElement(
                 "div",
                 null,

@@ -108,7 +108,7 @@ class SongList extends React.Component {
     }
 
     render() {
-        var buttonEnabled = (this.state.upVotes == this.state.maxUpVotes) && (this.state.downVotes == this.state.maxDownVotes);
+        var buttonEnabled = (this.state.upVotes == this.state.maxUpVotes) && (this.state.maxDownVotes == null || (this.state.downVotes == this.state.maxDownVotes));
         return (
             <div>
                 <form onSubmit={this.handleFormSubmission.bind(this)}>
