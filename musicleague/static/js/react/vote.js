@@ -221,7 +221,7 @@ var SongListHeader = function (_React$Component4) {
                                         this.props.maxUpVotes > 9 ? "" + this.props.maxUpVotes : "0" + this.props.maxUpVotes
                                     )
                                 ),
-                                React.createElement("span", { className: "statusIcon" })
+                                React.createElement("span", { className: "statusIcon upVote" })
                             )
                         ),
                         React.createElement(
@@ -257,6 +257,87 @@ var SongListHeaderWithDownVotes = function (_React$Component5) {
         return _possibleConstructorReturn(this, (SongListHeaderWithDownVotes.__proto__ || Object.getPrototypeOf(SongListHeaderWithDownVotes)).apply(this, arguments));
     }
 
+    _createClass(SongListHeaderWithDownVotes, [{
+        key: "render",
+        value: function render() {
+            return React.createElement(
+                "div",
+                { className: "songListHeader" },
+                React.createElement(
+                    "div",
+                    { className: "container" },
+                    React.createElement(
+                        "div",
+                        { className: "row" },
+                        React.createElement(
+                            "div",
+                            { className: "col-xs-6 col-ms-3 col-md-4 vcenter text-center" },
+                            React.createElement(
+                                "div",
+                                { className: "progressWrapper" },
+                                React.createElement(
+                                    "span",
+                                    { className: "progressIndicator" },
+                                    React.createElement(
+                                        "span",
+                                        { className: "numSpent" },
+                                        this.props.upVotes > 9 ? "" + this.props.upVotes : "0" + this.props.upVotes
+                                    ),
+                                    " of ",
+                                    React.createElement(
+                                        "span",
+                                        { className: "maxVotes" },
+                                        this.props.maxUpVotes > 9 ? "" + this.props.maxUpVotes : "0" + this.props.maxUpVotes
+                                    )
+                                ),
+                                React.createElement("span", { className: "statusIcon upVote" })
+                            )
+                        ),
+                        React.createElement(
+                            "div",
+                            { className: "col-xs-6 col-ms-3 col-md-4 vcenter text-center" },
+                            React.createElement(
+                                "div",
+                                { className: "progressWrapper" },
+                                React.createElement(
+                                    "span",
+                                    { className: "progressIndicator" },
+                                    React.createElement(
+                                        "span",
+                                        { className: "numSpent" },
+                                        this.props.downVotes > 9 ? "" + this.props.downVotes : "0" + this.props.downVotes
+                                    ),
+                                    " of ",
+                                    React.createElement(
+                                        "span",
+                                        { className: "maxVotes" },
+                                        this.props.maxDownVotes > 9 ? "" + this.props.maxDownVotes : "0" + this.props.maxDownVotes
+                                    )
+                                ),
+                                React.createElement("span", { className: "statusIcon downVote" })
+                            )
+                        ),
+                        React.createElement(
+                            "div",
+                            { className: this.props.enabled ? 'col-xs-6 col-sm-5 col-md-4 vcenter text-center' : 'col-xs-6 col-sm-5 col-md-4 vcenter text-center disabled', id: "submitVotesButtonWrapper" },
+                            React.createElement(
+                                "button",
+                                { type: "submit", id: "submitVotesButton", className: this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled', disabled: !this.props.enabled },
+                                "Submit",
+                                React.createElement(
+                                    "span",
+                                    { className: "hidden-xs" },
+                                    " Votes"
+                                ),
+                                "!"
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
     return SongListHeaderWithDownVotes;
 }(React.Component);
 
@@ -281,14 +362,22 @@ var SongList = function (_React$Component6) {
     _createClass(SongList, [{
         key: "render",
         value: function render() {
-            var buttonEnabled = this.state.upVotes == this.state.maxUpVotes && (this.state.maxDownVotes == null || this.state.downVotes == this.state.maxDownVotes);
+            var listHeader = null;
+            var headerEnabled = this.state.upVotes == this.state.maxUpVotes && (this.state.maxDownVotes == null || this.state.downVotes == this.state.maxDownVotes);
+
+            if (this.props.maxDownVotes == null) {
+                listHeader = React.createElement(SongListHeader, { upVotes: this.state.upVotes, maxUpVotes: this.state.maxUpVotes, enabled: headerEnabled });
+            } else {
+                listHeader = React.createElement(SongListHeaderWithDownVotes, { upVotes: this.state.upVotes, maxUpVotes: this.state.maxUpVotes, downVotes: this.state.downVotes, maxDownVotes: this.state.maxDownVotes, enabled: headerEnabled });
+            }
+
             return React.createElement(
                 "div",
                 null,
                 React.createElement(
                     "form",
                     { onSubmit: this.handleFormSubmission.bind(this) },
-                    React.createElement(SongListHeader, { upVotes: this.state.upVotes, maxUpVotes: this.state.maxUpVotes, enabled: buttonEnabled }),
+                    listHeader,
                     React.createElement(
                         "div",
                         { className: "container" },

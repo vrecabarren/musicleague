@@ -109,7 +109,7 @@ class SongListHeader extends React.Component {
                                 <span className="progressIndicator">
                                     <span className="numSpent">{this.props.upVotes > 9 ? ""+this.props.upVotes: "0"+this.props.upVotes}</span> of <span className="maxVotes">{this.props.maxUpVotes > 9 ? ""+this.props.maxUpVotes: "0"+this.props.maxUpVotes}</span>
                                 </span>
-                                <span className="statusIcon"></span>
+                                <span className="statusIcon upVote"></span>
                             </div>
                         </div>
                         <div className={this.props.enabled ? 'col-xs-6 col-sm-5 col-md-4 vcenter text-center' : 'col-xs-6 col-sm-5 col-md-4 vcenter text-center disabled'} id="submitVotesButtonWrapper">
@@ -123,7 +123,35 @@ class SongListHeader extends React.Component {
 }
 
 class SongListHeaderWithDownVotes extends React.Component {
-
+    render() {
+        return (
+            <div className="songListHeader">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-xs-6 col-ms-3 col-md-4 vcenter text-center">
+                            <div className="progressWrapper">
+                                <span className="progressIndicator">
+                                    <span className="numSpent">{this.props.upVotes > 9 ? ""+this.props.upVotes: "0"+this.props.upVotes}</span> of <span className="maxVotes">{this.props.maxUpVotes > 9 ? ""+this.props.maxUpVotes: "0"+this.props.maxUpVotes}</span>
+                                </span>
+                                <span className="statusIcon upVote"></span>
+                            </div>
+                        </div>
+                        <div className="col-xs-6 col-ms-3 col-md-4 vcenter text-center">
+                            <div className="progressWrapper">
+                                <span className="progressIndicator">
+                                    <span className="numSpent">{this.props.downVotes > 9 ? ""+this.props.downVotes: "0"+this.props.downVotes}</span> of <span className="maxVotes">{this.props.maxDownVotes > 9 ? ""+this.props.maxDownVotes: "0"+this.props.maxDownVotes}</span>
+                                </span>
+                                <span className="statusIcon downVote"></span>
+                            </div>
+                        </div>
+                        <div className={this.props.enabled ? 'col-xs-6 col-sm-5 col-md-4 vcenter text-center' : 'col-xs-6 col-sm-5 col-md-4 vcenter text-center disabled'} id="submitVotesButtonWrapper">
+                            <button type="submit" id="submitVotesButton" className={this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled'} disabled={!this.props.enabled}>Submit<span className="hidden-xs"> Votes</span>!</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 }
 
 class SongList extends React.Component {
@@ -139,11 +167,19 @@ class SongList extends React.Component {
     }
 
     render() {
-        var buttonEnabled = (this.state.upVotes == this.state.maxUpVotes) && (this.state.maxDownVotes == null || (this.state.downVotes == this.state.maxDownVotes));
+        var listHeader = null;
+        var headerEnabled = (this.state.upVotes == this.state.maxUpVotes) && (this.state.maxDownVotes == null || (this.state.downVotes == this.state.maxDownVotes));
+
+        if (this.props.maxDownVotes == null) {
+            listHeader = <SongListHeader upVotes={this.state.upVotes} maxUpVotes={this.state.maxUpVotes} enabled={headerEnabled}/>;
+        } else {
+            listHeader = <SongListHeaderWithDownVotes upVotes={this.state.upVotes} maxUpVotes={this.state.maxUpVotes} downVotes={this.state.downVotes} maxDownVotes={this.state.maxDownVotes} enabled={headerEnabled}/>;
+        }
+
         return (
             <div>
                 <form onSubmit={this.handleFormSubmission.bind(this)}>
-                    <SongListHeader upVotes={this.state.upVotes} maxUpVotes={this.state.maxUpVotes} enabled={buttonEnabled}/>
+                    {listHeader}
                     <div className="container">
                         <div className="songList">
                             {
