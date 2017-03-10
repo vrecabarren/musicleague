@@ -69,7 +69,7 @@ class SongInfo extends React.Component {
     render() {
         return (
             <div className="songInfo">
-                <img src={this.state.track.album.images[1].url} className="rounded"/>
+                <img src={this.state.track.album.images[1].url} className="img img-rounded"/>
                 <div className="textInfo">
                     <span className="trackName">{this.state.track.name}</span>
                     <span className="trackArtist">By {this.state.track.artists[0].name}</span>

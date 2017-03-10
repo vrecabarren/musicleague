@@ -110,7 +110,7 @@ var SongInfo = function (_React$Component2) {
             return React.createElement(
                 "div",
                 { className: "songInfo" },
-                React.createElement("img", { src: this.state.track.album.images[1].url, className: "rounded" }),
+                React.createElement("img", { src: this.state.track.album.images[1].url, className: "img img-rounded" }),
                 React.createElement(
                     "div",
                     { className: "textInfo" },
@@ -213,7 +213,7 @@ var SongListHeader = function (_React$Component4) {
                                     React.createElement(
                                         "span",
                                         { className: "maxVotes" },
-                                        this.props.maxUpVotes
+                                        this.props.maxUpVotes > 9 ? "" + this.props.maxUpVotes : "0" + this.props.maxUpVotes
                                     )
                                 ),
                                 React.createElement("span", { className: "statusIcon" })
