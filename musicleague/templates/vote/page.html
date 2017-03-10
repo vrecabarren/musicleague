@@ -81,12 +81,8 @@
 
 .song .voteControl.downVoted,
 .song .voteControl.upVoted {
-    background-color: #5FCC34;
+    background-color: #02B8EF;
     color: #FFFFFF;
-}
-
-.song .voteControl.downVoted {
-    background-color: #D21E35;
 }
 
 .song .voteControl > .voteControlInner {
@@ -127,6 +123,27 @@
     text-align: center;
     vertical-align: middle;
 }
+
+.song .voteControl > .voteControlInner > .statusIconWrapper {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+    width: 70px;
+}
+
+.song .voteControl > .voteControlInner > .statusIconWrapper > .statusIcon {
+    background: url('/static/icons/novote.svg');
+    display: inline-block;
+    height: 50px;
+    vertical-align: middle;
+    width: 50px;
+}
+.song .voteControl.downVoted > .voteControlInner > .statusIconWrapper > .statusIcon {
+    background: url('/static/icons/downvote.svg');
+}
+.song .voteControl.upVoted > .voteControlInner > .statusIconWrapper > .statusIcon {
+    background: url('/static/icons/upvote.svg');
+}
 </style>
 {% endblock %}
 
@@ -151,7 +168,7 @@
     ReactDOM.render(
         React.createElement(SongList, {
             uris: {{ tracks_by_uri.keys()|tojson|safe }},
-            maxDownVotes: {{ None|tojson|safe }},
+            maxDownVotes: {{ 3|tojson|safe }},
             maxUpVotes: {{ league.preferences.point_bank_size|tojson|safe }}
         }),
         document.getElementById('mountVote')

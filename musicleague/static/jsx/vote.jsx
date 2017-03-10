@@ -13,8 +13,11 @@ class VoteControl extends React.Component {
             <div className={"voteControl" + " " + stateClass}>
                 <div className="voteControlInner">
                     <span className="downButton" onClick={this.downVote.bind(this)}></span>
-                    <span className="pointCount">{this.state.points}</span>
+                    <span className="pointCount">{Math.abs(this.state.points)}</span>
                     <span className="upButton" onClick={this.upVote.bind(this)}></span>
+                    <div className="statusIconWrapper">
+                        <span className="statusIcon"></span>
+                    </div>
                 </div>
             </div>
         );
@@ -79,11 +82,11 @@ class SongInfo extends React.Component {
 class Song extends React.Component {
     render() {
         return (
-            <div className="song row">
+            <div className="song row" style={{paddingRight: "0"}}>
                 <div className="col-md-8">
                     <SongInfo uri={this.props.uri}/>
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-4" style={{padding: "0"}}>
                     <VoteControl maxPoints={null} minPoints={null} uri={this.props.uri} onUpVote={this.props.onUpVote} onDownVote={this.props.onDownVote}/>
                 </div>
             </div>

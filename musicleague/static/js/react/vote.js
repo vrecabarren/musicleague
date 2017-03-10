@@ -37,9 +37,14 @@ var VoteControl = function (_React$Component) {
                     React.createElement(
                         "span",
                         { className: "pointCount" },
-                        this.state.points
+                        Math.abs(this.state.points)
                     ),
-                    React.createElement("span", { className: "upButton", onClick: this.upVote.bind(this) })
+                    React.createElement("span", { className: "upButton", onClick: this.upVote.bind(this) }),
+                    React.createElement(
+                        "div",
+                        { className: "statusIconWrapper" },
+                        React.createElement("span", { className: "statusIcon" })
+                    )
                 )
             );
         }
@@ -142,7 +147,7 @@ var Song = function (_React$Component3) {
         value: function render() {
             return React.createElement(
                 "div",
-                { className: "song row" },
+                { className: "song row", style: { paddingRight: "0" } },
                 React.createElement(
                     "div",
                     { className: "col-md-8" },
@@ -150,7 +155,7 @@ var Song = function (_React$Component3) {
                 ),
                 React.createElement(
                     "div",
-                    { className: "col-md-4" },
+                    { className: "col-md-4", style: { padding: "0" } },
                     React.createElement(VoteControl, { maxPoints: null, minPoints: null, uri: this.props.uri, onUpVote: this.props.onUpVote, onDownVote: this.props.onDownVote })
                 )
             );
