@@ -87,7 +87,7 @@ var SongInfo = function (_React$Component2) {
             uri: props.uri,
             track: { name: '',
                 artists: [{ name: '' }],
-                album: { images: [{}, { url: '' }] }
+                album: { images: [{}, { url: '' }], name: '' }
             }
         };
         return _this2;
@@ -124,6 +124,11 @@ var SongInfo = function (_React$Component2) {
                         { className: "trackArtist" },
                         "By ",
                         this.state.track.artists[0].name
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "trackAlbum" },
+                        this.state.track.album.name
                     )
                 )
             );

@@ -53,7 +53,7 @@ class SongInfo extends React.Component {
             uri: props.uri,
             track: {name: '',
                     artists: [{name: ''}],
-                    album: {images: [{}, {url: ''}]}
+                    album: {images: [{}, {url: ''}], name: ''}
             }
         }
     }
@@ -73,6 +73,7 @@ class SongInfo extends React.Component {
                 <div className="textInfo">
                     <span className="trackName">{this.state.track.name}</span>
                     <span className="trackArtist">By {this.state.track.artists[0].name}</span>
+                    <span className="trackAlbum">{ this.state.track.album.name }</span>
                 </div>
             </div>
         );
