@@ -11,9 +11,11 @@
     font-family: 'Cubano', sans-serif;
     font-size: 20px;
     line-height: 24px;
-    padding: 10px 0;
+    padding: 0;
     text-align: center;
 }
+
+.songListHeader .row { padding: 0; }
 
 .songListHeader .progressIndicator {
     font-size: 36px;
@@ -24,8 +26,27 @@
     color: #F8C62C;
 }
 
+.songListHeader #submitVotesButtonWrapper {
+    background-color: #5FCC34;
+    padding: 20px;
+}
+.songListHeader #submitVotesButtonWrapper.disabled { background-color: #D8D8D8; }
+
+.songListHeader #submitVotesButtonWrapper #submitVotesButton {
+    background: none;
+    border: 3px solid #fff;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 20px;
+    line-height: 24px;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 100%;
+}
+
 .song {
     margin: 30px 0;
+    padding: 0;
 }
 
 .song .songInfo > img {
@@ -125,4 +146,15 @@
 <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.3/axios.min.js"></script>
 <script type="text/javascript" src="/static/js/react/vote.js"></script>
+<script type="text/javascript">
+    // Pass template data to React component
+    ReactDOM.render(
+        React.createElement(SongList, {
+            uris: {{ tracks_by_uri.keys()|tojson|safe }},
+            maxDownVotes: {{ league.preferences.point_bank_size|tojson|safe }},
+            maxUpVotes: {{ league.preferences.point_bank_size|tojson|safe }}
+        }),
+        document.getElementById('mountVote')
+    );
+</script>
 {% endblock %}

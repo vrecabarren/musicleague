@@ -2,6 +2,7 @@ class VoteControl extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            uri: props.uri,
             points: 0
         };
     }
@@ -21,8 +22,8 @@ class VoteControl extends React.Component {
 
     downVote() {
         var newPointValue = this.state.points - 1;
-        if (newPointValue >= this.props.minPoints) {
-            var downVoteAllowed = this.props.onDownVote(newPointValue);
+        if (this.props.minPoints == null || newPointValue >= this.props.minPoints) {
+            var downVoteAllowed = this.props.onDownVote(this.state.uri, newPointValue);
             if (downVoteAllowed)
                 this.setState({points: this.state.points - 1});
         } else {
@@ -32,8 +33,8 @@ class VoteControl extends React.Component {
 
     upVote() {
         var newPointValue = this.state.points + 1;
-        if (newPointValue <= this.props.maxPoints) {
-            var upVoteAllowed = this.props.onUpVote(newPointValue);
+        if (this.props.maxPoints == null || newPointValue <= this.props.maxPoints) {
+            var upVoteAllowed = this.props.onUpVote(this.state.uri, newPointValue);
             if (upVoteAllowed)
                 this.setState({points: this.state.points + 1});
         } else {
@@ -83,7 +84,7 @@ class Song extends React.Component {
                     <SongInfo uri={this.props.uri}/>
                 </div>
                 <div className="col-md-4">
-                    <VoteControl maxPoints={10} minPoints={-5} onUpVote={this.props.onUpVote} onDownVote={this.props.onDownVote}/>
+                    <VoteControl maxPoints={null} minPoints={null} uri={this.props.uri} onUpVote={this.props.onUpVote} onDownVote={this.props.onDownVote}/>
                 </div>
             </div>
          );
@@ -97,7 +98,8 @@ class SongList extends React.Component {
             upVotes: 0,
             maxUpVotes: props.maxUpVotes,
             downVotes: 0,
-            maxDownVotes: props.maxDownVotes
+            maxDownVotes: props.maxDownVotes,
+            votes: {}
         };
     }
 
@@ -106,39 +108,50 @@ class SongList extends React.Component {
     }
 
     render() {
+        var buttonEnabled = (this.state.upVotes == this.state.maxUpVotes) && (this.state.downVotes == this.state.maxDownVotes);
         return (
             <div>
-                <div className="songListHeader">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-md-4 vcenter">
-                                <span>Choose A Song And Add Points To Begin!</span>
+                <form onSubmit={this.handleFormSubmission.bind(this)}>
+                    <div className="songListHeader">
+                        <div className="container">
+                            <div className="row">
+                                <div className="hidden-xs col-sm-4 col-md-4 vcenter text-center">
+                                    <span>Choose A Song And Add Points To Begin!</span>
+                                </div>
+                                <div className="col-xs-6 col-ms-3 col-md-4 vcenter text-center">
+                                    <span className="progressIndicator">
+                                        <span className="numSpent">{this.state.upVotes}</span> of <span className="maxVotes">{this.state.maxUpVotes}</span>
+                                    </span>
+                                    <br/>
+                                    <span>Points Spent</span>
+                                </div>
+                                <div className={buttonEnabled ? 'col-xs-6 col-sm-5 col-md-4 vcenter text-center' : 'col-xs-6 col-sm-5 col-md-4 vcenter text-center disabled'} id="submitVotesButtonWrapper">
+                                    <button type="submit" id="submitVotesButton" className={buttonEnabled ? 'btn btn-lg' : 'btn btn-lg disabled'} disabled={!buttonEnabled}>Submit<span className="hidden-xs"> Votes</span>!</button>
+                                </div>
                             </div>
-                            <div className="col-md-4 vcenter">
-                                <span className="progressIndicator">
-                                    <span className="numSpent">{this.state.upVotes}</span> of <span className="maxVotes">{this.state.maxUpVotes}</span>
-                                </span>
-                                <br/>
-                                <span>Points Spent</span>
-                            </div>
-                            <div className="col-md-4 vcenter"></div>
                         </div>
                     </div>
-                </div>
-                <div className="container">
-                    <div className="songList">
-                        {
-                            this.props.uris.map(function(uri) {
-                                return <Song uri={uri} onUpVote={this.onUpVote.bind(this)} onDownVote={this.onDownVote.bind(this)}/>;
-                            }.bind(this))
-                        }
+                    <div className="container">
+                        <div className="songList">
+                            {
+                                // TODO: Pass min/max points allowed per song, null if not set
+                                this.props.uris.map(function(uri) {
+                                    return <Song uri={uri} onUpVote={this.onUpVote.bind(this)} onDownVote={this.onDownVote.bind(this)}/>;
+                                }.bind(this))
+                            }
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         );
     }
 
-    onUpVote(newPointValue) {
+    handleFormSubmission() {
+        console.log("Form submitted: " + JSON.stringify(this.state.votes));
+        return false;
+    }
+
+    onUpVote(uri, newPointValue) {
         /* When a song in the SongList is upvoted, we need to determine
         whether the user is removing a downvote or adding an upvote. If
         the user is adding an upvote, we need to reject the upvote when
@@ -146,7 +159,9 @@ class SongList extends React.Component {
         */
         if (newPointValue <= 0) {
             console.log("Song vote " + newPointValue + " is still negative. Will allow.");
-            this.setState({downVotes: this.state.downVotes - 1});
+            var newVotesState = this.state.votes;
+            newVotesState[uri] = newPointValue;
+            this.setState({downVotes: this.state.downVotes - 1, votes: newVotesState});
         }
 
         else {
@@ -154,7 +169,9 @@ class SongList extends React.Component {
 
             if (newUpVotesValue <= this.state.maxUpVotes) {
                 console.log("Up vote count " + newUpVotesValue + " within allowance. Will allow.");
-                this.setState({upVotes: this.state.upVotes + 1});
+                var newVotesState = this.state.votes;
+                newVotesState[uri] = newPointValue;
+                this.setState({upVotes: this.state.upVotes + 1, votes: newVotesState});
             }
 
             else {
@@ -166,7 +183,7 @@ class SongList extends React.Component {
         return true;
     }
 
-    onDownVote(newPointValue) {
+    onDownVote(uri, newPointValue) {
         /* When a song in the SongList is downvoted, we need to determine
         whether the user is removing an upvote or adding a downvote. If
         the user is adding a downvote, we need to reject the downvote When
@@ -174,7 +191,9 @@ class SongList extends React.Component {
         */
         if (newPointValue >= 0) {
             console.log("Song vote " + newPointValue + " is still positive. Will allow.");
-            this.setState({upVotes: this.state.upVotes - 1});
+            var newVotesState = this.state.votes;
+            newVotesState[uri] = newPointValue;
+            this.setState({upVotes: this.state.upVotes - 1, votes: newVotesState});
         }
 
         else {
@@ -182,7 +201,9 @@ class SongList extends React.Component {
 
             if (newDownVotesValue <= this.state.maxDownVotes) {
                 console.log("Down vote count " + newDownVotesValue + " within allowance. Will allow.");
-                this.setState({downVotes: this.state.downVotes + 1});
+                var newVotesState = this.state.votes;
+                newVotesState[uri] = newPointValue;
+                this.setState({downVotes: this.state.downVotes + 1, votes: newVotesState});
             }
 
             else {
@@ -195,9 +216,12 @@ class SongList extends React.Component {
     }
 }
 
+/*
+NOTE: Currently rendered on template in order to inject data prior to page load
 ReactDOM.render(
     <SongList
         uris={["spotify:track:429EttO8gs0bDo2SQfUNSm", "spotify:track:5Ykzu4eg5UEVJP3LCoxgpF", "spotify:track:6DXFVsLcEvOTSrkG9G1Cb1", "spotify:track:6GyFP1nfCDB8lbD2bG0Hq9", "spotify:track:0x4rW5jv6fkKweBgjE5O8F"]}
-        maxDownVotes={5} maxUpVotes={10}/>,
+        maxDownVotes={0} maxUpVotes={10}/>,
     document.getElementById('mountVote')
 );
+*/
