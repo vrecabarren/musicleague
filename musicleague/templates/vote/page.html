@@ -17,13 +17,35 @@
 
 .songListHeader .row { padding: 0; }
 
-.songListHeader .progressIndicator {
-    font-size: 36px;
-    line-height: 40px;
+.songListHeader .progressWrapper {
+    display: inline-table;
 }
 
-.songListHeader .progressIndicator .numSpent {
+.songListHeader .progressWrapper > .progressIndicator {
+    display: table-cell;
+    font-size: 26px;
+    line-height: 30px;
+    vertical-align: middle;
+}
+
+.songListHeader .progressWrapper > .progressIndicator > .numSpent,
+.songListHeader .progressWrapper > .progressIndicator > .maxVotes {
+    display: inline-block;
+    font-size: 50px;
+    line-height: 50px;
+    padding: 0 10px;
+    vertical-align: middle;
+}
+.songListHeader .progressWrapper > .progressIndicator > .numSpent {
     color: #F8C62C;
+}
+
+.songListHeader .progressWrapper > .statusIcon {
+    background: url('/static/icons/upvote.svg');
+    display: table-cell;
+    height: 50px;
+    vertical-align: middle;
+    width: 50px;
 }
 
 .songListHeader #submitVotesButtonWrapper {
@@ -168,7 +190,7 @@
     ReactDOM.render(
         React.createElement(SongList, {
             uris: {{ tracks_by_uri.keys()|tojson|safe }},
-            maxDownVotes: {{ 3|tojson|safe }},
+            maxDownVotes: {{ None|tojson|safe }},
             maxUpVotes: {{ league.preferences.point_bank_size|tojson|safe }}
         }),
         document.getElementById('mountVote')

@@ -165,30 +165,115 @@ var Song = function (_React$Component3) {
     return Song;
 }(React.Component);
 
-var SongList = function (_React$Component4) {
-    _inherits(SongList, _React$Component4);
+var SongListHeader = function (_React$Component4) {
+    _inherits(SongListHeader, _React$Component4);
+
+    function SongListHeader() {
+        _classCallCheck(this, SongListHeader);
+
+        return _possibleConstructorReturn(this, (SongListHeader.__proto__ || Object.getPrototypeOf(SongListHeader)).apply(this, arguments));
+    }
+
+    _createClass(SongListHeader, [{
+        key: "render",
+        value: function render() {
+            return React.createElement(
+                "div",
+                { className: "songListHeader" },
+                React.createElement(
+                    "div",
+                    { className: "container" },
+                    React.createElement(
+                        "div",
+                        { className: "row" },
+                        React.createElement(
+                            "div",
+                            { className: "hidden-xs col-sm-4 col-md-4 vcenter text-center" },
+                            React.createElement(
+                                "span",
+                                null,
+                                "Choose A Song And Add Points To Begin!"
+                            )
+                        ),
+                        React.createElement(
+                            "div",
+                            { className: "col-xs-6 col-ms-3 col-md-4 vcenter text-center" },
+                            React.createElement(
+                                "div",
+                                { className: "progressWrapper" },
+                                React.createElement(
+                                    "span",
+                                    { className: "progressIndicator" },
+                                    React.createElement(
+                                        "span",
+                                        { className: "numSpent" },
+                                        this.props.upVotes > 9 ? "" + this.props.upVotes : "0" + this.props.upVotes
+                                    ),
+                                    " of ",
+                                    React.createElement(
+                                        "span",
+                                        { className: "maxVotes" },
+                                        this.props.maxUpVotes
+                                    )
+                                ),
+                                React.createElement("span", { className: "statusIcon" })
+                            )
+                        ),
+                        React.createElement(
+                            "div",
+                            { className: this.props.enabled ? 'col-xs-6 col-sm-5 col-md-4 vcenter text-center' : 'col-xs-6 col-sm-5 col-md-4 vcenter text-center disabled', id: "submitVotesButtonWrapper" },
+                            React.createElement(
+                                "button",
+                                { type: "submit", id: "submitVotesButton", className: this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled', disabled: !this.props.enabled },
+                                "Submit",
+                                React.createElement(
+                                    "span",
+                                    { className: "hidden-xs" },
+                                    " Votes"
+                                ),
+                                "!"
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return SongListHeader;
+}(React.Component);
+
+var SongListHeaderWithDownVotes = function (_React$Component5) {
+    _inherits(SongListHeaderWithDownVotes, _React$Component5);
+
+    function SongListHeaderWithDownVotes() {
+        _classCallCheck(this, SongListHeaderWithDownVotes);
+
+        return _possibleConstructorReturn(this, (SongListHeaderWithDownVotes.__proto__ || Object.getPrototypeOf(SongListHeaderWithDownVotes)).apply(this, arguments));
+    }
+
+    return SongListHeaderWithDownVotes;
+}(React.Component);
+
+var SongList = function (_React$Component6) {
+    _inherits(SongList, _React$Component6);
 
     function SongList(props) {
         _classCallCheck(this, SongList);
 
-        var _this5 = _possibleConstructorReturn(this, (SongList.__proto__ || Object.getPrototypeOf(SongList)).call(this, props));
+        var _this7 = _possibleConstructorReturn(this, (SongList.__proto__ || Object.getPrototypeOf(SongList)).call(this, props));
 
-        _this5.state = {
+        _this7.state = {
             upVotes: 0,
             maxUpVotes: props.maxUpVotes,
             downVotes: 0,
             maxDownVotes: props.maxDownVotes,
             votes: {}
         };
-        return _this5;
+        return _this7;
     }
 
     _createClass(SongList, [{
-        key: "componentDidMount",
-        value: function componentDidMount() {
-            // TODO: Load required info such as up/downvote allowances and URIs
-        }
-    }, {
         key: "render",
         value: function render() {
             var buttonEnabled = this.state.upVotes == this.state.maxUpVotes && (this.state.maxDownVotes == null || this.state.downVotes == this.state.maxDownVotes);
@@ -198,67 +283,7 @@ var SongList = function (_React$Component4) {
                 React.createElement(
                     "form",
                     { onSubmit: this.handleFormSubmission.bind(this) },
-                    React.createElement(
-                        "div",
-                        { className: "songListHeader" },
-                        React.createElement(
-                            "div",
-                            { className: "container" },
-                            React.createElement(
-                                "div",
-                                { className: "row" },
-                                React.createElement(
-                                    "div",
-                                    { className: "hidden-xs col-sm-4 col-md-4 vcenter text-center" },
-                                    React.createElement(
-                                        "span",
-                                        null,
-                                        "Choose A Song And Add Points To Begin!"
-                                    )
-                                ),
-                                React.createElement(
-                                    "div",
-                                    { className: "col-xs-6 col-ms-3 col-md-4 vcenter text-center" },
-                                    React.createElement(
-                                        "span",
-                                        { className: "progressIndicator" },
-                                        React.createElement(
-                                            "span",
-                                            { className: "numSpent" },
-                                            this.state.upVotes
-                                        ),
-                                        " of ",
-                                        React.createElement(
-                                            "span",
-                                            { className: "maxVotes" },
-                                            this.state.maxUpVotes
-                                        )
-                                    ),
-                                    React.createElement("br", null),
-                                    React.createElement(
-                                        "span",
-                                        null,
-                                        "Points Spent"
-                                    )
-                                ),
-                                React.createElement(
-                                    "div",
-                                    { className: buttonEnabled ? 'col-xs-6 col-sm-5 col-md-4 vcenter text-center' : 'col-xs-6 col-sm-5 col-md-4 vcenter text-center disabled', id: "submitVotesButtonWrapper" },
-                                    React.createElement(
-                                        "button",
-                                        { type: "submit", id: "submitVotesButton", className: buttonEnabled ? 'btn btn-lg' : 'btn btn-lg disabled', disabled: !buttonEnabled },
-                                        "Submit",
-                                        React.createElement(
-                                            "span",
-                                            { className: "hidden-xs" },
-                                            " Votes"
-                                        ),
-                                        "!"
-                                    )
-                                )
-                            )
-                        )
-                    ),
+                    React.createElement(SongListHeader, { upVotes: this.state.upVotes, maxUpVotes: this.state.maxUpVotes, enabled: buttonEnabled }),
                     React.createElement(
                         "div",
                         { className: "container" },
