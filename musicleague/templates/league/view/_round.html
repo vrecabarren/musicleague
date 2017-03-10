@@ -7,14 +7,14 @@
         <span alt="" class="round-status-icon{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}"></span>
         <div class="spacer visible-xs"></div>
     </div><!--
-    {% if round.is_complete or league.has_owner(user) %}
---><div class="col-xs-12 col-sm-5 linked vcenter" data-href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=round.id) }}">
-    {% else %}
 --><div class="col-xs-12 col-sm-5 vcenter">
-    {% endif %}
         <div class="row">
             <div class="text-center-xs">
+                {% if round.is_complete or league.has_owner(user) %}
+                <a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=round.id) }}" class="round-title{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ round.name }}</a>
+                {% else %}
                 <span class="round-title{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ round.name }}</span>
+                {% endif %}
             </div><!--
             --><div class="text-center-xs">
                 {% if round.is_complete %}
