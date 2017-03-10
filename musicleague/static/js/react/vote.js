@@ -351,9 +351,7 @@ var SongList = function (_React$Component6) {
 
         _this7.state = {
             upVotes: 0,
-            maxUpVotes: props.maxUpVotes,
             downVotes: 0,
-            maxDownVotes: props.maxDownVotes,
             votes: {}
         };
         return _this7;
@@ -363,12 +361,12 @@ var SongList = function (_React$Component6) {
         key: "render",
         value: function render() {
             var listHeader = null;
-            var headerEnabled = this.state.upVotes == this.state.maxUpVotes && (this.state.maxDownVotes == null || this.state.downVotes == this.state.maxDownVotes);
+            var headerEnabled = this.state.upVotes == this.props.maxUpVotes && (this.props.maxDownVotes == null || this.state.downVotes == this.props.maxDownVotes);
 
             if (this.props.maxDownVotes == null) {
-                listHeader = React.createElement(SongListHeader, { upVotes: this.state.upVotes, maxUpVotes: this.state.maxUpVotes, enabled: headerEnabled });
+                listHeader = React.createElement(SongListHeader, { upVotes: this.state.upVotes, maxUpVotes: this.props.maxUpVotes, enabled: headerEnabled });
             } else {
-                listHeader = React.createElement(SongListHeaderWithDownVotes, { upVotes: this.state.upVotes, maxUpVotes: this.state.maxUpVotes, downVotes: this.state.downVotes, maxDownVotes: this.state.maxDownVotes, enabled: headerEnabled });
+                listHeader = React.createElement(SongListHeaderWithDownVotes, { upVotes: this.state.upVotes, maxUpVotes: this.props.maxUpVotes, downVotes: this.state.downVotes, maxDownVotes: this.props.maxDownVotes, enabled: headerEnabled });
             }
 
             return React.createElement(
@@ -416,7 +414,7 @@ var SongList = function (_React$Component6) {
             } else {
                 var newUpVotesValue = this.state.upVotes + 1;
 
-                if (newUpVotesValue <= this.state.maxUpVotes) {
+                if (newUpVotesValue <= this.props.maxUpVotes) {
                     console.log("Up vote count " + newUpVotesValue + " within allowance. Will allow.");
                     var newVotesState = this.state.votes;
                     newVotesState[uri] = newPointValue;
@@ -445,7 +443,7 @@ var SongList = function (_React$Component6) {
             } else {
                 var newDownVotesValue = this.state.downVotes + 1;
 
-                if (newDownVotesValue <= this.state.maxDownVotes) {
+                if (newDownVotesValue <= this.props.maxDownVotes) {
                     console.log("Down vote count " + newDownVotesValue + " within allowance. Will allow.");
                     var newVotesState = this.state.votes;
                     newVotesState[uri] = newPointValue;
