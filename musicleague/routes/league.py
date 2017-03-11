@@ -73,7 +73,8 @@ def get_create_league():
 def post_create_league():
     name = request.form.get('league-name')
     num_tracks = request.form.get('tracks-submitted')
-    bank_size = request.form.get('point-bank-size')
+    upvote_size = request.form.get('point-bank-size')
+    downvote_size = request.form.get('downvote-bank-size')
 
     user_ids = json.loads(request.form.get('added-members', []))
     members = [get_user(uid) for uid in user_ids]
@@ -84,7 +85,8 @@ def post_create_league():
 
     league = create_league(g.user, name=name, users=members)
     league.preferences.track_count = int(num_tracks)
-    league.preferences.point_bank_size = int(bank_size)
+    league.preferences.point_bank_size = int(upvote_size)
+    league.preferences.downvote_bank_size = int(downvote_size)
 
     for email in emails:
         add_user(league, email, notify=True)
@@ -128,7 +130,8 @@ def get_manage_league(league_id):
 def post_manage_league(league_id):
     name = request.form.get('league-name')
     num_tracks = request.form.get('tracks-submitted')
-    bank_size = request.form.get('point-bank-size')
+    upvote_size = request.form.get('point-bank-size')
+    downvote_size = request.form.get('downvote-bank-size')
 
     user_ids = json.loads(request.form.get('added-members', []))
     added_members = [get_user(uid) for uid in user_ids]
@@ -142,7 +145,8 @@ def post_manage_league(league_id):
     league = get_league(league_id)
     league.preferences.name = name
     league.preferences.track_count = int(num_tracks)
-    league.preferences.point_bank_size = int(bank_size)
+    league.preferences.point_bank_size = int(upvote_size)
+    league.proferences.downvote_bank_size = int(downvote_size)
     league.users.extend(added_members)
 
     for email in emails:

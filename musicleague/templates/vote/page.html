@@ -271,7 +271,7 @@
     ReactDOM.render(
         React.createElement(SongList, {
             uris: {{ tracks_by_uri.keys()|tojson|safe }},
-            maxDownVotes: {{ 2|tojson|safe }},
+            maxDownVotes: {{ 0|tojson|safe }},
             maxUpVotes: {{ league.preferences.point_bank_size|tojson|safe }}
         }),
         document.getElementById('mountVote')
