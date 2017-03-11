@@ -18,10 +18,11 @@
 .songListHeader .row { padding: 0; }
 
 .songListHeader .progressWrapper {
-    display: table;
-    width: 80%;
+    display: inline-table;
+    min-width: 75%;
 }
 .songListHeader .visible-xs .progressWrapper {
+    display: table;
     width: 100%;
 }
 
@@ -33,7 +34,6 @@
 }
 .songListHeader .visible-xs .progressWrapper > .progressIndicator {
     font-size: 20px;
-    line-height: 24px;
 }
 
 .songListHeader .progressWrapper > .progressIndicator > .numSpent,
@@ -41,7 +41,7 @@
     display: inline-block;
     font-size: 50px;
     line-height: 50px;
-    padding: 0 5px;
+    padding: 0;
     vertical-align: middle;
 }
 .songListHeader .visible-xs .progressWrapper > .progressIndicator > .numSpent,
@@ -151,6 +151,7 @@
     background-color: #e1e1e1;
     border-radius: 8px;
     color: #01249A;
+    min-height: 100px;
     padding: 20px;
 }
 .song .visible-xs .voteControl {
@@ -195,6 +196,7 @@
 }
 
 .song .voteControl > .voteControlInner > .pointCount {
+    color: #02B8EF;
     display: table-cell;
     font-family: 'Cubano', sans-serif;
     font-size: 50px;
@@ -202,6 +204,10 @@
     line-height: 50px;
     text-align: center;
     vertical-align: middle;
+}
+.song .voteControl.downVoted > .voteControlInner > .pointCount,
+.song .voteControl.upVoted > .voteControlInner > .pointCount {
+    color: #FFFFFF;
 }
 
 .song .visible-xs .voteControl > .voteControlInner > .pointCount {

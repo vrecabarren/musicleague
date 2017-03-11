@@ -29,7 +29,7 @@ var VoteControl = function (_React$Component) {
             var stateClass = this.state.points < 0 ? "downVoted" : this.state.points > 0 ? "upVoted" : "";
             return React.createElement(
                 "div",
-                { className: "col-sm-5 col-md-4 col-height voteControl" + " " + stateClass },
+                { className: "col-sm-4 col-md-4 col-height voteControl" + " " + stateClass },
                 React.createElement(
                     "div",
                     { className: "voteControlInner" },
@@ -148,7 +148,7 @@ var SongInfo = function (_React$Component2) {
         value: function render() {
             return React.createElement(
                 "div",
-                { className: "col-sm-7 col-md-8 songInfo" },
+                { className: "col-sm-8 col-md-8 songInfo" },
                 React.createElement("img", { src: this.state.track.album.images[1].url, className: "img img-rounded" }),
                 React.createElement(
                     "div",
@@ -318,7 +318,7 @@ var SongListHeader = function (_React$Component4) {
                                 ),
                                 React.createElement(
                                     "div",
-                                    { className: "col-xs-6 col-sm-3 col-md-4 vcenter text-center" },
+                                    { className: "col-xs-6 col-sm-4 col-md-4 vcenter text-center" },
                                     React.createElement(
                                         "div",
                                         { className: "progressWrapper" },
@@ -346,7 +346,7 @@ var SongListHeader = function (_React$Component4) {
                                 ),
                                 React.createElement(
                                     "div",
-                                    { className: this.props.enabled ? 'col-xs-6 col-sm-5 col-md-4 vcenter text-center' : 'col-xs-6 col-sm-5 col-md-4 vcenter text-center disabled', id: "submitVotesButtonWrapper" },
+                                    { className: this.props.enabled ? 'col-xs-6 col-sm-4 col-md-4 vcenter text-center' : 'col-xs-6 col-sm-4 col-md-4 vcenter text-center disabled', id: "submitVotesButtonWrapper" },
                                     React.createElement(
                                         "button",
                                         { type: "submit", id: "submitVotesButton", className: this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled', disabled: !this.props.enabled },
@@ -427,7 +427,7 @@ var SongListHeaderMobile = function (_SongListHeader) {
                                 ),
                                 React.createElement(
                                     "div",
-                                    { className: this.props.enabled ? 'col-xs-6 vcenter text-center' : 'col-xs-6 col-sm-5 col-md-4 vcenter text-center disabled', id: "submitVotesButtonWrapper" },
+                                    { className: this.props.enabled ? 'col-xs-6 vcenter text-center' : 'col-xs-6 vcenter text-center disabled', id: "submitVotesButtonWrapper" },
                                     React.createElement(
                                         "button",
                                         { type: "submit", id: "submitVotesButton", className: this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled', disabled: !this.props.enabled },
@@ -471,79 +471,83 @@ var SongListHeaderWithDownVotes = function (_React$Component5) {
                     { className: "container" },
                     React.createElement(
                         "div",
-                        { className: "row" },
+                        { className: "hidden-xs" },
                         React.createElement(
                             "div",
-                            { className: "hidden-xs" },
+                            { className: "row" },
                             React.createElement(
                                 "div",
-                                { className: "col-xs-6 col-ms-3 col-md-4 vcenter text-center" },
+                                { className: "row-height" },
                                 React.createElement(
                                     "div",
-                                    { className: "progressWrapper" },
-                                    React.createElement(
-                                        "span",
-                                        { className: "progressIndicator" },
-                                        React.createElement(
-                                            "span",
-                                            { className: "numSpent" },
-                                            this.props.upVotes > 9 ? "" + this.props.upVotes : "0" + this.props.upVotes
-                                        ),
-                                        " of ",
-                                        React.createElement(
-                                            "span",
-                                            { className: "maxVotes" },
-                                            this.props.maxUpVotes > 9 ? "" + this.props.maxUpVotes : "0" + this.props.maxUpVotes
-                                        )
-                                    ),
+                                    { className: "col-sm-4 col-md-4 col-height vcenter text-center" },
                                     React.createElement(
                                         "div",
-                                        { className: "statusIconWrapper" },
-                                        React.createElement("span", { className: "statusIcon upVote" })
+                                        { className: "progressWrapper" },
+                                        React.createElement(
+                                            "span",
+                                            { className: "progressIndicator" },
+                                            React.createElement(
+                                                "span",
+                                                { className: "numSpent" },
+                                                this.props.upVotes > 9 ? "" + this.props.upVotes : "0" + this.props.upVotes
+                                            ),
+                                            " of ",
+                                            React.createElement(
+                                                "span",
+                                                { className: "maxVotes" },
+                                                this.props.maxUpVotes > 9 ? "" + this.props.maxUpVotes : "0" + this.props.maxUpVotes
+                                            )
+                                        ),
+                                        React.createElement(
+                                            "div",
+                                            { className: "statusIconWrapper" },
+                                            React.createElement("span", { className: "statusIcon upVote" })
+                                        )
                                     )
-                                )
-                            ),
-                            React.createElement(
-                                "div",
-                                { className: "col-xs-6 col-ms-3 col-md-4 vcenter text-center" },
+                                ),
                                 React.createElement(
                                     "div",
-                                    { className: "progressWrapper" },
-                                    React.createElement(
-                                        "span",
-                                        { className: "progressIndicator" },
-                                        React.createElement(
-                                            "span",
-                                            { className: "numSpent" },
-                                            this.props.downVotes > 9 ? "" + this.props.downVotes : "0" + this.props.downVotes
-                                        ),
-                                        " of ",
-                                        React.createElement(
-                                            "span",
-                                            { className: "maxVotes" },
-                                            this.props.maxDownVotes > 9 ? "" + this.props.maxDownVotes : "0" + this.props.maxDownVotes
-                                        )
-                                    ),
+                                    { className: "col-sm-4 col-md-4 col-height vcenter text-center" },
                                     React.createElement(
                                         "div",
-                                        { className: "statusIconWrapper" },
-                                        React.createElement("span", { className: "statusIcon downVote" })
+                                        { className: "progressWrapper" },
+                                        React.createElement(
+                                            "span",
+                                            { className: "progressIndicator" },
+                                            React.createElement(
+                                                "span",
+                                                { className: "numSpent" },
+                                                this.props.downVotes > 9 ? "" + this.props.downVotes : "0" + this.props.downVotes
+                                            ),
+                                            " of ",
+                                            React.createElement(
+                                                "span",
+                                                { className: "maxVotes" },
+                                                this.props.maxDownVotes > 9 ? "" + this.props.maxDownVotes : "0" + this.props.maxDownVotes
+                                            )
+                                        ),
+                                        React.createElement(
+                                            "div",
+                                            { className: "statusIconWrapper" },
+                                            React.createElement("span", { className: "statusIcon downVote" })
+                                        )
                                     )
-                                )
-                            ),
-                            React.createElement(
-                                "div",
-                                { className: this.props.enabled ? 'col-xs-6 col-sm-5 col-md-4 vcenter text-center' : 'col-xs-6 col-sm-5 col-md-4 vcenter text-center disabled', id: "submitVotesButtonWrapper" },
+                                ),
                                 React.createElement(
-                                    "button",
-                                    { type: "submit", id: "submitVotesButton", className: this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled', disabled: !this.props.enabled },
-                                    "Submit",
+                                    "div",
+                                    { className: this.props.enabled ? 'col-sm-4 col-md-4 col-height vcenter text-center' : 'col-sm-4 col-md-4 col-height vcenter text-center disabled', id: "submitVotesButtonWrapper" },
                                     React.createElement(
-                                        "span",
-                                        { className: "hidden-xs" },
-                                        " Votes"
-                                    ),
-                                    "!"
+                                        "button",
+                                        { type: "submit", id: "submitVotesButton", className: this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled', disabled: !this.props.enabled },
+                                        "Submit",
+                                        React.createElement(
+                                            "span",
+                                            { className: "hidden-xs" },
+                                            " Votes"
+                                        ),
+                                        "!"
+                                    )
                                 )
                             )
                         )
