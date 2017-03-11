@@ -686,9 +686,9 @@ var SongList = function (_React$Component6) {
         value: function render() {
             var listHeader = null;
             var mobileListHeader = null;
-            var headerEnabled = this.state.upVotes == this.props.maxUpVotes && (this.props.maxDownVotes == null || this.state.downVotes == this.props.maxDownVotes);
+            var headerEnabled = this.state.upVotes == this.props.maxUpVotes && (!this.props.maxDownVotes || this.state.downVotes == this.props.maxDownVotes);
 
-            if (this.props.maxDownVotes == null) {
+            if (!this.props.maxDownVotes) {
                 listHeader = React.createElement(SongListHeader, { upVotes: this.state.upVotes, maxUpVotes: this.props.maxUpVotes, enabled: headerEnabled });
                 mobileListHeader = React.createElement(SongListHeaderMobile, { upVotes: this.state.upVotes, maxUpVotes: this.props.maxUpVotes, enabled: headerEnabled });
             } else {

@@ -295,9 +295,9 @@ class SongList extends React.Component {
     render() {
         var listHeader = null;
         var mobileListHeader = null;
-        var headerEnabled = (this.state.upVotes == this.props.maxUpVotes) && (this.props.maxDownVotes == null || (this.state.downVotes == this.props.maxDownVotes));
+        var headerEnabled = (this.state.upVotes == this.props.maxUpVotes) && (!this.props.maxDownVotes || (this.state.downVotes == this.props.maxDownVotes));
 
-        if (this.props.maxDownVotes == null) {
+        if (!this.props.maxDownVotes) {
             listHeader = <SongListHeader upVotes={this.state.upVotes} maxUpVotes={this.props.maxUpVotes} enabled={headerEnabled}/>;
             mobileListHeader = <SongListHeaderMobile upVotes={this.state.upVotes} maxUpVotes={this.props.maxUpVotes} enabled={headerEnabled}/>;
         } else {
