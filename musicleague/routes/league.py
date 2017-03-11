@@ -146,7 +146,7 @@ def post_manage_league(league_id):
     league.preferences.name = name
     league.preferences.track_count = int(num_tracks)
     league.preferences.point_bank_size = int(upvote_size)
-    league.proferences.downvote_bank_size = int(downvote_size)
+    league.preferences.downvote_bank_size = int(downvote_size)
     league.users.extend(added_members)
 
     for email in emails:
