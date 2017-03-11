@@ -15,6 +15,7 @@ from musicleague.routes.decorators import admin_required
 from musicleague.routes.decorators import league_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
+from musicleague.scoring.league import calculate_league_scoreboard
 from musicleague.scoring.round import calculate_round_scoreboard
 from musicleague.submission_period import create_submission_period
 from musicleague.submission_period import get_submission_period
@@ -136,4 +137,5 @@ def view_submission_period(league_id, submission_period_id):
 def score_round(league_id, submission_period_id):
     submission_period = get_submission_period(submission_period_id)
     submission_period = calculate_round_scoreboard(submission_period)
+    calculate_league_scoreboard(submission_period.league)
     return str(len(submission_period.scoreboard)), 200
