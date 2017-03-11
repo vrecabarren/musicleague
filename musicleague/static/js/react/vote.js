@@ -29,7 +29,7 @@ var VoteControl = function (_React$Component) {
             var stateClass = this.state.points < 0 ? "downVoted" : this.state.points > 0 ? "upVoted" : "";
             return React.createElement(
                 "div",
-                { className: "col-md-4 voteControl" + " " + stateClass },
+                { className: "col-sm-5 col-md-4 col-height voteControl" + " " + stateClass },
                 React.createElement(
                     "div",
                     { className: "voteControlInner" },
@@ -75,33 +75,72 @@ var VoteControl = function (_React$Component) {
     return VoteControl;
 }(React.Component);
 
+var VoteControlMobile = function (_VoteControl) {
+    _inherits(VoteControlMobile, _VoteControl);
+
+    function VoteControlMobile() {
+        _classCallCheck(this, VoteControlMobile);
+
+        return _possibleConstructorReturn(this, (VoteControlMobile.__proto__ || Object.getPrototypeOf(VoteControlMobile)).apply(this, arguments));
+    }
+
+    _createClass(VoteControlMobile, [{
+        key: "render",
+        value: function render() {
+            var stateClass = this.state.points < 0 ? "downVoted" : this.state.points > 0 ? "upVoted" : "";
+            return React.createElement(
+                "div",
+                { className: "col-xs-6 col-height voteControl" + " " + stateClass },
+                React.createElement(
+                    "div",
+                    { className: "voteControlInner" },
+                    React.createElement("span", { className: "downButton", onClick: this.downVote.bind(this) }),
+                    React.createElement(
+                        "span",
+                        { className: "pointCount" },
+                        Math.abs(this.state.points)
+                    ),
+                    React.createElement("span", { className: "upButton", onClick: this.upVote.bind(this) })
+                ),
+                React.createElement(
+                    "div",
+                    { className: "statusIconWrapper" },
+                    React.createElement("span", { className: "statusIcon" })
+                )
+            );
+        }
+    }]);
+
+    return VoteControlMobile;
+}(VoteControl);
+
 var SongInfo = function (_React$Component2) {
     _inherits(SongInfo, _React$Component2);
 
     function SongInfo(props) {
         _classCallCheck(this, SongInfo);
 
-        var _this2 = _possibleConstructorReturn(this, (SongInfo.__proto__ || Object.getPrototypeOf(SongInfo)).call(this, props));
+        var _this3 = _possibleConstructorReturn(this, (SongInfo.__proto__ || Object.getPrototypeOf(SongInfo)).call(this, props));
 
-        _this2.state = {
+        _this3.state = {
             uri: props.uri,
             track: { name: '',
                 artists: [{ name: '' }],
                 album: { images: [{}, { url: '' }], name: '' }
             }
         };
-        return _this2;
+        return _this3;
     }
 
     _createClass(SongInfo, [{
         key: "componentDidMount",
         value: function componentDidMount() {
-            var _this3 = this;
+            var _this4 = this;
 
             // Get track object from Spotify API
             var trackId = this.state.uri.match(/spotify\:track\:([a-zA-Z0-9]{22})/)[1];
             axios.get('https://api.spotify.com/v1/tracks/' + trackId).then(function (res) {
-                _this3.setState({ track: res.data });
+                _this4.setState({ track: res.data });
             });
         }
     }, {
@@ -109,7 +148,7 @@ var SongInfo = function (_React$Component2) {
         value: function render() {
             return React.createElement(
                 "div",
-                { className: "col-md-8 songInfo" },
+                { className: "col-sm-7 col-md-8 songInfo" },
                 React.createElement("img", { src: this.state.track.album.images[1].url, className: "img img-rounded" }),
                 React.createElement(
                     "div",
@@ -138,6 +177,49 @@ var SongInfo = function (_React$Component2) {
     return SongInfo;
 }(React.Component);
 
+var SongInfoMobile = function (_SongInfo) {
+    _inherits(SongInfoMobile, _SongInfo);
+
+    function SongInfoMobile() {
+        _classCallCheck(this, SongInfoMobile);
+
+        return _possibleConstructorReturn(this, (SongInfoMobile.__proto__ || Object.getPrototypeOf(SongInfoMobile)).apply(this, arguments));
+    }
+
+    _createClass(SongInfoMobile, [{
+        key: "render",
+        value: function render() {
+            return React.createElement(
+                "div",
+                { className: "col-xs-6 col-height songInfo" },
+                React.createElement("img", { src: this.state.track.album.images[1].url, className: "img img-rounded" }),
+                React.createElement(
+                    "div",
+                    { className: "textInfo" },
+                    React.createElement(
+                        "span",
+                        { className: "trackName" },
+                        this.state.track.name
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "trackArtist" },
+                        "By ",
+                        this.state.track.artists[0].name
+                    ),
+                    React.createElement(
+                        "span",
+                        { className: "trackAlbum" },
+                        this.state.track.album.name
+                    )
+                )
+            );
+        }
+    }]);
+
+    return SongInfoMobile;
+}(SongInfo);
+
 var Song = function (_React$Component3) {
     _inherits(Song, _React$Component3);
 
@@ -153,14 +235,50 @@ var Song = function (_React$Component3) {
             return React.createElement(
                 "div",
                 { className: "song row" },
-                React.createElement(SongInfo, { uri: this.props.uri }),
-                React.createElement(VoteControl, { maxPoints: null, minPoints: null, uri: this.props.uri, onUpVote: this.props.onUpVote, onDownVote: this.props.onDownVote })
+                React.createElement(
+                    "div",
+                    { className: "hidden-xs" },
+                    React.createElement(SongInfo, { uri: this.props.uri }),
+                    React.createElement(VoteControl, { maxPoints: null, minPoints: null, uri: this.props.uri, onUpVote: this.props.onUpVote, onDownVote: this.props.onDownVote })
+                )
             );
         }
     }]);
 
     return Song;
 }(React.Component);
+
+var SongMobile = function (_Song) {
+    _inherits(SongMobile, _Song);
+
+    function SongMobile() {
+        _classCallCheck(this, SongMobile);
+
+        return _possibleConstructorReturn(this, (SongMobile.__proto__ || Object.getPrototypeOf(SongMobile)).apply(this, arguments));
+    }
+
+    _createClass(SongMobile, [{
+        key: "render",
+        value: function render() {
+            return React.createElement(
+                "div",
+                { className: "song row" },
+                React.createElement(
+                    "div",
+                    { className: "visible-xs" },
+                    React.createElement(
+                        "div",
+                        { className: "row-height" },
+                        React.createElement(SongInfoMobile, { uri: this.props.uri }),
+                        React.createElement(VoteControlMobile, { maxPoints: null, minPoints: null, uri: this.props.uri, onUpVote: this.props.onUpVote, onDownVote: this.props.onDownVote })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return SongMobile;
+}(Song);
 
 var SongListHeader = function (_React$Component4) {
     _inherits(SongListHeader, _React$Component4);
@@ -339,14 +457,14 @@ var SongList = function (_React$Component6) {
     function SongList(props) {
         _classCallCheck(this, SongList);
 
-        var _this7 = _possibleConstructorReturn(this, (SongList.__proto__ || Object.getPrototypeOf(SongList)).call(this, props));
+        var _this10 = _possibleConstructorReturn(this, (SongList.__proto__ || Object.getPrototypeOf(SongList)).call(this, props));
 
-        _this7.state = {
+        _this10.state = {
             upVotes: 0,
             downVotes: 0,
             votes: {}
         };
-        return _this7;
+        return _this10;
     }
 
     _createClass(SongList, [{
@@ -377,7 +495,12 @@ var SongList = function (_React$Component6) {
 
                             // TODO: Pass min/max points allowed per song, null if not set
                             this.props.uris.map(function (uri) {
-                                return React.createElement(Song, { uri: uri, onUpVote: this.onUpVote.bind(this), onDownVote: this.onDownVote.bind(this) });
+                                return React.createElement(
+                                    "div",
+                                    null,
+                                    React.createElement(Song, { uri: uri, onUpVote: this.onUpVote.bind(this), onDownVote: this.onDownVote.bind(this) }),
+                                    React.createElement(SongMobile, { uri: uri, onUpVote: this.onUpVote.bind(this), onDownVote: this.onDownVote.bind(this) })
+                                );
                             }.bind(this))
                         )
                     )

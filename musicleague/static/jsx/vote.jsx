@@ -10,7 +10,7 @@ class VoteControl extends React.Component {
     render() {
         var stateClass = (this.state.points < 0) ? "downVoted" : (this.state.points > 0) ? "upVoted" : "";
         return (
-            <div className={"col-md-4 voteControl" + " " + stateClass}>
+            <div className={"col-sm-5 col-md-4 col-height voteControl" + " " + stateClass}>
                 <div className="voteControlInner">
                     <span className="downButton" onClick={this.downVote.bind(this)}></span>
                     <span className="pointCount">{Math.abs(this.state.points)}</span>
@@ -46,6 +46,24 @@ class VoteControl extends React.Component {
     }
 }
 
+class VoteControlMobile extends VoteControl {
+    render() {
+        var stateClass = (this.state.points < 0) ? "downVoted" : (this.state.points > 0) ? "upVoted" : "";
+        return (
+            <div className={"col-xs-6 col-height voteControl" + " " + stateClass}>
+                <div className="voteControlInner">
+                    <span className="downButton" onClick={this.downVote.bind(this)}></span>
+                    <span className="pointCount">{Math.abs(this.state.points)}</span>
+                    <span className="upButton" onClick={this.upVote.bind(this)}></span>
+                </div>
+                <div className="statusIconWrapper">
+                    <span className="statusIcon"></span>
+                </div>
+            </div>
+        );
+    }
+}
+
 class SongInfo extends React.Component {
     constructor(props) {
         super(props);
@@ -68,7 +86,22 @@ class SongInfo extends React.Component {
 
     render() {
         return (
-            <div className="col-md-8 songInfo">
+            <div className="col-sm-7 col-md-8 songInfo">
+                <img src={this.state.track.album.images[1].url} className="img img-rounded"/>
+                <div className="textInfo">
+                    <span className="trackName">{this.state.track.name}</span>
+                    <span className="trackArtist">By {this.state.track.artists[0].name}</span>
+                    <span className="trackAlbum">{ this.state.track.album.name }</span>
+                </div>
+            </div>
+        );
+    }
+}
+
+class SongInfoMobile extends SongInfo {
+    render() {
+        return (
+            <div className="col-xs-6 col-height songInfo">
                 <img src={this.state.track.album.images[1].url} className="img img-rounded"/>
                 <div className="textInfo">
                     <span className="trackName">{this.state.track.name}</span>
@@ -84,8 +117,25 @@ class Song extends React.Component {
     render() {
         return (
             <div className="song row">
-                <SongInfo uri={this.props.uri}/>
-                <VoteControl maxPoints={null} minPoints={null} uri={this.props.uri} onUpVote={this.props.onUpVote} onDownVote={this.props.onDownVote}/>
+                <div className="hidden-xs">
+                    <SongInfo uri={this.props.uri}/>
+                    <VoteControl maxPoints={null} minPoints={null} uri={this.props.uri} onUpVote={this.props.onUpVote} onDownVote={this.props.onDownVote}/>
+                </div>
+            </div>
+         );
+    }
+}
+
+class SongMobile extends Song {
+    render() {
+        return (
+            <div className="song row">
+                <div className="visible-xs">
+                    <div className="row-height">
+                        <SongInfoMobile uri={this.props.uri}/>
+                        <VoteControlMobile maxPoints={null} minPoints={null} uri={this.props.uri} onUpVote={this.props.onUpVote} onDownVote={this.props.onDownVote}/>
+                    </div>
+                </div>
             </div>
          );
     }
@@ -179,7 +229,12 @@ class SongList extends React.Component {
                             {
                                 // TODO: Pass min/max points allowed per song, null if not set
                                 this.props.uris.map(function(uri) {
-                                    return <Song uri={uri} onUpVote={this.onUpVote.bind(this)} onDownVote={this.onDownVote.bind(this)}/>;
+                                    return (
+                                        <div>
+                                            <Song uri={uri} onUpVote={this.onUpVote.bind(this)} onDownVote={this.onDownVote.bind(this)}/>
+                                            <SongMobile uri={uri} onUpVote={this.onUpVote.bind(this)} onDownVote={this.onDownVote.bind(this)}/>
+                                        </div>
+                                    );
                                 }.bind(this))
                             }
                         </div>
