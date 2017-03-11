@@ -705,7 +705,7 @@ var SongList = function (_React$Component6) {
                 null,
                 React.createElement(
                     "form",
-                    { onSubmit: this.handleFormSubmission.bind(this) },
+                    { method: "post", onSubmit: this.handleFormSubmission.bind(this) },
                     listHeader,
                     mobileListHeader,
                     React.createElement("div", { style: { padding: "15px 0" } }),
@@ -726,15 +726,17 @@ var SongList = function (_React$Component6) {
                                 );
                             }.bind(this))
                         )
-                    )
+                    ),
+                    React.createElement("input", { type: "hidden", name: "votes", id: "votes" })
                 )
             );
         }
     }, {
         key: "handleFormSubmission",
         value: function handleFormSubmission() {
-            console.log("Form submitted: " + JSON.stringify(this.state.votes));
-            return false;
+            var votesJson = JSON.stringify(this.state.votes);
+            document.getElementById('votes').value = votesJson;
+            return true;
         }
     }, {
         key: "onUpVote",

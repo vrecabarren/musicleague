@@ -309,7 +309,7 @@ class SongList extends React.Component {
 
         return (
             <div>
-                <form onSubmit={this.handleFormSubmission.bind(this)}>
+                <form method="post" onSubmit={this.handleFormSubmission.bind(this)}>
                     {listHeader}
                     {mobileListHeader}
                     <div style={{padding: "15px 0"}}></div>
@@ -328,14 +328,16 @@ class SongList extends React.Component {
                             }
                         </div>
                     </div>
+                    <input type="hidden" name="votes" id="votes"/>
                 </form>
             </div>
         );
     }
 
     handleFormSubmission() {
-        console.log("Form submitted: " + JSON.stringify(this.state.votes));
-        return false;
+        var votesJson = JSON.stringify(this.state.votes);
+        document.getElementById('votes').value = votesJson;
+        return true;
     }
 
     onUpVote(uri, newPointValue) {
