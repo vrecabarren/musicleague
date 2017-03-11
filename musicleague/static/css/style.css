@@ -82,7 +82,7 @@ body {
 }
 
 #nav-bar .account-divider {
-    display: inline-block;;
+    display: inline-block;
     margin-left: 25px;
     margin-right: 25px;
 }
@@ -132,7 +132,7 @@ body {
 #nav-bar .account-wrapper .dropdown-menu > li > a > #logout-icon { background: url("/static/icons/logout_icon.svg"); }
 #nav-bar .account-wrapper .dropdown-menu > li > a:hover > #logout-icon { background: url("/static/icons/logout_icon_blue.svg"); }
 
-#nav-bar .account-wrapper .dropdown-menu > li > a > #admin-icon { background: url("/static/icons/admin_icon.svg"); height: 9px;;}
+#nav-bar .account-wrapper .dropdown-menu > li > a > #admin-icon { background: url("/static/icons/admin_icon.svg"); height: 9px; }
 #nav-bar .account-wrapper .dropdown-menu > li > a:hover > #admin-icon { background: url("/static/icons/admin_icon_blue.svg"); }
 
 #nav-bar .account-wrapper .dropdown-menu > li > a:hover {
