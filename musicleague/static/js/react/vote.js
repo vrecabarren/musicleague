@@ -29,7 +29,7 @@ var VoteControl = function (_React$Component) {
             var stateClass = this.state.points < 0 ? "downVoted" : this.state.points > 0 ? "upVoted" : "";
             return React.createElement(
                 "div",
-                { className: "col-sm-4 col-md-4 col-height voteControl" + " " + stateClass },
+                { className: "col-sm-4 col-md-4 col-height col-middle voteControl" + " " + stateClass },
                 React.createElement(
                     "div",
                     { className: "voteControlInner" },
@@ -148,7 +148,7 @@ var SongInfo = function (_React$Component2) {
         value: function render() {
             return React.createElement(
                 "div",
-                { className: "col-sm-8 col-md-8 songInfo" },
+                { className: "col-sm-8 col-md-8 col-height col-middle songInfo" },
                 React.createElement("img", { src: this.state.track.album.images[1].url, className: "img img-rounded" }),
                 React.createElement(
                     "div",
@@ -234,12 +234,16 @@ var Song = function (_React$Component3) {
         value: function render() {
             return React.createElement(
                 "div",
-                { className: "song row" },
+                { className: "hidden-xs" },
                 React.createElement(
                     "div",
-                    { className: "hidden-xs" },
-                    React.createElement(SongInfo, { uri: this.props.uri }),
-                    React.createElement(VoteControl, { maxPoints: null, minPoints: null, uri: this.props.uri, onUpVote: this.props.onUpVote, onDownVote: this.props.onDownVote })
+                    { className: "song full row" },
+                    React.createElement(
+                        "div",
+                        { className: "row-height" },
+                        React.createElement(SongInfo, { uri: this.props.uri }),
+                        React.createElement(VoteControl, { maxPoints: null, minPoints: null, uri: this.props.uri, onUpVote: this.props.onUpVote, onDownVote: this.props.onDownVote })
+                    )
                 )
             );
         }
@@ -262,10 +266,10 @@ var SongMobile = function (_Song) {
         value: function render() {
             return React.createElement(
                 "div",
-                { className: "song row" },
+                { className: "visible-xs" },
                 React.createElement(
                     "div",
-                    { className: "visible-xs" },
+                    { className: "song mobile row" },
                     React.createElement(
                         "div",
                         { className: "row-height" },
@@ -704,6 +708,7 @@ var SongList = function (_React$Component6) {
                     { onSubmit: this.handleFormSubmission.bind(this) },
                     listHeader,
                     mobileListHeader,
+                    React.createElement("div", { style: { padding: "15px 0" } }),
                     React.createElement(
                         "div",
                         { className: "songList" },

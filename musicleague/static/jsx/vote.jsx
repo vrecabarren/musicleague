@@ -10,7 +10,7 @@ class VoteControl extends React.Component {
     render() {
         var stateClass = (this.state.points < 0) ? "downVoted" : (this.state.points > 0) ? "upVoted" : "";
         return (
-            <div className={"col-sm-4 col-md-4 col-height voteControl" + " " + stateClass}>
+            <div className={"col-sm-4 col-md-4 col-height col-middle voteControl" + " " + stateClass}>
                 <div className="voteControlInner">
                     <span className="downButton" onClick={this.downVote.bind(this)}></span>
                     <span className="pointCount">{Math.abs(this.state.points)}</span>
@@ -86,7 +86,7 @@ class SongInfo extends React.Component {
 
     render() {
         return (
-            <div className="col-sm-8 col-md-8 songInfo">
+            <div className="col-sm-8 col-md-8 col-height col-middle songInfo">
                 <img src={this.state.track.album.images[1].url} className="img img-rounded"/>
                 <div className="textInfo">
                     <span className="trackName">{this.state.track.name}</span>
@@ -116,10 +116,12 @@ class SongInfoMobile extends SongInfo {
 class Song extends React.Component {
     render() {
         return (
-            <div className="song row">
-                <div className="hidden-xs">
-                    <SongInfo uri={this.props.uri}/>
-                    <VoteControl maxPoints={null} minPoints={null} uri={this.props.uri} onUpVote={this.props.onUpVote} onDownVote={this.props.onDownVote}/>
+            <div className="hidden-xs">
+                <div className="song full row">
+                    <div className="row-height">
+                        <SongInfo uri={this.props.uri}/>
+                        <VoteControl maxPoints={null} minPoints={null} uri={this.props.uri} onUpVote={this.props.onUpVote} onDownVote={this.props.onDownVote}/>
+                    </div>
                 </div>
             </div>
          );
@@ -129,8 +131,8 @@ class Song extends React.Component {
 class SongMobile extends Song {
     render() {
         return (
-            <div className="song row">
-                <div className="visible-xs">
+            <div className="visible-xs">
+                <div className="song mobile row">
                     <div className="row-height">
                         <SongInfoMobile uri={this.props.uri}/>
                         <VoteControlMobile maxPoints={null} minPoints={null} uri={this.props.uri} onUpVote={this.props.onUpVote} onDownVote={this.props.onDownVote}/>
@@ -310,6 +312,7 @@ class SongList extends React.Component {
                 <form onSubmit={this.handleFormSubmission.bind(this)}>
                     {listHeader}
                     {mobileListHeader}
+                    <div style={{padding: "15px 0"}}></div>
                     <div className="songList">
                         <div className="container">
                             {

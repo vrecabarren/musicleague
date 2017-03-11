@@ -104,11 +104,8 @@
 }
 
 .song {
-    margin-bottom: 15px;
     margin-top: 15px;
-}
-.song:first {
-    margin-top: 30px;
+    margin-bottom: 15px;
 }
 
 .song .songInfo > img {
@@ -119,7 +116,7 @@
     vertical-align: top;
     width: 100px;
 }
-.song .visible-xs .songInfo > img {
+.visible-xs .song .songInfo > img {
     display: block;
     float: none;
     height: 50px;
@@ -154,7 +151,7 @@
     min-height: 100px;
     padding: 20px;
 }
-.song .visible-xs .voteControl {
+.visible-xs .song .voteControl {
     padding: 5px;
 }
 
@@ -166,6 +163,7 @@
 
 .song .voteControl > .voteControlInner {
     display: table;
+    vertical-align: middle;
     width: 100%;
 }
 
@@ -210,7 +208,7 @@
     color: #FFFFFF;
 }
 
-.song .visible-xs .voteControl > .voteControlInner > .pointCount {
+.visible-xs .song .voteControl > .voteControlInner > .pointCount {
     font-size: 40px;
     line-height: 50px;
 }
@@ -221,30 +219,30 @@
     vertical-align: middle;
     width: 70px;
 }
-.song .visible-xs .voteControl > .statusIconWrapper {
+.visible-xs .song .voteControl > .statusIconWrapper {
     display: block;
     text-align: center;
     vertical-align: middle;
 }
 
 .song .voteControl > .voteControlInner > .statusIconWrapper > .statusIcon,
-.song .visible-xs .voteControl > .statusIconWrapper > .statusIcon {
+.visible-xs .song .voteControl > .statusIconWrapper > .statusIcon {
     background: url('/static/icons/novote.svg');
     display: inline-block;
     height: 50px;
     vertical-align: middle;
     width: 50px;
 }
-.song .visible-xs .voteControl > .statusIconWrapper > .statusIcon {
+.visible-xs .song .voteControl > .statusIconWrapper > .statusIcon {
     margin-bottom: -10px;
     margin-top: 10px;
 }
 .song .voteControl.downVoted > .voteControlInner > .statusIconWrapper > .statusIcon,
-.song .visible-xs .voteControl.downVoted > .statusIconWrapper > .statusIcon {
+.visible-xs .song .voteControl.downVoted > .statusIconWrapper > .statusIcon {
     background: url('/static/icons/downvote.svg');
 }
 .song .voteControl.upVoted > .voteControlInner > .statusIconWrapper > .statusIcon,
-.song .visible-xs .voteControl.upVoted > .statusIconWrapper > .statusIcon {
+.visible-xs .song .voteControl.upVoted > .statusIconWrapper > .statusIcon {
     background: url('/static/icons/upvote.svg');
 }
 </style>
