@@ -11,7 +11,7 @@
     font-family: 'Cubano', sans-serif;
     font-size: 20px;
     line-height: 24px;
-    margin-bottom: 30px;
+    /*margin-bottom: 30px;*/
     padding: 0;
     text-align: center;
 }
@@ -19,7 +19,11 @@
 .songListHeader .row { padding: 0; }
 
 .songListHeader .progressWrapper {
-    display: inline-table;
+    display: table;
+    width: 80%;
+}
+.songListHeader .visible-xs .progressWrapper {
+    width: 100%;
 }
 
 .songListHeader .progressWrapper > .progressIndicator {
@@ -28,28 +32,57 @@
     line-height: 30px;
     vertical-align: middle;
 }
+.songListHeader .visible-xs .progressWrapper > .progressIndicator {
+    font-size: 20px;
+    line-height: 24px;
+}
 
 .songListHeader .progressWrapper > .progressIndicator > .numSpent,
 .songListHeader .progressWrapper > .progressIndicator > .maxVotes {
     display: inline-block;
     font-size: 50px;
     line-height: 50px;
-    padding: 0 10px;
+    padding: 0 5px;
     vertical-align: middle;
 }
+.songListHeader .visible-xs .progressWrapper > .progressIndicator > .numSpent,
+.songListHeader .visible-xs .progressWrapper > .progressIndicator > .maxVotes {
+    font-size: 30px;
+    line-height: 30px;
+    padding: 0;
+}
+
 .songListHeader .progressWrapper > .progressIndicator > .numSpent {
     color: #F8C62C;
 }
 
-.songListHeader .progressWrapper > .statusIcon.upVote,
-.songListHeader .progressWrapper > .statusIcon.downVote {
-    background: url('/static/icons/upvote.svg');
+.songListHeader .progressWrapper > .statusIconWrapper {
     display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+    width: 40px;
+}
+.songListHeader .visible-xs .progressWrapper > .statusIconWrapper {
+    display: table-cell;
+    height: 42px;
+}
+
+.songListHeader .progressWrapper > .statusIconWrapper > .statusIcon {
+    display: inline-block;
     height: 50px;
     vertical-align: middle;
     width: 50px;
 }
-.songListHeader .progressWrapper > .statusIcon.downVote {
+.songListHeader .visible-xs .progressWrapper > .statusIconWrapper > .statusIcon {
+    height: 30px;
+    width: 30px;
+}
+
+.songListHeader .progressWrapper > .statusIconWrapper > .statusIcon.upVote,
+.songListHeader .progressWrapper > .statusIconWrapper > .statusIcon.downVote {
+    background: url('/static/icons/upvote.svg');
+}
+.songListHeader .progressWrapper > .statusIconWrapper > .statusIcon.downVote {
     background: url('/static/icons/downvote.svg');
 }
 
@@ -224,7 +257,7 @@
     ReactDOM.render(
         React.createElement(SongList, {
             uris: {{ tracks_by_uri.keys()|tojson|safe }},
-            maxDownVotes: {{ 1|tojson|safe }},
+            maxDownVotes: {{ 2|tojson|safe }},
             maxUpVotes: {{ league.preferences.point_bank_size|tojson|safe }}
         }),
         document.getElementById('mountVote')

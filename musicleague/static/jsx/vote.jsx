@@ -147,19 +147,55 @@ class SongListHeader extends React.Component {
             <div className="songListHeader">
                 <div className="container">
                     <div className="row">
-                        <div className="hidden-xs col-sm-4 col-md-4 vcenter text-center">
-                            <span>Choose A Song And Add Points To Begin!</span>
-                        </div>
-                        <div className="col-xs-6 col-ms-3 col-md-4 vcenter text-center">
-                            <div className="progressWrapper">
-                                <span className="progressIndicator">
-                                    <span className="numSpent">{this.props.upVotes > 9 ? ""+this.props.upVotes: "0"+this.props.upVotes}</span> of <span className="maxVotes">{this.props.maxUpVotes > 9 ? ""+this.props.maxUpVotes: "0"+this.props.maxUpVotes}</span>
-                                </span>
-                                <span className="statusIcon upVote"></span>
+                        <div className="hidden-xs">
+                            <div className="row-height">
+                                <div className="hidden-xs col-sm-4 col-md-4 vcenter text-center">
+                                    <span>Choose A Song And Add Points To Begin!</span>
+                                </div>
+                                <div className="col-xs-6 col-sm-3 col-md-4 vcenter text-center">
+                                    <div className="progressWrapper">
+                                        <span className="progressIndicator">
+                                            <span className="numSpent">{this.props.upVotes > 9 ? ""+this.props.upVotes: "0"+this.props.upVotes}</span> of <span className="maxVotes">{this.props.maxUpVotes > 9 ? ""+this.props.maxUpVotes: "0"+this.props.maxUpVotes}</span>
+                                        </span>
+                                        <div className="statusIconWrapper">
+                                            <span className="statusIcon upVote"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={this.props.enabled ? 'col-xs-6 col-sm-5 col-md-4 vcenter text-center' : 'col-xs-6 col-sm-5 col-md-4 vcenter text-center disabled'} id="submitVotesButtonWrapper">
+                                    <button type="submit" id="submitVotesButton" className={this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled'} disabled={!this.props.enabled}>Submit<span className="hidden-xs"> Votes</span>!</button>
+                                </div>
                             </div>
                         </div>
-                        <div className={this.props.enabled ? 'col-xs-6 col-sm-5 col-md-4 vcenter text-center' : 'col-xs-6 col-sm-5 col-md-4 vcenter text-center disabled'} id="submitVotesButtonWrapper">
-                            <button type="submit" id="submitVotesButton" className={this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled'} disabled={!this.props.enabled}>Submit<span className="hidden-xs"> Votes</span>!</button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+class SongListHeaderMobile extends SongListHeader {
+    render() {
+        return (
+            <div className="songListHeader">
+                <div className="container">
+                    <div className="row">
+                        <div className="visible-xs">
+                            <div className="row-height">
+                                <div className="col-xs-6 vcenter text-center">
+                                    <div className="progressWrapper">
+                                        <span className="progressIndicator">
+                                            <span className="numSpent">{this.props.upVotes > 9 ? ""+this.props.upVotes: "0"+this.props.upVotes}</span> of <span className="maxVotes">{this.props.maxUpVotes > 9 ? ""+this.props.maxUpVotes: "0"+this.props.maxUpVotes}</span>
+                                        </span>
+                                        <div className="statusIconWrapper">
+                                            <span className="statusIcon upVote"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={this.props.enabled ? 'col-xs-6 vcenter text-center' : 'col-xs-6 col-sm-5 col-md-4 vcenter text-center disabled'} id="submitVotesButtonWrapper">
+                                    <button type="submit" id="submitVotesButton" className={this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled'} disabled={!this.props.enabled}>Submit<span className="hidden-xs"> Votes</span>!</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -174,24 +210,66 @@ class SongListHeaderWithDownVotes extends React.Component {
             <div className="songListHeader">
                 <div className="container">
                     <div className="row">
-                        <div className="col-xs-6 col-ms-3 col-md-4 vcenter text-center">
-                            <div className="progressWrapper">
-                                <span className="progressIndicator">
-                                    <span className="numSpent">{this.props.upVotes > 9 ? ""+this.props.upVotes: "0"+this.props.upVotes}</span> of <span className="maxVotes">{this.props.maxUpVotes > 9 ? ""+this.props.maxUpVotes: "0"+this.props.maxUpVotes}</span>
-                                </span>
-                                <span className="statusIcon upVote"></span>
+                        <div className="hidden-xs">
+                            <div className="col-xs-6 col-ms-3 col-md-4 vcenter text-center">
+                                <div className="progressWrapper">
+                                    <span className="progressIndicator">
+                                        <span className="numSpent">{this.props.upVotes > 9 ? ""+this.props.upVotes: "0"+this.props.upVotes}</span> of <span className="maxVotes">{this.props.maxUpVotes > 9 ? ""+this.props.maxUpVotes: "0"+this.props.maxUpVotes}</span>
+                                    </span>
+                                    <div className="statusIconWrapper">
+                                        <span className="statusIcon upVote"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-xs-6 col-ms-3 col-md-4 vcenter text-center">
+                                <div className="progressWrapper">
+                                    <span className="progressIndicator">
+                                        <span className="numSpent">{this.props.downVotes > 9 ? ""+this.props.downVotes: "0"+this.props.downVotes}</span> of <span className="maxVotes">{this.props.maxDownVotes > 9 ? ""+this.props.maxDownVotes: "0"+this.props.maxDownVotes}</span>
+                                    </span>
+                                    <div className="statusIconWrapper">
+                                        <span className="statusIcon downVote"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={this.props.enabled ? 'col-xs-6 col-sm-5 col-md-4 vcenter text-center' : 'col-xs-6 col-sm-5 col-md-4 vcenter text-center disabled'} id="submitVotesButtonWrapper">
+                                <button type="submit" id="submitVotesButton" className={this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled'} disabled={!this.props.enabled}>Submit<span className="hidden-xs"> Votes</span>!</button>
                             </div>
                         </div>
-                        <div className="col-xs-6 col-ms-3 col-md-4 vcenter text-center">
-                            <div className="progressWrapper">
-                                <span className="progressIndicator">
-                                    <span className="numSpent">{this.props.downVotes > 9 ? ""+this.props.downVotes: "0"+this.props.downVotes}</span> of <span className="maxVotes">{this.props.maxDownVotes > 9 ? ""+this.props.maxDownVotes: "0"+this.props.maxDownVotes}</span>
-                                </span>
-                                <span className="statusIcon downVote"></span>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+class SongListHeaderWithDownVotesMobile extends SongListHeaderWithDownVotes {
+    render() {
+        return (
+            <div className="songListHeader">
+                <div className="container">
+                    <div className="row">
+                        <div className="visible-xs">
+                            <div className="col-xs-6 vcenter text-center">
+                                <div className="progressWrapper">
+                                    <span className="progressIndicator">
+                                        <span className="numSpent">{this.props.upVotes > 9 ? ""+this.props.upVotes: "0"+this.props.upVotes}</span> of <span className="maxVotes">{this.props.maxUpVotes > 9 ? ""+this.props.maxUpVotes: "0"+this.props.maxUpVotes}</span>
+                                    </span>
+                                    <div className="statusIconWrapper">
+                                        <span className="statusIcon upVote"></span>
+                                    </div>
+                                </div>
+                                <div className="progressWrapper">
+                                    <span className="progressIndicator">
+                                        <span className="numSpent">{this.props.downVotes > 9 ? ""+this.props.downVotes: "0"+this.props.downVotes}</span> of <span className="maxVotes">{this.props.maxDownVotes > 9 ? ""+this.props.maxDownVotes: "0"+this.props.maxDownVotes}</span>
+                                    </span>
+                                    <div className="statusIconWrapper">
+                                        <span className="statusIcon downVote"></span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div className={this.props.enabled ? 'col-xs-6 col-sm-5 col-md-4 vcenter text-center' : 'col-xs-6 col-sm-5 col-md-4 vcenter text-center disabled'} id="submitVotesButtonWrapper">
-                            <button type="submit" id="submitVotesButton" className={this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled'} disabled={!this.props.enabled}>Submit<span className="hidden-xs"> Votes</span>!</button>
+                            <div className={this.props.enabled ? 'col-xs-6 vcenter text-center' : 'col-xs-6 vcenter text-center disabled'} id="submitVotesButtonWrapper">
+                                <button type="submit" id="submitVotesButton" className={this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled'} disabled={!this.props.enabled}>Submit<span className="hidden-xs"> Votes</span>!</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -212,18 +290,22 @@ class SongList extends React.Component {
 
     render() {
         var listHeader = null;
+        var mobileListHeader = null;
         var headerEnabled = (this.state.upVotes == this.props.maxUpVotes) && (this.props.maxDownVotes == null || (this.state.downVotes == this.props.maxDownVotes));
 
         if (this.props.maxDownVotes == null) {
             listHeader = <SongListHeader upVotes={this.state.upVotes} maxUpVotes={this.props.maxUpVotes} enabled={headerEnabled}/>;
+            mobileListHeader = <SongListHeaderMobile upVotes={this.state.upVotes} maxUpVotes={this.props.maxUpVotes} enabled={headerEnabled}/>;
         } else {
             listHeader = <SongListHeaderWithDownVotes upVotes={this.state.upVotes} maxUpVotes={this.props.maxUpVotes} downVotes={this.state.downVotes} maxDownVotes={this.props.maxDownVotes} enabled={headerEnabled}/>;
+            mobileListHeader = <SongListHeaderWithDownVotesMobile upVotes={this.state.upVotes} maxUpVotes={this.props.maxUpVotes} downVotes={this.state.downVotes} maxDownVotes={this.props.maxDownVotes} enabled={headerEnabled}/>;
         }
 
         return (
             <div>
                 <form onSubmit={this.handleFormSubmission.bind(this)}>
                     {listHeader}
+                    {mobileListHeader}
                     <div className="songList">
                         <div className="container">
                             {
