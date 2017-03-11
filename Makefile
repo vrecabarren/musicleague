@@ -17,6 +17,9 @@ logs:
 react:
 	babel musicleague/static/jsx -d musicleague/static/js/react
 
+react-watch:
+	babel --watch musicleague/static/jsx -d musicleague/static/js/react
+
 run:
 	heroku local
 
