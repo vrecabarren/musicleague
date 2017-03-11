@@ -576,75 +576,79 @@ var SongListHeaderWithDownVotesMobile = function (_SongListHeaderWithDo) {
                     { className: "container" },
                     React.createElement(
                         "div",
-                        { className: "row" },
+                        { className: "visible-xs" },
                         React.createElement(
                             "div",
-                            { className: "visible-xs" },
+                            { className: "row" },
                             React.createElement(
                                 "div",
-                                { className: "col-xs-6 vcenter text-center" },
+                                { className: "row-height" },
                                 React.createElement(
                                     "div",
-                                    { className: "progressWrapper" },
+                                    { className: "col-xs-6 col-height vcenter text-center" },
                                     React.createElement(
-                                        "span",
-                                        { className: "progressIndicator" },
+                                        "div",
+                                        { className: "progressWrapper" },
                                         React.createElement(
                                             "span",
-                                            { className: "numSpent" },
-                                            this.props.upVotes > 9 ? "" + this.props.upVotes : "0" + this.props.upVotes
+                                            { className: "progressIndicator" },
+                                            React.createElement(
+                                                "span",
+                                                { className: "numSpent" },
+                                                this.props.upVotes > 9 ? "" + this.props.upVotes : "0" + this.props.upVotes
+                                            ),
+                                            " of ",
+                                            React.createElement(
+                                                "span",
+                                                { className: "maxVotes" },
+                                                this.props.maxUpVotes > 9 ? "" + this.props.maxUpVotes : "0" + this.props.maxUpVotes
+                                            )
                                         ),
-                                        " of ",
                                         React.createElement(
-                                            "span",
-                                            { className: "maxVotes" },
-                                            this.props.maxUpVotes > 9 ? "" + this.props.maxUpVotes : "0" + this.props.maxUpVotes
+                                            "div",
+                                            { className: "statusIconWrapper" },
+                                            React.createElement("span", { className: "statusIcon upVote" })
                                         )
                                     ),
                                     React.createElement(
                                         "div",
-                                        { className: "statusIconWrapper" },
-                                        React.createElement("span", { className: "statusIcon upVote" })
+                                        { className: "progressWrapper" },
+                                        React.createElement(
+                                            "span",
+                                            { className: "progressIndicator" },
+                                            React.createElement(
+                                                "span",
+                                                { className: "numSpent" },
+                                                this.props.downVotes > 9 ? "" + this.props.downVotes : "0" + this.props.downVotes
+                                            ),
+                                            " of ",
+                                            React.createElement(
+                                                "span",
+                                                { className: "maxVotes" },
+                                                this.props.maxDownVotes > 9 ? "" + this.props.maxDownVotes : "0" + this.props.maxDownVotes
+                                            )
+                                        ),
+                                        React.createElement(
+                                            "div",
+                                            { className: "statusIconWrapper" },
+                                            React.createElement("span", { className: "statusIcon downVote" })
+                                        )
                                     )
                                 ),
                                 React.createElement(
                                     "div",
-                                    { className: "progressWrapper" },
+                                    { className: this.props.enabled ? 'col-xs-6 col-height vcenter text-center' : 'col-xs-6 col-height vcenter text-center disabled', id: "submitVotesButtonWrapper" },
                                     React.createElement(
-                                        "span",
-                                        { className: "progressIndicator" },
+                                        "button",
+                                        { type: "submit", id: "submitVotesButton", className: this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled', disabled: !this.props.enabled },
+                                        "Submit",
                                         React.createElement(
                                             "span",
-                                            { className: "numSpent" },
-                                            this.props.downVotes > 9 ? "" + this.props.downVotes : "0" + this.props.downVotes
+                                            { className: "hidden-xs" },
+                                            " Votes"
                                         ),
-                                        " of ",
-                                        React.createElement(
-                                            "span",
-                                            { className: "maxVotes" },
-                                            this.props.maxDownVotes > 9 ? "" + this.props.maxDownVotes : "0" + this.props.maxDownVotes
-                                        )
-                                    ),
-                                    React.createElement(
-                                        "div",
-                                        { className: "statusIconWrapper" },
-                                        React.createElement("span", { className: "statusIcon downVote" })
+                                        "!"
                                     )
-                                )
-                            ),
-                            React.createElement(
-                                "div",
-                                { className: this.props.enabled ? 'col-xs-6 vcenter text-center' : 'col-xs-6 vcenter text-center disabled', id: "submitVotesButtonWrapper" },
-                                React.createElement(
-                                    "button",
-                                    { type: "submit", id: "submitVotesButton", className: this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled', disabled: !this.props.enabled },
-                                    "Submit",
-                                    React.createElement(
-                                        "span",
-                                        { className: "hidden-xs" },
-                                        " Votes"
-                                    ),
-                                    "!"
                                 )
                             )
                         )

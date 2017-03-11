@@ -247,30 +247,32 @@ class SongListHeaderWithDownVotesMobile extends SongListHeaderWithDownVotes {
         return (
             <div className="songListHeader">
                 <div className="container">
-                    <div className="row">
-                        <div className="visible-xs">
-                            <div className="col-xs-6 vcenter text-center">
-                                <div className="progressWrapper">
-                                    <span className="progressIndicator">
-                                        <span className="numSpent">{this.props.upVotes > 9 ? ""+this.props.upVotes: "0"+this.props.upVotes}</span> of <span className="maxVotes">{this.props.maxUpVotes > 9 ? ""+this.props.maxUpVotes: "0"+this.props.maxUpVotes}</span>
-                                    </span>
-                                    <div className="statusIconWrapper">
-                                        <span className="statusIcon upVote"></span>
+                    <div className="visible-xs">
+                        <div className="row">
+                            <div className="row-height">
+                                <div className="col-xs-6 col-height vcenter text-center">
+                                    <div className="progressWrapper">
+                                        <span className="progressIndicator">
+                                            <span className="numSpent">{this.props.upVotes > 9 ? ""+this.props.upVotes: "0"+this.props.upVotes}</span> of <span className="maxVotes">{this.props.maxUpVotes > 9 ? ""+this.props.maxUpVotes: "0"+this.props.maxUpVotes}</span>
+                                        </span>
+                                        <div className="statusIconWrapper">
+                                            <span className="statusIcon upVote"></span>
+                                        </div>
+                                    </div>
+                                    <div className="progressWrapper">
+                                        <span className="progressIndicator">
+                                            <span className="numSpent">{this.props.downVotes > 9 ? ""+this.props.downVotes: "0"+this.props.downVotes}</span> of <span className="maxVotes">{this.props.maxDownVotes > 9 ? ""+this.props.maxDownVotes: "0"+this.props.maxDownVotes}</span>
+                                        </span>
+                                        <div className="statusIconWrapper">
+                                            <span className="statusIcon downVote"></span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="progressWrapper">
-                                    <span className="progressIndicator">
-                                        <span className="numSpent">{this.props.downVotes > 9 ? ""+this.props.downVotes: "0"+this.props.downVotes}</span> of <span className="maxVotes">{this.props.maxDownVotes > 9 ? ""+this.props.maxDownVotes: "0"+this.props.maxDownVotes}</span>
-                                    </span>
-                                    <div className="statusIconWrapper">
-                                        <span className="statusIcon downVote"></span>
-                                    </div>
+                                <div className={this.props.enabled ? 'col-xs-6 col-height vcenter text-center' : 'col-xs-6 col-height vcenter text-center disabled'} id="submitVotesButtonWrapper">
+                                    <button type="submit" id="submitVotesButton" className={this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled'} disabled={!this.props.enabled}>Submit<span className="hidden-xs"> Votes</span>!</button>
                                 </div>
                             </div>
-                            <div className={this.props.enabled ? 'col-xs-6 vcenter text-center' : 'col-xs-6 vcenter text-center disabled'} id="submitVotesButtonWrapper">
-                                <button type="submit" id="submitVotesButton" className={this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled'} disabled={!this.props.enabled}>Submit<span className="hidden-xs"> Votes</span>!</button>
                             </div>
-                        </div>
                     </div>
                 </div>
             </div>
