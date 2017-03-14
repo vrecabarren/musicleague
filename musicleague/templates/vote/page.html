@@ -20,10 +20,6 @@
 .songListHeader .progressWrapper {
     display: inline-table;
 }
-.songListHeader .visible-xs .progressWrapper {
-    display: table;
-    width: 100%;
-}
 
 .songListHeader .progressWrapper > .progressIndicator {
     display: table-cell;
@@ -63,6 +59,8 @@
 .songListHeader .visible-xs .progressWrapper > .statusIconWrapper {
     display: table-cell;
     height: 42px;
+    text-align: right;
+    width: 40px;
 }
 
 .songListHeader .progressWrapper > .statusIconWrapper > .statusIcon {
@@ -229,6 +227,7 @@
 .song .voteControl > .voteControlInner > .statusIconWrapper > .statusIcon,
 .visible-xs .song .voteControl > .statusIconWrapper > .statusIcon {
     background: url('/static/icons/novote.svg');
+    background-repeat: no-repeat;
     display: inline-block;
     height: 50px;
     vertical-align: middle;
@@ -241,10 +240,12 @@
 .song .voteControl.downVoted > .voteControlInner > .statusIconWrapper > .statusIcon,
 .visible-xs .song .voteControl.downVoted > .statusIconWrapper > .statusIcon {
     background: url('/static/icons/downvote.svg');
+    background-repeat: no-repeat;
 }
 .song .voteControl.upVoted > .voteControlInner > .statusIconWrapper > .statusIcon,
 .visible-xs .song .voteControl.upVoted > .statusIconWrapper > .statusIcon {
     background: url('/static/icons/upvote.svg');
+    background-repeat: no-repeat;
 }
 </style>
 {% endblock %}

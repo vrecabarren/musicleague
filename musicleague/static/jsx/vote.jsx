@@ -263,6 +263,7 @@ class SongListHeaderWithDownVotesMobile extends SongListHeaderWithDownVotes {
                                             <span className="statusIcon upVote"></span>
                                         </div>
                                     </div>
+                                    <br/>
                                     <div className="progressWrapper">
                                         <span className="progressIndicator">
                                             <span className="numSpent">{this.props.downVotes > 9 ? ""+this.props.downVotes : "0"+this.props.downVotes}</span> of <span className="maxVotes">{this.props.maxDownVotes > 9 ? ""+this.props.maxDownVotes : "0"+this.props.maxDownVotes}</span>

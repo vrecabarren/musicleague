@@ -618,6 +618,7 @@ var SongListHeaderWithDownVotesMobile = function (_SongListHeaderWithDo) {
                                             React.createElement("span", { className: "statusIcon upVote" })
                                         )
                                     ),
+                                    React.createElement("br", null),
                                     React.createElement(
                                         "div",
                                         { className: "progressWrapper" },
