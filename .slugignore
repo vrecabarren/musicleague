@@ -1,5 +1,10 @@
-README.md
+.babelrc
+.coveragerc
+.gitignore
+.travis.yml
 Makefile
-settingslocal.py
-requirements_dev.txt
 musicleague/tests
+package.json
+README.md
+requirements_dev.txt
+settingslocal.py
