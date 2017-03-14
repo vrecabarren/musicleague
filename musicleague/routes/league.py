@@ -20,45 +20,18 @@ from musicleague.routes.decorators import league_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 from musicleague.scoring.league import calculate_league_scoreboard
-from musicleague.submission import get_submission
 from musicleague.submission_period import create_submission_period
 from musicleague.submission_period import remove_submission_period
 from musicleague.submission_period import update_submission_period
 from musicleague.user import get_user
 
 
-ADD_USER_FOR_LEAGUE_URL = '/l/<league_id>/users/add/'
 CREATE_LEAGUE_URL = '/l/create/'
 JOIN_LEAGUE_URL = '/l/<league_id>/join/'
 LEADERBOARD_URL = '/l/<league_id>/leaderboard/'
 MANAGE_LEAGUE_URL = '/l/<league_id>/manage/'
 REMOVE_LEAGUE_URL = '/l/<league_id>/remove/'
-REMOVE_SUBMISSION_URL = '/l/<league_id>/<submission_period_id>/<submission_id>/remove/'  # noqa
-REMOVE_USER_FOR_LEAGUE_URL = '/l/<league_id>/users/remove/<user_id>/'
-SETTINGS_URL = '/l/<league_id>/settings/'
 VIEW_LEAGUE_URL = '/l/<league_id>/'
-
-
-@app.route(ADD_USER_FOR_LEAGUE_URL, methods=['POST'])
-@login_required
-@league_required
-def add_user_for_league(league_id, **kwargs):
-    league = kwargs.get('league')
-    user_email = request.form.get('email')
-    if league.has_owner(g.user):
-        add_user(league, user_email)
-    return redirect(
-        url_for('view_league', league_id=league_id, action='members'))
-
-
-@app.route(REMOVE_USER_FOR_LEAGUE_URL, methods=['GET'])
-@login_required
-@league_required
-def remove_user_for_league(league_id, user_id, **kwargs):
-    league = kwargs.get('league')
-    if league.has_owner(g.user):
-        remove_user(league, user_id)
-    return redirect(url_for('view_league', league_id=league_id))
 
 
 @app.route(CREATE_LEAGUE_URL, methods=['GET'])
@@ -188,6 +161,10 @@ def post_manage_league(league_id):
             app.logger.warning('Error while attempting to delete round %s: %s',
                                deleted_round, str(e))
 
+    league.reload('submission_periods')
+    if league.scoreboard:
+        league = calculate_league_scoreboard(league)
+
     league.save()
     return redirect(url_for('view_league', league_id=league_id))
 
@@ -222,39 +199,6 @@ def get_remove_league(league_id, **kwargs):
         league = remove_league(league_id, league=league)
 
     return redirect(url_for('profile'))
-
-
-@app.route(REMOVE_SUBMISSION_URL)
-@login_required
-def remove_submission(league_id, submission_period_id, submission_id,
-                      **kwargs):
-    league = kwargs.get('league')
-    if league and league.has_owner(g.user):
-        submission = get_submission(submission_id)
-        submission.delete()
-    return redirect(url_for('view_submission_period', league_id=league_id,
-                            submission_period_id=submission_period_id))
-
-
-@app.route(SETTINGS_URL, methods=['POST'])
-@login_required
-@league_required
-def save_league_settings(league_id, **kwargs):
-    league = kwargs.get('league')
-
-    league.preferences.name = request.form.get('name')
-    league.preferences.submission_reminder_time = request.form.get(
-        'submission_reminder_time')
-    league.preferences.vote_reminder_time = request.form.get(
-        'vote_reminder_time')
-    league.preferences.track_count = request.form.get('track_count')
-    league.preferences.point_bank_size = request.form.get('point_bank_size')
-    league.preferences.locked = request.form.get('locked') == 'on'
-    league.preferences.late_submissions = (
-        request.form.get('late_submissions') == 'on')
-    league.save()
-
-    return redirect(request.referrer)
 
 
 @app.route(VIEW_LEAGUE_URL, methods=['GET'])

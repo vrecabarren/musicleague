@@ -24,7 +24,6 @@ from musicleague.routes.auth import before_request
 from musicleague.routes.auth import login
 from musicleague.routes.auth import logout
 from musicleague.routes.decorators import templated
-from musicleague.routes.league import add_user_for_league
 from musicleague.routes.league import get_create_league
 from musicleague.routes.league import remove_league
 from musicleague.routes.league import view_league
