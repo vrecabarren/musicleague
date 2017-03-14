@@ -322,7 +322,7 @@ var SongListHeader = function (_React$Component4) {
                                 ),
                                 React.createElement(
                                     "div",
-                                    { className: "col-xs-6 col-sm-4 col-md-4 vcenter text-center" },
+                                    { className: "col-xs-6 col-sm-4 col-md-4 vcenter text-center", style: { borderLeft: "3px solid #fff" } },
                                     React.createElement(
                                         "div",
                                         { className: "progressWrapper" },
@@ -484,7 +484,7 @@ var SongListHeaderWithDownVotes = function (_React$Component5) {
                                 { className: "row-height" },
                                 React.createElement(
                                     "div",
-                                    { className: "col-sm-4 col-md-4 col-height vcenter text-center" },
+                                    { className: "col-sm-4 col-md-4 vcenter text-center" },
                                     React.createElement(
                                         "div",
                                         { className: "progressWrapper" },
@@ -512,7 +512,7 @@ var SongListHeaderWithDownVotes = function (_React$Component5) {
                                 ),
                                 React.createElement(
                                     "div",
-                                    { className: "col-sm-4 col-md-4 col-height vcenter text-center" },
+                                    { className: "col-sm-4 col-md-4 vcenter text-center", style: { borderLeft: "3px solid #fff" } },
                                     React.createElement(
                                         "div",
                                         { className: "progressWrapper" },
@@ -540,7 +540,7 @@ var SongListHeaderWithDownVotes = function (_React$Component5) {
                                 ),
                                 React.createElement(
                                     "div",
-                                    { className: this.props.enabled ? 'col-sm-4 col-md-4 col-height vcenter text-center' : 'col-sm-4 col-md-4 col-height vcenter text-center disabled', id: "submitVotesButtonWrapper" },
+                                    { className: this.props.enabled ? 'col-sm-4 col-md-4 vcenter text-center' : 'col-sm-4 col-md-4 vcenter text-center disabled', id: "submitVotesButtonWrapper" },
                                     React.createElement(
                                         "button",
                                         { type: "submit", id: "submitVotesButton", className: this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled', disabled: !this.props.enabled },
