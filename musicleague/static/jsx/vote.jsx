@@ -13,7 +13,7 @@ class VoteControl extends React.Component {
             <div className={"col-sm-4 col-md-4 col-height col-middle voteControl" + " " + stateClass}>
                 <div className="voteControlInner">
                     <span className="downButton" onClick={this.downVote.bind(this)}></span>
-                    <span className="pointCount">{Math.abs(this.state.points)}</span>
+                    <span className="pointCount">{Math.abs(this.state.points) > 9 ? ""+Math.abs(this.state.points) : "0"+Math.abs(this.state.points)}</span>
                     <span className="upButton" onClick={this.upVote.bind(this)}></span>
                     <div className="statusIconWrapper">
                         <span className="statusIcon"></span>
@@ -157,7 +157,7 @@ class SongListHeader extends React.Component {
                                 <div className="col-xs-6 col-sm-4 col-md-4 vcenter text-center" style={{borderLeft: "3px solid #fff"}}>
                                     <div className="progressWrapper">
                                         <span className="progressIndicator">
-                                            <span className="numSpent">{this.props.upVotes > 9 ? ""+this.props.upVotes: "0"+this.props.upVotes}</span> of <span className="maxVotes">{this.props.maxUpVotes > 9 ? ""+this.props.maxUpVotes: "0"+this.props.maxUpVotes}</span>
+                                            <span className="numSpent">{this.props.upVotes > 9 ? ""+this.props.upVotes : "0"+this.props.upVotes}</span> of <span className="maxVotes">{this.props.maxUpVotes > 9 ? ""+this.props.maxUpVotes : "0"+this.props.maxUpVotes}</span>
                                         </span>
                                         <div className="statusIconWrapper">
                                             <span className="statusIcon upVote"></span>
@@ -187,7 +187,7 @@ class SongListHeaderMobile extends SongListHeader {
                                 <div className="col-xs-6 vcenter text-center">
                                     <div className="progressWrapper">
                                         <span className="progressIndicator">
-                                            <span className="numSpent">{this.props.upVotes > 9 ? ""+this.props.upVotes: "0"+this.props.upVotes}</span> of <span className="maxVotes">{this.props.maxUpVotes > 9 ? ""+this.props.maxUpVotes: "0"+this.props.maxUpVotes}</span>
+                                            <span className="numSpent">{this.props.upVotes > 9 ? ""+this.props.upVotes: "0"+this.props.upVotes}</span> of <span className="maxVotes">{this.props.maxUpVotes > 9 ? ""+this.props.maxUpVotes : "0"+this.props.maxUpVotes}</span>
                                         </span>
                                         <div className="statusIconWrapper">
                                             <span className="statusIcon upVote"></span>
@@ -217,7 +217,7 @@ class SongListHeaderWithDownVotes extends React.Component {
                                 <div className="col-sm-4 col-md-4 vcenter text-center">
                                     <div className="progressWrapper">
                                         <span className="progressIndicator">
-                                            <span className="numSpent">{this.props.upVotes > 9 ? ""+this.props.upVotes: "0"+this.props.upVotes}</span> of <span className="maxVotes">{this.props.maxUpVotes > 9 ? ""+this.props.maxUpVotes: "0"+this.props.maxUpVotes}</span>
+                                            <span className="numSpent">{this.props.upVotes > 9 ? ""+this.props.upVotes : "0"+this.props.upVotes}</span> of <span className="maxVotes">{this.props.maxUpVotes > 9 ? ""+this.props.maxUpVotes : "0"+this.props.maxUpVotes}</span>
                                         </span>
                                         <div className="statusIconWrapper">
                                             <span className="statusIcon upVote"></span>
@@ -227,7 +227,7 @@ class SongListHeaderWithDownVotes extends React.Component {
                                 <div className="col-sm-4 col-md-4 vcenter text-center" style={{borderLeft: "3px solid #fff"}}>
                                     <div className="progressWrapper">
                                         <span className="progressIndicator">
-                                            <span className="numSpent">{this.props.downVotes > 9 ? ""+this.props.downVotes: "0"+this.props.downVotes}</span> of <span className="maxVotes">{this.props.maxDownVotes > 9 ? ""+this.props.maxDownVotes: "0"+this.props.maxDownVotes}</span>
+                                            <span className="numSpent">{this.props.downVotes > 9 ? ""+this.props.downVotes : "0"+this.props.downVotes}</span> of <span className="maxVotes">{this.props.maxDownVotes > 9 ? ""+this.props.maxDownVotes : "0"+this.props.maxDownVotes}</span>
                                         </span>
                                         <div className="statusIconWrapper">
                                             <span className="statusIcon downVote"></span>
@@ -265,7 +265,7 @@ class SongListHeaderWithDownVotesMobile extends SongListHeaderWithDownVotes {
                                     </div>
                                     <div className="progressWrapper">
                                         <span className="progressIndicator">
-                                            <span className="numSpent">{this.props.downVotes > 9 ? ""+this.props.downVotes: "0"+this.props.downVotes}</span> of <span className="maxVotes">{this.props.maxDownVotes > 9 ? ""+this.props.maxDownVotes: "0"+this.props.maxDownVotes}</span>
+                                            <span className="numSpent">{this.props.downVotes > 9 ? ""+this.props.downVotes : "0"+this.props.downVotes}</span> of <span className="maxVotes">{this.props.maxDownVotes > 9 ? ""+this.props.maxDownVotes : "0"+this.props.maxDownVotes}</span>
                                         </span>
                                         <div className="statusIconWrapper">
                                             <span className="statusIcon downVote"></span>
