@@ -216,6 +216,7 @@
     font-family: 'Cubano', sans-serif;
     font-size: 12px;
     line-height: 17px;
+    margin: 0 5px;
 }
 .round-bar .action-link .action-text.current { color: #02B8EF; }
 .round-bar .action-link .action-text.complete { color: #00259A; }
