@@ -94,11 +94,7 @@
 }
 #status-bar .round-bar { background: none; padding: 0; }
 #status-bar .round-bar .round-status-icon.current { background: url("/static/icons/swords_white.svg"); background-repeat: no-repeat; }
-#status-bar .round-bar .round-title {
-    color: #fff;
-    font-size: 18px;
-    line-height: 22px;
-}
+#status-bar .round-bar .round-title { color: #fff; }
 #status-bar .round-bar .status-text { color: #fff; margin: 15px 0px; }
 
 #status-bar .action-progress { display: block; }
