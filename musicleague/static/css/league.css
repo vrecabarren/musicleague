@@ -119,7 +119,7 @@
     padding: 45px 10px;
 }
 .round-bar:nth-child(even) {
-    background-color: #F1F1F1;
+    background-color: #F7F7F7;
 }
 .round-bar .round-status-icon {
     background: url("/static/icons/clock_gray.svg");
@@ -135,7 +135,7 @@
 }
 
 .round-bar .round-title {
-    color: #d4d4d4;
+    color: #c0c0c0;
     display: inline-block;
     font-family: 'Cubano', sans-serif;
     font-size: 24px;
@@ -146,7 +146,7 @@
 .round-bar .round-title.complete { color: #00259A; }
 
 .round-bar .status-text {
-    color: #d4d4d4;
+    color: #c0c0c0;
     display: block;
     font-size: 14px;
     line-height: 19px;
@@ -206,11 +206,12 @@
 .round-bar .action-link .action-button.change { background: url("/static/icons/change_lightblue.svg"); background-repeat: no-repeat; }
 .round-bar .action-link .action-button.playlist { background: url("/static/icons/playlist_icon_blue.svg"); background-repeat: no-repeat; }
 .round-bar .action-link .action-button.playlist.current { background: url("/static/icons/playlist_icon_lightblue.svg"); background-repeat: no-repeat; }
+.round-bar .action-link .action-button.results { background: url("/static/icons/results_icon.svg"); background-repeat: no-repeat; }
 .round-bar .action-link .action-button.submit { background: url("/static/icons/submit_lightblue.svg"); background-repeat: no-repeat; width: 79px; }
 .round-bar .action-link .action-button.vote { background: url("/static/icons/vote_lightblue.svg"); background-repeat: no-repeat; }
 
 .round-bar .action-link .action-text {
-    color: #d4d4d4;
+    color: #c0c0c0;
     display: block;
     font-family: 'Cubano', sans-serif;
     font-size: 12px;
@@ -221,11 +222,6 @@
 
 .round-bar.current .right-action { border-left: 3px solid #02B8EF; padding: 10px 0; }
 .round-bar.complete .right-action { border-left: 3px solid #01249A; padding: 10px 0; }
-
-.round-divider { margin: 25px 0px; }
-.round-divider line { stroke: #d4d4d4; }
-.round-divider.current line { stroke: #02B8EF; }
-.round-divider.complete line { stroke: #00259A; }
 
 
 .popover-content-wrapper { display: none; }
