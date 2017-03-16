@@ -1,24 +1,4 @@
-@import url('/static/css/_navbar.css');
-@import url('https://fonts.googleapis.com/css?family=Nunito:400,900');
-
-@font-face {
-    font-family: 'Cubano';
-    src: url("/static/fonts/Cubano/cubano-regular-webfont.ttf");
-}
-
-/* REMOVE THE NAVBAR AND SPACING UP TOP */
-.navbar { display: none; margin: 0px; }
-.spacer { display: none; }
-
-body { font-family: 'Nunito', sans-serif; }
-
-#img-bar {
-    background: url("/static/images/ml_header06.jpg");
-    background-attachment: scroll;
-    background-position: 50% 40%;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
+#title-bar { padding: 0; }
 
 #user-bar {
     background: none;
@@ -129,7 +109,7 @@ body { font-family: 'Nunito', sans-serif; }
 
         #user-bar .visible-xs #stars .star:last-child { margin-top: 5px; }
 
-#label-bar {
+#status-bar {
     background-color: #02B8EF;
     color: #fff;
     font-family: 'Cubano', sans-serif;
@@ -138,7 +118,6 @@ body { font-family: 'Nunito', sans-serif; }
     margin-bottom: 50px;
     padding: 50px;
     text-align: center;
-    text-transform: uppercase;
     width: 100%;
 }
 

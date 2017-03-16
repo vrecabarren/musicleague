@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "frame_with_status.html" %}
 
 {% block title %}Music League | {{ page_user.name }}{% endblock %}
 
@@ -6,12 +6,62 @@
 <link href="http://jschr.github.io/bootstrap-modal/css/bootstrap-modal-bs3patch.css" rel="stylesheet" />
 <link href="http://jschr.github.io/bootstrap-modal/css/bootstrap-modal.css" rel="stylesheet" />
 <link rel="stylesheet" href="/static/css/profile.css">
+<style>
+    #img-bar {
+        background-image: url('/static/images/{{ page_user.profile_background }}');
+    }
+</style>
 {% endblock %}
 
-{% block content %}
+{% block title_bar_content %}
+<div id="user-bar">
+        <div id="owned-leagues-outer" class="hidden-xs">
+            <img src="/static/icons/star_lightblue.svg" alt="" id="owned-leagues-star">
+            <div id="owned-leagues-inner">
+                <span class="owned-leagues">Leagues</span>
+                <span class="owned-leagues owned-leagues-count">{{ "%02d" % contributor_leagues }}</span>
+                <span class="owned-leagues">Rocked</span>
+            </div>
+        </div>
+        <img src="{{ page_user.image_url }}" alt="" id="user-img" class="img img-circle">
+        <div id="scores-outer" class="hidden-xs">
+            <div id="scores-inner">
+                <span class="score-item">1st - <span class="score">00</span></span>
+                <span class="score-item">2nd - <span class="score">00</span></span>
+                <span class="score-item">3rd - <span class="score">00</span></span>
+            </div>
+            <img src="/static/icons/star_lightblue.svg" alt="" id="scores-star">
+        </div>
+    <span id="user-name">{{ page_user.name }}</span>
+    <div class="visible-xs" style="margin-bottom: 20px">
+        <div id="owned-leagues-outer">
+            <div id="owned-leagues-inner">
+                <span class="owned-leagues">Leagues</span>
+                <span class="owned-leagues-count">{{ "%02d" % contributor_leagues }}</span>
+                <span class="owned-leagues">Rocked</span>
+            </div>
+        </div>
+        <div id="stars">
+            <img src="/static/icons/star_lightblue.svg" alt="" class="star">
+            <img src="/static/icons/star_lightblue.svg" alt="" class="star">
+        </div>
+        <div id="scores-outer">
+            <div id="scores-inner">
+                <span class="score-item">1st - <span class="score">0</span></span>
+                <span class="score-item">2nd - <span class="score">0</span></span>
+                <span class="score-item">3rd - <span class="score">0</span></span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
 
-{% include "profile/header.html" %}
+{% block status_bar_content %}
+<span>{% if page_user.id == user.id %}Your{% else %}{{ page_user.first_name }}&rsquo;s{% endif %} Leagues</span>
+{% endblock %}
 
+
+{% block page_content %}
 <div class="container">
 
     <div id="leagues">
