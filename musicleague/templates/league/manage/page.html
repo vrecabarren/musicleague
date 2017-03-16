@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "frame.html" %}
 
 {% block title %}Music League | Manage A League{% endblock %}
 
@@ -10,10 +10,13 @@
 <link rel="stylesheet" href="/static/css/manage_league.css">
 {% endblock %}
 
-{% block content %}
+{% block title_bar_content %}
+<div id="title-bar">
+    <span class="title-text">Manage A League</span>
+</div>
+{% endblock %}
 
-{% include "league/manage/header.html" %}
-
+{% block page_content %}
 <form action="" method="post">
     <div id="the-basics-header" class="section-header">
         <div class="container">
