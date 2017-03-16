@@ -116,7 +116,7 @@
 #status-bar .round-divider { display: none; }
 
 .round-bar {
-    padding: 45px 0;
+    padding: 45px 10px;
 }
 .round-bar:nth-child(even) {
     background-color: #F1F1F1;
