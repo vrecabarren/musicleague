@@ -3,23 +3,107 @@
 {% block title %}Music League{% endblock %}
 
 {% block css %}
+<link href="/static/css/style.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 <style>
   .navbar {
     display: none;
+  }
+
+  body {
+      background-color: #000000;
+      background-image: url("/static/images/ml_header02.jpg");
+      background-size: cover;
+      color: #FFFFFF;
+      font-family: 'Nunito', sans-serif;
+  }
+
+  .logo { margin-top: 50px; }
+
+  .action-call-panel { padding: 50px 0; }
+
+  .action-call {
+      color: #FFFFFF;
+      display: inline-block;
+      font-family: 'Cubano', sans-serif;
+      font-size: 28px;
+      line-height: 36px;
+      padding: 0 5px;
+  }
+  .action-call.text-blue { color: #02B8EF; }
+  .action-call.text-gold { color: #F8C62C; }
+
+  .login-bg {
+      background-color: #02B8EF;
+      border-radius: 8px;
+      font-family: 'Cubano', sans-serif;
+      padding: 50px 0;
+  }
+
+  .login-prompt {
+      display: block;
+      font-size: 24px;
+      line-height: 28px;
+      padding-bottom: 25px;
+  }
+
+  .spotify {
+      margin-right: 10px;
+      width: 200px;
+  }
+
+  .login-btn, .login-btn:hover {
+      background: none;
+      border: 3px solid #FFFFFF;
+      border-radius: 8px;
+      color: #FFFFFF;
+      font-size: 22px;
+      line-height: 22px;
+      margin-left: 10px;
+      padding: 19px 0;
+      outline: none;
+      vertical-align: middle;
+      width: 200px;
   }
 </style>
 {% endblock %}
 
 {% block content %}
 
-    <div class="text-center jumbotron" style="background-color: #fff; margin-top: 150px;">
-        <h2>Welcome to</h2>
-        <h1>Music League</h1>
-        <div class="spacer"></div>
-        <p>Please log in with your Spotify account to get started.</p>
-        <div class="spacer"></div>
-        <a href="{{ oauth_url }}" class="btn btn-lg btn-success"><i class="fa fa-spotify" style="margin-right: 10px"></i>Log In</a>
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1 text-center">
+            <img class="logo" src="/static/icons/site_logo.svg" alt="" width="150">
+        </div>
     </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1 text-center action-call-panel">
+            <span class="action-call">Explore.</span>
+            <br class="visible-xs">
+            <span class="action-call text-gold">Share.</span>
+            <br class="visible-xs">
+            <span class="action-call text-blue">Conquer.</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1 login-bg">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <span class="login-prompt">Please log in to your Spotify account to get started</span>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-xs-12 col-sm-6 text-right text-center-xs">
+                    <img class="spotify" src="/static/icons/Spotify_Logo_RGB_White.png" alt="">
+                </div>
+                <div class="visible-xs col-xs-12" style="padding: 12px;"></div>
+                <div class="col-xs-12 col-sm-6 text-left text-center-xs">
+                    <a href="{{ oauth_url }}" class="btn btn-lg login-btn">Log In!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
 
