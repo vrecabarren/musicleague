@@ -1,6 +1,6 @@
 <div class="row round-bar {%if round.is_complete %}complete{% elif round.is_current_v2 %}current{% endif %}"><!--
     {% if round.is_complete or league.has_owner(user) %}
---><div class="col-xs-12 col-sm-2 text-center vcenter linked" data-href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=round.id) }}">
+--><div class="col-xs-12 col-sm-2 text-center vcenter">
     {% else %}
 --><div class="col-xs-12 col-sm-2 text-center vcenter">
     {% endif %}
@@ -81,7 +81,7 @@
     </div><!--
     --><div class="col-xs-6 col-sm-2 text-center vcenter right-action">
         {% if round.is_complete %}
-            <a href="{{ round.playlist_url }}" target="_blank" class="action-link" title="Round Results">
+            <a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=round.id) }}" class="action-link" title="Round Results">
                 <span alt="" class="action-button results"></span>
                 <span class="action-text complete">Round Results</span>
             </a>
