@@ -24,9 +24,9 @@
                     <span class="status-text complete">{{ moment(round.vote_due_date).format('[Completed on] MM.DD.YY') }}</span>
                 {% elif round.is_current_v2 %}
                     {% if round.accepting_submissions %}
-                    <span class="status-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ moment(round.submission_due_date).format('[Submissions due on] MM.DD.YY [at] hA') }}</span>
+                    <span class="status-text current">{{ moment(round.submission_due_date).format('[Submissions due on] MM.DD.YY [at] hA') }}</span>
                     {% elif round.accepting_votes %}
-                    <span class="status-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ moment(round.vote_due_date).format('[Votes due on] MM.DD.YY [at] hA') }}</span>
+                    <span class="status-text current">{{ moment(round.vote_due_date).format('[Votes due on] MM.DD.YY [at] hA') }}</span>
                     {% endif %}
                 {% else %}
                     <span class="status-text">{{ moment(prev_round.vote_due_date).format('[Live on] MM.DD.YY [at] hA') }}</span>
@@ -58,7 +58,7 @@
             </div>
         </div>
     </div><!--
-    --><div class="{% if round.is_current_v2 %}col-xs-6{% else %}hidden-xs{% endif %} col-sm-2 col-sm-offset-1 text-center vcenter">
+    --><div class="col-xs-6 col-sm-2 col-sm-offset-1 text-center vcenter">
         {% if round.is_current_v2 %}
             {% if round.accepting_submissions and league.has_user(user) %}
                 {% if my_submission %}
@@ -69,48 +69,53 @@
             {% elif round.accepting_votes and league.has_user(user) %}
             <a href="{{ round.playlist_url }}" target="_blank" class="action-link" title="Listen to Playlist">
                 <span alt="" class="action-button playlist current"></span>
-                <span class="action-text current">Listen to Playlist!</span>
+                <span class="action-text current">Listen to Playlist</span>
             </a>
             {% endif %}
+        {% elif round.is_complete %}
+            <a href="{{ round.playlist_url }}" target="_blank" class="action-link" title="Listen to Playlist">
+                <span alt="" class="action-button playlist complete"></span>
+                <span class="action-text complete">Listen to Playlist</span>
+            </a>
         {% endif %}
     </div><!--
-    --><div class="{% if round.is_current_v2 %}col-xs-6{% else %}col-xs-12{% endif %} col-sm-2 text-center vcenter right-action">
+    --><div class="col-xs-6 col-sm-2 text-center vcenter right-action">
         {% if round.is_complete %}
-            <a href="{{ round.playlist_url }}" target="_blank" class="action-link" title="Listen to Playlist">
-                <span alt="" class="action-button playlist"></span>
-                <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Listen to Playlist!</span>
+            <a href="{{ round.playlist_url }}" target="_blank" class="action-link" title="Round Results">
+                <span alt="" class="action-button results"></span>
+                <span class="action-text complete">Round Results</span>
             </a>
         {% elif round.is_current_v2 %}
             {% if round.accepting_submissions and league.has_user(user) %}
                 <a href="{{ url_for('view_submit', league_id=league.id, submission_period_id=round.id) }}" class="action-link" title="Submit or Change Submission">
                     {% if my_submission %}
                     <span alt="" class="action-button change"></span>
-                    <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Change Submissions!</span>
+                    <span class="action-text current">Change Submissions!</span>
                     {% else %}
                     <span alt="" class="action-button submit"></span>
-                    <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Let's Do This!</span>
+                    <span class="action-text current">Let's Do This!</span>
                     {% endif %}
                 </a>
             {% elif round.accepting_votes and league.has_user(user) %}
                 <a href="{{ url_for('view_vote', league_id=league.id, submission_period_id=round.id) }}" class="action-link" title="Vote or Change Votes">
                     {% if my_vote %}
                     <span alt="" class="action-button change"></span>
-                    <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Change Votes!</span>
+                    <span class="action-text current">Change Votes!</span>
                     {% else %}
                     <span alt="" class="action-button vote"></span>
-                    <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Submit Votes!</span>
+                    <span class="action-text current">Submit Votes!</span>
                     {% endif %}
                 </a>
             {% elif round.accepting_votes %}
                 <a href="{{ round.playlist_url }}" target="_blank" class="action-link" title="Listen to Playlist">
                     <span alt="" class="action-button playlist current"></span>
-                    <span class="action-text current">Listen to Playlist!</span>
+                    <span class="action-text current">Listen to Playlist</span>
                 </a>
             {% endif %}
         {% else %}
             <a href="#" class="action-link hidden-xs" title="Future Round">
                 <span alt="" class="action-button clock"></span>
-                <span class="action-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">Waiting!</span>
+                <span class="action-text">Waiting!</span>
             </a>
         {% endif %}
     </div>
