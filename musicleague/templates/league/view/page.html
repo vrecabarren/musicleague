@@ -129,10 +129,11 @@
                 {% endif %}
             </span>
         </div>
-
-        {% set round = league.current_submission_period %}
-        {% include "league/view/_round.html" %}
     </div>
+
+    {% set round = league.current_submission_period %}
+    {% include "league/view/_round.html" %}
+
     {% endif %}
 {% endblock %}
 
@@ -220,12 +221,13 @@
     </div>
 </div>
 
-    {% for round in league.submission_periods %}
-        {% if loop.index0 > 0 %}
-            {% set prev_round = league.submission_periods[loop.index0 - 1] %}
-        {% endif %}
-        {% include "league/view/_round.html" %}
-    {% endfor %}
+{% for round in league.submission_periods %}
+    {% if loop.index0 > 0 %}
+        {% set prev_round = league.submission_periods[loop.index0 - 1] %}
+    {% endif %}
+    {% include "league/view/_round.html" %}
+{% endfor %}
+
 {% endblock %}
 
 {% block js %}
