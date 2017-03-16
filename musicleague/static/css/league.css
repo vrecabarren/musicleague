@@ -81,8 +81,7 @@
 #status-bar {
     background-color: #02B8EF;
     color: #fff;
-    margin-bottom: 50px;
-    padding: 50px;
+    padding: 50px 10px;
     width: 100%;
 }
 #status-bar .call-for-action {
@@ -93,7 +92,8 @@
     line-height: 29px;
     margin-bottom: 25px;
 }
-#status-bar .round-bar .round-status-icon.current { background: url("/static/icons/swords_white.svg"); }
+#status-bar .round-bar { background: none; padding: 0; }
+#status-bar .round-bar .round-status-icon.current { background: url("/static/icons/swords_white.svg"); background-repeat: no-repeat; }
 #status-bar .round-bar .round-title {
     color: #fff;
     font-size: 18px;
@@ -104,18 +104,23 @@
 #status-bar .action-progress { display: block; }
 
 #status-bar .round-bar .action-required { color: #fff; }
-#status-bar .round-bar .action-link .action-button.change { background: url("/static/icons/change_white.svg"); }
-#status-bar .round-bar .action-link .action-button.clock { background: url("/static/icons/clock_gray.svg"); }
-#status-bar .round-bar .action-link .action-button.playlist { background: url("/static/icons/playlist_icon_white.svg"); }
-#status-bar .round-bar .action-link .action-button.submit { background: url("/static/icons/submit_white.svg"); width: 79px; }
-#status-bar .round-bar .action-link .action-button.vote { background: url("/static/icons/vote_white.svg"); }
+#status-bar .round-bar .action-link .action-button.change { background: url("/static/icons/change_white.svg"); background-repeat: no-repeat; }
+#status-bar .round-bar .action-link .action-button.clock { background: url("/static/icons/clock_gray.svg"); background-repeat: no-repeat; }
+#status-bar .round-bar .action-link .action-button.playlist { background: url("/static/icons/playlist_icon_white.svg"); background-repeat: no-repeat; }
+#status-bar .round-bar .action-link .action-button.submit { background: url("/static/icons/submit_white.svg"); background-repeat: no-repeat; width: 79px; }
+#status-bar .round-bar .action-link .action-button.vote { background: url("/static/icons/vote_white.svg"); background-repeat: no-repeat; }
 #status-bar .round-bar .action-text { color: #fff; }
 
 #status-bar .round-bar.current .right-action { border-left: 3px solid #FFF; }
 
 #status-bar .round-divider { display: none; }
 
-.round-bar {}
+.round-bar {
+    padding: 45px 0;
+}
+.round-bar:nth-child(even) {
+    background-color: #F1F1F1;
+}
 .round-bar .round-status-icon {
     background: url("/static/icons/clock_gray.svg");
     display: inline-block;
@@ -142,7 +147,7 @@
 
 .round-bar .status-text {
     color: #d4d4d4;
-    display: inline-block;
+    display: block;
     font-size: 14px;
     line-height: 19px;
     margin: 10px 0px;
