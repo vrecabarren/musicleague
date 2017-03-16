@@ -70,7 +70,7 @@ div, span {
     font-family: 'Cubano', sans-serif;
 }
 .row:nth-child(even) .ranking-entry {
-    background-color: #F1F1F1;
+    background-color: #F7F7F7;
     border-radius: 8px;
 }
 

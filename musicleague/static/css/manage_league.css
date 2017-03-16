@@ -112,18 +112,18 @@ body { font-family: 'Nunito', sans-serif; }
          }
 
             .section .form-group input::-webkit-input-placeholder {
-                color: #d4d4d4;
+                color: #c0c0c0;
                 font-family: 'Cubano', sans-serif;
             }
 
             .section .form-group input::-moz-placeholder {
-                color: #d4d4d4;
+                color: #c0c0c0;
                 font-family: 'Cubano', sans-serif;
                 opacity: 1;
             }
 
             .section .form-group input:-ms-input-placeholder {
-                color: #d4d4d4;
+                color: #c0c0c0;
                 font-family: 'Cubano', sans-serif;
             }
 
