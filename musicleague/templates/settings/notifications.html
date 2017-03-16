@@ -1,12 +1,31 @@
-{% extends "base.html" %}
+{% extends "frame.html" %}
 
 {% block title %}Music League | Settings{% endblock %}
 
 {% block css %}
     <link rel="stylesheet" href="/static/css/toggle.min.css">
+    <style>
+        #title-bar {
+            margin-bottom: 30px;
+        }
+
+        #title-bar h1 {
+            font-family: 'Cubano', sans-serif;
+            font-size: 60px;
+            line-height: 72px;
+        }
+
+        .nav {
+            margin-bottom: 15px;
+        }
+    </style>
 {% endblock %}
 
-{% block content %}
+{% block title_bar_content %}
+<h1>Notification Settings</h1>
+{% endblock %}
+
+{% block page_content %}
 
 <div class="container">
     <div class="row">

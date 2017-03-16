@@ -81,6 +81,7 @@ def login():
                 user = update_user_from_spotify_user(user, spotify_user)
 
             _update_session(user_id, access_token, refresh_token, expires_at)
+            session.permanent = True
 
             # If user was going to a particular destination before logging in,
             # send them there after login.
