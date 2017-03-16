@@ -234,6 +234,10 @@ class SubmissionPeriod(Document):
     def is_current_v2(self):
         return self == self.league.current_submission_period
 
+    @property
+    def is_future(self):
+        return not (self.is_complete or self.is_current_v2)
+
 
 class LeaguePreferences(EmbeddedDocument):
     CHECKBOX = "checkbox"

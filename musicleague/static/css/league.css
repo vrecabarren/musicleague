@@ -165,7 +165,7 @@
     font-family: 'Cubano', sans-serif;
     font-size: 18px;
     line-height: 22px;
-    padding: 10px 0px;
+    margin-bottom: 10px;
 }
 
 .round-bar .action-progress .text-progress .emphasize {
