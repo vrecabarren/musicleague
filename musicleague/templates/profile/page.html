@@ -15,23 +15,23 @@
 
 {% block title_bar_content %}
 <div id="user-bar">
-        <div id="owned-leagues-outer" class="hidden-xs">
-            <img src="/static/icons/star_lightblue.svg" alt="" id="owned-leagues-star">
-            <div id="owned-leagues-inner">
-                <span class="owned-leagues">Leagues</span>
-                <span class="owned-leagues owned-leagues-count">{{ "%02d" % contributor_leagues }}</span>
-                <span class="owned-leagues">Rocked</span>
-            </div>
+    <div id="owned-leagues-outer" class="hidden-xs">
+        <img src="/static/icons/star_lightblue.svg" alt="" id="owned-leagues-star">
+        <div id="owned-leagues-inner">
+            <span class="owned-leagues">Leagues</span>
+            <span class="owned-leagues owned-leagues-count">{{ "%02d" % contributor_leagues }}</span>
+            <span class="owned-leagues">Rocked</span>
         </div>
-        <img src="{{ page_user.image_url }}" alt="" id="user-img" class="img img-circle">
-        <div id="scores-outer" class="hidden-xs">
-            <div id="scores-inner">
-                <span class="score-item">1st - <span class="score">00</span></span>
-                <span class="score-item">2nd - <span class="score">00</span></span>
-                <span class="score-item">3rd - <span class="score">00</span></span>
-            </div>
-            <img src="/static/icons/star_lightblue.svg" alt="" id="scores-star">
+    </div>
+    <img src="{{ page_user.image_url }}" alt="" id="user-img" class="img img-circle">
+    <div id="scores-outer" class="hidden-xs">
+        <div id="scores-inner">
+            <span class="score-item">1st - <span class="score">00</span></span>
+            <span class="score-item">2nd - <span class="score">00</span></span>
+            <span class="score-item">3rd - <span class="score">00</span></span>
         </div>
+        <img src="/static/icons/star_lightblue.svg" alt="" id="scores-star">
+    </div>
     <span id="user-name">{{ page_user.name }}</span>
     <div class="visible-xs" style="margin-bottom: 20px">
         <div id="owned-leagues-outer">

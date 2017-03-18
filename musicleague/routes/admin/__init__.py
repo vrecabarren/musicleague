@@ -67,7 +67,7 @@ def admin_leagues():
 @login_required
 @admin_required
 def admin_tools():
-    return {}
+    return {'user': g.user}
 
 
 @app.route(ADMIN_USERS_URL)

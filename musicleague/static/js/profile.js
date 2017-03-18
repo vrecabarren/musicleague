@@ -46,3 +46,9 @@ $(window).load(function(){
     make_tile_size_consistent();
     randomize_tile_backgrounds();
 });
+
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover({
+        html: true
+    });
+});

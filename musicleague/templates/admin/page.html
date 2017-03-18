@@ -1,9 +1,11 @@
-{% extends "base.html" %}
+{% extends "frame.html" %}
 
 {% block title %}Music League | Admin{% endblock %}
 
 {% block css %}
 <style>
+    #title-bar { margin-bottom: 30px; padding: 0; }
+
     .metric-block {
         background-color: #fff;
         border: 1px solid #dedede;
@@ -14,7 +16,7 @@
 </style>
 {% endblock %}
 
-{% block content %}
+{% block page_content %}
 
 <div class="container">
     <div class="row">

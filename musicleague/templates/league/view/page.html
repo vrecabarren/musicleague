@@ -3,7 +3,7 @@
 {% block title %}Music League | {{ league.name }}{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="/static/css/league.css">
+<link rel="stylesheet" href="/static/css/league_1.css">
 {% endblock %}
 
 {% block title_bar_content %}
@@ -129,10 +129,11 @@
                 {% endif %}
             </span>
         </div>
-
-        {% set round = league.current_submission_period %}
-        {% include "league/view/_round.html" %}
     </div>
+
+    {% set round = league.current_submission_period %}
+    {% include "league/view/_round.html" %}
+
     {% endif %}
 {% endblock %}
 
@@ -220,16 +221,12 @@
     </div>
 </div>
 
-<div style="padding: 50px;">
-    <div class="container">
-        {% for round in league.submission_periods %}
-            {% if loop.index0 > 0 %}
-                {% set prev_round = league.submission_periods[loop.index0 - 1] %}
-            {% endif %}
-            {% include "league/view/_round.html" %}
-        {% endfor %}
-    </div>
-</div>
+{% for round in league.submission_periods %}
+    {% if loop.index0 > 0 %}
+        {% set prev_round = league.submission_periods[loop.index0 - 1] %}
+    {% endif %}
+    {% include "league/view/_round.html" %}
+{% endfor %}
 
 {% endblock %}
 
