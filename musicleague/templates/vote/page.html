@@ -144,6 +144,7 @@
 
 .song .voteControl {
     background-color: #e1e1e1;
+    border: 3px solid #fff;
     border-radius: 8px;
     color: #01249A;
     min-height: 100px;
@@ -159,14 +160,14 @@
     color: #FFFFFF;
 }
 
-.song .voteControl > .voteControlInner {
+.song .voteControl .voteControlInner {
     display: table;
     vertical-align: middle;
     width: 100%;
 }
 
-.song .voteControl > .voteControlInner > .downButton,
-.song .voteControl > .voteControlInner > .upButton {
+.song .voteControl .voteControlInner > .downButton,
+.song .voteControl .voteControlInner > .upButton {
     background: url("http://musicleague.xyz/static/icons/downvote_blue.svg");
     background-repeat:no-repeat;
     cursor: pointer;
@@ -176,24 +177,24 @@
     width: 50px;
 }
 
-.song .voteControl.downVoted > .voteControlInner > .downButton,
-.song .voteControl.upVoted > .voteControlInner > .downButton {
+.song .voteControl.downVoted .voteControlInner > .downButton,
+.song .voteControl.upVoted .voteControlInner > .downButton {
     background: url("http://musicleague.xyz/static/icons/downvote_white.svg");
     background-repeat:no-repeat;
 }
 
-.song .voteControl > .voteControlInner > .upButton {
+.song .voteControl .voteControlInner > .upButton {
     background: url("http://musicleague.xyz/static/icons/upvote_blue.svg");
     background-repeat:no-repeat;
 }
 
-.song .voteControl.downVoted > .voteControlInner > .upButton,
-.song .voteControl.upVoted > .voteControlInner > .upButton {
+.song .voteControl.downVoted .voteControlInner > .upButton,
+.song .voteControl.upVoted .voteControlInner > .upButton {
     background: url("http://musicleague.xyz/static/icons/upvote_white.svg");
     background-repeat:no-repeat;
 }
 
-.song .voteControl > .voteControlInner > .pointCount {
+.song .voteControl .voteControlInner > .pointCount {
     color: #02B8EF;
     display: table-cell;
     font-family: 'Cubano', sans-serif;
@@ -203,17 +204,17 @@
     text-align: center;
     vertical-align: middle;
 }
-.song .voteControl.downVoted > .voteControlInner > .pointCount,
-.song .voteControl.upVoted > .voteControlInner > .pointCount {
+.song .voteControl.downVoted .voteControlInner > .pointCount,
+.song .voteControl.upVoted .voteControlInner > .pointCount {
     color: #FFFFFF;
 }
 
-.visible-xs .song .voteControl > .voteControlInner > .pointCount {
+.visible-xs .song .voteControl .voteControlInner > .pointCount {
     font-size: 40px;
     line-height: 50px;
 }
 
-.song .voteControl > .voteControlInner > .statusIconWrapper {
+.song .voteControl .voteControlInner > .statusIconWrapper {
     display: table-cell;
     text-align: right;
     vertical-align: middle;
@@ -225,7 +226,7 @@
     vertical-align: middle;
 }
 
-.song .voteControl > .voteControlInner > .statusIconWrapper > .statusIcon,
+.song .voteControl .voteControlInner > .statusIconWrapper > .statusIcon,
 .visible-xs .song .voteControl > .statusIconWrapper > .statusIcon {
     background: url('/static/icons/novote.svg');
     background-repeat: no-repeat;
@@ -238,15 +239,25 @@
     margin-bottom: -10px;
     margin-top: 10px;
 }
-.song .voteControl.downVoted > .voteControlInner > .statusIconWrapper > .statusIcon,
+.song .voteControl.downVoted .voteControlInner > .statusIconWrapper > .statusIcon,
 .visible-xs .song .voteControl.downVoted > .statusIconWrapper > .statusIcon {
     background: url('/static/icons/downvote.svg');
     background-repeat: no-repeat;
 }
-.song .voteControl.upVoted > .voteControlInner > .statusIconWrapper > .statusIcon,
+.song .voteControl.upVoted .voteControlInner > .statusIconWrapper > .statusIcon,
 .visible-xs .song .voteControl.upVoted > .statusIconWrapper > .statusIcon {
     background: url('/static/icons/upvote.svg');
     background-repeat: no-repeat;
+}
+
+.song .progressWrapper {
+    background: linear-gradient(to right, #5FCC34 99.99%, transparent), linear-gradient(to bottom, #5FCC34 99.99%, transparent), linear-gradient(to right, #5FCC34 99.99%, transparent), linear-gradient(to bottom, #5FCC34 99.99%, transparent);
+    background-size: 100% 5px, 5px 100%, 100% 5px, 5px 100%;
+    background-repeat: no-repeat;
+    background-position: -500px 0px, 495px -300px, 500px 295px, 0px 300px;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 3px;
 }
 </style>
 {% endblock %}
@@ -273,7 +284,9 @@
         React.createElement(SongList, {
             uris: {{ tracks_by_uri.keys()|tojson|safe }},
             maxDownVotes: {{ league.preferences.downvote_bank_size|tojson|safe }},
-            maxUpVotes: {{ league.preferences.point_bank_size|tojson|safe }}
+            maxDownVotesPerSong: {{ 2|tojson|safe }},
+            maxUpVotes: {{ league.preferences.point_bank_size|tojson|safe }},
+            maxUpVotesPerSong: {{ 5|tojson|safe }}
         }),
         document.getElementById('mountVote')
     );

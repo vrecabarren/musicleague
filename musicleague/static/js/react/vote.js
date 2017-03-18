@@ -26,24 +26,36 @@ var VoteControl = function (_React$Component) {
     _createClass(VoteControl, [{
         key: "render",
         value: function render() {
+            var _this2 = this;
+
             var stateClass = this.state.points < 0 ? "downVoted" : this.state.points > 0 ? "upVoted" : "";
             return React.createElement(
                 "div",
-                { className: "col-sm-4 col-md-4 col-height col-middle voteControl" + " " + stateClass },
+                { className: "col-sm-4 col-md-4 col-height col-middle", style: { padding: '0' } },
                 React.createElement(
                     "div",
-                    { className: "voteControlInner" },
-                    React.createElement("span", { className: "downButton", onClick: this.downVote.bind(this) }),
-                    React.createElement(
-                        "span",
-                        { className: "pointCount" },
-                        Math.abs(this.state.points) > 9 ? "" + Math.abs(this.state.points) : "0" + Math.abs(this.state.points)
-                    ),
-                    React.createElement("span", { className: "upButton", onClick: this.upVote.bind(this) }),
+                    { className: "progressWrapper", ref: function ref(div) {
+                            _this2.progressWrapper = div;
+                        } },
                     React.createElement(
                         "div",
-                        { className: "statusIconWrapper" },
-                        React.createElement("span", { className: "statusIcon" })
+                        { className: "voteControl" + " " + stateClass },
+                        React.createElement(
+                            "div",
+                            { className: "voteControlInner" },
+                            React.createElement("span", { className: "downButton", onClick: this.downVote.bind(this) }),
+                            React.createElement(
+                                "span",
+                                { className: "pointCount" },
+                                Math.abs(this.state.points) > 9 ? "" + Math.abs(this.state.points) : "0" + Math.abs(this.state.points)
+                            ),
+                            React.createElement("span", { className: "upButton", onClick: this.upVote.bind(this) }),
+                            React.createElement(
+                                "div",
+                                { className: "statusIconWrapper" },
+                                React.createElement("span", { className: "statusIcon" })
+                            )
+                        )
                     )
                 )
             );
@@ -52,23 +64,70 @@ var VoteControl = function (_React$Component) {
         key: "downVote",
         value: function downVote() {
             var newPointValue = this.state.points - 1;
-            if (this.props.minPoints == null || newPointValue >= this.props.minPoints) {
+            if (this.props.maxDownVotes == null || newPointValue >= 0 || Math.abs(newPointValue) <= this.props.maxDownVotes) {
                 var downVoteAllowed = this.props.onDownVote(this.state.uri, newPointValue);
-                if (downVoteAllowed) this.setState({ points: this.state.points - 1 });
+                if (downVoteAllowed) {
+                    this.setState({ points: newPointValue });
+                    this.adjustProgress(newPointValue);
+                }
             } else {
-                console.log("Down vote count " + Math.abs(newPointValue) + " exceeds per-song allowance. Rejecting.");
+                console.log("Down vote count " + Math.abs(newPointValue) + " exceeds per-song allowance of " + this.props.maxDownVotes + ". Rejecting.");
             }
         }
     }, {
         key: "upVote",
         value: function upVote() {
             var newPointValue = this.state.points + 1;
-            if (this.props.maxPoints == null || newPointValue <= this.props.maxPoints) {
+            if (this.props.maxUpVotes == null || newPointValue <= 0 || newPointValue <= this.props.maxUpVotes) {
                 var upVoteAllowed = this.props.onUpVote(this.state.uri, newPointValue);
-                if (upVoteAllowed) this.setState({ points: this.state.points + 1 });
+                if (upVoteAllowed) {
+                    this.setState({ points: newPointValue });
+                    this.adjustProgress(newPointValue);
+                }
             } else {
-                console.log("Up vote count " + newPointValue + " exceeds per-song allowance. Rejecting.");
+                console.log("Up vote count " + newPointValue + " exceeds per-song allowance of " + this.props.maxUpVotes + ". Rejecting.");
             }
+        }
+    }, {
+        key: "adjustProgress",
+        value: function adjustProgress(newPointValue) {
+            if (this.progressWrapper == null) return;
+
+            var height = this.progressWrapper.offsetHeight;
+            var edgeHeight = height - 5;
+            var width = this.progressWrapper.offsetWidth;
+            var edgeWidth = width - 5;
+
+            if (newPointValue >= 0) {
+                var progress = newPointValue / this.props.maxUpVotes;
+                var progressColor = "#5FCC34";
+            } else {
+                var progress = Math.abs(newPointValue) / this.props.maxDownVotes;
+                var progressColor = "#D21E35";
+            }
+            var totalLength = width * 2 + height * 2;
+            var borderLen = progress * totalLength;
+
+            // If progress can be expressed on top border alone
+            if (borderLen <= width) {
+                var backgroundPos = 'background-position: ' + (width * -1 + borderLen) + 'px 0px, ' + edgeWidth + 'px ' + height * -1 + 'px, ' + width + 'px ' + edgeHeight + 'px, 0px ' + height + 'px;';
+                this.progressWrapper.setAttribute('style', backgroundPos);
+            }
+            // If progress can be expressed on top and right borders alone
+            else if (borderLen <= width + height) {
+                    var backgroundPos = 'background-position: 0px 0px, ' + edgeWidth + 'px ' + (height * -1 + (borderLen - width)) + 'px, ' + width + 'px ' + edgeHeight + 'px, 0px ' + height + 'px';
+                    this.progressWrapper.setAttribute('style', backgroundPos);
+                }
+                // If progress can be expressed on top, right, and bottom borders alone
+                else if (borderLen <= width * 2 + height) {
+                        var backgroundPos = 'background-position: 0px 0px, ' + edgeWidth + 'px 0px, ' + (width - (borderLen - width - height)) + 'px ' + edgeHeight + 'px, 0px ' + height + 'px';
+                        this.progressWrapper.setAttribute('style', backgroundPos);
+                    }
+                    // If progress needs all four borders to be expressed
+                    else {
+                            var backgroundPos = 'background-position: 0px 0px, ' + edgeWidth + 'px 0px, 0px ' + edgeHeight + 'px, 0px ' + (height - (borderLen - width * 2 - height)) + 'px';
+                            this.progressWrapper.setAttribute('style', backgroundPos);
+                        }
         }
     }]);
 
@@ -120,27 +179,27 @@ var SongInfo = function (_React$Component2) {
     function SongInfo(props) {
         _classCallCheck(this, SongInfo);
 
-        var _this3 = _possibleConstructorReturn(this, (SongInfo.__proto__ || Object.getPrototypeOf(SongInfo)).call(this, props));
+        var _this4 = _possibleConstructorReturn(this, (SongInfo.__proto__ || Object.getPrototypeOf(SongInfo)).call(this, props));
 
-        _this3.state = {
+        _this4.state = {
             uri: props.uri,
             track: { name: '',
                 artists: [{ name: '' }],
                 album: { images: [{}, { url: '' }], name: '' }
             }
         };
-        return _this3;
+        return _this4;
     }
 
     _createClass(SongInfo, [{
         key: "componentDidMount",
         value: function componentDidMount() {
-            var _this4 = this;
+            var _this5 = this;
 
             // Get track object from Spotify API
             var trackId = this.state.uri.match(/spotify\:track\:([a-zA-Z0-9]{22})/)[1];
             axios.get('https://api.spotify.com/v1/tracks/' + trackId).then(function (res) {
-                _this4.setState({ track: res.data });
+                _this5.setState({ track: res.data });
             });
         }
     }, {
@@ -242,7 +301,7 @@ var Song = function (_React$Component3) {
                         "div",
                         { className: "row-height" },
                         React.createElement(SongInfo, { uri: this.props.uri }),
-                        React.createElement(VoteControl, { maxPoints: null, minPoints: null, uri: this.props.uri, onUpVote: this.props.onUpVote, onDownVote: this.props.onDownVote })
+                        React.createElement(VoteControl, { maxUpVotes: this.props.maxUpVotes, maxDownVotes: this.props.maxDownVotes, uri: this.props.uri, onUpVote: this.props.onUpVote, onDownVote: this.props.onDownVote })
                     )
                 )
             );
@@ -274,7 +333,7 @@ var SongMobile = function (_Song) {
                         "div",
                         { className: "row-height" },
                         React.createElement(SongInfoMobile, { uri: this.props.uri }),
-                        React.createElement(VoteControlMobile, { maxPoints: null, minPoints: null, uri: this.props.uri, onUpVote: this.props.onUpVote, onDownVote: this.props.onDownVote })
+                        React.createElement(VoteControlMobile, { maxUpVotes: this.props.maxUpVotes, maxDownVotes: this.props.maxDownVotes, uri: this.props.uri, onUpVote: this.props.onUpVote, onDownVote: this.props.onDownVote })
                     )
                 )
             );
@@ -676,14 +735,14 @@ var SongList = function (_React$Component6) {
     function SongList(props) {
         _classCallCheck(this, SongList);
 
-        var _this12 = _possibleConstructorReturn(this, (SongList.__proto__ || Object.getPrototypeOf(SongList)).call(this, props));
+        var _this13 = _possibleConstructorReturn(this, (SongList.__proto__ || Object.getPrototypeOf(SongList)).call(this, props));
 
-        _this12.state = {
+        _this13.state = {
             upVotes: 0,
             downVotes: 0,
             votes: {}
         };
-        return _this12;
+        return _this13;
     }
 
     _createClass(SongList, [{
@@ -722,8 +781,8 @@ var SongList = function (_React$Component6) {
                                 return React.createElement(
                                     "div",
                                     null,
-                                    React.createElement(Song, { uri: uri, onUpVote: this.onUpVote.bind(this), onDownVote: this.onDownVote.bind(this) }),
-                                    React.createElement(SongMobile, { uri: uri, onUpVote: this.onUpVote.bind(this), onDownVote: this.onDownVote.bind(this) })
+                                    React.createElement(Song, { uri: uri, maxUpVotes: this.props.maxUpVotesPerSong, maxDownVotes: this.props.maxDownVotesPerSong, onUpVote: this.onUpVote.bind(this), onDownVote: this.onDownVote.bind(this) }),
+                                    React.createElement(SongMobile, { uri: uri, maxUpVotes: this.props.maxUpVotesPerSong, maxDownVotes: this.props.maxDownVotesPerSong, onUpVote: this.onUpVote.bind(this), onDownVote: this.onDownVote.bind(this) })
                                 );
                             }.bind(this))
                         )
