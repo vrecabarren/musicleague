@@ -1,10 +1,13 @@
-{% extends "base.html" %}
+{% extends "frame.html" %}
 
 {% block title %}Music League | Admin{% endblock %}
 
 {% block css %}
 <style>
 body {background-color: #f3f3f3; }
+
+#title-bar { margin-bottom: 30px; padding: 0; }
+
 .user {
     background-color: #fff;
     margin-bottom: 5px;
@@ -21,7 +24,7 @@ body {background-color: #f3f3f3; }
 </style>
 {% endblock %}
 
-{% block content %}
+{% block page_content %}
 
 <div class="container">
     {% for user in users %}
