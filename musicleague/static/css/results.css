@@ -65,8 +65,7 @@ div, span {
     font-family: 'Cubano', sans-serif;
     font-size: 20px;
     line-height: 24px;
-    margin-bottom: 50px;
-    padding: 25px 0px;
+    padding: 0;
     width: 100%;
     z-index: 100;
 }
@@ -99,7 +98,11 @@ div, span {
     background-color: #fff;
     color: #02B8EF;
     margin-bottom: 0px;
-    padding: 15px 0px;
+    padding: 45px 0px;
+}
+
+.song:nth-child(even) {
+    background-color: #F7F7F7;
 }
 
 .song .song-info {
