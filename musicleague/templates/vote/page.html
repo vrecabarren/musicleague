@@ -168,7 +168,7 @@
 
 .song .voteControl .voteControlInner > .downButton,
 .song .voteControl .voteControlInner > .upButton {
-    background: url("http://musicleague.xyz/static/icons/downvote_blue.svg");
+    background: url("/static/icons/downvote_blue.svg");
     background-repeat:no-repeat;
     cursor: pointer;
     display: table-cell;
@@ -179,19 +179,29 @@
 
 .song .voteControl.downVoted .voteControlInner > .downButton,
 .song .voteControl.upVoted .voteControlInner > .downButton {
-    background: url("http://musicleague.xyz/static/icons/downvote_white.svg");
-    background-repeat:no-repeat;
+    background: url("/static/icons/downvote_white.svg");
+    background-repeat: no-repeat;
 }
 
 .song .voteControl .voteControlInner > .upButton {
-    background: url("http://musicleague.xyz/static/icons/upvote_blue.svg");
-    background-repeat:no-repeat;
+    background: url("/static/icons/upvote_blue.svg");
+    background-repeat: no-repeat;
 }
 
 .song .voteControl.downVoted .voteControlInner > .upButton,
 .song .voteControl.upVoted .voteControlInner > .upButton {
-    background: url("http://musicleague.xyz/static/icons/upvote_white.svg");
-    background-repeat:no-repeat;
+    background: url("/static/icons/upvote_white.svg");
+    background-repeat: no-repeat;
+}
+
+.song .voteControl .voteControlInner > .upButton.disabled {
+    background: url("/static/icons/upvote_disabled.svg");
+    background-repeat: no-repeat;
+}
+
+.song .voteControl .voteControlInner > .downButton.disabled {
+    background: url("/static/icons/downvote_disabled.svg");
+    background-repeat: no-repeat;
 }
 
 .song .voteControl .voteControlInner > .pointCount {
@@ -286,7 +296,7 @@
             maxDownVotes: {{ league.preferences.downvote_bank_size|tojson|safe }},
             maxDownVotesPerSong: {{ 2|tojson|safe }},
             maxUpVotes: {{ league.preferences.point_bank_size|tojson|safe }},
-            maxUpVotesPerSong: {{ 5|tojson|safe }}
+            maxUpVotesPerSong: {{ 3|tojson|safe }}
         }),
         document.getElementById('mountVote')
     );

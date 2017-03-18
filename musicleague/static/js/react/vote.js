@@ -43,13 +43,13 @@ var VoteControl = function (_React$Component) {
                         React.createElement(
                             "div",
                             { className: "voteControlInner" },
-                            React.createElement("span", { className: "downButton", onClick: this.downVote.bind(this) }),
+                            React.createElement("span", { className: this.state.points == this.props.maxDownVotes * -1 ? "downButton disabled" : "downButton", onClick: this.downVote.bind(this) }),
                             React.createElement(
                                 "span",
                                 { className: "pointCount" },
                                 Math.abs(this.state.points) > 9 ? "" + Math.abs(this.state.points) : "0" + Math.abs(this.state.points)
                             ),
-                            React.createElement("span", { className: "upButton", onClick: this.upVote.bind(this) }),
+                            React.createElement("span", { className: this.state.points == this.props.maxUpVotes ? "upButton disabled" : "upButton", onClick: this.upVote.bind(this) }),
                             React.createElement(
                                 "div",
                                 { className: "statusIconWrapper" },

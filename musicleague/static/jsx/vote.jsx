@@ -14,9 +14,9 @@ class VoteControl extends React.Component {
                 <div className="progressWrapper" ref={(div) => { this.progressWrapper = div; }}>
                     <div className={"voteControl" + " " + stateClass}>
                         <div className="voteControlInner">
-                            <span className="downButton" onClick={this.downVote.bind(this)}></span>
+                            <span className={this.state.points == (this.props.maxDownVotes * -1) ? "downButton disabled" : "downButton" } onClick={this.downVote.bind(this)}></span>
                             <span className="pointCount">{Math.abs(this.state.points) > 9 ? ""+Math.abs(this.state.points) : "0"+Math.abs(this.state.points)}</span>
-                            <span className="upButton" onClick={this.upVote.bind(this)}></span>
+                            <span className={this.state.points == this.props.maxUpVotes ? "upButton disabled" : "upButton" } onClick={this.upVote.bind(this)}></span>
                             <div className="statusIconWrapper">
                                 <span className="statusIcon"></span>
                             </div>
