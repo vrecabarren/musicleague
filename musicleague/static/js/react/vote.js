@@ -43,13 +43,13 @@ var VoteControl = function (_React$Component) {
                         React.createElement(
                             "div",
                             { className: "voteControlInner" },
-                            React.createElement("span", { className: this.state.points == this.props.maxDownVotes * -1 ? "downButton disabled" : "downButton", onClick: this.downVote.bind(this) }),
+                            React.createElement("span", { className: this.downVoteAllowed() ? "downButton" : "downButton disabled", onClick: this.downVote.bind(this) }),
                             React.createElement(
                                 "span",
                                 { className: "pointCount" },
-                                Math.abs(this.state.points) > 9 ? "" + Math.abs(this.state.points) : "0" + Math.abs(this.state.points)
+                                this.padValue(this.state.points)
                             ),
-                            React.createElement("span", { className: this.state.points == this.props.maxUpVotes ? "upButton disabled" : "upButton", onClick: this.upVote.bind(this) }),
+                            React.createElement("span", { className: this.upVoteAllowed() ? "upButton" : "upButton disabled", onClick: this.upVote.bind(this) }),
                             React.createElement(
                                 "div",
                                 { className: "statusIconWrapper" },
@@ -59,6 +59,16 @@ var VoteControl = function (_React$Component) {
                     )
                 )
             );
+        }
+    }, {
+        key: "padValue",
+        value: function padValue(val) {
+            return Math.abs(val) > 9 ? "" + Math.abs(val) : "0" + Math.abs(val);
+        }
+    }, {
+        key: "downVoteAllowed",
+        value: function downVoteAllowed() {
+            return this.state.points > this.props.maxDownVotes * -1;
         }
     }, {
         key: "downVote",
@@ -73,6 +83,11 @@ var VoteControl = function (_React$Component) {
             } else {
                 console.log("Down vote count " + Math.abs(newPointValue) + " exceeds per-song allowance of " + this.props.maxDownVotes + ". Rejecting.");
             }
+        }
+    }, {
+        key: "upVoteAllowed",
+        value: function upVoteAllowed() {
+            return this.state.points < this.props.maxUpVotes;
         }
     }, {
         key: "upVote",
@@ -153,13 +168,13 @@ var VoteControlMobile = function (_VoteControl) {
                 React.createElement(
                     "div",
                     { className: "voteControlInner" },
-                    React.createElement("span", { className: "downButton", onClick: this.downVote.bind(this) }),
+                    React.createElement("span", { className: this.downVoteAllowed() ? "downButton" : "downButton disabled", onClick: this.downVote.bind(this) }),
                     React.createElement(
                         "span",
                         { className: "pointCount" },
-                        Math.abs(this.state.points)
+                        this.padValue(this.state.points)
                     ),
-                    React.createElement("span", { className: "upButton", onClick: this.upVote.bind(this) })
+                    React.createElement("span", { className: this.upVoteAllowed() ? "upButton" : "upButton disabled", onClick: this.upVote.bind(this) })
                 ),
                 React.createElement(
                     "div",

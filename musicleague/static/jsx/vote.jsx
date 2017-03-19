@@ -14,9 +14,9 @@ class VoteControl extends React.Component {
                 <div className="progressWrapper" ref={(div) => { this.progressWrapper = div; }}>
                     <div className={"voteControl" + " " + stateClass}>
                         <div className="voteControlInner">
-                            <span className={this.state.points == (this.props.maxDownVotes * -1) ? "downButton disabled" : "downButton" } onClick={this.downVote.bind(this)}></span>
-                            <span className="pointCount">{Math.abs(this.state.points) > 9 ? ""+Math.abs(this.state.points) : "0"+Math.abs(this.state.points)}</span>
-                            <span className={this.state.points == this.props.maxUpVotes ? "upButton disabled" : "upButton" } onClick={this.upVote.bind(this)}></span>
+                            <span className={this.downVoteAllowed() ? "downButton" : "downButton disabled"} onClick={this.downVote.bind(this)}></span>
+                            <span className="pointCount">{this.padValue(this.state.points)}</span>
+                            <span className={this.upVoteAllowed() ? "upButton" : "upButton disabled"} onClick={this.upVote.bind(this)}></span>
                             <div className="statusIconWrapper">
                                 <span className="statusIcon"></span>
                             </div>
@@ -25,6 +25,14 @@ class VoteControl extends React.Component {
                 </div>
             </div>
         );
+    }
+
+    padValue(val) {
+        return Math.abs(val) > 9 ? ""+Math.abs(val) : "0"+Math.abs(val);
+    }
+
+    downVoteAllowed() {
+        return this.state.points > (this.props.maxDownVotes * -1);
     }
 
     downVote() {
@@ -38,6 +46,10 @@ class VoteControl extends React.Component {
         } else {
             console.log("Down vote count " + Math.abs(newPointValue) + " exceeds per-song allowance of " + this.props.maxDownVotes + ". Rejecting.")
         }
+    }
+
+    upVoteAllowed() {
+        return this.state.points < this.props.maxUpVotes;
     }
 
     upVote() {
@@ -101,9 +113,9 @@ class VoteControlMobile extends VoteControl {
         return (
             <div className={"col-xs-6 col-height voteControl" + " " + stateClass}>
                 <div className="voteControlInner">
-                    <span className="downButton" onClick={this.downVote.bind(this)}></span>
-                    <span className="pointCount">{Math.abs(this.state.points)}</span>
-                    <span className="upButton" onClick={this.upVote.bind(this)}></span>
+                    <span className={this.downVoteAllowed() ? "downButton" : "downButton disabled"} onClick={this.downVote.bind(this)}></span>
+                    <span className="pointCount">{this.padValue(this.state.points)}</span>
+                    <span className={this.upVoteAllowed() ? "upButton" : "upButton disabled"} onClick={this.upVote.bind(this)}></span>
                 </div>
                 <div className="statusIconWrapper">
                     <span className="statusIcon"></span>
