@@ -136,7 +136,7 @@ class SongInfo extends React.Component {
     render() {
         return (
             <div className="col-sm-8 col-md-8 col-height col-middle songInfo">
-                <img src={this.state.track.album.images[1].url} className="img img-rounded"/>
+                <img src={this.state.track.album.images[1].url}/>
                 <div className="textInfo">
                     <span className="trackName">{this.state.track.name}</span>
                     <span className="trackArtist">By {this.state.track.artists[0].name}</span>
@@ -151,7 +151,7 @@ class SongInfoMobile extends SongInfo {
     render() {
         return (
             <div className="col-xs-6 col-height songInfo">
-                <img src={this.state.track.album.images[1].url} className="img img-rounded"/>
+                <img src={this.state.track.album.images[1].url}/>
                 <div className="textInfo">
                     <span className="trackName">{this.state.track.name}</span>
                     <span className="trackArtist">By {this.state.track.artists[0].name}</span>

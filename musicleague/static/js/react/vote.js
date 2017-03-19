@@ -208,7 +208,7 @@ var SongInfo = function (_React$Component2) {
             return React.createElement(
                 "div",
                 { className: "col-sm-8 col-md-8 col-height col-middle songInfo" },
-                React.createElement("img", { src: this.state.track.album.images[1].url, className: "img img-rounded" }),
+                React.createElement("img", { src: this.state.track.album.images[1].url }),
                 React.createElement(
                     "div",
                     { className: "textInfo" },
@@ -251,7 +251,7 @@ var SongInfoMobile = function (_SongInfo) {
             return React.createElement(
                 "div",
                 { className: "col-xs-6 col-height songInfo" },
-                React.createElement("img", { src: this.state.track.album.images[1].url, className: "img img-rounded" }),
+                React.createElement("img", { src: this.state.track.album.images[1].url }),
                 React.createElement(
                     "div",
                     { className: "textInfo" },
