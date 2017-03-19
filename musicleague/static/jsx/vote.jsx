@@ -5,6 +5,8 @@ class VoteControl extends React.Component {
             uri: props.uri,
             points: 0
         };
+        
+        this.adjustProgress(0);
     }
 
     render() {
@@ -84,26 +86,50 @@ class VoteControl extends React.Component {
         var totalLength = (width * 2) + (height * 2);
         var borderLen = progress * totalLength;
 
+        var oneSide = width;
+        var twoSides = oneSide + height;
+        var threeSides = twoSides + width;
+
+        if (borderLen == 0) {
+            var top = (width * -1) + 'px 0px';
+            var right = ', ' + edgeWidth + 'px ' + (height * -1) + 'px';
+            var bottom = ', ' + width + 'px ' + edgeHeight + 'px';
+            var left = ', 0px ' + height + 'px';
+        }
         // If progress can be expressed on top border alone
-        if (borderLen <= width) {
-            var backgroundPos = 'background-position: ' + ((width * -1) + borderLen) + 'px 0px, ' + edgeWidth + 'px ' + (height * -1) + 'px, ' + width + 'px ' + edgeHeight + 'px, 0px ' + height + 'px;';
-            this.progressWrapper.setAttribute('style', backgroundPos);
+        else if (borderLen <= oneSide) {
+            var top = ((width * -1) + borderLen) + 'px 0px';
+            var right = ', ' + edgeWidth + 'px ' + (height * -1) + 'px';
+            var bottom = ', ' + width + 'px ' + edgeHeight + 'px';
+            var left = ', 0px ' + height + 'px';
         }
         // If progress can be expressed on top and right borders alone
-        else if (borderLen <= (width + height)) {
-            var backgroundPos = 'background-position: 0px 0px, ' + edgeWidth + 'px ' + ((height * -1) + (borderLen - width)) + 'px, ' + width + 'px ' + edgeHeight + 'px, 0px ' + height + 'px';
-            this.progressWrapper.setAttribute('style', backgroundPos);
+        else if (borderLen <= twoSides) {
+            var top = '0px 0px';
+            var right = ', ' + edgeWidth + 'px ' + ((height * -1) + (borderLen - width)) + 'px';
+            var bottom = ', ' + width + 'px ' + edgeHeight + 'px';
+            var left = ', 0px ' + height + 'px';
         }
         // If progress can be expressed on top, right, and bottom borders alone
-        else if (borderLen <= (width * 2 + height)) {
-            var backgroundPos = 'background-position: 0px 0px, ' + edgeWidth + 'px 0px, ' + (width - (borderLen - width - height)) + 'px ' + edgeHeight + 'px, 0px ' + height + 'px';
-            this.progressWrapper.setAttribute('style', backgroundPos);
+        else if (borderLen <= threeSides) {
+            var top = '0px 0px';
+            var right = ', ' + edgeWidth + 'px 0px';
+            var bottom = ', ' + (width - (borderLen - width - height)) + 'px ' + edgeHeight + 'px';
+            var left = ', 0px ' + height + 'px';
         }
         // If progress needs all four borders to be expressed
         else {
-            var backgroundPos = 'background-position: 0px 0px, ' + edgeWidth + 'px 0px, 0px ' + edgeHeight + 'px, 0px ' + (height - (borderLen - (width * 2) - height)) + 'px';
-            this.progressWrapper.setAttribute('style', backgroundPos);
+            var top = '0px 0px';
+            var right = ', ' + edgeWidth + 'px 0px';
+            var bottom = ', 0px ' + edgeHeight + 'px';
+            var left = ', 0px ' + (height - (borderLen - (width * 2) - height)) + 'px';
         }
+
+        var background = 'background: linear-gradient(to right, ' + progressColor + ' 99.99%, transparent), linear-gradient(to bottom, ' + progressColor + ' 99.99%, transparent), linear-gradient(to right, ' + progressColor + ' 99.99%, transparent), linear-gradient(to bottom, ' + progressColor + ' 99.99%, transparent); ';
+        var backgroundSize = 'background-size: 100% 5px, 5px 100%, 100% 5px, 5px 100%; ';
+        var backgroundRepeat = 'background-repeat: no-repeat; ';
+        var backgroundPos = 'background-position: ' + top + right + bottom + left;
+        this.progressWrapper.setAttribute('style', background + backgroundSize + backgroundRepeat + backgroundPos);
     }
 }
 
