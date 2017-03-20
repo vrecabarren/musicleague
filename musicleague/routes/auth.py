@@ -136,7 +136,7 @@ def add_bot():
 def logout():
     _clear_session()
     flash_info("You have been logged out of Music League.")
-    return redirect(url_for("hello", action='logout'))
+    return redirect(url_for("hello"))
 
 
 def _update_session(user_id, access_token, refresh_token, expires_at):
