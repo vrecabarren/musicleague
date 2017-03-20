@@ -146,14 +146,22 @@ class VoteControlMobile extends VoteControl {
     render() {
         var stateClass = (this.state.points < 0) ? "downVoted" : (this.state.points > 0) ? "upVoted" : "";
         return (
-            <div className={"col-xs-6 col-height voteControl" + " " + stateClass}>
-                <div className="voteControlInner">
-                    <span className={this.downVoteAllowed() ? "downButton" : "downButton disabled"} onClick={this.downVote.bind(this)}></span>
-                    <span className="pointCount">{this.padValue(this.state.points)}</span>
-                    <span className={this.upVoteAllowed() ? "upButton" : "upButton disabled"} onClick={this.upVote.bind(this)}></span>
-                </div>
-                <div className="statusIconWrapper">
-                    <span className="statusIcon"></span>
+            <div className="col-xs-6 col-height col-middle" style={{padding: "0"}}>
+                <div className="row-height">
+                    <div className="progressWrapper col-height col-top" ref={(div) => { this.progressWrapper = div; }}>
+                        <div className="row-height">
+                            <div className={"voteControl col-height col-top" + stateClass}>
+                                <div className="voteControlInner">
+                                    <span className={this.downVoteAllowed() ? "downButton" : "downButton disabled"} onClick={this.downVote.bind(this)}></span>
+                                    <span className="pointCount">{this.padValue(this.state.points)}</span>
+                                    <span className={this.upVoteAllowed() ? "upButton" : "upButton disabled"} onClick={this.upVote.bind(this)}></span>
+                                </div>
+                                <div className="statusIconWrapper">
+                                    <span className="statusIcon"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         );

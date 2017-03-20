@@ -196,25 +196,45 @@ var VoteControlMobile = function (_VoteControl) {
     _createClass(VoteControlMobile, [{
         key: "render",
         value: function render() {
+            var _this4 = this;
+
             var stateClass = this.state.points < 0 ? "downVoted" : this.state.points > 0 ? "upVoted" : "";
             return React.createElement(
                 "div",
-                { className: "col-xs-6 col-height voteControl" + " " + stateClass },
+                { className: "col-xs-6 col-height col-middle", style: { padding: "0" } },
                 React.createElement(
                     "div",
-                    { className: "voteControlInner" },
-                    React.createElement("span", { className: this.downVoteAllowed() ? "downButton" : "downButton disabled", onClick: this.downVote.bind(this) }),
+                    { className: "row-height" },
                     React.createElement(
-                        "span",
-                        { className: "pointCount" },
-                        this.padValue(this.state.points)
-                    ),
-                    React.createElement("span", { className: this.upVoteAllowed() ? "upButton" : "upButton disabled", onClick: this.upVote.bind(this) })
-                ),
-                React.createElement(
-                    "div",
-                    { className: "statusIconWrapper" },
-                    React.createElement("span", { className: "statusIcon" })
+                        "div",
+                        { className: "progressWrapper col-height col-top", ref: function ref(div) {
+                                _this4.progressWrapper = div;
+                            } },
+                        React.createElement(
+                            "div",
+                            { className: "row-height" },
+                            React.createElement(
+                                "div",
+                                { className: "voteControl col-height col-top" + stateClass },
+                                React.createElement(
+                                    "div",
+                                    { className: "voteControlInner" },
+                                    React.createElement("span", { className: this.downVoteAllowed() ? "downButton" : "downButton disabled", onClick: this.downVote.bind(this) }),
+                                    React.createElement(
+                                        "span",
+                                        { className: "pointCount" },
+                                        this.padValue(this.state.points)
+                                    ),
+                                    React.createElement("span", { className: this.upVoteAllowed() ? "upButton" : "upButton disabled", onClick: this.upVote.bind(this) })
+                                ),
+                                React.createElement(
+                                    "div",
+                                    { className: "statusIconWrapper" },
+                                    React.createElement("span", { className: "statusIcon" })
+                                )
+                            )
+                        )
+                    )
                 )
             );
         }
@@ -229,27 +249,27 @@ var SongInfo = function (_React$Component2) {
     function SongInfo(props) {
         _classCallCheck(this, SongInfo);
 
-        var _this4 = _possibleConstructorReturn(this, (SongInfo.__proto__ || Object.getPrototypeOf(SongInfo)).call(this, props));
+        var _this5 = _possibleConstructorReturn(this, (SongInfo.__proto__ || Object.getPrototypeOf(SongInfo)).call(this, props));
 
-        _this4.state = {
+        _this5.state = {
             uri: props.uri,
             track: { name: '',
                 artists: [{ name: '' }],
                 album: { images: [{}, { url: '' }], name: '' }
             }
         };
-        return _this4;
+        return _this5;
     }
 
     _createClass(SongInfo, [{
         key: "componentDidMount",
         value: function componentDidMount() {
-            var _this5 = this;
+            var _this6 = this;
 
             // Get track object from Spotify API
             var trackId = this.state.uri.match(/spotify\:track\:([a-zA-Z0-9]{22})/)[1];
             axios.get('https://api.spotify.com/v1/tracks/' + trackId).then(function (res) {
-                _this5.setState({ track: res.data });
+                _this6.setState({ track: res.data });
             });
         }
     }, {
@@ -785,14 +805,14 @@ var SongList = function (_React$Component6) {
     function SongList(props) {
         _classCallCheck(this, SongList);
 
-        var _this13 = _possibleConstructorReturn(this, (SongList.__proto__ || Object.getPrototypeOf(SongList)).call(this, props));
+        var _this14 = _possibleConstructorReturn(this, (SongList.__proto__ || Object.getPrototypeOf(SongList)).call(this, props));
 
-        _this13.state = {
+        _this14.state = {
             upVotes: 0,
             downVotes: 0,
             votes: {}
         };
-        return _this13;
+        return _this14;
     }
 
     _createClass(SongList, [{
