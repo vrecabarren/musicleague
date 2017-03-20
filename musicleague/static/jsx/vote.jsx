@@ -3,10 +3,12 @@ class VoteControl extends React.Component {
         super(props);
         this.state = {
             uri: props.uri,
-            points: 0
+            points: props.previousVote
         };
+    }
 
-        this.adjustProgress(0);
+    componentDidMount() {
+        this.adjustProgress(this.state.points);
     }
 
     render() {
@@ -224,7 +226,7 @@ class Song extends React.Component {
                 <div className="song full row">
                     <div className="row-height">
                         <SongInfo uri={this.props.uri}/>
-                        <VoteControl maxUpVotes={this.props.maxUpVotes} maxDownVotes={this.props.maxDownVotes} uri={this.props.uri} onUpVote={this.props.onUpVote} onDownVote={this.props.onDownVote}/>
+                        <VoteControl previousVote={this.props.previousVote} maxUpVotes={this.props.maxUpVotes} maxDownVotes={this.props.maxDownVotes} uri={this.props.uri} onUpVote={this.props.onUpVote} onDownVote={this.props.onDownVote}/>
                     </div>
                 </div>
             </div>
@@ -239,7 +241,7 @@ class SongMobile extends Song {
                 <div className="song mobile row">
                     <div className="row-height">
                         <SongInfoMobile uri={this.props.uri}/>
-                        <VoteControlMobile maxUpVotes={this.props.maxUpVotes} maxDownVotes={this.props.maxDownVotes} uri={this.props.uri} onUpVote={this.props.onUpVote} onDownVote={this.props.onDownVote}/>
+                        <VoteControlMobile previousVote={this.props.previousVote} maxUpVotes={this.props.maxUpVotes} maxDownVotes={this.props.maxDownVotes} uri={this.props.uri} onUpVote={this.props.onUpVote} onDownVote={this.props.onDownVote}/>
                     </div>
                 </div>
             </div>
@@ -397,6 +399,17 @@ class SongList extends React.Component {
             downVotes: 0,
             votes: props.previousVotes
         };
+
+        // Set number of up and down votes for previous
+        for (var uri in props.previousVotes) {
+            var points = props.previousVotes[uri];
+            console.log('Existing vote for ' + uri + ' of ' + points);
+            if (points >= 0) {
+                this.state.upVotes += points;
+            } else {
+                this.state.downVotes += Math.abs(points);
+            }
+        }
     }
 
     render() {
@@ -425,8 +438,8 @@ class SongList extends React.Component {
                                 this.props.uris.map(function(uri) {
                                     return (
                                         <div>
-                                            <Song uri={uri} maxUpVotes={this.props.maxUpVotesPerSong} maxDownVotes={this.props.maxDownVotesPerSong} onUpVote={this.onUpVote.bind(this)} onDownVote={this.onDownVote.bind(this)}/>
-                                            <SongMobile uri={uri} maxUpVotes={this.props.maxUpVotesPerSong} maxDownVotes={this.props.maxDownVotesPerSong} onUpVote={this.onUpVote.bind(this)} onDownVote={this.onDownVote.bind(this)}/>
+                                            <Song uri={uri} previousVote={uri in this.props.previousVotes ? this.props.previousVotes[uri] : 0} maxUpVotes={this.props.maxUpVotesPerSong} maxDownVotes={this.props.maxDownVotesPerSong} onUpVote={this.onUpVote.bind(this)} onDownVote={this.onDownVote.bind(this)}/>
+                                            <SongMobile uri={uri} previousVote={uri in this.props.previousVotes ? this.props.previousVotes[uri] : 0} maxUpVotes={this.props.maxUpVotesPerSong} maxDownVotes={this.props.maxDownVotesPerSong} onUpVote={this.onUpVote.bind(this)} onDownVote={this.onDownVote.bind(this)}/>
                                         </div>
                                     );
                                 }.bind(this))

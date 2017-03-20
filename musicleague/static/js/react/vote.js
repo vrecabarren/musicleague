@@ -18,14 +18,17 @@ var VoteControl = function (_React$Component) {
 
         _this.state = {
             uri: props.uri,
-            points: 0
+            points: props.previousVote
         };
-
-        _this.adjustProgress(0);
         return _this;
     }
 
     _createClass(VoteControl, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            this.adjustProgress(this.state.points);
+        }
+    }, {
         key: "render",
         value: function render() {
             var _this2 = this;
@@ -371,7 +374,7 @@ var Song = function (_React$Component3) {
                         "div",
                         { className: "row-height" },
                         React.createElement(SongInfo, { uri: this.props.uri }),
-                        React.createElement(VoteControl, { maxUpVotes: this.props.maxUpVotes, maxDownVotes: this.props.maxDownVotes, uri: this.props.uri, onUpVote: this.props.onUpVote, onDownVote: this.props.onDownVote })
+                        React.createElement(VoteControl, { previousVote: this.props.previousVote, maxUpVotes: this.props.maxUpVotes, maxDownVotes: this.props.maxDownVotes, uri: this.props.uri, onUpVote: this.props.onUpVote, onDownVote: this.props.onDownVote })
                     )
                 )
             );
@@ -403,7 +406,7 @@ var SongMobile = function (_Song) {
                         "div",
                         { className: "row-height" },
                         React.createElement(SongInfoMobile, { uri: this.props.uri }),
-                        React.createElement(VoteControlMobile, { maxUpVotes: this.props.maxUpVotes, maxDownVotes: this.props.maxDownVotes, uri: this.props.uri, onUpVote: this.props.onUpVote, onDownVote: this.props.onDownVote })
+                        React.createElement(VoteControlMobile, { previousVote: this.props.previousVote, maxUpVotes: this.props.maxUpVotes, maxDownVotes: this.props.maxDownVotes, uri: this.props.uri, onUpVote: this.props.onUpVote, onDownVote: this.props.onDownVote })
                     )
                 )
             );
@@ -812,6 +815,17 @@ var SongList = function (_React$Component6) {
             downVotes: 0,
             votes: props.previousVotes
         };
+
+        // Set number of up and down votes for previous
+        for (var uri in props.previousVotes) {
+            var points = props.previousVotes[uri];
+            console.log('Existing vote for ' + uri + ' of ' + points);
+            if (points >= 0) {
+                _this14.state.upVotes += points;
+            } else {
+                _this14.state.downVotes += Math.abs(points);
+            }
+        }
         return _this14;
     }
 
@@ -851,8 +865,8 @@ var SongList = function (_React$Component6) {
                                 return React.createElement(
                                     "div",
                                     null,
-                                    React.createElement(Song, { uri: uri, maxUpVotes: this.props.maxUpVotesPerSong, maxDownVotes: this.props.maxDownVotesPerSong, onUpVote: this.onUpVote.bind(this), onDownVote: this.onDownVote.bind(this) }),
-                                    React.createElement(SongMobile, { uri: uri, maxUpVotes: this.props.maxUpVotesPerSong, maxDownVotes: this.props.maxDownVotesPerSong, onUpVote: this.onUpVote.bind(this), onDownVote: this.onDownVote.bind(this) })
+                                    React.createElement(Song, { uri: uri, previousVote: uri in this.props.previousVotes ? this.props.previousVotes[uri] : 0, maxUpVotes: this.props.maxUpVotesPerSong, maxDownVotes: this.props.maxDownVotesPerSong, onUpVote: this.onUpVote.bind(this), onDownVote: this.onDownVote.bind(this) }),
+                                    React.createElement(SongMobile, { uri: uri, previousVote: uri in this.props.previousVotes ? this.props.previousVotes[uri] : 0, maxUpVotes: this.props.maxUpVotesPerSong, maxDownVotes: this.props.maxDownVotesPerSong, onUpVote: this.onUpVote.bind(this), onDownVote: this.onDownVote.bind(this) })
                                 );
                             }.bind(this))
                         )
