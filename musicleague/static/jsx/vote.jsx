@@ -98,7 +98,7 @@ class VoteControl extends React.Component {
             var bottom = ', ' + width + 'px ' + edgeHeight + 'px';
             var left = ', 0px ' + height + 'px';
             var borderRad = "border-radius: 0; ";
-            var backgroundSize = 'background-size: 0, 0, 0; ';
+            var backgroundSize = 'background-size: 0, 0, 0, 0; ';
         }
         // If progress can be expressed on top border alone
         else if (borderLen <= oneSide) {
@@ -107,7 +107,7 @@ class VoteControl extends React.Component {
             var bottom = ', ' + width + 'px ' + edgeHeight + 'px';
             var left = ', 0px ' + height + 'px';
             var borderRad = "border-radius: 0 8px 8px 8px; ";
-            var backgroundSize = 'background-size: ' + borderLen + 'px 5px, 5px 100%, 100% 5px, 5px 100%; ';
+            var backgroundSize = 'background-size: ' + borderLen + 'px 5px, 0px 0px, 0px 0px, 0px 0px; ';
         }
         // If progress can be expressed on top and right borders alone
         else if (borderLen <= twoSides) {
@@ -116,7 +116,7 @@ class VoteControl extends React.Component {
             var bottom = ', ' + width + 'px ' + edgeHeight + 'px';
             var left = ', 0px ' + height + 'px';
             var borderRad = "border-radius: 0 8px 8px 8px; ";
-            var backgroundSize = 'background-size: 100% 5px, 5px 100%, 100% 5px, 5px 100%; ';
+            var backgroundSize = 'background-size: 100% 5px, 5px 100%, 0px 0px, 0px 0px; ';
         }
         // If progress can be expressed on top, right, and bottom borders alone
         else if (borderLen <= threeSides) {
@@ -125,7 +125,7 @@ class VoteControl extends React.Component {
             var bottom = ', ' + (width - (borderLen - width - height)) + 'px ' + edgeHeight + 'px';
             var left = ', 0px ' + height + 'px';
             var borderRad = "border-radius: 0 8px 8px 8px; ";
-            var backgroundSize = 'background-size: 100% 5px, 5px 100%, 100% 5px, 5px 100%; ';
+            var backgroundSize = 'background-size: 100% 5px, 5px 100%, 100% 5px, 0px 0px; ';
         }
         // If progress needs all four borders to be expressed
         else {
@@ -152,7 +152,7 @@ class VoteControlMobile extends VoteControl {
                 <div className="row-height">
                     <div className="progressWrapper col-height col-top" ref={(div) => { this.progressWrapper = div; }}>
                         <div className="row-height">
-                            <div className={"voteControl col-height col-top" + stateClass}>
+                            <div className={"voteControl col-height col-top " + stateClass}>
                                 <div className="voteControlInner">
                                     <span className={this.downVoteAllowed() ? "downButton" : "downButton disabled"} onClick={this.downVote.bind(this)}></span>
                                     <span className="pointCount">{this.padValue(this.state.points)}</span>

@@ -138,7 +138,7 @@ var VoteControl = function (_React$Component) {
                 var bottom = ', ' + width + 'px ' + edgeHeight + 'px';
                 var left = ', 0px ' + height + 'px';
                 var borderRad = "border-radius: 0; ";
-                var backgroundSize = 'background-size: 0, 0, 0; ';
+                var backgroundSize = 'background-size: 0, 0, 0, 0; ';
             }
             // If progress can be expressed on top border alone
             else if (borderLen <= oneSide) {
@@ -147,7 +147,7 @@ var VoteControl = function (_React$Component) {
                     var bottom = ', ' + width + 'px ' + edgeHeight + 'px';
                     var left = ', 0px ' + height + 'px';
                     var borderRad = "border-radius: 0 8px 8px 8px; ";
-                    var backgroundSize = 'background-size: ' + borderLen + 'px 5px, 5px 100%, 100% 5px, 5px 100%; ';
+                    var backgroundSize = 'background-size: ' + borderLen + 'px 5px, 0px 0px, 0px 0px, 0px 0px; ';
                 }
                 // If progress can be expressed on top and right borders alone
                 else if (borderLen <= twoSides) {
@@ -156,7 +156,7 @@ var VoteControl = function (_React$Component) {
                         var bottom = ', ' + width + 'px ' + edgeHeight + 'px';
                         var left = ', 0px ' + height + 'px';
                         var borderRad = "border-radius: 0 8px 8px 8px; ";
-                        var backgroundSize = 'background-size: 100% 5px, 5px 100%, 100% 5px, 5px 100%; ';
+                        var backgroundSize = 'background-size: 100% 5px, 5px 100%, 0px 0px, 0px 0px; ';
                     }
                     // If progress can be expressed on top, right, and bottom borders alone
                     else if (borderLen <= threeSides) {
@@ -165,7 +165,7 @@ var VoteControl = function (_React$Component) {
                             var bottom = ', ' + (width - (borderLen - width - height)) + 'px ' + edgeHeight + 'px';
                             var left = ', 0px ' + height + 'px';
                             var borderRad = "border-radius: 0 8px 8px 8px; ";
-                            var backgroundSize = 'background-size: 100% 5px, 5px 100%, 100% 5px, 5px 100%; ';
+                            var backgroundSize = 'background-size: 100% 5px, 5px 100%, 100% 5px, 0px 0px; ';
                         }
                         // If progress needs all four borders to be expressed
                         else {
@@ -218,7 +218,7 @@ var VoteControlMobile = function (_VoteControl) {
                             { className: "row-height" },
                             React.createElement(
                                 "div",
-                                { className: "voteControl col-height col-top" + stateClass },
+                                { className: "voteControl col-height col-top " + stateClass },
                                 React.createElement(
                                     "div",
                                     { className: "voteControlInner" },
