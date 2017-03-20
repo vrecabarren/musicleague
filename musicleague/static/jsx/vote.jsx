@@ -395,7 +395,7 @@ class SongList extends React.Component {
         this.state = {
             upVotes: 0,
             downVotes: 0,
-            votes: {}
+            votes: props.previousVotes
         };
     }
 

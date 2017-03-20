@@ -293,7 +293,8 @@
             maxDownVotes: {{ league.preferences.downvote_bank_size|tojson|safe }},
             maxDownVotesPerSong: {{ 2|tojson|safe }},
             maxUpVotes: {{ league.preferences.point_bank_size|tojson|safe }},
-            maxUpVotesPerSong: {{ 3|tojson|safe }}
+            maxUpVotesPerSong: {{ 3|tojson|safe }},
+            previousVotes: {{ my_vote.votes|tojson|safe if my_vote else {}|tojson|safe }}
         }),
         document.getElementById('mountVote')
     );

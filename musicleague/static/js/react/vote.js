@@ -810,7 +810,7 @@ var SongList = function (_React$Component6) {
         _this14.state = {
             upVotes: 0,
             downVotes: 0,
-            votes: {}
+            votes: props.previousVotes
         };
         return _this14;
     }
