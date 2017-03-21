@@ -47,9 +47,14 @@
 
     #user-bar #user-img {
         background-color: #fff;
+        background-repeat: no-repeat;
+        background-size: cover;
         border: 3px solid #fff;
+        border-radius: 95px;
+        display: inline-block;
         height: 190px;
         margin: 10px 50px;
+        vertical-align: middle;
         width: 190px;
     }
 
