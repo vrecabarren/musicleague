@@ -89,13 +89,15 @@
 }
 .songListHeader #submitVotesButtonWrapper.disabled { background-color: #D8D8D8; }
 
-.songListHeader #submitVotesButtonWrapper #submitVotesButton {
+.songListHeader #submitVotesButtonWrapper #submitVotesButton,
+.songListHeader #submitVotesButtonWrapper #submitVotesButton:active {
     background: none;
     border: 3px solid #fff;
     border-radius: 8px;
     color: #fff;
     font-size: 20px;
     line-height: 24px;
+    outline: none;
     padding-left: 5px;
     padding-right: 5px;
     width: 100%;
