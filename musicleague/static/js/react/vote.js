@@ -166,8 +166,8 @@ var VoteControl = function (_React$Component) {
             var borderLen = progress * totalLength;
 
             var oneSide = width - 8;
-            var twoSides = oneSide + height;
-            var threeSides = twoSides + width;
+            var twoSides = oneSide + (height + 8);
+            var threeSides = twoSides + (width + 8);
 
             if (borderLen == 0) {
                 var top = width * -1 + 'px 0px';
@@ -186,7 +186,8 @@ var VoteControl = function (_React$Component) {
                     var left = ', 0px ' + height + 'px';
                     var borderRad = "border-radius: 0 8px 8px 8px; ";
                     var backgroundSize = 'background-size: ' + borderLen + 'px 5px, 0px 0px, 0px 0px, 0px 0px; ';
-                    this.progressWrapperInner.setAttribute('style', 'border-top-left-radius: 0');
+
+                    if (borderLen == oneSide) this.progressWrapperInner.setAttribute('style', 'border-top-left-radius: 0; border-top-right-radius: 0');else this.progressWrapperInner.setAttribute('style', 'border-top-left-radius: 0');
                 }
                 // If progress can be expressed on top and right borders alone
                 else if (borderLen <= twoSides) {
@@ -195,8 +196,9 @@ var VoteControl = function (_React$Component) {
                         var bottom = ', ' + width + 'px ' + edgeHeight + 'px';
                         var left = ', 0px ' + height + 'px';
                         var borderRad = "border-radius: 0 8px 8px 8px; ";
-                        var backgroundSize = 'background-size: 100% 5px, 5px 100%, 0px 0px, 0px 0px; ';
-                        this.progressWrapperInner.setAttribute('style', 'border-top-left-radius: 0');
+                        var backgroundSize = 'background-size: 100% 5px, 5px ' + edgeHeight + 'px, 0px 0px, 0px 0px; ';
+
+                        if (borderLen == twoSides) this.progressWrapperInner.setAttribute('style', 'border-top-left-radius: 0; border-bottom-right-radius: 0');else this.progressWrapperInner.setAttribute('style', 'border-top-left-radius: 0');
                     }
                     // If progress can be expressed on top, right, and bottom borders alone
                     else if (borderLen <= threeSides) {
@@ -205,8 +207,9 @@ var VoteControl = function (_React$Component) {
                             var bottom = ', ' + (width - (borderLen - width - height)) + 'px ' + edgeHeight + 'px';
                             var left = ', 0px ' + height + 'px';
                             var borderRad = "border-radius: 0 8px 8px 8px; ";
-                            var backgroundSize = 'background-size: 100% 5px, 5px 100%, 100% 5px, 0px 0px; ';
-                            this.progressWrapperInner.setAttribute('style', 'border-top-left-radius: 0');
+                            var backgroundSize = 'background-size: 100% 5px, 5px 100%, ' + edgeWidth + 'px 5px, 0px 0px; ';
+
+                            if (borderLen == threeSides) this.progressWrapperInner.setAttribute('style', 'border-top-left-radius: 0; border-bottom-left-radius: 0');else this.progressWrapperInner.setAttribute('style', 'border-top-left-radius: 0');
                         }
                         // If progress needs all four borders to be expressed
                         else {
