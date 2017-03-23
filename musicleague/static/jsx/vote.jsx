@@ -12,8 +12,8 @@ class VoteControl extends React.Component {
     }
 
     componentDidMount() {
-        this.adjustProgress();
         window.addEventListener("resize", this.adjustProgress.bind(this));
+        setTimeout(this.adjustProgress.bind(this), 500);
     }
 
     componentWillUnmount() {
@@ -26,23 +26,25 @@ class VoteControl extends React.Component {
             <div className="col-xs-6 col-sm-4 col-md-4 col-height col-middle" style={{padding: '0'}}>
                 <div className="row-height">
                     <div className="progressWrapper col-height col-middle" ref={(div) => { this.progressWrapper = div; }}>
-                        <div className="progressWrapperInner col-height col-middle" ref={(div) => { this.progressWrapperInner = div; }}>
-                            <div className="row-height">
-                                <div className={"hidden-xs voteControl col-height col-middle" + " " + stateClass}>
-                                    <div className="voteControlInner">
-                                        <span className={this.downVoteAllowed() ? "downButton" : "downButton disabled"} onClick={this.downVote.bind(this)}></span>
-                                        <span className="pointCount">{this.padValue(this.state.points)}</span>
-                                        <span className={this.upVoteAllowed() ? "upButton" : "upButton disabled"} onClick={this.upVote.bind(this)}></span>
+                        <div className="row-height">
+                            <div className="progressWrapperInner col-height col-middle" ref={(div) => { this.progressWrapperInner = div; }}>
+                                <div className="row-height">
+                                    <div className={"hidden-xs voteControl col-height col-middle" + " " + stateClass}>
+                                        <div className="voteControlInner">
+                                            <span className={this.downVoteAllowed() ? "downButton" : "downButton disabled"} onClick={this.downVote.bind(this)}></span>
+                                            <span className="pointCount">{this.padValue(this.state.points)}</span>
+                                            <span className={this.upVoteAllowed() ? "upButton" : "upButton disabled"} onClick={this.upVote.bind(this)}></span>
+                                            <span className="statusIcon"></span>
+                                        </div>
+                                    </div>
+                                    <div className={"visible-xs voteControl col-height col-top" + " " + stateClass}>
+                                        <div className="voteControlInner">
+                                            <span className={this.downVoteAllowed() ? "downButton" : "downButton disabled"} onClick={this.downVote.bind(this)}></span>
+                                            <span className="pointCount">{this.padValue(this.state.points)}</span>
+                                            <span className={this.upVoteAllowed() ? "upButton" : "upButton disabled"} onClick={this.upVote.bind(this)}></span>
+                                        </div>
                                         <span className="statusIcon"></span>
                                     </div>
-                                </div>
-                                <div className={"visible-xs voteControl col-height col-top" + " " + stateClass}>
-                                    <div className="voteControlInner">
-                                        <span className={this.downVoteAllowed() ? "downButton" : "downButton disabled"} onClick={this.downVote.bind(this)}></span>
-                                        <span className="pointCount">{this.padValue(this.state.points)}</span>
-                                        <span className={this.upVoteAllowed() ? "upButton" : "upButton disabled"} onClick={this.upVote.bind(this)}></span>
-                                    </div>
-                                    <span className="statusIcon"></span>
                                 </div>
                             </div>
                         </div>

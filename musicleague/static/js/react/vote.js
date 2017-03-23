@@ -31,8 +31,8 @@ var VoteControl = function (_React$Component) {
     }, {
         key: "componentDidMount",
         value: function componentDidMount() {
-            this.adjustProgress();
             window.addEventListener("resize", this.adjustProgress.bind(this));
+            setTimeout(this.adjustProgress.bind(this), 500);
         }
     }, {
         key: "componentWillUnmount",
@@ -58,43 +58,47 @@ var VoteControl = function (_React$Component) {
                             } },
                         React.createElement(
                             "div",
-                            { className: "progressWrapperInner col-height col-middle", ref: function ref(div) {
-                                    _this2.progressWrapperInner = div;
-                                } },
+                            { className: "row-height" },
                             React.createElement(
                                 "div",
-                                { className: "row-height" },
+                                { className: "progressWrapperInner col-height col-middle", ref: function ref(div) {
+                                        _this2.progressWrapperInner = div;
+                                    } },
                                 React.createElement(
                                     "div",
-                                    { className: "hidden-xs voteControl col-height col-middle" + " " + stateClass },
+                                    { className: "row-height" },
                                     React.createElement(
                                         "div",
-                                        { className: "voteControlInner" },
-                                        React.createElement("span", { className: this.downVoteAllowed() ? "downButton" : "downButton disabled", onClick: this.downVote.bind(this) }),
+                                        { className: "hidden-xs voteControl col-height col-middle" + " " + stateClass },
                                         React.createElement(
-                                            "span",
-                                            { className: "pointCount" },
-                                            this.padValue(this.state.points)
+                                            "div",
+                                            { className: "voteControlInner" },
+                                            React.createElement("span", { className: this.downVoteAllowed() ? "downButton" : "downButton disabled", onClick: this.downVote.bind(this) }),
+                                            React.createElement(
+                                                "span",
+                                                { className: "pointCount" },
+                                                this.padValue(this.state.points)
+                                            ),
+                                            React.createElement("span", { className: this.upVoteAllowed() ? "upButton" : "upButton disabled", onClick: this.upVote.bind(this) }),
+                                            React.createElement("span", { className: "statusIcon" })
+                                        )
+                                    ),
+                                    React.createElement(
+                                        "div",
+                                        { className: "visible-xs voteControl col-height col-top" + " " + stateClass },
+                                        React.createElement(
+                                            "div",
+                                            { className: "voteControlInner" },
+                                            React.createElement("span", { className: this.downVoteAllowed() ? "downButton" : "downButton disabled", onClick: this.downVote.bind(this) }),
+                                            React.createElement(
+                                                "span",
+                                                { className: "pointCount" },
+                                                this.padValue(this.state.points)
+                                            ),
+                                            React.createElement("span", { className: this.upVoteAllowed() ? "upButton" : "upButton disabled", onClick: this.upVote.bind(this) })
                                         ),
-                                        React.createElement("span", { className: this.upVoteAllowed() ? "upButton" : "upButton disabled", onClick: this.upVote.bind(this) }),
                                         React.createElement("span", { className: "statusIcon" })
                                     )
-                                ),
-                                React.createElement(
-                                    "div",
-                                    { className: "visible-xs voteControl col-height col-top" + " " + stateClass },
-                                    React.createElement(
-                                        "div",
-                                        { className: "voteControlInner" },
-                                        React.createElement("span", { className: this.downVoteAllowed() ? "downButton" : "downButton disabled", onClick: this.downVote.bind(this) }),
-                                        React.createElement(
-                                            "span",
-                                            { className: "pointCount" },
-                                            this.padValue(this.state.points)
-                                        ),
-                                        React.createElement("span", { className: this.upVoteAllowed() ? "upButton" : "upButton disabled", onClick: this.upVote.bind(this) })
-                                    ),
-                                    React.createElement("span", { className: "statusIcon" })
                                 )
                             )
                         )
