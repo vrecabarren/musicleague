@@ -26,22 +26,24 @@ class VoteControl extends React.Component {
             <div className="col-xs-6 col-sm-4 col-md-4 col-height col-middle" style={{padding: '0'}}>
                 <div className="row-height">
                     <div className="progressWrapper col-height col-middle" ref={(div) => { this.progressWrapper = div; }}>
-                        <div className="row-height">
-                            <div className={"hidden-xs voteControl col-height col-middle" + " " + stateClass}>
-                                <div className="voteControlInner">
-                                    <span className={this.downVoteAllowed() ? "downButton" : "downButton disabled"} onClick={this.downVote.bind(this)}></span>
-                                    <span className="pointCount">{this.padValue(this.state.points)}</span>
-                                    <span className={this.upVoteAllowed() ? "upButton" : "upButton disabled"} onClick={this.upVote.bind(this)}></span>
+                        <div className="progressWrapperInner col-height col-middle" ref={(div) => { this.progressWrapperInner = div; }}>
+                            <div className="row-height">
+                                <div className={"hidden-xs voteControl col-height col-middle" + " " + stateClass}>
+                                    <div className="voteControlInner">
+                                        <span className={this.downVoteAllowed() ? "downButton" : "downButton disabled"} onClick={this.downVote.bind(this)}></span>
+                                        <span className="pointCount">{this.padValue(this.state.points)}</span>
+                                        <span className={this.upVoteAllowed() ? "upButton" : "upButton disabled"} onClick={this.upVote.bind(this)}></span>
+                                        <span className="statusIcon"></span>
+                                    </div>
+                                </div>
+                                <div className={"visible-xs voteControl col-height col-top" + " " + stateClass}>
+                                    <div className="voteControlInner">
+                                        <span className={this.downVoteAllowed() ? "downButton" : "downButton disabled"} onClick={this.downVote.bind(this)}></span>
+                                        <span className="pointCount">{this.padValue(this.state.points)}</span>
+                                        <span className={this.upVoteAllowed() ? "upButton" : "upButton disabled"} onClick={this.upVote.bind(this)}></span>
+                                    </div>
                                     <span className="statusIcon"></span>
                                 </div>
-                            </div>
-                            <div className={"visible-xs voteControl col-height col-top" + " " + stateClass}>
-                                <div className="voteControlInner">
-                                    <span className={this.downVoteAllowed() ? "downButton" : "downButton disabled"} onClick={this.downVote.bind(this)}></span>
-                                    <span className="pointCount">{this.padValue(this.state.points)}</span>
-                                    <span className={this.upVoteAllowed() ? "upButton" : "upButton disabled"} onClick={this.upVote.bind(this)}></span>
-                                </div>
-                                <span className="statusIcon"></span>
                             </div>
                         </div>
                     </div>
@@ -118,6 +120,7 @@ class VoteControl extends React.Component {
             var left = ', 0px ' + height + 'px';
             var borderRad = "border-radius: 0; ";
             var backgroundSize = 'background-size: 0, 0, 0, 0; ';
+            this.progressWrapperInner.removeAttribute('style');
         }
         // If progress can be expressed on top border alone
         else if (borderLen <= oneSide) {
@@ -127,6 +130,7 @@ class VoteControl extends React.Component {
             var left = ', 0px ' + height + 'px';
             var borderRad = "border-radius: 0 8px 8px 8px; ";
             var backgroundSize = 'background-size: ' + borderLen + 'px 5px, 0px 0px, 0px 0px, 0px 0px; ';
+            this.progressWrapperInner.setAttribute('style', 'border-top-left-radius: 0');
         }
         // If progress can be expressed on top and right borders alone
         else if (borderLen <= twoSides) {
@@ -136,6 +140,7 @@ class VoteControl extends React.Component {
             var left = ', 0px ' + height + 'px';
             var borderRad = "border-radius: 0 8px 8px 8px; ";
             var backgroundSize = 'background-size: 100% 5px, 5px 100%, 0px 0px, 0px 0px; ';
+            this.progressWrapperInner.setAttribute('style', 'border-top-left-radius: 0');
         }
         // If progress can be expressed on top, right, and bottom borders alone
         else if (borderLen <= threeSides) {
@@ -145,6 +150,7 @@ class VoteControl extends React.Component {
             var left = ', 0px ' + height + 'px';
             var borderRad = "border-radius: 0 8px 8px 8px; ";
             var backgroundSize = 'background-size: 100% 5px, 5px 100%, 100% 5px, 0px 0px; ';
+            this.progressWrapperInner.setAttribute('style', 'border-top-left-radius: 0');
         }
         // If progress needs all four borders to be expressed
         else {
@@ -154,6 +160,7 @@ class VoteControl extends React.Component {
             var left = ', 0px ' + (height - (borderLen - (width * 2) - height)) + 'px';
             var borderRad = "border-radius: 8px 8px 8px 8px; ";
             var backgroundSize = 'background-size: 100% 5px, 5px 100%, 100% 5px, 5px 100%; ';
+            this.progressWrapperInner.removeAttribute('style');
         }
 
         var background = 'background: linear-gradient(to right, ' + progressColor + ' 99.99%, transparent), linear-gradient(to bottom, ' + progressColor + ' 99.99%, transparent), linear-gradient(to right, ' + progressColor + ' 99.99%, transparent), linear-gradient(to bottom, ' + progressColor + ' 99.99%, transparent); ';
