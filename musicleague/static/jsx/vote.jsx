@@ -7,21 +7,40 @@ class VoteControl extends React.Component {
         };
     }
 
+    componentDidUpdate() {
+        this.adjustProgress();
+    }
+
     componentDidMount() {
-        this.adjustProgress(this.state.points);
+        this.adjustProgress();
+        window.addEventListener("resize", this.adjustProgress.bind(this));
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.adjustProgress.bind(this));
     }
 
     render() {
         var stateClass = (this.state.points < 0) ? "downVoted" : (this.state.points > 0) ? "upVoted" : "";
         return (
-            <div className="col-sm-4 col-md-4 col-height col-middle" style={{padding: '0'}}>
-                <div className="progressWrapper" ref={(div) => { this.progressWrapper = div; }}>
-                    <div className={"voteControl" + " " + stateClass}>
-                        <div className="voteControlInner">
-                            <span className={this.downVoteAllowed() ? "downButton" : "downButton disabled"} onClick={this.downVote.bind(this)}></span>
-                            <span className="pointCount">{this.padValue(this.state.points)}</span>
-                            <span className={this.upVoteAllowed() ? "upButton" : "upButton disabled"} onClick={this.upVote.bind(this)}></span>
-                            <div className="statusIconWrapper">
+            <div className="col-xs-6 col-sm-4 col-md-4 col-height col-middle" style={{padding: '0'}}>
+                <div className="row-height">
+                    <div className="progressWrapper col-height col-middle" ref={(div) => { this.progressWrapper = div; }}>
+                        <div className="row-height">
+                            <div className={"hidden-xs voteControl col-height col-middle" + " " + stateClass}>
+                                <div className="voteControlInner">
+                                    <span className={this.downVoteAllowed() ? "downButton" : "downButton disabled"} onClick={this.downVote.bind(this)}></span>
+                                    <span className="pointCount">{this.padValue(this.state.points)}</span>
+                                    <span className={this.upVoteAllowed() ? "upButton" : "upButton disabled"} onClick={this.upVote.bind(this)}></span>
+                                    <span className="statusIcon"></span>
+                                </div>
+                            </div>
+                            <div className={"visible-xs voteControl col-height col-top" + " " + stateClass}>
+                                <div className="voteControlInner">
+                                    <span className={this.downVoteAllowed() ? "downButton" : "downButton disabled"} onClick={this.downVote.bind(this)}></span>
+                                    <span className="pointCount">{this.padValue(this.state.points)}</span>
+                                    <span className={this.upVoteAllowed() ? "upButton" : "upButton disabled"} onClick={this.upVote.bind(this)}></span>
+                                </div>
                                 <span className="statusIcon"></span>
                             </div>
                         </div>
@@ -45,7 +64,6 @@ class VoteControl extends React.Component {
             var downVoteAllowed = this.props.onDownVote(this.state.uri, newPointValue);
             if (downVoteAllowed) {
                 this.setState({points: newPointValue});
-                this.adjustProgress(newPointValue);
             }
         } else {
             console.log("Down vote count " + Math.abs(newPointValue) + " exceeds per-song allowance of " + this.props.maxDownVotes + ". Rejecting.")
@@ -62,14 +80,15 @@ class VoteControl extends React.Component {
             var upVoteAllowed = this.props.onUpVote(this.state.uri, newPointValue);
             if (upVoteAllowed) {
                 this.setState({points: newPointValue});
-                this.adjustProgress(newPointValue);
             }
         } else {
             console.log("Up vote count " + newPointValue + " exceeds per-song allowance of " + this.props.maxUpVotes + ". Rejecting.")
         }
     }
 
-    adjustProgress(newPointValue) {
+    adjustProgress() {
+        var newPointValue = this.state.points;
+
         if (this.progressWrapper == null)
             return;
 
@@ -144,32 +163,6 @@ class VoteControl extends React.Component {
     }
 }
 
-class VoteControlMobile extends VoteControl {
-    render() {
-        var stateClass = (this.state.points < 0) ? "downVoted" : (this.state.points > 0) ? "upVoted" : "";
-        return (
-            <div className="col-xs-6 col-height col-middle" style={{padding: "0"}}>
-                <div className="row-height">
-                    <div className="progressWrapper col-height col-top" ref={(div) => { this.progressWrapper = div; }}>
-                        <div className="row-height">
-                            <div className={"voteControl col-height col-top " + stateClass}>
-                                <div className="voteControlInner">
-                                    <span className={this.downVoteAllowed() ? "downButton" : "downButton disabled"} onClick={this.downVote.bind(this)}></span>
-                                    <span className="pointCount">{this.padValue(this.state.points)}</span>
-                                    <span className={this.upVoteAllowed() ? "upButton" : "upButton disabled"} onClick={this.upVote.bind(this)}></span>
-                                </div>
-                                <div className="statusIconWrapper">
-                                    <span className="statusIcon"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-}
-
 class SongInfo extends React.Component {
     constructor(props) {
         super(props);
@@ -192,23 +185,9 @@ class SongInfo extends React.Component {
 
     render() {
         return (
-            <div className="col-sm-8 col-md-8 col-height col-middle songInfo">
-                <img src={this.state.track.album.images[1].url}/>
-                <div className="textInfo">
-                    <span className="trackName">{this.state.track.name}</span>
-                    <span className="trackArtist">By {this.state.track.artists[0].name}</span>
-                    <span className="trackAlbum">{ this.state.track.album.name }</span>
-                </div>
-            </div>
-        );
-    }
-}
-
-class SongInfoMobile extends SongInfo {
-    render() {
-        return (
-            <div className="col-xs-6 col-height songInfo">
-                <img src={this.state.track.album.images[1].url}/>
+            <div className="col-xs-6 col-sm-8 col-md-8 col-height col-middle songInfo">
+                <img className="hidden-xs" src={this.state.track.album.images[1].url}/>
+                <img className="visible-xs" src={this.state.track.album.images[1].url}/>
                 <div className="textInfo">
                     <span className="trackName">{this.state.track.name}</span>
                     <span className="trackArtist">By {this.state.track.artists[0].name}</span>
@@ -222,27 +201,10 @@ class SongInfoMobile extends SongInfo {
 class Song extends React.Component {
     render() {
         return (
-            <div className="hidden-xs">
-                <div className="song full row">
-                    <div className="row-height">
-                        <SongInfo uri={this.props.uri}/>
-                        <VoteControl previousVote={this.props.previousVote} maxUpVotes={this.props.maxUpVotes} maxDownVotes={this.props.maxDownVotes} uri={this.props.uri} onUpVote={this.props.onUpVote} onDownVote={this.props.onDownVote}/>
-                    </div>
-                </div>
-            </div>
-         );
-    }
-}
-
-class SongMobile extends Song {
-    render() {
-        return (
-            <div className="visible-xs">
-                <div className="song mobile row">
-                    <div className="row-height">
-                        <SongInfoMobile uri={this.props.uri}/>
-                        <VoteControlMobile previousVote={this.props.previousVote} maxUpVotes={this.props.maxUpVotes} maxDownVotes={this.props.maxDownVotes} uri={this.props.uri} onUpVote={this.props.onUpVote} onDownVote={this.props.onDownVote}/>
-                    </div>
+            <div className="song row">
+                <div className="row-height">
+                    <SongInfo uri={this.props.uri}/>
+                    <VoteControl previousVote={this.props.previousVote} maxUpVotes={this.props.maxUpVotes} maxDownVotes={this.props.maxDownVotes} uri={this.props.uri} onUpVote={this.props.onUpVote} onDownVote={this.props.onDownVote}/>
                 </div>
             </div>
          );
@@ -439,7 +401,6 @@ class SongList extends React.Component {
                                     return (
                                         <div>
                                             <Song uri={uri} previousVote={uri in this.props.previousVotes ? this.props.previousVotes[uri] : 0} maxUpVotes={this.props.maxUpVotesPerSong} maxDownVotes={this.props.maxDownVotesPerSong} onUpVote={this.onUpVote.bind(this)} onDownVote={this.onDownVote.bind(this)}/>
-                                            <SongMobile uri={uri} previousVote={uri in this.props.previousVotes ? this.props.previousVotes[uri] : 0} maxUpVotes={this.props.maxUpVotesPerSong} maxDownVotes={this.props.maxDownVotesPerSong} onUpVote={this.onUpVote.bind(this)} onDownVote={this.onDownVote.bind(this)}/>
                                         </div>
                                     );
                                 }.bind(this))

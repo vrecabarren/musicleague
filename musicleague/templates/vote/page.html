@@ -77,10 +77,10 @@
 
 .songListHeader .progressWrapper > .statusIconWrapper > .statusIcon.upVote,
 .songListHeader .progressWrapper > .statusIconWrapper > .statusIcon.downVote {
-    background: url('/static/icons/upvote.svg');
+    background: url('/static/icons/upvote.svg') no-repeat center;
 }
 .songListHeader .progressWrapper > .statusIconWrapper > .statusIcon.downVote {
-    background: url('/static/icons/downvote.svg');
+    background: url('/static/icons/downvote.svg') no-repeat center;
 }
 
 .songListHeader #submitVotesButtonWrapper {
@@ -114,12 +114,10 @@
     vertical-align: top;
     width: 100px;
 }
-.visible-xs .song .songInfo > img {
-    display: block;
+.song .songInfo > img.visible-xs {
     float: none;
     height: 50px;
     margin: inherit 0 10px inherit;
-    vertical-align: top;
     width: 50px;
 }
 
@@ -148,10 +146,11 @@
     border-radius: 8px;
     color: #01249A;
     min-height: 100px;
-    padding: 20px;
+    padding: 20px 5px;
+    text-align: center;
 }
-.visible-xs .song .voteControl {
-    padding: 5px;
+.song .voteControl.visible-xs {
+    padding: 0;
 }
 
 .song .voteControl.downVoted,
@@ -161,15 +160,18 @@
 }
 
 .song .voteControl .voteControlInner {
-    display: table;
+    border-spacing: 10px;
+    display: inline-table;
     vertical-align: middle;
+}
+.song .voteControl.visible-xs .voteControlInner {
+    display: table;
     width: 100%;
 }
 
 .song .voteControl .voteControlInner > .downButton,
 .song .voteControl .voteControlInner > .upButton {
-    background: url("/static/icons/downvote_blue.svg");
-    background-repeat:no-repeat;
+    background: url("/static/icons/downvote_blue.svg") no-repeat center;
     cursor: pointer;
     display: table-cell;
     height: 50px;
@@ -179,29 +181,24 @@
 
 .song .voteControl.downVoted .voteControlInner > .downButton,
 .song .voteControl.upVoted .voteControlInner > .downButton {
-    background: url("/static/icons/downvote_white.svg");
-    background-repeat: no-repeat;
+    background: url("/static/icons/downvote_white.svg") no-repeat center;
 }
 
 .song .voteControl .voteControlInner > .upButton {
-    background: url("/static/icons/upvote_blue.svg");
-    background-repeat: no-repeat;
+    background: url("/static/icons/upvote_blue.svg") no-repeat center;
 }
 
 .song .voteControl.downVoted .voteControlInner > .upButton,
 .song .voteControl.upVoted .voteControlInner > .upButton {
-    background: url("/static/icons/upvote_white.svg");
-    background-repeat: no-repeat;
+    background: url("/static/icons/upvote_white.svg") no-repeat center;
 }
 
 .song .voteControl .voteControlInner > .upButton.disabled {
-    background: url("/static/icons/upvote_disabled.svg");
-    background-repeat: no-repeat;
+    background: url("/static/icons/upvote_disabled.svg") no-repeat center;
 }
 
 .song .voteControl .voteControlInner > .downButton.disabled {
-    background: url("/static/icons/downvote_disabled.svg");
-    background-repeat: no-repeat;
+    background: url("/static/icons/downvote_disabled.svg") no-repeat center;
 }
 
 .song .voteControl .voteControlInner > .pointCount {
@@ -211,6 +208,7 @@
     font-size: 50px;
     font-weight: bold;
     line-height: 50px;
+    min-width: 70px;
     text-align: center;
     vertical-align: middle;
 }
@@ -219,45 +217,47 @@
     color: #FFFFFF;
 }
 
-.visible-xs .song .voteControl .voteControlInner > .pointCount {
+.song .voteControl.visible-xs .voteControlInner > .pointCount {
     font-size: 40px;
-    line-height: 50px;
+    line-height: 40px;
+    vertical-align: middle;
 }
 
-.song .voteControl .voteControlInner > .statusIconWrapper {
+.song .voteControl .statusIcon {
+    background: url('/static/icons/novote.svg') no-repeat center;
     display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-    width: 70px;
-}
-.visible-xs .song .voteControl > .statusIconWrapper {
-    display: block;
-    text-align: center;
-    vertical-align: middle;
-}
-
-.song .voteControl .voteControlInner > .statusIconWrapper > .statusIcon,
-.visible-xs .song .voteControl > .statusIconWrapper > .statusIcon {
-    background: url('/static/icons/novote.svg');
-    background-repeat: no-repeat;
-    display: inline-block;
     height: 50px;
     vertical-align: middle;
     width: 50px;
 }
-.visible-xs .song .voteControl > .statusIconWrapper > .statusIcon {
-    margin-bottom: -10px;
-    margin-top: 10px;
+.song .voteControl.visible-xs > .statusIcon {
+    display: inline-block;
 }
-.song .voteControl.downVoted .voteControlInner > .statusIconWrapper > .statusIcon,
-.visible-xs .song .voteControl.downVoted > .statusIconWrapper > .statusIcon {
-    background: url('/static/icons/downvote.svg');
-    background-repeat: no-repeat;
+.song .voteControl.downVoted .statusIcon {
+    background: url('/static/icons/downvote.svg') no-repeat center;
 }
-.song .voteControl.upVoted .voteControlInner > .statusIconWrapper > .statusIcon,
-.visible-xs .song .voteControl.upVoted > .statusIconWrapper > .statusIcon {
-    background: url('/static/icons/upvote.svg');
-    background-repeat: no-repeat;
+.song .voteControl.upVoted .statusIcon {
+    background: url('/static/icons/upvote.svg') no-repeat center;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+
+    .song .voteControl .voteControlInner {
+        border-spacing: 5px;
+    }
+
+    .song .voteControl .voteControlInner > .downButton,
+    .song .voteControl .voteControlInner > .upButton,
+    .song .voteControl .voteControlInner > .statusIcon {
+        height: 40px;
+        line-height: 50px;
+        width: 40px;
+    }
+
+    .song .voteControl .voteControlInner > .pointCount {
+        font-size: 40px;
+        line-height: 50px;
+    }
 }
 
 .song .progressWrapper {
