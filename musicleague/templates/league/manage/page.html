@@ -204,31 +204,26 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div style="padding: 30px 0px">
-                                        <div id="added-rounds" class="col-md-12">
-                                            <span class="title">Rounds:</span>
-                                            {% for round in league.submission_periods %}
-                                            <span class="row round current-round" data-id="{{ round.id }}" data-name="{{ round.name }}" data-description="{{ round.description }}" data-submission-due-date-utc="{{ round.submission_due_date.strftime('%m/%d/%y %-I%p') }}" data-voting-due-date-utc="{{ round.vote_due_date.strftime('%m/%d/%y %-I%p') }}">
-                                                <div class="col-xs-6 col-sm-8 col-md-7 round-name-wrapper">
-                                                    <span class="round-name">{{ round.name }}</span>
-                                                </div>
-                                                <div class="col-xs-3 col-sm-2 button-wrapper">
-                                                    <a class="btn edit-round-btn">Edit</a>
-                                                </div>
-                                                <div class="col-xs-3 col-sm-2 col-md-3 button-wrapper">
-                                                    <a class="btn delete-round-btn">Delete</a>
-                                                </div>
-                                            </span>
-                                            {% endfor %}
-                                        </div>
-                                        <input type="hidden" id="added-rounds-inp" name="added-rounds">
-                                        <input type="hidden" id="edited-rounds-inp" name="edited-rounds">
-                                        <input type="hidden" id="deleted-rounds-inp" name="deleted-rounds">
+                            <div class="visible-xs visible-sm" style="padding: 15px"></div>
+                            <div id="added-rounds">
+                                <span class="title">Rounds:</span>
+                                {% for round in league.submission_periods %}
+                                <span class="row round current-round" data-id="{{ round.id }}" data-name="{{ round.name }}" data-description="{{ round.description }}" data-submission-due-date-utc="{{ round.submission_due_date.strftime('%m/%d/%y %-I%p') }}" data-voting-due-date-utc="{{ round.vote_due_date.strftime('%m/%d/%y %-I%p') }}">
+                                    <div class="col-xs-6 col-sm-8 col-md-7 round-name-wrapper">
+                                        <span class="round-name">{{ round.name }}</span>
                                     </div>
-                                </div>
+                                    <div class="col-xs-3 col-sm-2 button-wrapper">
+                                        <a class="btn edit-round-btn">Edit</a>
+                                    </div>
+                                    <div class="col-xs-3 col-sm-2 col-md-3 button-wrapper">
+                                        <a class="btn delete-round-btn">Delete</a>
+                                    </div>
+                                </span>
+                                {% endfor %}
                             </div>
+                            <input type="hidden" id="added-rounds-inp" name="added-rounds">
+                            <input type="hidden" id="edited-rounds-inp" name="edited-rounds">
+                            <input type="hidden" id="deleted-rounds-inp" name="deleted-rounds">
                         </div>
                     </div>
                 </div>
@@ -243,7 +238,7 @@
                     <img src="/static/icons/save_icon.svg" alt="" class="img img-circle count">
                     <span class="title">All Done?</span>
                 </div>
-                <div class="spacer visible-xs visible-sm"></div>
+                <div class="visible-xs visible-sm" style="padding: 15px"></div>
                 <div class="col-md-4 text-right">
                     <button type="submit" class="btn btn-lg">Save All</button>
                 </div>
