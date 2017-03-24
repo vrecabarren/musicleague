@@ -275,9 +275,15 @@ class LeaguePreferences(EmbeddedDocument):
     point_bank_size = IntField(
         default=0, display_name='Up Votes', input_type=NUMBER,
         verbose_name='How many up votes should each user have to submit?')
+    max_points_per_song = IntField(
+        default=0, display_name='Max Up Per Song', input_type=NUMBER,
+        verbose_name='How many times can a user up-vote a song?')
     downvote_bank_size = IntField(
         default=0, display_name='Down Votes', input_type=NUMBER,
         verbose_name='How many down votes should each user have to submit?')
+    max_downvotes_per_song = IntField(
+        default=0, display_name='Max Down Per Song', input_type=NUMBER,
+        verbose_name='How many times can a user down-vote a song?')
 
 
 class League(Document):
