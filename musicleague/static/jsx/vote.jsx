@@ -194,6 +194,7 @@ class VoteControl extends React.Component {
 
         // If progress is equal to the whole length of the border
         else {
+            var borderLen = fourSides;
             var top = '0px 0px';
             var right = ', ' + edgeWidth + 'px 0px';
             var bottom = ', 0px ' + edgeHeight + 'px';
