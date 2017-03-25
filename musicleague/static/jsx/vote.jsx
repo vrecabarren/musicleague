@@ -101,7 +101,11 @@ class VoteControl extends React.Component {
         var width = this.progressWrapper.offsetWidth;
         var edgeWidth = width - 5;
 
-        if (!this.props.maxUpVotes || !this.props.maxDownVotes) {
+        if (newPointValue >= 0 && !this.props.maxUpVotes) {
+            var progress = 0;
+            var progressColor = "#FFFFFF";
+        }
+        else if (newPointValue < 0 && !this.props.maxDownVotes) {
             var progress = 0;
             var progressColor = "#FFFFFF";
         }
