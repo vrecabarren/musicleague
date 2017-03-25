@@ -195,11 +195,21 @@
 }
 
 .song .voteControl .voteControlInner > .upButton.disabled {
-    background: url("/static/icons/upvote_disabled.svg") no-repeat center;
+    background: url("/static/icons/upvote_blue_disabled.svg") no-repeat center;
 }
 
 .song .voteControl .voteControlInner > .downButton.disabled {
-    background: url("/static/icons/downvote_disabled.svg") no-repeat center;
+    background: url("/static/icons/downvote_blue_disabled.svg") no-repeat center;
+}
+
+.song .voteControl.downVoted .voteControlInner > .upButton.disabled,
+.song .voteControl.upVoted .voteControlInner > .upButton.disabled {
+    background: url("/static/icons/upvote_white_disabled.svg") no-repeat center;
+}
+
+.song .voteControl.downVoted .voteControlInner > .downButton.disabled,
+.song .voteControl.upVoted .voteControlInner > .downButton.disabled {
+    background: url("/static/icons/downvote_white_disabled.svg") no-repeat center;
 }
 
 .song .voteControl .voteControlInner > .pointCount {
