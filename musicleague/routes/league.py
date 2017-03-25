@@ -61,9 +61,9 @@ def post_create_league():
     league = create_league(g.user, name=name, users=members)
     league.preferences.track_count = int(num_tracks)
     league.preferences.point_bank_size = int(upvote_size)
-    league.preferences.max_points_per_song = int(max_up_per_song)
+    league.preferences.max_points_per_song = int(max_up_per_song or 0)
     league.preferences.downvote_bank_size = int(downvote_size)
-    league.preferences.max_downvotes_per_song = int(max_down_per_song)
+    league.preferences.max_downvotes_per_song = int(max_down_per_song or 0)
 
     for email in emails:
         add_user(league, email, notify=True)
@@ -125,9 +125,9 @@ def post_manage_league(league_id):
     league.preferences.name = name
     league.preferences.track_count = int(num_tracks)
     league.preferences.point_bank_size = int(upvote_size)
-    league.preferences.max_points_per_song = int(max_up_per_song)
+    league.preferences.max_points_per_song = int(max_up_per_song or 0)
     league.preferences.downvote_bank_size = int(downvote_size)
-    league.preferences.max_downvotes_per_song = int(max_down_per_song)
+    league.preferences.max_downvotes_per_song = int(max_down_per_song or 0)
     league.users.extend(added_members)
 
     for email in emails:
