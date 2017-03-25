@@ -48,7 +48,7 @@ body {background-color: #f3f3f3; }
                     {% for submission_period in league.submission_periods %}
                     <div class="row">
                         <div class="col-md-4">
-                            <h5>{% if submission_period.is_complete %}<i class="fa fa-check-circle-o"></i>{% elif submission_period.is_current_v2 %}<i class="fa fa-circle-o"></i>{% else %} <i class="fa fa-calendar-o"></i>{% endif %}&nbsp;{{ submission_period.name }}</h5>
+                            <h5>{{ submission_period.name }}</h5>
                         </div>
                         <div class="col-md-3 text-center">
                             <h5>{{ submission_period.submissions|length }} Submissions</h5>
