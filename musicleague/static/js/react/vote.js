@@ -172,6 +172,7 @@ var VoteControl = function (_React$Component) {
             var oneSide = width - 8;
             var twoSides = oneSide + (height + 8);
             var threeSides = twoSides + (width + 8);
+            var fourSides = threeSides + (height - 8);
 
             if (borderLen == 0) {
                 var top = width * -1 + 'px 0px';
@@ -216,15 +217,27 @@ var VoteControl = function (_React$Component) {
                             if (borderLen == threeSides) this.progressWrapperInner.setAttribute('style', 'border-top-left-radius: 0; border-bottom-left-radius: 0');else this.progressWrapperInner.setAttribute('style', 'border-top-left-radius: 0');
                         }
                         // If progress needs all four borders to be expressed
-                        else {
-                                var top = '0px 0px';
+                        else if (borderLen < fourSides) {
+                                var top = '6px 0px';
                                 var right = ', ' + edgeWidth + 'px 0px';
                                 var bottom = ', 0px ' + edgeHeight + 'px';
                                 var left = ', 0px ' + (height - (borderLen - width * 2 - height)) + 'px';
                                 var borderRad = "border-radius: 8px 8px 8px 8px; ";
                                 var backgroundSize = 'background-size: 100% 5px, 5px 100%, 100% 5px, 5px 100%; ';
-                                this.progressWrapperInner.removeAttribute('style');
+
+                                if (borderLen == fourSides) this.progressWrapperInner.removeAttribute('style');else this.progressWrapperInner.setAttribute('style', 'border-top-left-radius: 0');
                             }
+
+                            // If progress is equal to the whole length of the border
+                            else {
+                                    var top = '0px 0px';
+                                    var right = ', ' + edgeWidth + 'px 0px';
+                                    var bottom = ', 0px ' + edgeHeight + 'px';
+                                    var left = ', 0px ' + (height - (borderLen - width * 2 - height)) + 'px';
+                                    var borderRad = "border-radius: 8px 8px 8px 8px; ";
+                                    var backgroundSize = 'background-size: 100% 5px, 5px 100%, 100% 5px, 5px 100%; ';
+                                    this.progressWrapperInner.removeAttribute('style');
+                                }
 
             var background = 'background: linear-gradient(to right, ' + progressColor + ' 99.99%, transparent), linear-gradient(to bottom, ' + progressColor + ' 99.99%, transparent), linear-gradient(to right, ' + progressColor + ' 99.99%, transparent), linear-gradient(to bottom, ' + progressColor + ' 99.99%, transparent); ';
             var backgroundRepeat = 'background-repeat: no-repeat; ';
