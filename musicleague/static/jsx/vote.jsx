@@ -59,12 +59,12 @@ class VoteControl extends React.Component {
     }
 
     downVoteAllowed() {
-        return this.state.points > (this.props.maxDownVotes * -1);
+        return !this.props.maxDownVotes || (this.state.points > (this.props.maxDownVotes * -1));
     }
 
     downVote() {
         var newPointValue = this.state.points - 1;
-        if (this.props.maxDownVotes == null || newPointValue >= 0 || (Math.abs(newPointValue) <= this.props.maxDownVotes)) {
+        if (!this.props.maxDownVotes || newPointValue >= 0 || (Math.abs(newPointValue) <= this.props.maxDownVotes)) {
             var downVoteAllowed = this.props.onDownVote(this.state.uri, newPointValue);
             if (downVoteAllowed) {
                 this.setState({points: newPointValue});
@@ -75,12 +75,12 @@ class VoteControl extends React.Component {
     }
 
     upVoteAllowed() {
-        return this.state.points < this.props.maxUpVotes;
+        return !this.props.maxUpVotes || (this.state.points < this.props.maxUpVotes);
     }
 
     upVote() {
         var newPointValue = this.state.points + 1;
-        if (this.props.maxUpVotes == null || newPointValue <= 0 || newPointValue <= this.props.maxUpVotes) {
+        if (!this.props.maxUpVotes || newPointValue <= 0 || newPointValue <= this.props.maxUpVotes) {
             var upVoteAllowed = this.props.onUpVote(this.state.uri, newPointValue);
             if (upVoteAllowed) {
                 this.setState({points: newPointValue});
@@ -101,13 +101,19 @@ class VoteControl extends React.Component {
         var width = this.progressWrapper.offsetWidth;
         var edgeWidth = width - 5;
 
-        if (newPointValue >= 0) {
+        if (!this.props.maxUpVotes || !this.props.maxDownVotes) {
+            var progress = 0;
+            var progressColor = "#FFFFFF";
+        }
+        else if (newPointValue >= 0) {
             var progress = newPointValue / this.props.maxUpVotes;
             var progressColor = "#5FCC34";
-        } else {
+        }
+        else {
             var progress = Math.abs(newPointValue) / this.props.maxDownVotes;
             var progressColor = "#D21E35";
         }
+
         var totalLength = (width * 2) + (height * 2);
         var borderLen = progress * totalLength;
 
