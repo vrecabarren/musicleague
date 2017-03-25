@@ -64,6 +64,7 @@ def post_create_league():
     league.preferences.max_points_per_song = int(max_up_per_song or 0)
     league.preferences.downvote_bank_size = int(downvote_size)
     league.preferences.max_downvotes_per_song = int(max_down_per_song or 0)
+    league.save()
 
     for email in emails:
         add_user(league, email, notify=True)
@@ -114,6 +115,7 @@ def post_manage_league(league_id):
 
     user_ids = json.loads(request.form.get('added-members', []))
     added_members = [get_user(uid) for uid in user_ids]
+    app.logger.info("Adding users %s: %s", user_ids, added_members)
     emails = json.loads(request.form.get('invited-members', []))
     deleted_members = json.loads(request.form.get('deleted-members', []))
 
@@ -129,6 +131,7 @@ def post_manage_league(league_id):
     league.preferences.downvote_bank_size = int(downvote_size)
     league.preferences.max_downvotes_per_song = int(max_down_per_song or 0)
     league.users.extend(added_members)
+    league.save()
 
     for email in emails:
         add_user(league, email, notify=True)
