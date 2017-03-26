@@ -27,6 +27,7 @@
             background-size: cover;
             color: #FFFFFF;
             font-family: 'Nunito', sans-serif;
+            margin-bottom: 50px;
         }
 
         .star {
@@ -132,16 +133,16 @@
                 </div>
                 <div class="row text-center">
                     <div class="col-xs-12 col-sm-6 text-right text-center-xs">
-                        <a href="{{ url_for('view_submission_period', league_id=submission_period.league.id, submission_period_id=submission_period.id) }}" class="btn btn-lg results-btn hidden-xs">Round Results</a>
+                        <a href="{{ url_for('view_submission_period', league_id=submission_period.league.id, submission_period_id=submission_period.id, _external=True) }}" class="btn btn-lg results-btn hidden-xs">Round Results</a>
                         <div class="visible-xs">
-                            <a href="{{ url_for('view_submission_period', league_id=submission_period.league.id, submission_period_id=submission_period.id) }}" class="btn btn-lg results-btn">Round Results</a>
+                            <a href="{{ url_for('view_submission_period', league_id=submission_period.league.id, submission_period_id=submission_period.id, _external=True) }}" class="btn btn-lg results-btn">Round Results</a>
                         </div>
                     </div>
                     <div class="visible-xs col-xs-12" style="padding: 16px;"></div>
                     <div class="col-xs-12 col-sm-6 text-left text-center-xs">
-                        <a href="{{ url_for('view_leaderboard', league_id=submission_period.league.id) }}" class="btn btn-lg leaderboard-btn hidden-xs">Leaderboard</a>
+                        <a href="{{ url_for('view_leaderboard', league_id=submission_period.league.id, _external=True) }}" class="btn btn-lg leaderboard-btn hidden-xs">Leaderboard</a>
                         <div class="visible-xs">
-                            <a href="{{ url_for('view_leaderboard', league_id=submission_period.league.id) }}" class="btn btn-lg leaderboard-btn">Leaderboard</a>
+                            <a href="{{ url_for('view_leaderboard', league_id=submission_period.league.id, _external=True) }}" class="btn btn-lg leaderboard-btn">Leaderboard</a>
                         </div>
                     </div>
                 </div>
