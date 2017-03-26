@@ -30,6 +30,15 @@ SETTINGS_URL = '/l/<league_id>/<submission_period_id>/settings/'
 VIEW_SUBMISSION_PERIOD_URL = '/l/<league_id>/<submission_period_id>/'
 
 
+@app.route(VIEW_SUBMISSION_PERIOD_URL + 'email/')
+@templated('email/html/all_voted.html')
+@login_required
+def view_round_email(league_id, submission_period_id):
+    submission_period = get_submission_period(submission_period_id)
+    return {'submission_period': submission_period, 'user': g.user}
+
+
+
 @app.route(CREATE_SUBMISSION_PERIOD_URL, methods=['POST'])
 @login_required
 @league_required

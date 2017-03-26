@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Cubano';
-    src: url("/static/fonts/Cubano/cubano-regular-webfont.ttf");
+    src: url("https://s3.amazonaws.com/musicleague-static-assets/fonts/Cubano/cubano-regular-webfont.ttf");
 }
 
 .text-left-not-xs, .text-left-not-sm, .text-left-not-md, .text-left-not-lg { text-align: left; }
