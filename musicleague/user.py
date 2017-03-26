@@ -8,12 +8,12 @@ from musicleague.models import UserPreferences
 
 
 DEFAULT_AVATARS = [
-    '/static/avatars/bowie_avatar.svg',
-    '/static/avatars/daft_avatar.svg',
-    '/static/avatars/elvis_avatar.svg',
-    '/static/avatars/prince_avatar.svg',
-    '/static/avatars/punk_avatar.svg',
-    '/static/avatars/supremes_avatar.svg'
+    'https://s3.amazonaws.com/musicleague-static-assets/avatars/bowie_avatar.svg',
+    'https://s3.amazonaws.com/musicleague-static-assets/avatars/daft_avatar.svg',
+    'https://s3.amazonaws.com/musicleague-static-assets/avatars/elvis_avatar.svg',
+    'https://s3.amazonaws.com/musicleague-static-assets/avatars/prince_avatar.svg',
+    'https://s3.amazonaws.com/musicleague-static-assets/avatars/punk_avatar.svg',
+    'https://s3.amazonaws.com/musicleague-static-assets/avatars/supremes_avatar.svg'
 ]
 
 PROFILE_BACKGROUNDS = [
