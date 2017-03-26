@@ -1,17 +1,17 @@
 {% if not page_user %}
 {% set page_user = user %}
 {% endif %}
-<div id="img-bar" style="background-image: url('/static/images/{{ page_user.profile_background }}')">
+<div id="img-bar" style="background-image: url('https://s3.amazonaws.com/musicleague-static-assets/images/{{ page_user.profile_background }}')">
     <div id="nav-bar">
         <div class="brand-wrapper">
             <a href="/">
-                <img src="/static/icons/site_logo.svg" alt="" class="brand-icon">
+                <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/site_logo.svg" alt="" class="brand-icon">
             </a>
         </div>
         <div class="add-league-wrapper">
             <span class="add-league-text hidden-xs">Create League</span>
             <a href="{{ url_for('get_create_league') }}">
-                <img src="/static/icons/add_icon.svg" alt="" class="add-league-icon">
+                <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/add_icon.svg" alt="" class="add-league-icon">
             </a>
         </div>
         <!-- <div class="account-divider"></div> -->
@@ -22,7 +22,7 @@
             <span class="account-name hidden-xs">{{ user.first_name }}</span>
             <div class="dropdown" style="display: inline;">
                 <a type="button" class="dropdown-toggle account-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="/static/icons/account_icon.svg" alt="" class="account-icon">
+                    <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/account_icon.svg" alt="" class="account-icon">
                 </a>
                 <ul class="dropdown-menu pull-right">
                     <li>

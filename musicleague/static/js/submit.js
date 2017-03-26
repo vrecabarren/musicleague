@@ -23,7 +23,7 @@ function setSongStateNotFound(song) {
     song.data('id', "");
     song.data('uri', "");
     song.find('.you-selected').html('No Result:');
-    song.find('.song-info img').attr('src', '/static/icons/attentionicon.svg');
+    song.find('.song-info img').attr('src', 'https://s3.amazonaws.com/musicleague-static-assets/icons/attentionicon.svg');
     song.find('.song-info .name').html("No luck.<br>We couldn't<br>find that.");
     song.find('.song-info .artist').html("");
     song.find('.song-info .album').html("");
@@ -36,7 +36,7 @@ function setSongStateDuplicateArtist(song) {
     song.data('id', "");
     song.data('uri', "");
     song.find('.you-selected').html('Great Minds Think Alike:');
-    song.find('.song-info img').attr('src', '/static/icons/attentionicon.svg');
+    song.find('.song-info img').attr('src', 'https://s3.amazonaws.com/musicleague-static-assets/icons/attentionicon.svg');
     song.find('.song-info .name').html("Artist<br>Already<br>Submitted.");
     song.find('.song-info .artist').html("");
     song.find('.song-info .album').html("");
@@ -49,7 +49,7 @@ function setSongStateDuplicateSong(song) {
     song.data('id', "");
     song.data('uri', "");
     song.find('.you-selected').html('Great Minds Think Alike:');
-    song.find('.song-info img').attr('src', '/static/icons/attentionicon.svg');
+    song.find('.song-info img').attr('src', 'https://s3.amazonaws.com/musicleague-static-assets/icons/attentionicon.svg');
     song.find('.song-info .name').html("Song<br>Already<br>Submitted.");
     song.find('.song-info .artist').html("");
     song.find('.song-info .album').html("");
@@ -62,7 +62,7 @@ function setSongStateDuplicateSubmission(song) {
     song.data('id', "");
     song.data('uri', "");
     song.find('.you-selected').html('There Must Be An Echo In Here:');
-    song.find('.song-info img').attr('src', '/static/icons/attentionicon.svg');
+    song.find('.song-info img').attr('src', 'https://s3.amazonaws.com/musicleague-static-assets/icons/attentionicon.svg');
     song.find('.song-info .name').html("Duplicate<br>Submissions<br>Not Allowed.");
     song.find('.song-info .artist').html("");
     song.find('.song-info .album').html("");

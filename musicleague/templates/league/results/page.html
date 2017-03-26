@@ -1,0 +1,52 @@
+{% extends "frame_with_status.html" %}
+
+{% block title %}Music League | {{ league.name }}{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/results.css">
+{% endblock %}
+
+{% block title_bar_content %}
+<span class="round-title">{{ round.name }}:&nbsp;</span>
+<span class="round-action">Results</span>
+<span class="league-title">{{ league.name }}</span>
+{% endblock %}
+
+{% block status_bar_content %}
+<!-- <div class="container"> -->
+    {% set first_place_entries = round.scoreboard.rankings[1] %}
+    {% for entry in first_place_entries %}
+        {% set place = 1 %}
+        {% set song = tracks_by_uri[entry['uri']] %}
+        {% include "results/_song.html" %}
+
+        {% if not loop.last %}
+        <div class="container">
+            <div class="row">
+                <div class="hidden-xs col-sm-12">
+                    <svg width="275" height="5" viewBox="0 0 372 7" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                        <line stroke-linecap="round" x1="0" y1="2" x2="372" y2="2" stroke="#FFFFFF" stroke-width="3"/>
+                    </svg>
+                </div>
+                <div class="col-xs-12 visible-xs" style="border-bottom: 3px solid #FFFFFF"></div>
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+<!-- </div> -->
+{% endblock %}
+
+{% block page_content %}
+<!-- <div class="container"> -->
+    {% for place, entries in round.scoreboard.rankings.iteritems() if place != 1 %}
+        {% for entry in entries %}
+            {% set song = tracks_by_uri[entry.uri] %}
+            {% include "results/_song.html" %}
+        {% endfor %}
+    {% endfor %}
+<!-- </div> -->
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="/static/js/jquery.sticky-kit.min.js"></script>
+{% endblock %}

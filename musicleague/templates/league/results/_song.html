@@ -1,0 +1,107 @@
+<div class="song" data-uri="{{ uri }}">
+    <div class="container">
+        <div class="row">
+            <div class="hidden-xs">
+                <div class="song-info col-sm-7">
+                    <img src="{{ song['album']['images'][1]['url'] }}" alt="" class="img img-rounded">
+                    <div class="text-info">
+                        <span class="vcenter name">{{ song['name'] }}</span>
+                        <span class="vcenter artist">By {{ song['artists'][0]['name'] }}</span>
+                        <span class="vcenter submitter">Submitted by {{ entry.submission.user.name }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="visible-xs text-center">
+                <div class="song-info">
+                    <img src="{{ song['album']['images'][1]['url'] }}" alt="" class="img img-rounded">
+                    <div class="text-info">
+                        <span class="vcenter name">{{ song['name'] }}</span>
+                        <span class="vcenter artist">By {{ song['artists'][0]['name'] }}</span>
+                        <span class="vcenter submitter">Submitted by {{ entry.submission.user.name }}</span>
+                    </div>
+                </div>
+            </div>
+            {% if place == 1 or place == 2 or place == 3 %}
+            <div class="trophy-wrapper col-xs-3 col-xs-offset-1 col-sm-2 col-sm-offset-0 col-lg-1 col-lg-offset-1">
+                <div class="trophy {% if place == 1 %}first{% elif place == 2 %}second{% elif place == 3 %}third{% endif %}"></div>
+            </div>
+            <div class="stats-wrapper with-trophy col-xs-7 col-sm-3">
+                <div class="voters-wrapper">
+                    <span class="voter-count">{{ entry.votes|length }} {% if entry.votes|length == 1 %}Person{% else %}People{% endif %} Voted for This</span>
+                </div>
+                <div class="points-wrapper">
+                    <span class="point-count">{{ "%02d" % entry.points }}</span>
+                    <span class="collapse-toggle collapsed" data-toggle="collapse" data-target="#{{ song['id'] }}" data-trigger="click"></span>
+                </div>
+            </div>
+            <div class="col-xs-1 col-sm-0"></div>
+            {% else %}
+            <div class="stats-wrapper col-xs-6 col-xs-offset-3 col-sm-3 col-sm-offset-2">
+                <div class="voters-wrapper">
+                    <span class="voter-count">{{ entry.votes|length }} {% if entry.votes|length == 1 %}Person{% else %}People{% endif %} Voted for This</span>
+                </div>
+                <div class="points-wrapper">
+                    <span class="point-count">{{ "%02d" % entry.points }}</span>
+                    <span class="collapse-toggle collapsed" data-toggle="collapse" data-target="#{{ song['id'] }}" data-trigger="click"></span>
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-0"></div>
+            {% endif %}
+            <div class="row-fluid">
+                <div id="{{ song['id'] }}" class="collapse">
+                    <div class="col-xs-12">
+                        <div class="vote-breakdown">
+                            <div class="row">
+                                <div class="row-height">
+                                    <div class="col-xs-12 col-sm-4">
+                                        <div class="total-points-banner">
+                                            <span class="total-points">{{ "%02d" % entry.points }}</span>
+                                            <div class="total-points-divider-wrapper">
+                                                <span class="total-points-divider"></span>
+                                            </div>
+                                            <span class="total-points-label">Total Points</span>
+                                        </div>
+                                    </div>
+                                    <div class="hidden-xs col-sm-8" style="padding: 0px inherit">
+                                        {% for vote in entry.votes %}
+                                        <div class="vote col-xs-12 col-sm-6">
+                                            <div class="row-fluid">
+                                                <div class="row-height">
+                                                    <div class="col-xs-3 col-sm-4 col-md-3 text-left vcenter">
+                                                        <span class="vote-count-wrapper">
+                                                            <span class="vote-count">{{ "%02d" % vote.votes[entry.uri] }}</span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-xs-9 col-sm-8 col-md-9 voter text-left vcenter">{{ vote.user.name }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="visible-xs">
+                                <div style="padding: 10px 0px"></div>
+                                {% for vote in entry.votes %}
+                                <div class="vote">
+                                    <div class="row">
+                                        <div class="row-height">
+                                            <div class="col-xs-3 col-sm-4 col-md-3 text-left vcenter">
+                                                <span class="vote-count-wrapper">
+                                                    <span class="vote-count">{{ "%02d" % vote.votes[entry.uri] }}</span>
+                                                </span>
+                                            </div>
+                                            <div class="col-xs-9 col-sm-8 col-md-9 voter text-left vcenter">{{ vote.user.name }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

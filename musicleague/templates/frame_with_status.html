@@ -6,7 +6,7 @@
 
     <title>{% block title %}Music League{% endblock %}</title>
 
-    <link rel="icon" type="image/png" href="/static/icons/favicon.png">
+    <link rel="icon" type="image/png" href="https://s3.amazonaws.com/musicleague-static-assets/icons/favicon.png">
 
     <!-- Nunito -->
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -25,17 +25,17 @@
     {% endblock %}
 </head>
 <body>
-    <div id="img-bar" style="background-image: url('/static/images/{{ user.profile_background }}')">
+    <div id="img-bar" style="background-image: url('https://s3.amazonaws.com/musicleague-static-assets/images/{{ user.profile_background }}')">
         <div id="nav-bar">
             <div class="brand-wrapper">
                 <a href="/">
-                    <img src="/static/icons/site_logo.svg" alt="" class="brand-icon">
+                    <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/site_logo.svg" alt="" class="brand-icon">
                 </a>
             </div>
             <div class="add-league-wrapper">
                 <span class="add-league-text hidden-xs">Create League</span>
                 <a href="{{ url_for('get_create_league') }}">
-                    <img src="/static/icons/add_icon.svg" alt="" class="add-league-icon">
+                    <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/add_icon.svg" alt="" class="add-league-icon">
                 </a>
             </div>
             <svg class="account-divider" width="7" height="120" viewBox="0 0 3 120" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -45,7 +45,7 @@
                 <span class="account-name hidden-xs">{{ user.first_name }}</span>
                 <div class="dropdown" style="display: inline;">
                     <a type="button" class="dropdown-toggle account-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="/static/icons/account_icon.svg" alt="" class="account-icon">
+                        <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/account_icon.svg" alt="" class="account-icon">
                     </a>
                     <ul class="dropdown-menu pull-right">
                         <li>

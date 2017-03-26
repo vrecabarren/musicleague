@@ -13,7 +13,7 @@
 body { font-family: 'Nunito', sans-serif; }
 
 #img-bar {
-    background: url("/static/images/ml_header06.jpg");
+    background: url("https://s3.amazonaws.com/musicleague-static-assets/images/ml_header06.jpg");
     background-attachment: scroll;
     background-position: 50% 40%;
     background-repeat: no-repeat;
@@ -56,7 +56,7 @@ body { font-family: 'Nunito', sans-serif; }
     }
 
     .section-header .collapse-toggle {
-        background: url('/static/icons/collapse_icon.svg');
+        background: url('https://s3.amazonaws.com/musicleague-static-assets/icons/collapse_icon.svg');
         cursor: pointer;
         display: inline-block;
         height: 40px;
@@ -65,7 +65,7 @@ body { font-family: 'Nunito', sans-serif; }
     }
 
     .section-header .collapse-toggle.collapsed {
-        background: url('/static/icons/expand_icon.svg');
+        background: url('https://s3.amazonaws.com/musicleague-static-assets/icons/expand_icon.svg');
     }
 
 .save-warning {
@@ -173,7 +173,7 @@ body { font-family: 'Nunito', sans-serif; }
 
         #league-members #search-members-wrapper #added-members .member .member-name-wrapper { padding: 0px; }
         #league-members #search-members-wrapper #added-members .member .member-name-wrapper .member-name { font-size: 18px; line-height: 32px; vertical-align: middle; }
-        #league-members #search-members-wrapper #added-members .member .member-name-wrapper .owner-star { background: url('/static/icons/star_lightblue.svg'); display: inline-block; height: 17px; margin-left: 5px; vertical-align: middle; width: 18px; }
+        #league-members #search-members-wrapper #added-members .member .member-name-wrapper .owner-star { background: url('https://s3.amazonaws.com/musicleague-static-assets/icons/star_lightblue.svg'); display: inline-block; height: 17px; margin-left: 5px; vertical-align: middle; width: 18px; }
 
         #league-members #search-members-wrapper #added-members .member .button-wrapper { text-align: right; }
         #league-members #search-members-wrapper #added-members .member .button-wrapper .delete-member-btn,

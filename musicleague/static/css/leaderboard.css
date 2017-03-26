@@ -33,9 +33,9 @@ div, span {
     vertical-align: middle;
     width: 25px;
 }
-#title-bar .top-rankings .rank.first { background: url('/static/icons/01.svg'); }
-#title-bar .top-rankings .rank.second { background: url('/static/icons/02.svg'); }
-#title-bar .top-rankings .rank.third { background: url('/static/icons/03.svg'); }
+#title-bar .top-rankings .rank.first { background: url('https://s3.amazonaws.com/musicleague-static-assets/icons/01.svg'); }
+#title-bar .top-rankings .rank.second { background: url('https://s3.amazonaws.com/musicleague-static-assets/icons/02.svg'); }
+#title-bar .top-rankings .rank.third { background: url('https://s3.amazonaws.com/musicleague-static-assets/icons/03.svg'); }
 
 #title-bar .top-rankings .point-count {
     color: #F8C62C;

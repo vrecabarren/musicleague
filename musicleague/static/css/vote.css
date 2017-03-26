@@ -119,11 +119,11 @@ div, span {
     width: 50px;
 }
 .song .up-down-btn-wrapper .down-btn {
-    background: url('/static/icons/downvote_blue.svg');
+    background: url('https://s3.amazonaws.com/musicleague-static-assets/icons/downvote_blue.svg');
     margin-right: 10px;
 }
 .song .up-down-btn-wrapper .up-btn {
-    background: url('/static/icons/upvote_blue.svg');
+    background: url('https://s3.amazonaws.com/musicleague-static-assets/icons/upvote_blue.svg');
     margin-left: 10px;
 }
 
@@ -144,11 +144,11 @@ div, span {
     color: #fff;
 }
 .song .up-down-btn-wrapper.voted .down-btn {
-    background: url('/static/icons/downvote_white.svg');
+    background: url('https://s3.amazonaws.com/musicleague-static-assets/icons/downvote_white.svg');
     color: #fff;
 }
 .song .up-down-btn-wrapper.voted .up-btn {
-    background: url('/static/icons/upvote_white.svg');
+    background: url('https://s3.amazonaws.com/musicleague-static-assets/icons/upvote_white.svg');
     color: #fff;
 }
 

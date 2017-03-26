@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="/static/css/profile.css">
 <style>
     #img-bar {
-        background-image: url('/static/images/{{ page_user.profile_background }}') !important;
+        background-image: url('https://s3.amazonaws.com/musicleague-static-assets/images/{{ page_user.profile_background }}') !important;
     }
 </style>
 {% endblock %}
@@ -16,7 +16,7 @@
 {% block title_bar_content %}
 <div id="user-bar">
     <div id="owned-leagues-outer" class="hidden-xs">
-        <img src="/static/icons/star_lightblue.svg" alt="" id="owned-leagues-star">
+        <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/star_lightblue.svg" alt="" id="owned-leagues-star">
         <div id="owned-leagues-inner">
             <span class="owned-leagues">Leagues</span>
             <span class="owned-leagues owned-leagues-count">{{ "%02d" % contributor_leagues }}</span>
@@ -30,7 +30,7 @@
             <span class="score-item">2nd - <span class="score">00</span></span>
             <span class="score-item">3rd - <span class="score">00</span></span>
         </div>
-        <img src="/static/icons/star_lightblue.svg" alt="" id="scores-star">
+        <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/star_lightblue.svg" alt="" id="scores-star">
     </div>
     <span id="user-name">{{ page_user.name }}</span>
     <div class="visible-xs" style="margin-bottom: 20px">
@@ -42,8 +42,8 @@
             </div>
         </div>
         <div id="stars">
-            <img src="/static/icons/star_lightblue.svg" alt="" class="star">
-            <img src="/static/icons/star_lightblue.svg" alt="" class="star">
+            <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/star_lightblue.svg" alt="" class="star">
+            <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/star_lightblue.svg" alt="" class="star">
         </div>
         <div id="scores-outer">
             <div id="scores-inner">
@@ -73,13 +73,13 @@
                     <div class="league-tile linked" data-href="{{ url_for('view_league', league_id=league.id) }}">
                         <div class="league-tile-inner">
                             {% if league.is_inactive %}
-                            <img class="league-icon inactive" src="/static/icons/clock_gray.svg" alt="">
+                            <img class="league-icon inactive" src="https://s3.amazonaws.com/musicleague-static-assets/icons/clock_gray.svg" alt="">
                             <div class="league-title inactive">{{ league.name }}</div>
                             {% elif league.is_complete %}
-                            <img class="league-icon complete" src="/static/icons/completed_league_icon.svg" alt="">
+                            <img class="league-icon complete" src="https://s3.amazonaws.com/musicleague-static-assets/icons/completed_league_icon.svg" alt="">
                             <div class="league-title complete">{{ league.name }}</div>
                             {% else %}
-                            <img class="league-icon" src="/static/icons/live_league_icon.svg" alt="">
+                            <img class="league-icon" src="https://s3.amazonaws.com/musicleague-static-assets/icons/live_league_icon.svg" alt="">
                             <div class="league-title">{{ league.name }}</div>
                             {% endif %}
                         </div>

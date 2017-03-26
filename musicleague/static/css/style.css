@@ -123,17 +123,17 @@ body {
     width: 16px;
 }
 
-#nav-bar .account-wrapper .dropdown-menu > li > a > #profile-icon { background: url("/static/icons/profile_icon.svg"); width: 12px; }
-#nav-bar .account-wrapper .dropdown-menu > li > a:hover > #profile-icon { background: url("/static/icons/profile_icon_blue.svg"); }
+#nav-bar .account-wrapper .dropdown-menu > li > a > #profile-icon { background: url("https://s3.amazonaws.com/musicleague-static-assets/icons/profile_icon.svg"); width: 12px; }
+#nav-bar .account-wrapper .dropdown-menu > li > a:hover > #profile-icon { background: url("https://s3.amazonaws.com/musicleague-static-assets/icons/profile_icon_blue.svg"); }
 
-#nav-bar .account-wrapper .dropdown-menu > li > a > #settings-icon { background: url("/static/icons/settings_icon.svg"); }
-#nav-bar .account-wrapper .dropdown-menu > li > a:hover > #settings-icon { background: url("/static/icons/settings_icon_blue.svg"); }
+#nav-bar .account-wrapper .dropdown-menu > li > a > #settings-icon { background: url("https://s3.amazonaws.com/musicleague-static-assets/icons/settings_icon.svg"); }
+#nav-bar .account-wrapper .dropdown-menu > li > a:hover > #settings-icon { background: url("https://s3.amazonaws.com/musicleague-static-assets/icons/settings_icon_blue.svg"); }
 
-#nav-bar .account-wrapper .dropdown-menu > li > a > #logout-icon { background: url("/static/icons/logout_icon.svg"); }
-#nav-bar .account-wrapper .dropdown-menu > li > a:hover > #logout-icon { background: url("/static/icons/logout_icon_blue.svg"); }
+#nav-bar .account-wrapper .dropdown-menu > li > a > #logout-icon { background: url("https://s3.amazonaws.com/musicleague-static-assets/icons/logout_icon.svg"); }
+#nav-bar .account-wrapper .dropdown-menu > li > a:hover > #logout-icon { background: url("https://s3.amazonaws.com/musicleague-static-assets/icons/logout_icon_blue.svg"); }
 
-#nav-bar .account-wrapper .dropdown-menu > li > a > #admin-icon { background: url("/static/icons/admin_icon.svg"); height: 9px; }
-#nav-bar .account-wrapper .dropdown-menu > li > a:hover > #admin-icon { background: url("/static/icons/admin_icon_blue.svg"); }
+#nav-bar .account-wrapper .dropdown-menu > li > a > #admin-icon { background: url("https://s3.amazonaws.com/musicleague-static-assets/icons/admin_icon.svg"); height: 9px; }
+#nav-bar .account-wrapper .dropdown-menu > li > a:hover > #admin-icon { background: url("https://s3.amazonaws.com/musicleague-static-assets/icons/admin_icon_blue.svg"); }
 
 #nav-bar .account-wrapper .dropdown-menu > li > a:hover {
     background-color: #fff;
@@ -149,7 +149,7 @@ body {
 }
 
 #img-bar {
-    background: url("/static/images/ml_header06.jpg");
+    background: url("https://s3.amazonaws.com/musicleague-static-assets/images/ml_header06.jpg");
     background-attachment: scroll;
     background-position: 50% 40%;
     background-repeat: no-repeat;

@@ -90,7 +90,7 @@
     padding-right: 0px;
 }
 .song .find-song-btn-wrapper .find-song-btn.visible-xs .search-icon {
-    background: url("/static/icons/magnifying_glass_icon_white.svg");
+    background: url("https://s3.amazonaws.com/musicleague-static-assets/icons/magnifying_glass_icon_white.svg");
     display: inline-block;
     height: 24px;
     vertical-align: middle;
@@ -165,7 +165,7 @@
     line-height: 24px;
     width: 100%;
 }
-.song.error .find-song-btn-wrapper .find-song-btn.visible-xs .search-icon { background: url("/static/icons/magnifying_glass_icon_blue.svg"); }
+.song.error .find-song-btn-wrapper .find-song-btn.visible-xs .search-icon { background: url("https://s3.amazonaws.com/musicleague-static-assets/icons/magnifying_glass_icon_blue.svg"); }
 .song.error .song-info {
     color: #01249A;
     display: block;
