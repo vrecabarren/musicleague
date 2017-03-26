@@ -3,6 +3,9 @@
 .gitignore
 .travis.yml
 Makefile
+musicleague/static/fonts
+musicleague/static/icons
+musicleague/static/images
 musicleague/tests
 package.json
 README.md
