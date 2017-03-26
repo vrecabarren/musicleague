@@ -97,7 +97,7 @@
         .visible-xs .results-btn {
             display: inline-block;
             margin: 0;
-            width: 80%;
+            width: 100%;
         }
     </style>
 </head>
@@ -132,14 +132,14 @@
                     </div>
                 </div>
                 <div class="row text-center">
-                    <div class="col-xs-12 col-sm-6 text-right text-center-xs">
+                    <div class="col-xs-12 col-sm-6 text-right">
                         <a href="{{ url_for('view_submission_period', league_id=submission_period.league.id, submission_period_id=submission_period.id, _external=True) }}" class="btn btn-lg results-btn hidden-xs">Round Results</a>
                         <div class="visible-xs">
                             <a href="{{ url_for('view_submission_period', league_id=submission_period.league.id, submission_period_id=submission_period.id, _external=True) }}" class="btn btn-lg results-btn">Round Results</a>
                         </div>
                     </div>
                     <div class="visible-xs col-xs-12" style="padding: 16px;"></div>
-                    <div class="col-xs-12 col-sm-6 text-left text-center-xs">
+                    <div class="col-xs-12 col-sm-6 text-left">
                         <a href="{{ url_for('view_leaderboard', league_id=submission_period.league.id, _external=True) }}" class="btn btn-lg leaderboard-btn hidden-xs">Leaderboard</a>
                         <div class="visible-xs">
                             <a href="{{ url_for('view_leaderboard', league_id=submission_period.league.id, _external=True) }}" class="btn btn-lg leaderboard-btn">Leaderboard</a>
