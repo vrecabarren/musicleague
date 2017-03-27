@@ -282,7 +282,7 @@
 }
 #members-popover .member img {
     background: #fff;
-    /*border: 2px solid #fff;*/
+    border: 2px solid #fff;
     display: inline-block;
     height: 50px;
     width: 50px;
