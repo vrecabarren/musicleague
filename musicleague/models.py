@@ -258,8 +258,8 @@ class LeaguePreferences(EmbeddedDocument):
         default=True, display_name='Late Submissions', input_type=CHECKBOX,
         verbose_name='Allow submissions after the deadline has passed.')
     locked = BooleanField(
-        default=False, display_name='Locked', new=True, input_type=CHECKBOX,
-        verbose_name='Submitting and voting are disabled.')
+        default=False, display_name='Secret', new=True, input_type=CHECKBOX,
+        verbose_name='Users may not join unless you add or invite them.')
     submission_reminder_time = IntField(
         default=2, display_name='Submission Reminder Time', input_type=NUMBER,
         verbose_name=('How many hours prior to the due date should submission '
@@ -314,6 +314,10 @@ class League(Document):
     def is_complete(self):
         return (not self.is_inactive and
                 all((sp.is_complete for sp in self.submission_periods)))
+
+    @property
+    def is_public(self):
+        return not self.preferences.locked
 
     def has_owner(self, user):
         return self.owner == user

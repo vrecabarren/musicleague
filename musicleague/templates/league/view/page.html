@@ -3,12 +3,17 @@
 {% block title %}Music League | {{ league.name }}{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="/static/css/league_1.css">
+<link rel="stylesheet" href="/static/css/league_2.css">
 {% endblock %}
 
 {% block title_bar_content %}
 <span class="league-title">{{ league.name }}</span>
 <span class="league-created">Public League Created {{ moment(league.created).format('MM.DD.YY') }}</span>
+{% if league.is_public and not league.has_user(user) %}
+<a href="{{ url_for('join_league', league_id=league.id) }}" id="join-league-btn" class="btn btn-lg">
+    <span class="gold-star"></span><span class="text">Join This League</span><span class="gold-star"></span>
+</a>
+{% endif %}
 <div class="container">
     <div class="row">
         <div class="col-xs-12 text-left">
