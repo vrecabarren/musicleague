@@ -45,17 +45,6 @@ class MessengerTestCase(unittest.TestCase):
         self.submission.delete()
         self.vote.delete()
 
-    def test_owner_all_users_submitted(self, send_message):
-        from musicleague.notify.messenger import owner_all_users_submitted_messenger  # noqa
-
-        owner_all_users_submitted_messenger(self.league.owner,
-                                            self.submission_period)
-
-        send_message.assert_called_once_with(
-            self.league.owner.messenger.id,
-            "All users have submitted for {}".format(
-                self.submission_period.name))
-
     def test_owner_user_submitted(self, send_message):
         from musicleague.notify.messenger import owner_user_submitted_messenger
 
@@ -65,16 +54,6 @@ class MessengerTestCase(unittest.TestCase):
             self.league.owner.messenger.id,
             "{} just submitted for {}".format(self.user.name,
                                               self.submission_period.name))
-
-    def test_owner_all_users_voted(self, send_message):
-        from musicleague.notify.messenger import owner_all_users_voted_messenger  # noqa
-
-        owner_all_users_voted_messenger(self.league.owner,
-                                        self.submission_period)
-
-        send_message.assert_called_once_with(
-            self.league.owner.messenger.id,
-            "All users have voted for {}".format(self.submission_period.name))
 
     def test_owner_user_voted(self, send_message):
         from musicleague.notify.messenger import owner_user_voted_messenger

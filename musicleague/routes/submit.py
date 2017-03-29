@@ -8,7 +8,6 @@ from flask import request
 from flask import url_for
 
 from musicleague import app
-from musicleague.notify import owner_all_users_submitted_notification
 from musicleague.notify import owner_user_submitted_notification
 from musicleague.notify import user_last_to_submit_notification
 from musicleague.notify.flash import flash_error
@@ -128,7 +127,6 @@ def submit(league_id, submission_period_id):
     remaining = set(league.users) - submitted_users
 
     if not remaining:
-        owner_all_users_submitted_notification(submission_period)
         create_or_update_playlist(submission_period)
         cancel_playlist_creation(submission_period)
         cancel_submission_reminders(submission_period)

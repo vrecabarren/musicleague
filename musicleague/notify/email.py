@@ -17,18 +17,6 @@ HTML_PATH = 'email/html/%s'
 TXT_PATH = 'email/txt/%s'
 
 
-def owner_all_users_submitted_email(owner, submission_period):
-    if not submission_period or not owner or not owner.email:
-        return
-
-    _send_email.delay(
-        owner.email,
-        'Music League - All Users Submitted',
-        _txt_email('all_submitted.txt', submission_period=submission_period),
-        _html_email('all_submitted.html', submission_period=submission_period)
-    )
-
-
 def owner_user_submitted_email(owner, submission):
     if not submission or not owner or not owner.email:
         return
@@ -38,18 +26,6 @@ def owner_user_submitted_email(owner, submission):
         'Music League - User Submitted',
         _txt_email('submitted.txt', submission=submission),
         _html_email('submitted.html', submission=submission)
-    )
-
-
-def owner_all_users_voted_email(owner, submission_period):
-    if not submission_period or not owner or not owner.email:
-        return
-
-    _send_email.delay(
-        owner.email,
-        'Music League - All Users Voted',
-        _txt_email('all_voted.txt', submission_period=submission_period),
-        _html_email('all_voted.html', submission_period=submission_period)
     )
 
 
@@ -74,6 +50,24 @@ def user_added_to_league_email(user, league):
         'Music League - New League',
         _txt_email('added.txt', league=league),
         _html_email('added.html', league=league)
+    )
+
+
+def user_all_voted_email(submission_period):
+    if not submission_period or not submission_period.league.users:
+        return
+
+    to = submission_period.league.owner.email
+    bcc_list = ','.join(
+        [u.email for u in submission_period.league.users
+         if u.email and not submission_period.league.has_owner(u)])
+
+    _send_email.delay(
+        to,
+        'Music League - The Votes Are In',
+        _txt_email('all_voted.txt', submission_period=submission_period),
+        _html_email('all_voted.html', submission_period=submission_period),
+        additional_data={'bcc': bcc_list}
     )
 
 
@@ -117,10 +111,11 @@ def user_playlist_created_email(submission_period):
     if not submission_period or not submission_period.league.users:
         return
 
-    to = submission_period.league.users[0].email
+    to = submission_period.league.owner.email
     bcc_list = ','.join(
-        u.email for u in submission_period.league.users[1:]
-        if u.email and u.preferences.user_playlist_created_notifications)
+        [u.email for u in submission_period.league.users
+         if u.email and not submission_period.league.has_owner(u)
+         and u.preferences.user_playlist_created_notifications])
 
     _send_email.delay(
         to,

@@ -26,7 +26,7 @@ class SendSubmissionRemindersTestCase(unittest.TestCase):
         self.league.delete()
         self.submission_period.delete()
 
-    @patch(PATCH_PATH + 'logging.error')
+    @patch(PATCH_PATH + 'app.logger.error')
     def test_no_period_id(self, log_error):
 
         result = send_submission_reminders(None)
@@ -35,7 +35,7 @@ class SendSubmissionRemindersTestCase(unittest.TestCase):
         log_error.assert_called_once_with(
             'No submission period id for submission reminders!')
 
-    @patch(PATCH_PATH + 'logging.exception')
+    @patch(PATCH_PATH + 'app.logger.exception')
     def test_exception(self, log_exc):
 
         self.submission_period.league = None
@@ -70,7 +70,7 @@ class SendVoteRemindersTestCase(unittest.TestCase):
         self.league.delete()
         self.submission_period.delete()
 
-    @patch(PATCH_PATH + 'logging.error')
+    @patch(PATCH_PATH + 'app.logger.error')
     def test_no_period_id(self, log_error):
 
         result = send_vote_reminders(None)
@@ -79,7 +79,7 @@ class SendVoteRemindersTestCase(unittest.TestCase):
         log_error.assert_called_once_with(
             'No submission period id for vote reminders!')
 
-    @patch(PATCH_PATH + 'logging.exception')
+    @patch(PATCH_PATH + 'app.logger.exception')
     def test_exception(self, log_exc):
 
         self.submission_period.league = None

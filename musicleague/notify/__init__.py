@@ -1,9 +1,8 @@
 
-from musicleague.notify.email import owner_all_users_submitted_email
-from musicleague.notify.email import owner_all_users_voted_email
 from musicleague.notify.email import owner_user_submitted_email
 from musicleague.notify.email import owner_user_voted_email
 from musicleague.notify.email import user_added_to_league_email
+from musicleague.notify.email import user_all_voted_email
 from musicleague.notify.email import user_invited_to_league_email
 from musicleague.notify.email import user_last_to_submit_email
 from musicleague.notify.email import user_last_to_vote_email
@@ -12,8 +11,6 @@ from musicleague.notify.email import user_removed_from_league_email
 from musicleague.notify.email import user_submit_reminder_email
 from musicleague.notify.email import user_vote_reminder_email
 
-from musicleague.notify.messenger import owner_all_users_submitted_messenger
-from musicleague.notify.messenger import owner_all_users_voted_messenger
 from musicleague.notify.messenger import owner_user_submitted_messenger
 from musicleague.notify.messenger import owner_user_voted_messenger
 from musicleague.notify.messenger import user_added_to_league_messenger
@@ -23,22 +20,6 @@ from musicleague.notify.messenger import user_playlist_created_messenger
 from musicleague.notify.messenger import user_removed_from_league_messenger
 from musicleague.notify.messenger import user_submit_reminder_messenger
 from musicleague.notify.messenger import user_vote_reminder_messenger
-
-
-def owner_all_users_submitted_notification(submission_period):
-    if not submission_period:
-        return
-
-    owner = submission_period.league.owner
-    if not owner:
-        return
-
-    if not owner.preferences.owner_all_users_submitted_notifications:
-        return
-
-    owner_all_users_submitted_email(owner, submission_period)
-    owner_all_users_submitted_messenger(owner, submission_period)
-    return True
 
 
 def owner_user_submitted_notification(submission):
@@ -54,22 +35,6 @@ def owner_user_submitted_notification(submission):
 
     owner_user_submitted_email(owner, submission)
     owner_user_submitted_messenger(owner, submission)
-    return True
-
-
-def owner_all_users_voted_notification(submission_period):
-    if not submission_period:
-        return
-
-    owner = submission_period.league.owner
-    if not owner:
-        return
-
-    if not owner.preferences.owner_all_users_voted_notifications:
-        return
-
-    owner_all_users_voted_email(owner, submission_period)
-    owner_all_users_voted_messenger(owner, submission_period)
     return True
 
 
@@ -98,6 +63,15 @@ def user_added_to_league_notification(user, league):
 
     user_added_to_league_email(user, league)
     user_added_to_league_messenger(user, league)
+    return True
+
+
+def user_all_voted_notification(submission_period):
+    if not submission_period or not submission_period.league.users:
+        return
+
+    user_all_voted_email(submission_period)
+    # TODO user_all_voted_messenger(submission_period)
     return True
 
 
