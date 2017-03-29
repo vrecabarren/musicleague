@@ -92,7 +92,7 @@
 
 #title-bar .members img:last-of-type { margin-right: 0px !important; }
 
-#title-bar .members #member-count { display: inline-block; margin: 0px 10px; }
+#title-bar .members #member-count { display: inline-block; margin: 0 0 0 10px; }
 #title-bar .members #member-count #members-toggle { cursor: pointer; margin-left: 10px; }
 
 #title-bar .members #members-collapse #members-container {
