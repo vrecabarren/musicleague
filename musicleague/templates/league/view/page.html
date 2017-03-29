@@ -8,12 +8,7 @@
 
 {% block title_bar_content %}
 <span class="league-title">{{ league.name }}</span>
-<span class="league-created">Public League Created {{ moment(league.created).format('MM.DD.YY') }}</span>
-{% if league.is_public and not league.has_user(user) %}
-<a href="{{ url_for('join_league', league_id=league.id) }}" id="join-league-btn" class="btn btn-lg">
-    <span class="gold-star"></span><span class="text">Join This League</span><span class="gold-star"></span>
-</a>
-{% endif %}
+
 <div class="container">
     <div class="row">
         <div class="col-xs-12 text-left">
@@ -103,6 +98,13 @@
         </div>
     </div>
 </div>
+
+<span class="league-created">Public League Created {{ moment(league.created).format('MM.DD.YY') }}</span>
+{% if league.is_public and league.has_user(user) %}
+<a href="{{ url_for('join_league', league_id=league.id) }}" id="join-league-btn" class="btn btn-lg">
+    <span class="gold-star"></span><span class="text">Join This League</span><span class="gold-star"></span>
+</a>
+{% endif %}
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-12 col-md-6 col-md-offset-3">
@@ -115,10 +117,10 @@
                         <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/expand_icon.svg" alt="" class="account-icon">
                     </span>
                 </span>
-            </div><!-- #members -->
+            </div>
         </div>
-    </div><!-- .row -->
-</div><!-- .container-fluid -->
+    </div>
+</div>
 {% endblock %}
 
 {% block status_bar_content %}
