@@ -8,6 +8,7 @@ from musicleague.spotify import create_or_update_playlist
 from musicleague.submission_period import get_submission_period
 from musicleague.submission_period import remove_submission_period
 from musicleague.submission_period.tasks.schedulers import schedule_playlist_creation  # noqa
+from musicleague.submission_period.tasks.schedulers import schedule_round_completion  # noqa
 from musicleague.submission_period.tasks.schedulers import schedule_submission_reminders  # noqa
 from musicleague.submission_period.tasks.schedulers import schedule_vote_reminders  # noqa
 
@@ -57,6 +58,7 @@ def admin_reschedule_tasks(submission_period_id):
         return
 
     schedule_playlist_creation(submission_period)
+    schedule_round_completion(submission_period)
     schedule_submission_reminders(submission_period)
     schedule_vote_reminders(submission_period)
     submission_period.save()

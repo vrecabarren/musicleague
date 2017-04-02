@@ -5,6 +5,7 @@ from musicleague import app
 from musicleague.models import SubmissionPeriod
 from musicleague.submission_period.tasks.cancelers import cancel_pending_task
 from musicleague.submission_period.tasks.schedulers import schedule_playlist_creation  # noqa
+from musicleague.submission_period.tasks.schedulers import schedule_round_completion  # noqa
 from musicleague.submission_period.tasks.schedulers import schedule_submission_reminders  # noqa
 from musicleague.submission_period.tasks.schedulers import schedule_vote_reminders  # noqa
 
@@ -36,6 +37,7 @@ def create_submission_period(
     new_submission_period.save()
 
     schedule_playlist_creation(new_submission_period)
+    schedule_round_completion(new_submission_period)
     schedule_submission_reminders(new_submission_period)
     schedule_vote_reminders(new_submission_period)
 
@@ -92,6 +94,7 @@ def update_submission_period(submission_period_id, name, description,
 
     # Reschedule playlist creation and submission/vote reminders if needed
     schedule_playlist_creation(submission_period)
+    schedule_round_completion(submission_period)
     schedule_submission_reminders(submission_period)
     schedule_vote_reminders(submission_period)
 
