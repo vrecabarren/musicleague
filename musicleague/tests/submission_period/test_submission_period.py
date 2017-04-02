@@ -25,9 +25,10 @@ class CreateSubmissionPeriodTestCase(TestCase):
 
     @patch('musicleague.submission_period.schedule_vote_reminders')
     @patch('musicleague.submission_period.schedule_submission_reminders')
+    @patch('musicleague.submission_period.schedule_round_completion')
     @patch('musicleague.submission_period.schedule_playlist_creation')
-    def test_create(self, schedule_playlist, schedule_submission_reminders,
-                    schedule_vote_reminders):
+    def test_create(self, schedule_playlist, schedule_round_completion,
+                    schedule_submission_reminders, schedule_vote_reminders):
         created = create_submission_period(self.league)
 
         self.assertEqual('Round 2', created.name)
@@ -41,6 +42,7 @@ class CreateSubmissionPeriodTestCase(TestCase):
         self.assertTrue(saved in self.league.submission_periods)
 
         schedule_playlist.assert_called_once_with(created)
+        schedule_round_completion.assert_called_once_with(created)
         schedule_submission_reminders.assert_called_once_with(created)
         schedule_vote_reminders.assert_called_once_with(created)
 
