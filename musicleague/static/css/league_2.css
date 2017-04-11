@@ -10,31 +10,32 @@
     line-height: 19px;
     margin: 10px 0 20px 0;
 }
-#title-bar #join-league-btn {
+#title-bar #join-league-btn,
+#title-bar .share-league-btn {
     background: none;
-    border: 3px solid #ffffff;
+    border: 2px solid #ffffff;
     border-radius: 8px;
-    border-spacing: 20px 0;
-    display: inline-table;
-    margin-bottom: 20px;
+    display: inline-block;
+    height: 40px;
     outline: none;
-    padding: 10px 0;
+    padding: 0;
     vertical-align: middle;
 }
-#title-bar #join-league-btn .text {
+#title-bar #join-league-btn .text,
+#title-bar .share-league-btn .text {
     color: #ffffff;
-    display: table-cell;
+    display: inline-block;
     font-family: 'Cubano', sans-serif;
     font-size: 18px;
-    line-height: 18px;
+    margin: 0;
     text-decoration: none;
     vertical-align: middle;
 }
-#title-bar #join-league-btn .gold-star {
+#title-bar #join-league-btn .gold-star,
+#title-bar .share-league-btn .gold-star {
     background: url("https://s3.amazonaws.com/musicleague-static-assets/icons/star_gold.svg") no-repeat center;
-    display: table-cell;
+    display: inline-block;
     height: 18px;
-    line-height: 18px;
     margin: 0 20px;
     vertical-align: middle;
     width: 18px;
@@ -82,7 +83,9 @@
 }
 #title-bar .members {
     font-size: 18px;
-    line-height: 50px;
+}
+#title-bar .visible-xs .members {
+    margin-bottom: 20px;
 }
 #title-bar .members img {
     height: 40px;
@@ -92,8 +95,12 @@
 
 #title-bar .members img:last-of-type { margin-right: 0px !important; }
 
-#title-bar .members #member-count { display: inline-block; margin: 0 0 0 10px; }
-#title-bar .members #member-count #members-toggle { cursor: pointer; margin-left: 10px; }
+#title-bar .members #member-count {
+    display: inline-block;
+    margin: 0 0 0 10px;
+    vertical-align: middle;
+}
+#title-bar .members #member-count .members-toggle { cursor: pointer; margin-left: 10px; }
 
 #title-bar .members #members-collapse #members-container {
     background-color: rgba(0, 37, 154, 0.85);

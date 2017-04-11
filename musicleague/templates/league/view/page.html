@@ -100,27 +100,69 @@
 </div>
 
 <span class="league-created">Public League Created {{ moment(league.created).format('MM.DD.YY') }}</span>
-{% if league.is_public and league.has_user(user) %}
-<a href="{{ url_for('join_league', league_id=league.id) }}" id="join-league-btn" class="btn btn-lg">
-    <span class="gold-star"></span><span class="text">Join This League</span><span class="gold-star"></span>
-</a>
-{% endif %}
+
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-12 col-md-6 col-md-offset-3">
-            <div class="members">
-                {% for member in league.users %}
-                <img src="{{ member.image_url }}" alt="{{ member.name }}" class="img img-circle">
-                {% endfor %}
-                <span id="member-count">{{ league.users|length }} Members
-                    <span id="members-toggle">
-                        <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/expand_icon.svg" alt="" class="account-icon">
-                    </span>
-                </span>
+            <div class="visible-xs">
+
+                    <div class="members">
+                        {% for member in league.users %}
+                        <img src="{{ member.image_url }}" alt="{{ member.name }}" class="img img-circle">
+                        {% endfor %}
+                        <span id="member-count">{{ league.users|length }} Members
+                            <span class="members-toggle">
+                                <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/expand_icon.svg" alt="" class="account-icon">
+                            </span>
+                        </span>
+                    </div>
+                    {% if league.is_public and league.has_user(user) %}
+                    <button class="btn share-league-btn" data-clipboard-text="{{ request.url }}">
+                        <span class="gold-star"></span><span class="text">Share This League</span><span class="gold-star"></span>
+                    </button>
+                    {% elif league.is_public %}
+                    <a href="{{ url_for('join_league', league_id=league.id) }}" id="join-league-btn" class="btn">
+                        <span class="gold-star"></span><span class="text">Join This League</span><span class="gold-star"></span>
+                    </a>
+                    {% endif %}
+
+            </div>
+            <div class="hidden-xs">
+                <div style="display: inline-table">
+
+                    <div style="display: table-cell; padding: 10px 20px 10px 0; vertical-align: middle;">
+                        <div class="members">
+                            {% for member in league.users %}
+                            <img src="{{ member.image_url }}" alt="{{ member.name }}" class="img img-circle">
+                            {% endfor %}
+                            <span id="member-count">{{ league.users|length }} Members
+                                <span class="members-toggle">
+                                    <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/expand_icon.svg" alt="" class="account-icon">
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div style="display: table-cell; padding: 10px 0 10px 20px; border-left: 2px solid #fff; vertical-align: middle;">
+                        {% if league.is_public and league.has_user(user) %}
+                        <button class="btn share-league-btn" data-clipboard-text="{{ request.url }}">
+                            <span class="gold-star"></span><span class="text">Share This League</span><span class="gold-star"></span>
+                        </button>
+                        {% elif league.is_public %}
+                        <a href="#" id="join-league-btn" class="btn">
+                            <span class="gold-star"></span><span class="text">Join This League</span><span class="gold-star"></span>
+                        </a>
+                        {% endif %}
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+
+
 {% endblock %}
 
 {% block status_bar_content %}
@@ -238,10 +280,40 @@
 {% endblock %}
 
 {% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.6.1/clipboard.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#members-toggle').popover({placement: 'bottom', content: $('#members-popover-wrapper').html(), html: true, container: '.members'});
+        $('.visible-xs .members-toggle').popover({placement: 'bottom', content: $('#members-popover-wrapper').html(), html: true, container: 'body'});
+        $('.hidden-xs .members-toggle').popover({placement: 'bottom', content: $('#members-popover-wrapper').html(), html: true, container: '.members'});
         $('.progress-toggle').popover({placement: 'bottom', content: $('#progress-popover-wrapper').html(), html: true, container: '#current-round-progress'});
+
+        $('.share-league-btn').tooltip({
+            trigger: 'click',
+            placement: 'bottom'
+        });
+
+        function setTooltip(btn, message) {
+            $(btn)
+            .attr('data-original-title', message)
+            .tooltip('show');
+        }
+
+        function hideTooltip(btn) {
+            setTimeout(function() {
+                $(btn).tooltip('hide');
+            }, 3000);
+        }
+
+        // Clipboard
+        var clipboard = new Clipboard('.share-league-btn');
+        clipboard.on('success', function(e) {
+            setTooltip(e.trigger, 'Copied!');
+            hideTooltip(e.trigger);
+        });
+        clipboard.on('error', function(e) {
+            setTooltip(e.trigger, 'Failed!');
+            hideTooltip(e.trigger);
+        });
     });
 </script>
 {% endblock %}
