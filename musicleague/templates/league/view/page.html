@@ -119,11 +119,23 @@
                     </div>
                     {% if league.is_public and league.has_user(user) %}
                     <button class="btn share-league-btn" data-clipboard-text="{{ request.url }}">
-                        <span class="gold-star"></span><span class="text">Share This League</span><span class="gold-star"></span>
+                        <span class="gold-star">
+                            <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/star_gold.svg" alt="" height="18" width="18">
+                        </span>
+                        <span class="text">Share This League</span>
+                        <span class="gold-star">
+                            <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/star_gold.svg" alt="" height="18" width="18">
+                        </span>
                     </button>
                     {% elif league.is_public %}
-                    <a href="{{ url_for('join_league', league_id=league.id) }}" id="join-league-btn" class="btn">
-                        <span class="gold-star"></span><span class="text">Join This League</span><span class="gold-star"></span>
+                    <a href="{{ url_for('join_league', league_id=league.id) }}" class="btn join-league-btn">
+                        <span class="gold-star">
+                            <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/star_gold.svg" alt="" height="18" width="18">
+                        </span>
+                        <span class="text">Join This League</span>
+                        <span class="gold-star">
+                            <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/star_gold.svg" alt="" height="18" width="18">
+                        </span>
                     </a>
                     {% endif %}
 
@@ -146,11 +158,23 @@
                     <div style="display: table-cell; padding: 10px 0 10px 20px; border-left: 2px solid #fff; vertical-align: middle;">
                         {% if league.is_public and league.has_user(user) %}
                         <button class="btn share-league-btn" data-clipboard-text="{{ request.url }}">
-                            <span class="gold-star"></span><span class="text">Share This League</span><span class="gold-star"></span>
+                            <span class="gold-star">
+                                <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/star_gold.svg" alt="" height="18" width="18">
+                            </span>
+                            <span class="text">Share This League</span>
+                            <span class="gold-star">
+                                <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/star_gold.svg" alt="" height="18" width="18">
+                            </span>
                         </button>
                         {% elif league.is_public %}
-                        <a href="#" id="join-league-btn" class="btn">
-                            <span class="gold-star"></span><span class="text">Join This League</span><span class="gold-star"></span>
+                        <a href="{{ url_for('join_league', league_id=league.id) }}" class="btn join-league-btn">
+                            <span class="gold-star">
+                                <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/star_gold.svg" alt="" height="18" width="18">
+                            </span>
+                            <span class="text">Join This League</span>
+                            <span class="gold-star">
+                                <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/star_gold.svg" alt="" height="18" width="18">
+                            </span>
                         </a>
                         {% endif %}
                     </div>
@@ -204,6 +228,12 @@
                 {% endfor %}
             </div>
         {% endfor %}
+    </div>
+</div>
+
+<div id="copied-popover-wrapper" class="popover-content-wrapper">
+    <div id="copied-popover" class="container-fluid">
+        <span>Link Copied To Clipboard</span>
     </div>
 </div>
 
@@ -283,24 +313,44 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.6.1/clipboard.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-        $('.visible-xs .members-toggle').popover({placement: 'bottom', content: $('#members-popover-wrapper').html(), html: true, container: 'body'});
-        $('.hidden-xs .members-toggle').popover({placement: 'bottom', content: $('#members-popover-wrapper').html(), html: true, container: '.members'});
-        $('.progress-toggle').popover({placement: 'bottom', content: $('#progress-popover-wrapper').html(), html: true, container: '#current-round-progress'});
+        $('.visible-xs .members-toggle').popover({
+            placement: 'bottom',
+            content: $('#members-popover-wrapper').html(),
+            html: true,
+            container: 'body',
+            template: '<div class="popover full-width" role="tooltip"><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+        });
+        $('.hidden-xs .members-toggle').popover({
+            placement: 'bottom',
+            content: $('#members-popover-wrapper').html(),
+            html: true,
+            container: '.members',
+            template: '<div class="popover full-width" role="tooltip"><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+        });
+        $('.progress-toggle').popover({
+            placement: 'bottom',
+            content: $('#progress-popover-wrapper').html(),
+            html: true,
+            container: '#current-round-progress'
+            // template: '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+        });
 
-        $('.share-league-btn').tooltip({
+        $('.share-league-btn').popover({
             trigger: 'click',
-            placement: 'bottom'
+            placement: 'bottom',
+            content: $('#copied-popover-wrapper').html(),
+            html: true
         });
 
         function setTooltip(btn, message) {
             $(btn)
             .attr('data-original-title', message)
-            .tooltip('show');
+            .popover('show');
         }
 
         function hideTooltip(btn) {
             setTimeout(function() {
-                $(btn).tooltip('hide');
+                $(btn).popover('hide');
             }, 3000);
         }
 
