@@ -287,6 +287,11 @@ class LeaguePreferences(EmbeddedDocument):
 
 
 class League(Document):
+    SETUP = 'setup'
+    ACTIVE = 'active'
+    COMPLETE = 'complete'
+    VALID_STATES = (SETUP, ACTIVE, COMPLETE)
+
     created = DateTimeField(required=True)
     owner = ReferenceField(User)
     submission_periods = ListField(
@@ -296,6 +301,7 @@ class League(Document):
                                              reverse_delete_rule=PULL))
     preferences = EmbeddedDocumentField(LeaguePreferences)
     scoreboard = EmbeddedDocumentField(Scoreboard)
+    state = StringField(default=None)
 
     @property
     def name(self):
