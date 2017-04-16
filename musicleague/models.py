@@ -287,10 +287,11 @@ class LeaguePreferences(EmbeddedDocument):
 
 
 class League(Document):
-    SETUP = 'setup'
-    ACTIVE = 'active'
-    COMPLETE = 'complete'
-    VALID_STATES = (SETUP, ACTIVE, COMPLETE)
+    class STATE(object):
+        SETUP = 'setup'
+        ACTIVE = 'active'
+        COMPLETE = 'complete'
+        VALID_STATES = (SETUP, ACTIVE, COMPLETE)
 
     created = DateTimeField(required=True)
     owner = ReferenceField(User)
@@ -314,12 +315,23 @@ class League(Document):
 
     @property
     def is_inactive(self):
-        return len(self.submission_periods) == 0
+        if (self.state is None):
+            inactive = len(self.submission_periods) == 0
+            if inactive:
+                self.state = self.STATE.SETUP
+                self.save()
+        return self.state == self.STATE.SETUP
 
     @property
     def is_complete(self):
-        return (not self.is_inactive and
-                all((sp.is_complete for sp in self.submission_periods)))
+        if (self.state is None):
+            complete = (not self.is_inactive and
+                        all((sp.is_complete for sp in self.submission_periods)))
+            if complete:
+                self.state = self.STATE.COMPLETE
+                self.save()
+
+        return self.state == self.STATE.COMPLETE
 
     @property
     def is_public(self):
