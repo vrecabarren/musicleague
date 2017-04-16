@@ -55,7 +55,8 @@ def create_league(user, name=None, users=None):
     if users is not None:
         members = list(set(members + users))
 
-    new_league = League(owner=user, users=members, created=datetime.utcnow())
+    new_league = League(owner=user, users=members, created=datetime.utcnow(),
+                        state=League.STATE.SETUP)
     new_league.preferences = LeaguePreferences(name=name)
     new_league.save()
     return new_league
