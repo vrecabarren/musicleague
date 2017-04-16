@@ -186,14 +186,11 @@ class SubmissionPeriod(Document):
 
     @property
     def accepting_submissions(self):
+        if not self.league.is_active:
+            return False
+
         return ((len(self.submissions) < len(self.league.users)) and
                 (self.submission_due_date > datetime.utcnow()))
-
-    @property
-    def accepting_late_submissions(self):
-        return (self.league.preferences.late_submissions and
-                (len(self.submissions) < len(self.league.users)) and
-                (self.vote_due_date > datetime.utcnow()))
 
     @property
     def have_submitted(self):
@@ -205,6 +202,9 @@ class SubmissionPeriod(Document):
 
     @property
     def accepting_votes(self):
+        if not self.league.is_active:
+            return False
+
         return ((not self.accepting_submissions) and
                 (len(self.votes) < len(self.league.users)) and
                 (self.vote_due_date > datetime.utcnow()))
@@ -321,6 +321,10 @@ class League(Document):
                 self.state = self.STATE.SETUP
                 self.save()
         return self.state == self.STATE.SETUP
+
+    @property
+    def is_active(self):
+        return self.state == self.STATE.ACTIVE
 
     @property
     def is_complete(self):
