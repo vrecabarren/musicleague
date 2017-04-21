@@ -14,6 +14,7 @@ from musicleague.league import create_league
 from musicleague.league import get_league
 from musicleague.league import remove_league
 from musicleague.league import remove_user
+from musicleague.models import League
 from musicleague.notify.flash import flash_error
 from musicleague.routes.decorators import admin_required
 from musicleague.routes.decorators import league_required
@@ -27,6 +28,7 @@ from musicleague.user import get_user
 
 
 CREATE_LEAGUE_URL = '/l/create/'
+GO_LIVE_URL = '/l/<league_id>/live/'
 JOIN_LEAGUE_URL = '/l/<league_id>/join/'
 LEADERBOARD_URL = '/l/<league_id>/leaderboard/'
 MANAGE_LEAGUE_URL = '/l/<league_id>/manage/'
@@ -176,6 +178,19 @@ def post_manage_league(league_id):
     if league.scoreboard:
         league = calculate_league_scoreboard(league)
 
+    league.save()
+    return redirect(url_for('view_league', league_id=league_id))
+
+
+@app.route(GO_LIVE_URL, methods=['POST'])
+@login_required
+@league_required
+def post_go_live(league_id, **kwargs):
+    league = kwargs.get('league')
+    if not league.has_owner(g.user):
+        return
+
+    league.state = League.STATE.ACTIVE
     league.save()
     return redirect(url_for('view_league', league_id=league_id))
 

@@ -73,14 +73,45 @@
                     <div class="league-tile linked" data-href="{{ url_for('view_league', league_id=league.id) }}">
                         <div class="league-tile-inner">
                             {% if league.is_inactive %}
-                            <img class="league-icon inactive" src="https://s3.amazonaws.com/musicleague-static-assets/icons/clock_gray.svg" alt="">
-                            <div class="league-title inactive">{{ league.name }}</div>
+                            <div class="league-icon-row">
+                                <div class="league-icon-cell">
+                                    {% if league.has_owner(user) %}
+                                    <form action="{{ url_for('post_go_live', league_id=league.id) }}" method="post">
+                                        <img class="img img-circle league-icon inactive" src="https://s3.amazonaws.com/musicleague-static-assets/icons/clock_gray.svg" alt="" style="background: #fff; border: 3px solid #fff; position: relative; z-index: 100">
+                                        <button type="submit" class="btn btn-lg btn-success" style="font-family: 'Cubano', sans-serif; border-top-right-radius: 25px; border-bottom-right-radius: 25px; margin-left: -10px; z-index: 0;">Go Live!</button>
+                                    </form>
+                                    {% else %}
+                                    <img class="league-icon inactive" src="https://s3.amazonaws.com/musicleague-static-assets/icons/clock_gray.svg" alt="">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="league-title-row">
+                                <div class="league-title-cell">
+                                    <div class="league-title inactive">{{ league.name }}</div>
+                                </div>
+                            </div>
                             {% elif league.is_complete %}
-                            <img class="league-icon complete" src="https://s3.amazonaws.com/musicleague-static-assets/icons/completed_league_icon.svg" alt="">
-                            <div class="league-title complete">{{ league.name }}</div>
+                            <div class="league-icon-row">
+                                <div class="league-icon-cell">
+                                    <img class="league-icon complete" src="https://s3.amazonaws.com/musicleague-static-assets/icons/completed_league_icon.svg" alt="">
+                                </div>
+                            </div>
+                            <div class="league-title-row">
+                                <div class="league-title-cell">
+                                    <div class="league-title complete">{{ league.name }}</div>
+                                </div>
+                            </div>
                             {% else %}
-                            <img class="league-icon" src="https://s3.amazonaws.com/musicleague-static-assets/icons/live_league_icon.svg" alt="">
-                            <div class="league-title">{{ league.name }}</div>
+                            <div class="league-icon-row">
+                                <div class="league-icon-cell">
+                                    <img class="league-icon" src="https://s3.amazonaws.com/musicleague-static-assets/icons/live_league_icon.svg" alt="">
+                                </div>
+                            </div>
+                            <div class="league-title-row">
+                                <div class="league-title-cell">
+                                    <div class="league-title">{{ league.name }}</div>
+                                </div>
+                            </div>
                             {% endif %}
                         </div>
                     </div>
@@ -130,7 +161,7 @@
 {% endblock %}
 
 {% block js %}
-<script src="http://jschr.github.io/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
-<script src="http://jschr.github.io/bootstrap-modal/js/bootstrap-modal.js"></script>
+<script src="//jschr.github.io/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
+<script src="//jschr.github.io/bootstrap-modal/js/bootstrap-modal.js"></script>
 <script type="text/javascript" src="/static/js/profile.js"></script>
 {% endblock %}

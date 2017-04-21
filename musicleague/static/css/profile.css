@@ -131,9 +131,8 @@
     text-align: center;
 }
     .league-item .league-tile {
-        background: url("https://s3.amazonaws.com/musicleague-static-assets/images/ml_leaguetile.jpg");
+        background: url("https://s3.amazonaws.com/musicleague-static-assets/images/ml_leaguetile.jpg") no-repeat;
         background-attachment: scroll;
-        background-repeat: no-repeat;
         border-radius: 8px;
         padding: 50px;
     }
@@ -141,33 +140,43 @@
         .league-item .league-tile .league-tile-inner {
             background-color: #fff;
             border-radius: 8px;
-            height: 100%;
+            display: table;
+            min-height: 260px;
             padding: 15px 10px 15px 10px;
             text-align: center;
             width: 100%;
         }
-
-            .league-item .league-tile .league-tile-inner .league-icon {
+            .league-item .league-tile .league-tile-inner .league-icon-row {
+                display: table-row;
+                height: 130px;
+                text-align: center;
+            }
+            .league-item .league-tile .league-tile-inner .league-icon-row .league-icon-cell {
+                display: table-cell;
+                vertical-align: middle;
+            }
+            .league-item .league-tile .league-tile-inner .league-icon-row .league-icon-cell .league-icon {
                 display: inline-block;
-                height: 104px;
-                margin: 15px 25px;
-                width: 78px;
+                height: 80px;
+                width: 80px;
             }
 
-            .league-item .league-tile .league-tile-inner .league-icon.complete { width: 79px; }
-
-            .league-item .league-tile .league-tile-inner .league-title {
-                align-items: center;
+            .league-item .league-tile .league-tile-inner .league-title-row {
+                display: table-row;
+                text-align: center;
+            }
+            .league-item .league-tile .league-tile-inner .league-title-row .league-title-cell {
+                display: table-cell;
+                vertical-align: middle;
+            }
+            .league-item .league-tile .league-tile-inner .league-title-row .league-title-cell .league-title {
                 color: #02B8EF;
-                display: flex;
+                display: inline-block;
                 font-family: 'Cubano', sans-serif;
                 font-size: 18px;
                 font-weight: bold;
-                justify-content: center;
                 line-height: 22px;
                 text-align: center;
-                text-transform: uppercase;
-                vertical-align: middle;
             }
 
             .league-item .league-tile .league-tile-inner .league-title.complete {
