@@ -23,6 +23,8 @@ def calculate_league_scoreboard(league):
 
     # Get song entries for each entry
     for round in league.submission_periods:
+        if not round.is_complete:
+            continue
 
         # Ensure each round has had its scoreboard calculated
         if not round.scoreboard:
