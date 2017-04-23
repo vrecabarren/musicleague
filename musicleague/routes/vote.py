@@ -8,7 +8,6 @@ from flask import url_for
 
 from musicleague import app
 from musicleague.notify import owner_user_voted_notification
-from musicleague.notify import user_all_voted_notification
 from musicleague.notify import user_last_to_vote_notification
 from musicleague.notify.flash import flash_error
 from musicleague.notify.flash import flash_success
@@ -102,7 +101,6 @@ def vote(league_id, submission_period_id):
 
     if not remaining:
         complete_submission_period(submission_period.id)
-        user_all_voted_notification(submission_period)
         cancel_round_completion(submission_period)
         cancel_vote_reminders(submission_period)
         submission_period.save()

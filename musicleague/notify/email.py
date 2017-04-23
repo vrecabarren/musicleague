@@ -111,6 +111,11 @@ def user_playlist_created_email(submission_period):
     if not submission_period or not submission_period.league.users:
         return
 
+    # Less than 2 uses leads to invalid BCC list
+    if len(submission_period.league.users) < 2:
+        app.logger.info('Skipping playlist email with < 2 users')
+        return
+
     to = submission_period.league.owner.email
     bcc_list = ','.join(
         [u.email for u in submission_period.league.users
