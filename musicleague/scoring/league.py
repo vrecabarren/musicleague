@@ -113,6 +113,9 @@ class RankingEntrySortKey(EntrySortKey):
         """
         self_rankings, other_rankings = [], []
         for round in self.obj.league.submission_periods:
+            if not round.is_complete or not round.scoreboard:
+                continue
+
             for rank, rank_entries in round.scoreboard.rankings.iteritems():
                 for entry in rank_entries:
                     if entry.submission.user.id == self.obj.user.id:
