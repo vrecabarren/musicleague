@@ -132,7 +132,9 @@ def submit(league_id, submission_period_id):
         cancel_submission_reminders(submission_period)
         submission_period.save()
 
-    elif len(remaining) == 1:
+    # Don't send submission reminder if this user is resubmitting. In this
+    # case, the last user to submit will have already gotten a notification.
+    elif submission.count < 2 and len(remaining) == 1:
         last_user = list(remaining)[0]
         user_last_to_submit_notification(last_user, submission_period)
 
