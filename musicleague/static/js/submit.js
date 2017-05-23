@@ -45,6 +45,19 @@ function setSongStateDuplicateArtist(song) {
     song.removeClass('found').addClass('error').addClass('duplicate-artist');
 }
 
+function setSongStateDuplicateAlbum(song) {
+    song.data('id', "");
+    song.data('uri', "");
+    song.find('.you-selected').html('Great Minds Think Alike:');
+    song.find('.song-info img').attr('src', 'https://s3.amazonaws.com/musicleague-static-assets/icons/attentionicon.svg');
+    song.find('.song-info .name').html("Album<br>Already<br>Submitted.");
+    song.find('.song-info .artist').html("");
+    song.find('.song-info .album').html("");
+    song.find('.find-song-inp').val("");
+    song.find('.find-song-btn.hidden-xs').html("Let's Try This Again!");
+    song.removeClass('found').addClass('error').addClass('duplicate-album');
+}
+
 function setSongStateDuplicateSong(song) {
     song.data('id', "");
     song.data('uri', "");
@@ -145,6 +158,7 @@ function processFormSubmission() {
 
 function setPreviousSubmissionState() {
     $('.song.error.duplicate-artist').each(function(){setSongStateDuplicateArtist($(this));});
+    $('.song.error.duplicate-album').each(function(){setSongStateDuplicateAlbum($(this));});
     $('.song.error.duplicate-song').each(function(){setSongStateDuplicateSong($(this))});
     $('.song.found').each(function(){
         var song = $(this);
