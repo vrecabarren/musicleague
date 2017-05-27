@@ -36,6 +36,7 @@
             {% set tracks = previous_tracks %}
             <input id="previous-submission" type="hidden" value="{{ tracks }}">
             <input id="duplicate-artists" type="hidden" value="{{ duplicate_artists }}">
+            <input id="duplicate-albums" type="hidden" value="{{ duplicate_albums }}">
             <input id="duplicate-songs" type="hidden" value="{{ duplicate_songs }}">
         {% elif my_submission %}
             {% set tracks = my_submission.tracks %}
@@ -45,10 +46,12 @@
 
         {% for song_num in range(league.preferences.track_count) %}
         {% set submitted_uri  = tracks[song_num] %}
-        {% if submitted_uri and submitted_uri not in duplicate_tracks and submitted_uri not in duplicate_artists %}
+        {% if submitted_uri and submitted_uri not in duplicate_tracks and submitted_uri not in duplicate_albums and submitted_uri not in duplicate_artists %}
         <div class="song row{% if submitted_uri %} found{% endif %}" {% if submitted_uri %}data-uri="{{ submitted_uri }}"{% endif %}>
         {% elif submitted_uri and submitted_uri in duplicate_songs %}
         <div class="song row error duplicate-song">
+        {% elif submitted_uri and submitted_uri in duplicate_albums %}
+        <div class="song row error duplicate-album">
         {% elif submitted_uri and submitted_uri in duplicate_artists %}
         <div class="song row error duplicate-artist">
         {% else %}

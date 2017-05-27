@@ -106,12 +106,15 @@ def submit(league_id, submission_period_id):
 
         # Don't allow user to submit already submitted track or artist
         duplicate_tracks = check_duplicate_tracks(my_tracks, their_tracks)
+        duplicate_albums = check_duplicate_albums(my_tracks, their_tracks)
         duplicate_artists = check_duplicate_artists(my_tracks, their_tracks)
-        if duplicate_tracks or duplicate_artists:
+        if duplicate_tracks or duplicate_albums or duplicate_artists:
             return render_template(
                 'submit/page.html',
                 user=g.user, league=league, round=submission_period,
-                previous_tracks=tracks, duplicate_songs=duplicate_tracks,
+                previous_tracks=tracks,
+                duplicate_songs=duplicate_tracks,
+                duplicate_albums=duplicate_albums,
                 duplicate_artists=duplicate_artists)
 
     submission = create_or_update_submission(tracks, submission_period, league,
@@ -132,7 +135,9 @@ def submit(league_id, submission_period_id):
         cancel_submission_reminders(submission_period)
         submission_period.save()
 
-    elif len(remaining) == 1:
+    # Don't send submission reminder if this user is resubmitting. In this
+    # case, the last user to submit will have already gotten a notification.
+    elif submission.count < 2 and len(remaining) == 1:
         last_user = list(remaining)[0]
         user_last_to_submit_notification(last_user, submission_period)
 
@@ -144,6 +149,15 @@ def check_duplicate_tracks(my_tracks, their_tracks):
     their_ids = [track['id'] for track in their_tracks if track]
     for my_track in my_tracks:
         if my_track['id'] in their_ids:
+            duplicate_tracks.append(my_track['uri'])
+    return duplicate_tracks
+
+
+def check_duplicate_albums(my_tracks, their_tracks):
+    duplicate_tracks = []
+    their_ids = [track['album']['id'] for track in their_tracks if track]
+    for my_track in my_tracks:
+        if my_track['album']['id'] in their_ids:
             duplicate_tracks.append(my_track['uri'])
     return duplicate_tracks
 
