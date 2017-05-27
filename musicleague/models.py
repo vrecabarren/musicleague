@@ -228,7 +228,14 @@ class SubmissionPeriod(Document):
     def is_complete(self):
         if self.vote_due_date < datetime.utcnow():
             return True
-        return not (self.accepting_submissions or self.accepting_votes)
+
+        if self.accepting_submissions:
+            return len(self.submissions) >= len(self.league.users)
+
+        if self.accepting_votes:
+            return len(self.votes) >= len(self.league.users)
+
+        return False
 
     @property
     def is_current_v2(self):
@@ -310,6 +317,9 @@ class League(Document):
 
     @property
     def current_submission_period(self):
+        if self.is_inactive or self.is_complete:
+            return None
+
         return next(
             (sp for sp in self.submission_periods if not sp.is_complete), None)
 

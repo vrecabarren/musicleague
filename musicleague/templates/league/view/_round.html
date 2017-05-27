@@ -32,7 +32,13 @@
                             <span class="status-text current">{{ moment(round.vote_due_date).format('[Votes due on] MM.DD.YY [at] hA') }}</span>
                             {% endif %}
                         {% else %}
-                            <span class="status-text">{{ moment(prev_round.vote_due_date).format('[Live on] MM.DD.YY [at] hA') }}</span>
+                            <span class="status-text">
+                                {% if prev_round %}
+                                {{ moment(prev_round.vote_due_date).format('[Live on] MM.DD.YY [at] hA') }}
+                                {% else %}
+                                Check back when this league goes live
+                                {% endif %}
+                            </span>
                         {% endif %}
                         <div class="visible-xs" style="padding: 10px 0"></div>
                     </div><!--
