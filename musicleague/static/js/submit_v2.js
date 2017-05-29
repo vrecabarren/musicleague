@@ -119,22 +119,19 @@ $('.find-song-btn').on("click", function(){
 
     if (trackId) {
         // Get info from Spotify API
-        $.ajax(
-                {url: 'https://api.spotify.com/v1/tracks/' + trackId}
-            ).done(
-                function(response){
-                    setSongStateFound(song, response);
-                }
-            ).fail(
-                function(){
-                    setSongStateNotFound(song);
-                }
-            ).always(
-                function(){
-                    setSelectedSongCount();
-                    setSubmitButtonState();
-                }
-            );
+        $.ajax({
+            url: 'https://api.spotify.com/v1/tracks/' + trackId,
+            headers: {
+                'Authorization': 'Bearer ' + accessToken
+            }
+        }).done(function(response){
+            setSongStateFound(song, response);
+        }).fail(function(){
+            setSongStateNotFound(song);
+        }).always(function(){
+            setSelectedSongCount();
+            setSubmitButtonState();
+        });
     } else {
         setSongStateNotFound(song);
         setSelectedSongCount();
@@ -165,7 +162,12 @@ function setPreviousSubmissionState() {
         var uri = song.data('uri');
         var uri_regex = /spotify\:track\:([a-zA-Z0-9]{22})/;
         var trackId = uri.match(uri_regex)[1];
-        $.ajax({url: 'https://api.spotify.com/v1/tracks/' + trackId}).success(
+        $.ajax({
+            url: 'https://api.spotify.com/v1/tracks/' + trackId,
+            headers: {
+                'Authorization': 'Bearer ' + accessToken
+            }
+        }).success(
             function(response){
                 setSongStateFound(song, response);
             }

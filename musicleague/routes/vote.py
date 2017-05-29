@@ -4,6 +4,7 @@ import json
 from flask import g
 from flask import redirect
 from flask import request
+from flask import session
 from flask import url_for
 
 from musicleague import app
@@ -57,7 +58,8 @@ def view_vote(league_id, submission_period_id):
         'league': league,
         'round': submission_period,
         'tracks_by_uri': tracks_by_uri,
-        'my_vote': my_vote
+        'my_vote': my_vote,
+        'access_token': session['access_token'],
     }
 
 

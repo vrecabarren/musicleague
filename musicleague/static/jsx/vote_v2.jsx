@@ -226,7 +226,10 @@ class SongInfo extends React.Component {
     componentDidMount() {
         // Get track object from Spotify API
         var trackId = this.state.uri.match(/spotify\:track\:([a-zA-Z0-9]{22})/)[1];
-        axios.get('https://api.spotify.com/v1/tracks/' + trackId).then(res => {
+        var config = {
+            headers: {'Authorization': 'Bearer ' + accessToken}
+        };
+        axios.get('https://api.spotify.com/v1/tracks/' + trackId, config).then(res => {
             this.setState({track: res.data});
         });
     }

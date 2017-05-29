@@ -307,7 +307,10 @@
 <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
 <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.3/axios.min.js"></script>
-<script type="text/javascript" src="/static/js/react/vote.js"></script>
+<script type="text/javascript">
+    var accessToken = "{{ access_token }}";
+</script>
+<script type="text/javascript" src="/static/js/react/vote_v2.js"></script>
 <script type="text/javascript">
     // Pass template data to React component
     ReactDOM.render(

@@ -88,6 +88,9 @@
 {% endblock %}
 
 {% block js %}
+<script type="text/javascript">
+    var accessToken = "{{ access_token }}";
+</script>
 <script type="text/javascript" src="/static/js/jquery.sticky-kit.min.js"></script>
-<script type="text/javascript" src="/static/js/submit.js"></script>
+<script type="text/javascript" src="/static/js/submit_v2.js"></script>
 {% endblock %}

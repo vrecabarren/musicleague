@@ -5,6 +5,7 @@ from flask import g
 from flask import redirect
 from flask import render_template
 from flask import request
+from flask import session
 from flask import url_for
 
 from musicleague import app
@@ -48,6 +49,7 @@ def view_submit(league_id, submission_period_id):
         'league': league,
         'round': submission_period,
         'my_submission': my_submission,
+        'access_token': session['access_token'],
     }
 
 
