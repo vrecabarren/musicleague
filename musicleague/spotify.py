@@ -38,12 +38,13 @@ def create_playlist(submission_period):
     bot_id, botify = get_botify()
 
     playlist_name = str(submission_period.name)
-    playlist_description = str(submission_period.description or '')
+    description = str(submission_period.description or '')
+    description = description.replace('\n', ' ').replace('\r', ' ')
     tracks = submission_period.all_tracks
     shuffle(tracks)
 
     playlist = botify.user_playlist_create(bot_id, playlist_name,
-                                           description=playlist_description)
+                                           description=description)
 
     botify.user_playlist_add_tracks(bot_id, playlist.get('id'), tracks)
 
