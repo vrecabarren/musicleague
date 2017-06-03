@@ -38,10 +38,13 @@ def create_playlist(submission_period):
     bot_id, botify = get_botify()
 
     playlist_name = str(submission_period.name)
+    playlist_description = str(submission_period.description or '')
     tracks = submission_period.all_tracks
     shuffle(tracks)
 
-    playlist = botify.user_playlist_create(bot_id, playlist_name)
+    playlist = botify.user_playlist_create(bot_id, playlist_name,
+                                           description=playlist_description)
+
     botify.user_playlist_add_tracks(bot_id, playlist.get('id'), tracks)
 
     external_urls = playlist.get('external_urls')
