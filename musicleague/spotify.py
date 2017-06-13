@@ -1,8 +1,10 @@
+import json
 from random import shuffle
 import re
 
 from spotipy import oauth2
 
+from musicleague import app
 from musicleague.environment import get_setting
 from musicleague.environment import is_deployed
 from musicleague.environment.variables import ADD_BOT_REDIRECT_URI
@@ -43,10 +45,19 @@ def create_playlist(submission_period):
     tracks = submission_period.all_tracks
     shuffle(tracks)
 
-    playlist = botify.user_playlist_create(bot_id, playlist_name,
-                                           description=description)
+    try:
+        playlist = botify.user_playlist_create(bot_id, playlist_name,
+                                               description=description)
+    except Exception as e:
+        app.logger.error("Error while creating playlist with params: %s %s %s",
+                         bot_id, playlist_name, json.dumps(description))
+        raise
 
-    botify.user_playlist_add_tracks(bot_id, playlist.get('id'), tracks)
+    try:
+        botify.user_playlist_add_tracks(bot_id, playlist.get('id'), tracks)
+    except Exception as e:
+        app.logger.error("Error while adding tracks: %s", json.dumps(tracks))
+        raise
 
     external_urls = playlist.get('external_urls')
     submission_period.playlist_id = playlist.get('id')
@@ -72,9 +83,13 @@ def update_playlist(submission_period):
     shuffle(tracks)
 
     # TODO Reference submission period's url so we don't have to return this
-    playlist = botify.user_playlist(bot_id, submission_period.playlist_id)
-    botify.user_playlist_replace_tracks(
-        bot_id, submission_period.playlist_id, tracks)
+    try:
+        playlist = botify.user_playlist(bot_id, submission_period.playlist_id)
+        botify.user_playlist_replace_tracks(
+            bot_id, submission_period.playlist_id, tracks)
+    except Exception as e:
+        app.logger.err("Error updating tracks: %s", json.dumps(tracks))
+        raise
 
     return playlist
 
