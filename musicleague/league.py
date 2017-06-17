@@ -8,6 +8,7 @@ from musicleague.models import LeaguePreferences
 from musicleague.notify import user_added_to_league_notification
 from musicleague.notify import user_invited_to_league_notification
 from musicleague.notify import user_removed_from_league_notification
+from musicleague.scoring import EntrySortKey
 from musicleague.submission_period import remove_submission_period
 from musicleague.user import get_user_by_email
 
@@ -86,16 +87,54 @@ def get_league(league_id):
 
 
 def get_leagues_for_owner(user):
+    # TODO Can probably just do a Count query
     try:
         leagues = League.objects(owner=user).all().order_by('-created')
+        leagues = sorted(leagues, key=LeagueSortKey, reverse=True)
         return leagues
     except League.DoesNotExist:
         return []
 
 
 def get_leagues_for_user(user):
+    # TODO Page results for user profile page
     try:
         leagues = League.objects(users=user).all().order_by('-created')
+        leagues = sorted(leagues, key=LeagueSortKey)
         return leagues
     except League.DoesNotExist:
         return []
+
+
+class LeagueSortKey(EntrySortKey):
+
+    def _ordered_cmp(self, other):
+        _cmp_order = [
+            self._cmp_status,
+            self._cmp_created,
+        ]
+
+        for _cmp in _cmp_order:
+            diff = _cmp(other)
+            if diff != 0:
+                return diff
+
+        return 0
+
+    def _cmp_created(self, other):
+        if self.obj.created > other.created:
+            return -1
+        elif self.obj.created < other.created:
+            return 1
+        return 0
+
+    def _cmp_status(self, other):
+        if self.obj.is_active and not other.is_active:
+            return -1
+        elif other.is_active and not self.obj.is_active:
+            return 1
+        elif self.obj.is_inactive and not other.is_inactive:
+            return -1
+        elif other.is_inactive and not self.obj.is_inactive:
+            return 1
+        return 0

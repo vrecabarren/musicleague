@@ -287,6 +287,7 @@ class LeaguePreferences(EmbeddedDocument):
 
 
 class League(Document):
+    # TODO Add updated property
     created = DateTimeField(required=True)
     owner = ReferenceField(User)
     submission_periods = ListField(
@@ -305,6 +306,10 @@ class League(Document):
     def current_submission_period(self):
         return next(
             (sp for sp in self.submission_periods if not sp.is_complete), None)
+
+    @property
+    def is_active(self):
+        return not (self.is_inactive or self.is_complete)
 
     @property
     def is_inactive(self):
