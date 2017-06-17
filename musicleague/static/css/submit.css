@@ -70,32 +70,6 @@
     .song .find-song-inp::-moz-placeholder { color: #02B8EF; opacity: 1; }
     .song .find-song-inp:-ms-input-placeholder { color: #02B8EF; }
 
-.song .find-song-btn-wrapper { padding: 0px 20px; }
-.song .find-song-btn-wrapper .find-song-btn,
-.song .find-song-btn-wrapper .find-song-btn:active,
-.song .find-song-btn-wrapper .find-song-btn:hover,
-.song .find-song-btn-wrapper .find-song-btn:visited {
-    background: #02B8EF;
-    border: 3px solid #02B8EF;;
-    border-radius: 8px;
-    color: #fff;
-    font-family: 'Cubano', sans-serif;
-    font-size: 20px;
-    line-height: 24px;
-    outline: none;
-    width: 100%;
-}
-.song .find-song-btn-wrapper .find-song-btn.visible-xs {
-    padding-left: 0px;
-    padding-right: 0px;
-}
-.song .find-song-btn-wrapper .find-song-btn.visible-xs .search-icon {
-    background: url("https://s3.amazonaws.com/musicleague-static-assets/icons/magnifying_glass_icon_white.svg");
-    display: inline-block;
-    height: 24px;
-    vertical-align: middle;
-    width: 20px;
-}
 .song .song-info {
     display: none;
     float: left;
@@ -139,15 +113,6 @@
 .song.found { background-color: #5FCC34; }
 .song.found .song-header { color: #fff; }
 .song.found .find-song-inp { border: 3px solid #5FCC34; }
-.song.found .find-song-btn-wrapper .find-song-btn {
-    background: none;
-    border: 3px solid #fff;
-    border-radius: 8px;
-    color: #fff;
-    font-size: 20px;
-    line-height: 24px;
-    width: 100%;
-}
 .song.found .song-info {
     color: #fff;
     display: block;
@@ -157,16 +122,6 @@
 .song.error { background-color: #F8C62C; }
 .song.error .song-header { color: #01249A; }
 .song.error .find-song-inp { border: 3px solid #F8C62C; }
-.song.error .find-song-btn-wrapper .find-song-btn {
-    background: none;
-    border: 3px solid #01249A;
-    border-radius: 8px;
-    color: #01249A;
-    font-size: 20px;
-    line-height: 24px;
-    width: 100%;
-}
-.song.error .find-song-btn-wrapper .find-song-btn.visible-xs .search-icon { background: url("https://s3.amazonaws.com/musicleague-static-assets/icons/magnifying_glass_icon_blue.svg"); }
 .song.error .song-info {
     color: #01249A;
     display: block;

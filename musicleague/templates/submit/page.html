@@ -60,12 +60,8 @@
             <div class="col-xs-12">
                 <span class="song-header">Song {{ "%02d" % (song_num + 1) }}</span>
             </div>
-            <div class="col-xs-9 col-sm-7 col-md-8">
+            <div class="col-xs-12">
                 <input type="text" class="form-control find-song-inp" placeholder="Spotify Song Link" {% if loop.first %}autofocus="true"{% endif %}>
-            </div>
-            <div class="col-xs-3 col-sm-5 col-md-4 text-center find-song-btn-wrapper">
-                <button type="button" class="hidden-xs btn btn-lg find-song-btn">Find It!</button>
-                <button type="button" class="visible-xs btn btn-lg find-song-btn"><span class="search-icon"></span></button>
             </div>
             <div class="song-info">
                 <div class="col-xs-12">

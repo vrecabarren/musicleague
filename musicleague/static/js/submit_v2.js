@@ -16,7 +16,6 @@ function setSongStateFound(song, track) {
     song.find('.song-info .artist').html("By " + artist);
     song.find('.song-info .album').html(album);
     song.find('.find-song-inp').val("");
-    song.find('.find-song-btn.hidden-xs').html('Change It!');
     song.removeClass('error').addClass('found');
 }
 
@@ -29,7 +28,6 @@ function setSongStateNotFound(song) {
     song.find('.song-info .artist').html("");
     song.find('.song-info .album').html("");
     song.find('.find-song-inp').val("");
-    song.find('.find-song-btn.hidden-xs').html("Let's Try This Again!");
     song.removeClass('found').addClass('error').addClass('not-found');
 }
 
@@ -42,7 +40,6 @@ function setSongStateDuplicateArtist(song) {
     song.find('.song-info .artist').html("");
     song.find('.song-info .album').html("");
     song.find('.find-song-inp').val("");
-    song.find('.find-song-btn.hidden-xs').html("Let's Try This Again!");
     song.removeClass('found').addClass('error').addClass('duplicate-artist');
 }
 
@@ -55,7 +52,6 @@ function setSongStateDuplicateAlbum(song) {
     song.find('.song-info .artist').html("");
     song.find('.song-info .album').html("");
     song.find('.find-song-inp').val("");
-    song.find('.find-song-btn.hidden-xs').html("Let's Try This Again!");
     song.removeClass('found').addClass('error').addClass('duplicate-album');
 }
 
@@ -68,7 +64,6 @@ function setSongStateDuplicateSong(song) {
     song.find('.song-info .artist').html("");
     song.find('.song-info .album').html("");
     song.find('.find-song-inp').val("");
-    song.find('.find-song-btn.hidden-xs').html("Let's Try This Again!");
     song.removeClass('found').addClass('error').addClass('duplicate-song');
 }
 
@@ -81,7 +76,6 @@ function setSongStateDuplicateSubmission(song) {
     song.find('.song-info .artist').html("");
     song.find('.song-info .album').html("");
     song.find('.find-song-inp').val("");
-    song.find('.find-song-btn.hidden-xs').html("Let's Try This Again!");
     song.removeClass('found').addClass('error').addClass('duplicate-submission');
 }
 
