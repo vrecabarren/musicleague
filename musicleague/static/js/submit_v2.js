@@ -91,9 +91,10 @@ $.fn.filterByData = function(prop, val) {
     );
 }
 
-$('.find-song-btn').on("click", function(){
+$('.find-song-inp').on("input propertychange", function(){
     var song = $(this).parent().parent();
-    var url_or_uri = song.find('.find-song-inp').val();
+    var url_or_uri = $(this).val();
+    console.log(url_or_uri);
 
     var url_play_regex = /play\.spotify\.com\/track\/([a-zA-Z0-9]{22})/;
     var url_open_regex = /open\.spotify\.com\/track\/([a-zA-Z0-9]{22})/;
@@ -106,6 +107,8 @@ $('.find-song-btn').on("click", function(){
         trackId = url_or_uri.match(url_play_regex)[1];
     else if (url_or_uri.match(uri_regex))
         trackId = url_or_uri.match(uri_regex)[1];
+    else
+        return;
 
     // Clear this song's URI/ID so it doesn't appear as a duplicate
     song.data('id', "");
@@ -115,7 +118,7 @@ $('.find-song-btn').on("click", function(){
         setSongStateDuplicateSubmission(song);
         setSelectedSongCount();
         setSubmitButtonState();
-        return
+        return;
     }
 
     if (trackId) {
