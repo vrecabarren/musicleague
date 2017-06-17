@@ -218,7 +218,8 @@ class SongInfo extends React.Component {
             uri: props.uri,
             track: {name: '',
                     artists: [{name: ''}],
-                    album: {images: [{}, {url: ''}], name: ''}
+                    album: {images: [{}, {url: ''}], name: ''},
+                    external_urls: {spotify: ''}
             }
         }
     }
@@ -240,7 +241,7 @@ class SongInfo extends React.Component {
                 <img className="hidden-xs" src={this.state.track.album.images[1].url}/>
                 <img className="visible-xs" src={this.state.track.album.images[1].url}/>
                 <div className="textInfo">
-                    <span className="trackName">{this.state.track.name}</span>
+                    <a className="trackName" href={this.state.track.external_urls.spotify} target="_blank">{this.state.track.name}</a>
                     <span className="trackArtist">By {this.state.track.artists[0].name}</span>
                     <span className="trackAlbum">{ this.state.track.album.name }</span>
                 </div>

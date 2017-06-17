@@ -133,6 +133,7 @@
     flex: 1;
     font-family: 'Cubano', sans-serif;
 }
+.song .song-info .text-info .name a {color: #fff;}
 
 /* State: Song successfully returned from Spotify, not a duplicate */
 .song.found { background-color: #5FCC34; }

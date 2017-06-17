@@ -5,7 +5,7 @@
                 <div class="song-info col-sm-7">
                     <img src="{{ song['album']['images'][1]['url'] }}" alt="" class="img">
                     <div class="text-info">
-                        <span class="vcenter name">{{ song['name'] }}</span>
+                        <a class="vcenter name" href="{{ song['external_urls']['spotify'] }}" target="_blank">{{ song['name'] }}</a>
                         <span class="vcenter artist">By {{ song['artists'][0]['name'] }}</span>
                         <span class="vcenter submitter">Submitted by {{ entry.submission.user.name }}</span>
                     </div>
@@ -15,7 +15,7 @@
                 <div class="song-info">
                     <img src="{{ song['album']['images'][1]['url'] }}" alt="" class="img">
                     <div class="text-info">
-                        <span class="vcenter name">{{ song['name'] }}</span>
+                        <a class="vcenter name" href="{{ song['external_urls']['spotify'] }}" target="_blank">{{ song['name'] }}</a>
                         <span class="vcenter artist">By {{ song['artists'][0]['name'] }}</span>
                         <span class="vcenter submitter">Submitted by {{ entry.submission.user.name }}</span>
                     </div>

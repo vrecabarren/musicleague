@@ -76,6 +76,7 @@ div, span {
 }
 #status-bar .song-info { color: #fff; }
 #status-bar .song-info .text-info { color: #fff; }
+#status-bar .song-info .text-info .name { color: #fff; }
 #status-bar .song-info .text-info .artist,
 #status-bar .song-info .text-info .submitter { font-family: 'Nunito', sans-serif; }
 
@@ -141,6 +142,7 @@ div, span {
     line-height: 22px;
 }
 .song .song-info .text-info .name {
+    color: #02B8EF;
     flex: 1;
     font-family: 'Cubano', sans-serif;
 }

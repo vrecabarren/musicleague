@@ -269,7 +269,8 @@ var SongInfo = function (_React$Component2) {
             uri: props.uri,
             track: { name: '',
                 artists: [{ name: '' }],
-                album: { images: [{}, { url: '' }], name: '' }
+                album: { images: [{}, { url: '' }], name: '' },
+                external_urls: { spotify: '' }
             }
         };
         return _this3;
@@ -301,8 +302,8 @@ var SongInfo = function (_React$Component2) {
                     "div",
                     { className: "textInfo" },
                     React.createElement(
-                        "span",
-                        { className: "trackName" },
+                        "a",
+                        { className: "trackName", href: this.state.track.external_urls.spotify, target: "_blank" },
                         this.state.track.name
                     ),
                     React.createElement(

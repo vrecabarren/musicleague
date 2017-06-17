@@ -2,6 +2,7 @@
 function setSongStateFound(song, track) {
     var id = track.id;
     var uri = track.uri;
+    var url = track.external_urls.spotify;
     var img_src = track.album.images[1].url;
     var name = track.name;
     var artist = track.artists[0].name;
@@ -11,7 +12,7 @@ function setSongStateFound(song, track) {
     song.data('uri', uri);
     song.find('.you-selected').html('You Selected:');
     song.find('.song-info img').attr('src', img_src);
-    song.find('.song-info .name').html(name);
+    song.find('.song-info .name').html('<a href="' + url + '" target="_blank">' + name + '</a>');
     song.find('.song-info .artist').html("By " + artist);
     song.find('.song-info .album').html(album);
     song.find('.find-song-inp').val("");
