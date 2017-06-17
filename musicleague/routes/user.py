@@ -9,7 +9,6 @@ from musicleague import app
 from musicleague.models import User
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
-from musicleague.league import get_leagues_for_owner
 from musicleague.league import get_leagues_for_user
 from musicleague.user import create_or_update_user
 from musicleague.user import get_user
@@ -46,7 +45,6 @@ def profile():
         'page_user': page_user,
         'user_image': images[0] if images else '',
         'leagues': leagues,
-        'owner_leagues': len(get_leagues_for_owner(page_user)),
         'contributor_leagues': len(get_leagues_for_user(page_user))
         }
 
@@ -125,6 +123,5 @@ def view_user(user_id):
         'page_user': page_user,
         'user_image': images[0] if images else '',
         'leagues': leagues,
-        'owner_leagues': len(get_leagues_for_owner(page_user)),
         'contributor_leagues': len(get_leagues_for_user(page_user))
         }

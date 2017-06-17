@@ -86,16 +86,6 @@ def get_league(league_id):
         return None
 
 
-def get_leagues_for_owner(user):
-    # TODO Can probably just do a Count query
-    try:
-        leagues = League.objects(owner=user).all().order_by('-created')
-        leagues = sorted(leagues, key=LeagueSortKey, reverse=True)
-        return leagues
-    except League.DoesNotExist:
-        return []
-
-
 def get_leagues_for_user(user):
     # TODO Page results for user profile page
     try:
