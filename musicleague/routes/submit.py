@@ -117,7 +117,8 @@ def submit(league_id, submission_period_id):
                 previous_tracks=tracks,
                 duplicate_songs=duplicate_tracks,
                 duplicate_albums=duplicate_albums,
-                duplicate_artists=duplicate_artists)
+                duplicate_artists=duplicate_artists,
+                access_token=session['access_token'])
 
     submission = create_or_update_submission(tracks, submission_period, league,
                                              g.user)
