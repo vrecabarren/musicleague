@@ -131,18 +131,6 @@ def user_playlist_created_email(submission_period):
     )
 
 
-def user_removed_from_league_email(user, league):
-    if not league or not user or not user.email:
-        return
-
-    _send_email.delay(
-        user.email,
-        'Music League - New League',
-        _txt_email('removed.txt', league=league),
-        _html_email('removed.html', league=league)
-    )
-
-
 def user_submit_reminder_email(user, submission_period):
     if not submission_period or not user or not user.email:
         return

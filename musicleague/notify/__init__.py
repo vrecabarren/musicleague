@@ -7,7 +7,6 @@ from musicleague.notify.email import user_invited_to_league_email
 from musicleague.notify.email import user_last_to_submit_email
 from musicleague.notify.email import user_last_to_vote_email
 from musicleague.notify.email import user_playlist_created_email
-from musicleague.notify.email import user_removed_from_league_email
 from musicleague.notify.email import user_submit_reminder_email
 from musicleague.notify.email import user_vote_reminder_email
 
@@ -17,7 +16,6 @@ from musicleague.notify.messenger import user_added_to_league_messenger
 from musicleague.notify.messenger import user_last_to_submit_messenger
 from musicleague.notify.messenger import user_last_to_vote_messenger
 from musicleague.notify.messenger import user_playlist_created_messenger
-from musicleague.notify.messenger import user_removed_from_league_messenger
 from musicleague.notify.messenger import user_submit_reminder_messenger
 from musicleague.notify.messenger import user_vote_reminder_messenger
 
@@ -109,18 +107,6 @@ def user_playlist_created_notification(submission_period):
 
     user_playlist_created_email(submission_period)
     user_playlist_created_messenger(submission_period)
-    return True
-
-
-def user_removed_from_league_notification(user, league):
-    if not league or not user:
-        return
-
-    if not user.preferences.user_removed_from_league_notifications:
-        return
-
-    user_removed_from_league_email(user, league)
-    user_removed_from_league_messenger(user, league)
     return True
 
 

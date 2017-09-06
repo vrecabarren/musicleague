@@ -2,21 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 jumbotron text-center">
-
-                <h1>Music League</h1>
-
-                <h3>{{ league.owner.name }} has added you to <a href="{{ url_for('view_league', _external=True, league_id=league.id) }}">{{ league.name }}</a>!</h3>
-
-                <p>There are now {{ league.users|length }} user(s) contributing to this league.</p>
-
-            </div>
-        </div>
+    <div style="background-color: #FFFFFF; font-family: sans-serif;">
+        <table height="100%" width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td valign="top" background="https://s3.amazonaws.com/musicleague-static-assets/images/ml_header02.jpg" style=" padding: 50px; text-align: center;">
+                    <img style="margin-top: 50px; width: 150px;" src="https://s3.amazonaws.com/musicleague-static-assets/icons/ml_fulllockup.svg" alt="">
+                    <div style="font-size: 28px; line-height: 36px; padding: 50px 0px;">
+                        <span style="color: #FFFFFF;">Welcome</span>&nbsp;
+                        <span style="color: #02B8EF;">To</span>&nbsp;
+                        <span style="color: #F8C62C;">The&nbsp;League</span>
+                    </div>
+                    <div style="background-color: #02B8EF; border-radius: 8px; margin-bottom: 50px; padding: 50px 20px;">
+                        <div style="padding-bottom: 35px;">
+                            <span style="color: #FFFFFF; font-size: 24px;">{{ league.owner.name }} has added you to <strong>{{ league.name }}</strong>!</span>
+                        </div>
+                        <br>
+                        <a href="{{ url_for('view_league', league_id=league.id, _external=True) }}" style="background-color: none; border: 3px solid #FFFFFF; border-radius: 8px; color: #FFFFFF; display: inline-block; font-size: 22px; font-weight: bold; padding: 20px; text-decoration: none; width: 200px;">Let&#39;s Do This&#33;</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
     </div>
 </body>
 </html>

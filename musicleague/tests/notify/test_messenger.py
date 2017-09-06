@@ -117,15 +117,6 @@ class MessengerTestCase(unittest.TestCase):
                      self.submission_period.name, url))
         ])
 
-    def test_user_removed_from_league(self, send_message):
-        from musicleague.notify.messenger import user_removed_from_league_messenger  # noqa
-
-        user_removed_from_league_messenger(self.user, self.league)
-
-        send_message.assert_called_once_with(
-            self.user.messenger.id,
-            "You've been removed from the league {}".format(self.league.name))
-
     @patch('musicleague.notify.messenger.url_for')
     def test_user_submit_reminder(self, url_for, send_message):
         from musicleague.notify.messenger import user_submit_reminder_messenger

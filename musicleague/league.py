@@ -7,7 +7,6 @@ from musicleague.models import League
 from musicleague.models import LeaguePreferences
 from musicleague.notify import user_added_to_league_notification
 from musicleague.notify import user_invited_to_league_notification
-from musicleague.notify import user_removed_from_league_notification
 from musicleague.scoring import EntrySortKey
 from musicleague.submission_period import remove_submission_period
 from musicleague.user import get_user_by_email
@@ -42,9 +41,6 @@ def remove_user(league, user_id):
             remaining_users.append(user)
     league.users = remaining_users
     league.save()
-
-    if removed_user:
-        user_removed_from_league_notification(removed_user, league)
 
 
 def create_league(user, name=None, users=None):

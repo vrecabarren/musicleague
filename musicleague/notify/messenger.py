@@ -85,15 +85,6 @@ def user_playlist_created_messenger(submission_period):
                     submission_period.name, submission_period.playlist_url))
 
 
-def user_removed_from_league_messenger(user, league):
-    if not league or not user or not user.messenger:
-        return
-
-    send_message(
-        user.messenger.id,
-        "You've been removed from the league {}".format(league.name))
-
-
 def user_submit_reminder_messenger(user, submission_period):
     if not submission_period or not user or not user.messenger:
         return

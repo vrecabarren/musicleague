@@ -2,23 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 jumbotron text-center">
-
-                <h1>Music League</h1>
-
-                <h3>All other users have voted for <a href="{{ url_for('view_submission_period', _external=True, league_id=submission_period.league.id, submission_period_id=submission_period.id) }}">{{ submission_period.name }}</a>!</h3>
-
-                <p>Everyone is waiting!</p>
-
-                <a href="{{ url_for('view_league', league_id=submission_period.league.id) }}?action=vote" class="btn btn-lg btn-success">Vote</a>
-
-            </div>
-        </div>
+    <div style="background-color: #FFFFFF; font-family: sans-serif;">
+        <table height="100%" width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td valign="top" background="https://s3.amazonaws.com/musicleague-static-assets/images/ml_header02.jpg" style=" padding: 50px; text-align: center;">
+                    <img style="margin-top: 50px; width: 150px;" src="https://s3.amazonaws.com/musicleague-static-assets/icons/ml_fulllockup.svg" alt="">
+                    <div style="font-size: 28px; line-height: 36px; padding: 50px 0px;">
+                        <span style="color: #FFFFFF;">Votes</span>&nbsp;
+                        <span style="color: #02B8EF;">Are</span>&nbsp;
+                        <span style="color: #F8C62C;">Due</span>
+                    </div>
+                    <div style="background-color: #02B8EF; border-radius: 8px; margin-bottom: 50px; padding: 50px 20px;">
+                        <div style="padding-bottom: 35px;">
+                            <span style="color: #FFFFFF; font-size: 24px;">All others have voted for the round <strong>{{ submission_period.name }}</strong>!</span>
+                        </div>
+                        <a href="{{ url_for('view_vote', league_id=submission_period.league.id, submission_period_id=submission_period.id, _external=True) }}" style="background-color: none; border: 3px solid #FFFFFF; border-radius: 8px; color: #FFFFFF; display: inline-block; font-size: 22px; font-weight: bold; padding: 20px; text-decoration: none; width: 200px;">Vote</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
     </div>
 </body>
 </html>

@@ -11,7 +11,6 @@ from musicleague.notify import user_invited_to_league_notification
 from musicleague.notify import user_last_to_submit_notification
 from musicleague.notify import user_last_to_vote_notification
 from musicleague.notify import user_playlist_created_notification
-from musicleague.notify import user_removed_from_league_notification
 from musicleague.notify import user_submit_reminder_notification
 from musicleague.notify import user_vote_reminder_notification
 from musicleague.submission import create_submission
@@ -273,41 +272,6 @@ class UserPlaylistCreatedNotificationTestCase(unittest.TestCase):
 
         self.assertTrue(sent)
         email.assert_called_once_with(self.submission_period)
-
-
-class UserRemovedFromLeagueNotificationTestCase(unittest.TestCase):
-
-    def setUp(self):
-        self.user = create_user('id', 'Test User', 'test@user.com', '')
-        self.league = create_league(self.user)
-
-    def tearDown(self):
-        self.user.delete()
-        self.league.delete()
-
-    def test_no_league(self):
-        sent = user_removed_from_league_notification(self.user, None)
-        self.assertFalse(sent)
-
-    def test_no_user(self):
-        sent = user_removed_from_league_notification(None, self.league)
-        self.assertFalse(sent)
-
-    def test_disabled(self):
-        self.user.preferences.user_removed_from_league_notifications = False
-        self.user.save()
-
-        sent = user_removed_from_league_notification(self.user, self.league)
-        self.assertFalse(sent)
-
-    @patch(PATCH_PATH + 'user_removed_from_league_email')
-    @patch(PATCH_PATH + 'user_removed_from_league_messenger')
-    def test_send(self, messenger, email):
-        sent = user_removed_from_league_notification(self.user, self.league)
-
-        self.assertTrue(sent)
-        messenger.assert_called_once_with(self.user, self.league)
-        email.assert_called_once_with(self.user, self.league)
 
 
 class UserSubmitReminderNotificationTestCase(unittest.TestCase):
