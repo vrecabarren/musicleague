@@ -91,6 +91,7 @@
     font-size: 18px;
 }
 #title-bar .visible-xs .members {
+    line-height: 50px;
     margin-bottom: 20px;
 }
 #title-bar .members img {
