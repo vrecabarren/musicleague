@@ -5,9 +5,11 @@ from flask import request
 from flask import url_for
 
 from musicleague import app
+
 from musicleague.models import League
 from musicleague.models import Submission
 from musicleague.models import User
+
 from musicleague.routes.admin import admin
 from musicleague.routes.admin import admin_leagues
 from musicleague.routes.admin import admin_tools
@@ -39,6 +41,10 @@ from musicleague.routes.submit import submit
 from musicleague.routes.user import profile
 from musicleague.routes.user import view_user
 from musicleague.routes.vote import vote
+
+from musicleague.routes.api.v1.league import get_league
+from musicleague.routes.api.v1.user import get_user
+
 from musicleague.spotify import get_spotify_oauth
 
 
