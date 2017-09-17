@@ -46,14 +46,18 @@ def create_playlist(submission_period):
     shuffle(tracks)
 
     try:
-        playlist = botify.user_playlist_create(bot_id, playlist_name,
-                                               description=description)
+        app.logger.info("Creating new playlist: %s", playlist_name)
+        playlist = botify.user_playlist_create(
+            bot_id, playlist_name, description=description)
+        app.logger.info(
+            "Created new playlist: %s (%s)", playlist_name, playlist.get('id'))
     except Exception as e:
         app.logger.error("Error while creating playlist with params: %s %s %s",
                          bot_id, playlist_name, json.dumps(description))
         raise
 
     try:
+        app.logger.info("Adding tracks to new playlist: %s", tracks)
         botify.user_playlist_add_tracks(bot_id, playlist.get('id'), tracks)
     except Exception as e:
         app.logger.error("Error while adding tracks: %s", json.dumps(tracks))
@@ -74,6 +78,7 @@ def update_playlist(submission_period):
         return
 
     if not is_deployed():
+        app.logger.warn("Not deployed - skipping playlist update")
         return
 
     from musicleague.bot import get_botify
@@ -84,11 +89,12 @@ def update_playlist(submission_period):
 
     # TODO Reference submission period's url so we don't have to return this
     try:
+        app.logger.info("Replacing existing tracks with: %s", tracks)
         playlist = botify.user_playlist(bot_id, submission_period.playlist_id)
         botify.user_playlist_replace_tracks(
             bot_id, submission_period.playlist_id, tracks)
     except Exception as e:
-        app.logger.err("Error updating tracks: %s", json.dumps(tracks))
+        app.logger.error("Error updating tracks: %s", json.dumps(tracks))
         raise
 
     return playlist
@@ -100,10 +106,12 @@ def create_or_update_playlist(submission_period):
 
     if not submission_period.playlist_created:
         # Create new playlist and link to this submission period
+        app.logger.info("Creating playlist for round: %s", submission_period.id)
         playlist = create_playlist(submission_period)
 
     else:
         # Update existing playlist for this submission period
+        app.logger.info("Updating playlist for round: %s", submission_period.id)
         playlist = update_playlist(submission_period)
 
     return playlist
