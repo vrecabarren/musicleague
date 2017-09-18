@@ -16,6 +16,7 @@ from musicleague.environment import get_secret_key
 from musicleague.environment import get_server_name
 from musicleague.environment import is_deployed
 from musicleague.environment import parse_mongolab_uri
+from musicleague.environment.variables import MONGODB_URI
 
 from mongoengine import connect
 
@@ -41,7 +42,7 @@ if is_deployed():
     db = connect(db, host=host, port=port, username=username,
                  password=password)
 else:
-    db = connect(MONGO_DB_NAME)
+    db = connect(MONGO_DB_NAME, host=MONGODB_URI.default)
 
 redis_conn = Redis.from_url(get_redis_url())
 queue = Queue(connection=redis_conn)

@@ -75,7 +75,9 @@ def parse_mongolab_uri():
     regex = re.compile(r)
     mongolab_url = os.environ.get(MONGODB_URI.key)
     match = regex.search(mongolab_url)
-    data = match.groupdict()
+    if not data:
+        return
 
+    data = match.groupdict()
     return (data['host'], int(data['port']), data['username'],
             data['password'], data['database'])
