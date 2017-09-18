@@ -2,38 +2,41 @@ version: '3'
 services:
     ml-web:
         build:
+            args:
+                - MONGODB_URI
+                - SERVER_NAME
             context: .
             dockerfile: Dockerfile.web
         depends_on:
             - mongodb
             - redis
         environment:
-            - MONGODB_URI
             - ON_HEROKU=True
             - REDISCLOUD_URL=redis://redis:6379
-            - SERVER_NAME
         ports:
             - 5000:5000
     ml-scheduler:
         build:
+            args:
+                - MONGODB_URI
             context: .
             dockerfile: Dockerfile.scheduler
         depends_on:
             - mongodb
             - redis
         environment:
-            - MONGODB_URI
             - ON_HEROKU=True
             - REDISCLOUD_URL=redis://redis:6379
     ml-worker:
         build:
+            args:
+                - MONGODB_URI
             context: .
             dockerfile: Dockerfile.worker
         depends_on:
             - mongodb
             - redis
         environment:
-            - MONGODB_URI
             - ON_HEROKU=True
             - REDISCLOUD_URL=redis://redis:6379
     redis:
