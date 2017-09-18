@@ -5,5 +5,7 @@ RUN apt-get install -y python-pip python-dev build-essential git
 COPY . /app
 WORKDIR /app
 RUN pip install -r requirements.txt
+ENV MONGODB_URI "$MONGODB_URI"
+ENV SERVER_NAME "$SERVER_NAME"
 ENTRYPOINT ["python"]
 CMD ["app.py"]
