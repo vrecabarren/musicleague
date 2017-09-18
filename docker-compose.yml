@@ -8,8 +8,10 @@ services:
             - mongodb
             - redis
         environment:
+            - MONGODB_URI
             - ON_HEROKU=True
             - REDISCLOUD_URL=redis://redis:6379
+            - SERVER_NAME
         ports:
             - 5000:5000
     ml-scheduler:
@@ -20,6 +22,7 @@ services:
             - mongodb
             - redis
         environment:
+            - MONGODB_URI
             - ON_HEROKU=True
             - REDISCLOUD_URL=redis://redis:6379
     ml-worker:
@@ -30,6 +33,7 @@ services:
             - mongodb
             - redis
         environment:
+            - MONGODB_URI
             - ON_HEROKU=True
             - REDISCLOUD_URL=redis://redis:6379
     redis:
