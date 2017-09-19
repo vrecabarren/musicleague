@@ -1,0 +1,50 @@
+version: '3'
+services:
+    ml-web:
+        image: nathancoleman/ml-web
+        depends_on:
+            - mongodb
+            - redis
+        environment:
+            - MONGODB_URI=${MONGODB_URI}
+            - ON_HEROKU=${ON_HEROKU}
+            - REDISCLOUD_URL=redis://redis:6379
+            - SPOTIFY_BOT_PASSWORD=${SPOTIFY_BOT_PASSWORD}
+            - SPOTIFY_BOT_USERNAME=${SPOTIFY_BOT_USERNAME}
+            - SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}
+            - SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}
+            - SPOTIFY_REDIRECT_URI=${SPOTIFY_REDIRECT_URI}
+        ports:
+            - 5000:5000
+        restart: always
+    ml-scheduler:
+        image: nathancoleman/ml-scheduler
+        depends_on:
+            - mongodb
+            - redis
+        environment:
+            - MONGODB_URI=${MONGODB_URI}
+            - ON_HEROKU=True
+            - REDISCLOUD_URL=redis://redis:6379
+        restart: always
+    ml-worker:
+        image: nathancoleman/ml-worker
+        depends_on:
+            - mongodb
+            - redis
+        environment:
+            - MONGODB_URI=${MONGODB_URI}
+            - ON_HEROKU=${ON_HEROKU}
+            - REDISCLOUD_URL=redis://redis:6379
+            - SPOTIFY_BOT_PASSWORD=${SPOTIFY_BOT_PASSWORD}
+            - SPOTIFY_BOT_USERNAME=${SPOTIFY_BOT_USERNAME}
+            - SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}
+            - SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}
+            - SPOTIFY_REDIRECT_URI=${SPOTIFY_REDIRECT_URI}
+        restart: always
+    redis:
+        image: "redis:3.2-alpine"
+        restart: always
+    mongodb:
+        image: "mongo:latest"
+        restart: always
