@@ -1,6 +1,7 @@
 version: '3'
 services:
     ml-web:
+        image: nathancoleman/ml-web
         build:
             args:
                 - MONGODB_URI
