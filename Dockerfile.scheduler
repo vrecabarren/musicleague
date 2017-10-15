@@ -5,9 +5,5 @@ RUN apt-get install -y python-pip python-dev build-essential git
 COPY . /app
 WORKDIR /app
 RUN pip install -r requirements.txt
-ARG MONGODB_URI
-ENV MONGODB_URI ${MONGODB_URI}
-ARG ON_HEROKU
-ENV ON_HEROKU ${ON_HEROKU}
 ENTRYPOINT ["python"]
 CMD ["scheduler.py"]
