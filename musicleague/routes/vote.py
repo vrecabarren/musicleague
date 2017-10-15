@@ -10,7 +10,6 @@ from flask import url_for
 from musicleague import app
 from musicleague.notify import owner_user_voted_notification
 from musicleague.notify import user_last_to_vote_notification
-from musicleague.notify.flash import flash_error
 from musicleague.notify.flash import flash_success
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
@@ -31,15 +30,18 @@ def view_vote(league_id, submission_period_id):
     submission_period = get_submission_period(submission_period_id)
     league = submission_period.league
     if not league.has_user(g.user):
-        flash_error("You must be a member of the league to vote")
         return redirect(url_for('view_league', league_id=league.id))
 
     if not submission_period.accepting_votes:
-        flash_error('Votes are not currently being accepted')
         return redirect(url_for('view_league', league_id=league.id))
 
     my_submission = next(
         (s for s in submission_period.submissions if s.user == g.user), None)
+
+    # If this user didn't submit for this round, don't allow them to vote
+    if not my_submission:
+        return redirect(url_for('view_league', league_id=league.id))
+
     my_vote = next(
         (v for v in submission_period.votes if v.user == g.user), None)
 
@@ -73,9 +75,14 @@ def vote(league_id, submission_period_id):
     if not submission_period.league.has_user(g.user):
         return "Not a member of this league", httplib.UNAUTHORIZED
 
+    # If this user didn't submit for this round, don't allow them to vote
+    my_submission = any(
+        (True for s in submission_period.submissions if s.user == g.user))
+    if not my_submission:
+        return redirect(url_for('view_league', league_id=submission_period.league.id))
+
     try:
         votes = json.loads(request.form.get('votes'))
-
     except Exception:
         app.logger.exception("Failed to load JSON from form with votes: %s",
                              request.form)
@@ -85,7 +92,6 @@ def vote(league_id, submission_period_id):
     votes = {k: v for k, v in votes.iteritems() if v}
 
     if not submission_period.accepting_votes:
-        flash_error("Votes are no longer being accepted.")
         return redirect(request.referrer)
 
     # Process votes
