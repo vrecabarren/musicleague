@@ -12,7 +12,6 @@ from musicleague import app
 from musicleague.notify import owner_user_submitted_notification
 from musicleague.notify import user_last_to_submit_notification
 from musicleague.notify.flash import flash_error
-from musicleague.notify.flash import flash_success
 from musicleague.notify.flash import flash_warning
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
@@ -21,6 +20,9 @@ from musicleague.submission import create_or_update_submission
 from musicleague.submission_period import get_submission_period
 from musicleague.submission_period.tasks.cancelers import cancel_playlist_creation  # noqa
 from musicleague.submission_period.tasks.cancelers import cancel_submission_reminders  # noqa
+from musicleague.validate import check_duplicate_albums
+from musicleague.validate import check_duplicate_artists
+from musicleague.validate import check_duplicate_tracks
 
 
 SUBMIT_URL = '/l/<league_id>/<submission_period_id>/submit/'
@@ -66,7 +68,6 @@ def submit(league_id, submission_period_id):
 
     if (not submission_period.accepting_submissions and
             not submission_period.accepting_late_submissions):
-        flash_error("Submissions are no longer being accepted.")
         return redirect(request.referrer)
 
     # Process submission
@@ -123,8 +124,6 @@ def submit(league_id, submission_period_id):
     submission = create_or_update_submission(tracks, submission_period, league,
                                              g.user)
 
-    flash_success("Your submissions have been recorded.")
-
     # If someone besides owner is submitting, notify the owner
     if g.user.id != league.owner.id:
         owner_user_submitted_notification(submission)
@@ -145,30 +144,3 @@ def submit(league_id, submission_period_id):
         user_last_to_submit_notification(last_user, submission_period)
 
     return redirect(url_for('view_league', league_id=league_id))
-
-
-def check_duplicate_tracks(my_tracks, their_tracks):
-    duplicate_tracks = []
-    their_ids = [track['id'] for track in their_tracks if track]
-    for my_track in my_tracks:
-        if my_track['id'] in their_ids:
-            duplicate_tracks.append(my_track['uri'])
-    return duplicate_tracks
-
-
-def check_duplicate_albums(my_tracks, their_tracks):
-    duplicate_tracks = []
-    their_ids = [track['album']['id'] for track in their_tracks if track]
-    for my_track in my_tracks:
-        if my_track['album']['id'] in their_ids:
-            duplicate_tracks.append(my_track['uri'])
-    return duplicate_tracks
-
-
-def check_duplicate_artists(my_tracks, their_tracks):
-    duplicate_tracks = []
-    their_ids = [track['artists'][0]['id'] for track in their_tracks if track]
-    for my_track in my_tracks:
-        if my_track['artists'][0]['id'] in their_ids:
-            duplicate_tracks.append(my_track['uri'])
-    return duplicate_tracks
