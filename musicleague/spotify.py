@@ -33,7 +33,7 @@ def get_spotify_oauth(bot=False):
 
 
 def create_playlist(submission_period):
-    if not submission_period or not is_deployed():
+    if not submission_period or not submission_period.all_tracks or not is_deployed():
         return
 
     from musicleague.bot import get_botify
