@@ -215,7 +215,7 @@ class SubmissionPeriod(Document):
 
     @property
     def have_not_voted(self):
-        return list(set(self.league.users) - set(self.have_voted))
+        return list(set(self.have_submitted) - set(self.have_voted))
 
     @property
     def all_tracks(self):

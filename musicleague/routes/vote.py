@@ -76,9 +76,7 @@ def vote(league_id, submission_period_id):
         return "Not a member of this league", httplib.UNAUTHORIZED
 
     # If this user didn't submit for this round, don't allow them to vote
-    my_submission = any(
-        (True for s in submission_period.submissions if s.user == g.user))
-    if not my_submission:
+    if g.user not in submission_period.have_submitted:
         return redirect(url_for('view_league', league_id=submission_period.league.id))
 
     try:
