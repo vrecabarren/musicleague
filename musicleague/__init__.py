@@ -36,7 +36,9 @@ log.setLevel(logging.DEBUG)
 log.addHandler(streamHandler)
 
 if is_deployed():
-    app.config['SERVER_NAME'] = get_server_name()
+    server_name = get_server_name()
+    if server_name:
+        app.config['SERVER_NAME'] = server_name
 
     host, port, username, password, db = parse_mongolab_uri()
     db = connect(db, host=host, port=port, username=username,
