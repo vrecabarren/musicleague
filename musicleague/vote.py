@@ -37,3 +37,9 @@ def get_vote(vote_id):
         return Vote.objects(id=vote_id).get()
     except Vote.DoesNotExist:
         return None
+
+
+def get_my_vote(user, submission_period):
+    return next(
+        (v for v in submission_period.votes
+         if v.user.id == user.id), None)

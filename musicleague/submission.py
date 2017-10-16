@@ -45,3 +45,9 @@ def get_submission(submission_id):
         return Submission.objects(id=submission_id).get()
     except Submission.DoesNotExist:
         return None
+
+
+def get_my_submission(user, submission_period):
+    return next(
+        (s for s in submission_period.submissions
+         if s.user.id == user.id), None)
