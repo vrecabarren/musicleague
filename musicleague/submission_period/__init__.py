@@ -13,17 +13,12 @@ from musicleague.submission_period.tasks.schedulers import schedule_vote_reminde
 def create_submission_period(
         league, name=None, description=None, submission_due_date=None,
         vote_due_date=None):
-    if name is None:
-        name = 'Round %s' % (len(league.submission_periods) + 1)
 
-    if description is None:
-        description = ''
-
-    if submission_due_date is None:
-        submission_due_date = datetime.utcnow() + timedelta(days=5)
-
-    if vote_due_date is None:
-        vote_due_date = datetime.utcnow() + timedelta(days=7)
+    name = name or ('Round %s' % (len(league.submission_periods) + 1))
+    description = description or ''
+    submission_due_date = submission_due_date or (
+        datetime.utcnow() + timedelta(days=5))
+    vote_due_date = vote_due_date or (datetime.utcnow() + timedelta(days=7))
 
     new_submission_period = SubmissionPeriod(
         name=name,
