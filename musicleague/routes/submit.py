@@ -11,12 +11,11 @@ from flask import url_for
 from musicleague import app
 from musicleague.notify import owner_user_submitted_notification
 from musicleague.notify import user_last_to_submit_notification
-from musicleague.notify.flash import flash_error
-from musicleague.notify.flash import flash_warning
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 from musicleague.spotify import create_or_update_playlist
 from musicleague.submission import create_or_update_submission
+from musicleague.submission import get_my_submission
 from musicleague.submission_period import get_submission_period
 from musicleague.submission_period.tasks.cancelers import cancel_playlist_creation  # noqa
 from musicleague.submission_period.tasks.cancelers import cancel_submission_reminders  # noqa
@@ -35,16 +34,13 @@ def view_submit(league_id, submission_period_id):
     submission_period = get_submission_period(submission_period_id)
     league = submission_period.league
     if not league.has_user(g.user):
-        flash_error("You must be a member of the league to submit")
         return redirect(url_for('view_league', league_id=league.id))
 
     if not (submission_period.accepting_submissions or
             submission_period.accepting_late_submissions):
-        flash_error('Submissions are not currently being accepted')
         return redirect(url_for('view_league', league_id=league.id))
 
-    my_submission = next(
-        (s for s in submission_period.submissions if s.user == g.user), None)
+    my_submission = get_my_submission(g.user, submission_period)
 
     return {
         'user': g.user,
@@ -80,20 +76,15 @@ def submit(league_id, submission_period_id):
                              request.form)
         return 'There was an error processing your submission', 500
 
-    app.logger.warning(tracks)
-
     if None in tracks:
-        flash_error("Invalid submission. Please submit only tracks.")
         return redirect(request.referrer)
 
     # Don't allow user to submit duplicate tracks
     if len(tracks) != len(set(tracks)):
-        flash_warning("Duplicate submissions not allowed.")
         return redirect(request.referrer)
 
     # Don't include user's own previous submission when checking duplicates
-    my_submission = next((s for s in submission_period.submissions
-                          if s.user.id == g.user.id), None)
+    my_submission = get_my_submission(g.user, submission_period)
     their_tracks = []
     if submission_period.all_tracks:
         their_tracks = set(submission_period.all_tracks)
@@ -107,7 +98,7 @@ def submit(league_id, submission_period_id):
         my_tracks = s_tracks[:len(tracks)]
         their_tracks = s_tracks[len(tracks):]
 
-        # Don't allow user to submit already submitted track or artist
+        # Don't allow user to submit already submitted track, album or artist
         duplicate_tracks = check_duplicate_tracks(my_tracks, their_tracks)
         duplicate_albums = check_duplicate_albums(my_tracks, their_tracks)
         duplicate_artists = check_duplicate_artists(my_tracks, their_tracks)
@@ -121,26 +112,29 @@ def submit(league_id, submission_period_id):
                 duplicate_artists=duplicate_artists,
                 access_token=session['access_token'])
 
-    submission = create_or_update_submission(tracks, submission_period, league,
-                                             g.user)
+    # Create a new submission on the round as current user
+    submission = create_or_update_submission(
+        tracks, submission_period, league, g.user)
 
     # If someone besides owner is submitting, notify the owner
     if g.user.id != league.owner.id:
         owner_user_submitted_notification(submission)
 
-    submitted_users = set([s.user for s in submission_period.submissions])
-    remaining = set(league.users) - submitted_users
-
+    remaining = submission_period.have_not_submitted
     if not remaining:
-        create_or_update_playlist(submission_period)
-        cancel_playlist_creation(submission_period)
-        cancel_submission_reminders(submission_period)
-        submission_period.save()
+        complete_submission_process(submission_period)
 
     # Don't send submission reminder if this user is resubmitting. In this
     # case, the last user to submit will have already gotten a notification.
     elif submission.count < 2 and len(remaining) == 1:
-        last_user = list(remaining)[0]
+        last_user = remaining[0]
         user_last_to_submit_notification(last_user, submission_period)
 
     return redirect(url_for('view_league', league_id=league_id))
+
+
+def complete_submission_process(submission_period):
+    create_or_update_playlist(submission_period)
+    cancel_playlist_creation(submission_period)
+    cancel_submission_reminders(submission_period)
+    submission_period.save()

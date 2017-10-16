@@ -20,11 +20,12 @@ from musicleague.routes.decorators import league_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 from musicleague.scoring.league import calculate_league_scoreboard
+from musicleague.submission import get_my_submission
 from musicleague.submission_period import create_submission_period
 from musicleague.submission_period import remove_submission_period
 from musicleague.submission_period import update_submission_period
 from musicleague.user import get_user
-
+from musicleague.vote import get_my_vote
 
 CREATE_LEAGUE_URL = '/l/create/'
 JOIN_LEAGUE_URL = '/l/<league_id>/join/'
@@ -221,13 +222,10 @@ def view_league(league_id, **kwargs):
 
     my_submission, my_vote = None, None
     if league.current_submission_period:
-        submissions = league.current_submission_period.submissions
-        my_submission = next(
-            (s for s in submissions if s.user.id == g.user.id), None)
+        my_submission = get_my_submission(
+            g.user, league.current_submission_period)
 
-        votes = league.current_submission_period.votes
-        my_vote = next(
-            (v for v in votes if v.user.id == g.user.id), None)
+        my_vote = get_my_vote(g.user, league.current_submission_period)
 
     if league.submission_periods:
         lsp = league.submission_periods[-1]
