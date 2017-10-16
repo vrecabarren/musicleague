@@ -62,10 +62,7 @@ def send_submission_reminders(submission_period_id):
         from musicleague.submission_period import get_submission_period
 
         submission_period = get_submission_period(submission_period_id)
-        league = submission_period.league
-        users_submitted = set([s.user for s in submission_period.submissions])
-        to_notify = set(league.users) - users_submitted
-        for user in to_notify:
+        for user in submission_period.have_not_submitted:
             app.logger.warning('%s has not submitted! Notifying.', user.name)
             user_submit_reminder_notification(user, submission_period)
         return True
@@ -85,10 +82,7 @@ def send_vote_reminders(submission_period_id):
         from musicleague.submission_period import get_submission_period
 
         submission_period = get_submission_period(submission_period_id)
-        league = submission_period.league
-        users_voted = set([v.user for v in submission_period.votes])
-        to_notify = set(league.users) - users_voted
-        for user in to_notify:
+        for user in submission_period.have_not_voted:
             app.logger.warning('%s has not submitted! Notifying.', user.name)
             user_vote_reminder_notification(user, submission_period)
         return True
