@@ -41,7 +41,7 @@
                             {% if round.accepting_submissions %}
                             <span class="text-progress progress-toggle"><span class="emphasize">{{ round.submissions|length }} of {{ league.users|length }}</span> Have Submitted</span>
                             {% else %}
-                            <span class="text-progress progress-toggle"><span class="emphasize">{{ round.votes|length }} of {{ league.users|length }}</span> Have Voted</span>
+                            <span class="text-progress progress-toggle"><span class="emphasize">{{ round.votes|length }} of {{ round.have_submitted|length }}</span> Have Voted</span>
                             {% endif %}
                             <br>
                         </div>
