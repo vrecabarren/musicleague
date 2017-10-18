@@ -1,13 +1,13 @@
-Flask
-Flask-moment
-gunicorn
-haikunator
-logentries
-mongoengine
-pytz
-redis
-requests
-rq
-rq-scheduler
+Flask==0.12.2
+Flask-Moment==0.5.2
+gunicorn==19.7.1
+haikunator==2.1.0
+Logentries==0.17
+mongoengine==0.14.3
+pytz==2017.2
+redis==2.10.6
+requests==2.18.4
+rq==0.8.1
+rq-scheduler==0.7.0
 # spotipy
 git+git://github.com/nathancoleman/spotipy.git@playlist_description_support
