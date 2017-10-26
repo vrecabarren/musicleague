@@ -50,7 +50,11 @@
                     <div class="col-xs-12 col-md-4 vcenter">
                         <div style="display: table">
                             <div style="display: table-cell; padding-right: 10px; vertical-align: middle;">
+                                {% if top|length >= 2 and top[1].place == 1 %}
+                                <span class="rank first"></span>
+                                {% else %}
                                 <span class="rank second"></span>
+                                {% endif %}
                             </div>
                             {% if top|length >= 2 %}
                                 {% set second = top[1] %}
@@ -70,7 +74,13 @@
                     <div class="col-xs-12 col-md-4 vcenter">
                         <div style="display: table">
                             <div style="display: table-cell; padding-right: 10px; vertical-align: middle;">
+                                {% if top|length >= 3 and top[2].place == 1 %}
+                                <span class="rank first"></span>
+                                {% elif top|length >= 3 and top[2].place == 2 %}
+                                <span class="rank second"></span>
+                                {% else %}
                                 <span class="rank third"></span>
+                                {% endif %}
                             </div>
                             {% if top|length >= 3 %}
                                 {% set third = top[2] %}
