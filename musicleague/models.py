@@ -111,8 +111,9 @@ class Vote(Document):
 
 
 class ScoreboardEntry(EmbeddedDocument):
-    uri = StringField(required=True)
+    place = IntField(default=-1)
     submission = ReferenceField(Submission)
+    uri = StringField(required=True)
     votes = ListField(ReferenceField(Vote))
 
     @property
@@ -123,6 +124,7 @@ class ScoreboardEntry(EmbeddedDocument):
 class RankingEntry(EmbeddedDocument):
     entries = ListField(EmbeddedDocumentField(ScoreboardEntry))
     league = ReferenceField('League')
+    place = IntField(default=-1)
     user = ReferenceField(User)
 
     @property

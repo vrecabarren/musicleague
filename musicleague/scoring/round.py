@@ -53,7 +53,14 @@ def rank_entries(entries):
     entries = [list(group) for _, group in grouped_entries]
 
     # Index entries by ranking
-    return {(i + 1): entries for i, entries in enumerate(entries)}
+    indexed_entries = {(i + 1): entries for i, entries in enumerate(entries)}
+
+    # Assign place property to each entry
+    for place, entries in indexed_entries.iteritems():
+        for indexed_entry in entries:
+            indexed_entry.place = place
+
+    return indexed_entries
 
 
 class ScoreboardEntrySortKey(EntrySortKey):
