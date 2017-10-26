@@ -16,19 +16,24 @@ def check_duplicate_albums(my_tracks, their_tracks):
 
 
 def check_duplicate_artists(my_tracks, their_tracks):
-    """ Collect the set of artist IDs for each track already submitted.
-    Compare the set of artist IDs for each track currently being submitted
-    and add any track being submitted to duplicate_tracks if set of artists
-    has already been submitted.
+    """ Collect the primary artist IDs and the set of artist IDs for each
+    track already submitted. Compare the primary artist ID and set of artist
+    IDs for each track currently being submitted and add any track being
+    submitted to duplicate_tracks if primary artist or set of artists has
+    already been submitted.
     """
     duplicate_tracks = []
 
-    their_ids = [set([artist['id'] for artist in track['artists']])
-                 for track in their_tracks if track]
+    primary_ids = set([track['artists'][0]['id']
+                       for track in filter(None, their_tracks)])
+
+    collab_ids = [set([artist['id'] for artist in track['artists']])
+                  for track in filter(None, their_tracks)]
 
     for my_track in my_tracks:
-        my_ids = set([artist['id'] for artist in my_track['artists']])
-        if my_ids in their_ids:
+        my_primary = my_track['artists'][0]['id']
+        my_collab = set([artist['id'] for artist in my_track['artists']])
+        if my_primary in primary_ids or my_collab in collab_ids:
             duplicate_tracks.append(my_track['uri'])
 
     return duplicate_tracks

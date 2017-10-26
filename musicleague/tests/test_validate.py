@@ -35,6 +35,14 @@ class CheckDuplicateArtistsTestCase(TestCase):
         duplicate_tracks = check_duplicate_artists(my_tracks, their_tracks)
         self.assertEqual([], duplicate_tracks)
 
+    def test_duplicate_primary_artist(self):
+        my_tracks = [track(artist_ids=['1', '2']),
+                     track(artist_ids=['3', '4'])]
+        their_tracks = [track(artist_ids=['1', '5']),
+                        track(artist_ids=['6'])]
+        duplicate_tracks = check_duplicate_artists(my_tracks, their_tracks)
+        self.assertEqual([my_tracks[0]['uri']], duplicate_tracks)
+
     def test_single_duplicate_artist(self):
         my_tracks = [track(artist_ids=['2']), track(artist_ids=['3'])]
         their_tracks = [track(artist_ids=['1']), track(artist_ids=['2'])]
