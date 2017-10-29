@@ -53,7 +53,11 @@ def rank_entries(entries):
     entries = [list(group) for _, group in grouped_entries]
 
     # Index entries by ranking
-    indexed_entries = {(i + 1): entries for i, entries in enumerate(entries)}
+    indexed_entries = {}
+    next_place = 1
+    for _, entries in enumerate(entries):
+        indexed_entries[next_place] = entries
+        next_place += len(entries)
 
     # Assign place property to each entry
     for place, entries in indexed_entries.iteritems():
