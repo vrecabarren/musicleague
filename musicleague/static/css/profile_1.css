@@ -189,7 +189,10 @@
             cursor: pointer;
         }
 
-    .league-item .members { margin-right: 25px; }
+    .league-item .members {
+        line-height: 50px;
+        margin-right: 25px;
+    }
 
         .league-item .members a {
             color: #02B8EF !important;
