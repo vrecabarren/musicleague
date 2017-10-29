@@ -13,11 +13,11 @@ MAILGUN_API_BASE_URL = EnvironmentVariable(key='MAILGUN_API_BASE_URL', default='
 MAILGUN_API_KEY = EnvironmentVariable(key='MAILGUN_API_KEY', default='')
 MESSENGER_PAGE_ACCESS_TOKEN = EnvironmentVariable(key='MESSENGER_PAGE_ACCESS_TOKEN', default='')  # noqa
 MESSENGER_VERIFY_TOKEN = EnvironmentVariable(key='MESSENGER_VERIFY_TOKEN', default='')  # noqa
-MONGODB_URI = EnvironmentVariable(key='MONGODB_URI', default='mongodb://mongodb:27017')
+MONGODB_URI = EnvironmentVariable(key='MONGODB_URI', default='127.0.0.1')
 NOTIFICATION_SENDER = EnvironmentVariable(key="NOTIFICATION_SENDER", default='')  # noqa
 PORT = EnvironmentVariable(key='PORT', default=5000)
 PRODUCTION = EnvironmentVariable(key='IS_PRODUCTION', default=False)
-REDISCLOUD_URL = EnvironmentVariable(key='REDISCLOUD_URL', default='redis://redisdb:6379')  # noqa
+REDISCLOUD_URL = EnvironmentVariable(key='REDISCLOUD_URL', default='redis://127.0.0.1')  # noqa
 SECRET_KEY = EnvironmentVariable(key='SECRET_KEY', default='')
 SERVER_NAME = EnvironmentVariable(key='SERVER_NAME', default='localhost:5000')
 SPOTIFY_BOT_USERNAME = EnvironmentVariable(key='SPOTIFY_BOT_USERNAME', default='')  # noqa

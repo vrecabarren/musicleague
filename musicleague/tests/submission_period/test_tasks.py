@@ -4,6 +4,7 @@ from mock import ANY
 from mock import patch
 
 from musicleague.league import create_league
+from musicleague.submission import create_submission
 from musicleague.submission_period import create_submission_period
 from musicleague.submission_period.tasks import send_submission_reminders
 from musicleague.submission_period.tasks import send_vote_reminders
@@ -85,15 +86,19 @@ class SendVoteRemindersTestCase(unittest.TestCase):
         self.submission_period.league = None
         self.submission_period.save()
 
+        # Pool of notification receivers must have submitted
+        create_submission([], self.submission_period, self.user, self.league)
+
         result = send_vote_reminders(self.submission_period.id)
 
         self.assertFalse(result)
         log_exc.assert_called_once_with(
             'Error while sending vote reminders: %s', ANY)
-        self.assertIsInstance(log_exc.call_args[0][1], AttributeError)
 
     @patch(PATCH_PATH + 'user_vote_reminder_notification')
     def test_success(self, notify):
+        # Pool of notification receivers must have submitted
+        create_submission([], self.submission_period, self.user, self.league)
 
         result = send_vote_reminders(self.submission_period.id)
 

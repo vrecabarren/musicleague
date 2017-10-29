@@ -18,6 +18,7 @@ from musicleague.spotify import get_spotify_oauth
 from musicleague.spotify import OAUTH_SCOPES
 from musicleague.spotify import to_uri
 from musicleague.spotify import update_playlist
+from musicleague.submission import create_submission
 from musicleague.submission_period import create_submission_period
 from musicleague.tests.utils.environment import set_environment_state
 from musicleague.user import create_user
@@ -92,13 +93,18 @@ class CreatePlaylistTestCase(unittest.TestCase):
         mock_botify.user_playlist_create.return_value = playlist
         get_bot.return_value = bot_id, mock_botify
 
+        # At least one submission must exist for playlist to be created
+        create_submission(['spotify:track:10eMw2uuZY8VnIUGLNDkCe'],
+                          self.submission_period, self.user, self.league)
+
         returned_playlist = create_playlist(self.submission_period)
 
         self.assertEqual(playlist, returned_playlist)
 
         self.assertTrue(get_bot.called)
         mock_botify.user_playlist_create.assert_called_once_with(
-            bot_id, self.submission_period.name)
+            bot_id, self.submission_period.name,
+            description=self.submission_period.description)
         mock_botify.user_playlist_add_tracks.assert_called_once_with(
             bot_id, playlist_id, self.submission_period.all_tracks)
 
@@ -196,12 +202,17 @@ class CreateOrUpdatePlaylistTestCase(unittest.TestCase):
         self.submission_period.playlist_url = ''
         self.submission_period.save()
 
+        # At least one submission must exist for playlist to be created
+        create_submission(['spotify:track:10eMw2uuZY8VnIUGLNDkCe'],
+                          self.submission_period, self.user, self.league)
+
         playlist = create_or_update_playlist(self.submission_period)
 
         self.assertEqual(self.playlist, playlist)
         self.assertFalse(self.mock_botify.user_playlist_replace_tracks.called)
         self.mock_botify.user_playlist_create.assert_called_once_with(
-            self.bot_id, self.submission_period.name)
+            self.bot_id, self.submission_period.name,
+            description=self.submission_period.description)
         notify.assert_called_once_with(self.submission_period)
 
     @patch('musicleague.bot.get_botify')
