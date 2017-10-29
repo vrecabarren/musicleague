@@ -89,6 +89,7 @@
 }
 #title-bar .members {
     font-size: 18px;
+    margin-right: 25px;
 }
 #title-bar .visible-xs .members {
     line-height: 50px;
