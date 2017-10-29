@@ -33,8 +33,16 @@ class CreateOrUpdateSubmissionTestCase(TestCase):
     def test_no_user_submission(self, submission_save, period_save):
         self.submission_period.submissions = []
 
+        self.assertEqual([], self.submission_period.have_submitted)
+        self.assertEqual(self.league.users,
+                         self.submission_period.have_not_submitted)
+
         submission = create_or_update_submission(
             self.tracks, self.submission_period, self.league, self.user)
+
+        self.assertEqual([], self.submission_period.have_not_submitted)
+        self.assertEqual(self.league.users,
+                         self.submission_period.have_submitted)
 
         submission.save.assert_called_once()
         self.assertEqual(1, submission.count)
@@ -47,9 +55,7 @@ class CreateOrUpdateSubmissionTestCase(TestCase):
     @patch.object(SubmissionPeriod, 'save')
     @patch.object(Submission, 'save')
     def test_existing_submission(self, submission_save, period_save):
-        self.submission_period.submissions = [
-            create_submission(
-                self.tracks, self.submission_period, self.user, self.league)]
+        create_submission(self.tracks, self.submission_period, self.user, self.league)
 
         period_save.reset_mock()
         submission_save.reset_mock()
@@ -57,8 +63,16 @@ class CreateOrUpdateSubmissionTestCase(TestCase):
         new_tracks = ['spotify:track:6Fha6tXHkL3r9m9nNqQG8p',
                       'spotify:track:3ktdzyFa6N1ePp8T63DAik']
 
+        self.assertEqual([], self.submission_period.have_not_submitted)
+        self.assertEqual(self.league.users,
+                         self.submission_period.have_submitted)
+
         submission = create_or_update_submission(
             new_tracks, self.submission_period, self.league, self.user)
+
+        self.assertEqual([], self.submission_period.have_not_submitted)
+        self.assertEqual(self.league.users,
+                         self.submission_period.have_submitted)
 
         submission.save.assert_called_once()
         self.assertEqual(2, submission.count)
