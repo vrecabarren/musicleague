@@ -13,12 +13,10 @@ from musicleague.notify import owner_user_submitted_notification
 from musicleague.notify import user_last_to_submit_notification
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
-from musicleague.spotify import create_or_update_playlist
 from musicleague.submission import create_or_update_submission
 from musicleague.submission import get_my_submission
 from musicleague.submission_period import get_submission_period
-from musicleague.submission_period.tasks.cancelers import cancel_playlist_creation  # noqa
-from musicleague.submission_period.tasks.cancelers import cancel_submission_reminders  # noqa
+from musicleague.submission_period.tasks import complete_submission_process
 from musicleague.validate import check_duplicate_albums
 from musicleague.validate import check_duplicate_artists
 from musicleague.validate import check_duplicate_tracks
@@ -122,7 +120,7 @@ def submit(league_id, submission_period_id):
 
     remaining = submission_period.have_not_submitted
     if not remaining:
-        complete_submission_process(submission_period)
+        complete_submission_process.delay(submission_period.id)
 
     # Don't send submission reminder if this user is resubmitting. In this
     # case, the last user to submit will have already gotten a notification.
@@ -131,10 +129,3 @@ def submit(league_id, submission_period_id):
         user_last_to_submit_notification(last_user, submission_period)
 
     return redirect(url_for('view_league', league_id=league_id))
-
-
-def complete_submission_process(submission_period):
-    create_or_update_playlist(submission_period)
-    cancel_playlist_creation(submission_period)
-    cancel_submission_reminders(submission_period)
-    submission_period.save()

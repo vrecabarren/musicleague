@@ -4,7 +4,7 @@ import logging
 from musicleague import scheduler
 from musicleague.environment import is_deployed
 from musicleague.submission_period.tasks import complete_submission_period
-from musicleague.submission_period.tasks import create_playlist
+from musicleague.submission_period.tasks import complete_submission_process
 from musicleague.submission_period.tasks import send_submission_reminders
 from musicleague.submission_period.tasks import send_vote_reminders
 from musicleague.submission_period.tasks import TYPES
@@ -41,7 +41,7 @@ def schedule_playlist_creation(submission_period):
 
     # Schedule new playlist creation task
     job = scheduler.enqueue_at(
-        creation_time, create_playlist, str(submission_period.id))
+        creation_time, complete_submission_process, str(submission_period.id))
 
     submission_period.pending_tasks.update({TYPES.CREATE_PLAYLIST: job.id})
     logging.info('Playlist creation scheduled for %s. Job ID: %s.',

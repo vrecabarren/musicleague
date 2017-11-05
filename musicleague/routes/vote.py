@@ -15,8 +15,6 @@ from musicleague.routes.decorators import templated
 from musicleague.submission import get_my_submission
 from musicleague.submission_period import get_submission_period
 from musicleague.submission_period.tasks import complete_submission_period
-from musicleague.submission_period.tasks.cancelers import cancel_round_completion  # noqa
-from musicleague.submission_period.tasks.cancelers import cancel_vote_reminders
 from musicleague.vote import create_or_update_vote, get_my_vote
 
 VOTE_URL = '/l/<league_id>/<submission_period_id>/vote/'
@@ -99,10 +97,7 @@ def vote(league_id, submission_period_id):
 
     remaining = submission_period.have_not_voted
     if not remaining:
-        complete_submission_period(submission_period.id)
-        cancel_round_completion(submission_period)
-        cancel_vote_reminders(submission_period)
-        submission_period.save()
+        complete_submission_period.delay(submission_period.id)
 
     elif vote.count < 2 and len(remaining) == 1:
         last_user = remaining[0]
