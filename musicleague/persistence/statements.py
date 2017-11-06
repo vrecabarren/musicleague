@@ -19,3 +19,6 @@ CREATE_TABLE_ROUNDS = """CREATE TABLE IF NOT EXISTS rounds (
                             submissions_due TIMESTAMP NOT NULL,
                             votes_due TIMESTAMP NOT NULL);"""
 
+INSERT_USER = "INSERT INTO users (id, email, name) VALUES (%s, %s, %s) ON CONFLICT (id) DO NOTHING;"
+
+UPDATE_USER = "UPDATE users SET (email, name) = (%s, %s) WHERE id = %s;"

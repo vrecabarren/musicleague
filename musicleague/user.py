@@ -5,6 +5,8 @@ from musicleague.errors import UserDoesNotExistError
 from musicleague.errors import UserExistsError
 from musicleague.models import User
 from musicleague.models import UserPreferences
+from musicleague.persistence.statements import INSERT_USER
+from musicleague.persistence.statements import UPDATE_USER
 
 
 DEFAULT_AVATARS = [
@@ -64,6 +66,16 @@ def create_user(id, name, email, image_url):
         image_url=image_url, profile_background=profile_background,
         preferences=UserPreferences())
     new_user.save()
+
+    try:
+        from musicleague import postgres_conn
+
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(INSERT_USER, (id, email, name))
+    except:
+        pass
+
     return new_user
 
 
@@ -78,6 +90,17 @@ def update_user(id, name, email, image_url):
     user.email = email if email else user.email
     user.image_url = image_url if image_url else user.image_url
     user.save()
+
+    try:
+        from musicleague import postgres_conn
+
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(INSERT_USER, (id, email, name))
+                cur.execute(UPDATE_USER, (email, name, id))
+    except:
+        pass
+
     return user
 
 
