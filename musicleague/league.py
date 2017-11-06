@@ -7,6 +7,9 @@ from musicleague.models import League
 from musicleague.models import LeaguePreferences
 from musicleague.notify import user_added_to_league_notification
 from musicleague.notify import user_invited_to_league_notification
+from musicleague.persistence.statements import DELETE_LEAGUE
+from musicleague.persistence.statements import INSERT_LEAGUE
+from musicleague.persistence.statements import UPDATE_LEAGUE
 from musicleague.scoring import EntrySortKey
 from musicleague.submission_period import remove_submission_period
 from musicleague.user import get_user_by_email
@@ -55,6 +58,16 @@ def create_league(user, name=None, users=None):
     new_league = League(owner=user, users=members, created=datetime.utcnow())
     new_league.preferences = LeaguePreferences(name=name)
     new_league.save()
+
+    try:
+        from musicleague import postgres_conn
+
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(INSERT_LEAGUE, (new_league.id, name, user.id))
+    except:
+        pass
+
     return new_league
 
 
@@ -70,6 +83,15 @@ def remove_league(league_id, league=None):
                                  submission_period=submission_period)
 
     league.delete()
+
+    try:
+        from musicleague import postgres_conn
+
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(DELETE_LEAGUE, (league_id,))
+    except:
+        pass
 
     return league
 

@@ -8,6 +8,8 @@ CREATE_TABLE_USERS = """CREATE TABLE IF NOT EXISTS users (
                             joined TIMESTAMP DEFAULT NOW(),
                             name VARCHAR(255) DEFAULT '');"""
 
+DELETE_USER = "DELETE FROM users WHERE id = %s;"
+
 INSERT_USER = "INSERT INTO users (id, email, name) VALUES (%s, %s, %s) ON CONFLICT (id) DO NOTHING;"
 
 UPDATE_USER = "UPDATE users SET (email, name) = (%s, %s) WHERE id = %s;"
@@ -19,9 +21,12 @@ UPDATE_USER = "UPDATE users SET (email, name) = (%s, %s) WHERE id = %s;"
 CREATE_TABLE_LEAGUES = """CREATE TABLE IF NOT EXISTS leagues (
                             id VARCHAR(255) PRIMARY KEY,
                             created TIMESTAMP DEFAULT NOW(),
-                            name VARCHAR(255) NOT NULL);"""
+                            name VARCHAR(255) NOT NULL,
+                            owner_id VARCHAR(255) NOT NULL REFERENCES users(id));"""
 
-INSERT_LEAGUE = "INSERT INTO leagues (id, name) VALUES (%s, %s) ON CONFLICT (id) DO NOTHING;"
+DELETE_LEAGUE = "DELETE FROM leagues WHERE id = %s;"
+
+INSERT_LEAGUE = "INSERT INTO leagues (id, name, owner_id) VALUES (%s, %s, %s) ON CONFLICT (id) DO NOTHING;"
 
 UPDATE_LEAGUE = "UPDATE leagues SET (name) = (%s) WHERE id = %s;"
 
@@ -33,11 +38,13 @@ CREATE_TABLE_ROUNDS = """CREATE TABLE IF NOT EXISTS rounds (
                             id VARCHAR(255) PRIMARY KEY,
                             created TIMESTAMP DEFAULT NOW(),
                             description VARCHAR(255) DEFAULT '',
-                            league_id VARCHAR(255) REFERENCES leagues(id),
+                            league_id VARCHAR(255) NOT NULL REFERENCES leagues(id),
                             name VARCHAR(255) NOT NULL,
                             playlist_url VARCHAR(255) DEFAULT '',
                             submissions_due TIMESTAMP NOT NULL,
                             votes_due TIMESTAMP NOT NULL);"""
+
+DELETE_ROUND = "DELETE FROM users WHERE id = %s;"
 
 INSERT_ROUND = """INSERT INTO rounds (id, description, league_id, name, submissions_due, votes_due)
                     VALUES (%s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING;"""

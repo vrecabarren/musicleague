@@ -15,6 +15,9 @@ from musicleague.league import get_league
 from musicleague.league import remove_league
 from musicleague.league import remove_user
 from musicleague.notify.flash import flash_error
+from musicleague.persistence.statements import DELETE_LEAGUE
+from musicleague.persistence.statements import INSERT_LEAGUE
+from musicleague.persistence.statements import UPDATE_LEAGUE
 from musicleague.routes.decorators import admin_required
 from musicleague.routes.decorators import league_required
 from musicleague.routes.decorators import login_required
@@ -178,6 +181,17 @@ def post_manage_league(league_id):
         league = calculate_league_scoreboard(league)
 
     league.save()
+
+    try:
+        from musicleague import postgres_conn
+
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(INSERT_LEAGUE, (league_id, name, g.user.id))
+                cur.execute(UPDATE_LEAGUE, (name,))
+    except:
+        pass
+
     return redirect(url_for('view_league', league_id=league_id))
 
 
@@ -209,6 +223,15 @@ def get_remove_league(league_id, **kwargs):
     if league and league.has_owner(g.user):
         app.logger.info('Removing league: %s', league.id)
         league = remove_league(league_id, league=league)
+
+        try:
+            from musicleague import postgres_conn
+
+            with postgres_conn:
+                with postgres_conn.cursor() as cur:
+                    cur.execute(DELETE_LEAGUE, league_id)
+        except:
+            pass
 
     return redirect(url_for('profile'))
 

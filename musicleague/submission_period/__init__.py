@@ -3,6 +3,9 @@ from datetime import timedelta
 
 from musicleague import app
 from musicleague.models import SubmissionPeriod
+from musicleague.persistence.statements import DELETE_ROUND
+from musicleague.persistence.statements import INSERT_ROUND
+from musicleague.persistence.statements import UPDATE_ROUND
 from musicleague.submission_period.tasks.cancelers import cancel_pending_task
 from musicleague.submission_period.tasks.schedulers import schedule_playlist_creation  # noqa
 from musicleague.submission_period.tasks.schedulers import schedule_round_completion  # noqa
@@ -43,6 +46,18 @@ def create_submission_period(
     league.submission_periods.append(new_submission_period)
     league.save()
 
+    try:
+        from musicleague import postgres_conn
+
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(
+                    INSERT_ROUND,
+                    (new_submission_period.id, description, league.id,
+                     name, submission_due_date, vote_due_date))
+    except:
+        pass
+
     return new_submission_period
 
 
@@ -70,6 +85,15 @@ def remove_submission_period(submission_period_id, submission_period=None):
 
     submission_period.delete()
 
+    try:
+        from musicleague import postgres_conn
+
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(DELETE_ROUND, (submission_period_id,))
+    except:
+        pass
+
     league.reload('submission_periods')
     app.logger.info('Submission period removed: %s', submission_period_id)
 
@@ -94,4 +118,21 @@ def update_submission_period(submission_period_id, name, description,
     schedule_vote_reminders(submission_period)
 
     submission_period.save()
+
+    try:
+        from musicleague import postgres_conn
+
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(
+                    INSERT_ROUND,
+                    (submission_period_id, description,
+                     submission_period.league.id,
+                     name, submission_due_date, vote_due_date))
+                cur.execute(
+                    UPDATE_ROUND,
+                    (description, name, submission_due_date, vote_due_date))
+    except:
+        pass
+
     return submission_period
