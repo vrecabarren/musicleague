@@ -5,6 +5,7 @@ EnvironmentVariable = namedtuple('EnvironmentVariable', 'key, default')
 
 
 ADD_BOT_REDIRECT_URI = EnvironmentVariable(key='ADD_BOT_REDIRECT_URI', default='')  # noqa
+DATABASE_URL = EnvironmentVariable(key='DATABASE_URL', default='')
 DEBUG = EnvironmentVariable(key='DEBUG', default=False)
 DEPLOYED = EnvironmentVariable(key='ON_HEROKU', default=False)
 EVENTSTORE_HOST = EnvironmentVariable(key='EVENTSTORE_HOST', default='')
