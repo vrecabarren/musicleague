@@ -55,7 +55,8 @@ def create_submission_period(
                     INSERT_ROUND,
                     (new_submission_period.id, description, league.id,
                      name, submission_due_date, vote_due_date))
-    except:
+    except Exception as e:
+        app.logger.warning('Failed INSERT_ROUND: %s', str(e))
         pass
 
     return new_submission_period
@@ -132,7 +133,8 @@ def update_submission_period(submission_period_id, name, description,
                 cur.execute(
                     UPDATE_ROUND,
                     (description, name, submission_due_date, vote_due_date))
-    except:
+    except Exception as e:
+        app.logger.warning('Failed UPDATE_ROUND: %s', str(e))
         pass
 
     return submission_period

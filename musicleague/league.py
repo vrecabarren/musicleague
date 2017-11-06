@@ -2,6 +2,7 @@ from datetime import datetime
 
 from haikunator import Haikunator
 
+from musicleague import app
 from musicleague.models import InvitedUser
 from musicleague.models import League
 from musicleague.models import LeaguePreferences
@@ -65,7 +66,8 @@ def create_league(user, name=None, users=None):
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(INSERT_LEAGUE, (new_league.id, name, user.id))
-    except:
+    except Exception as e:
+        app.logger.warning('Failed INSERT_LEAGUE: %s', str(e))
         pass
 
     return new_league
@@ -90,7 +92,8 @@ def remove_league(league_id, league=None):
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(DELETE_LEAGUE, (league_id,))
-    except:
+    except Exception as e:
+        app.logger.warning('Failed DELETE_LEAGUE: %s', str(e))
         pass
 
     return league
