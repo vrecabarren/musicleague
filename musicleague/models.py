@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from datetime import datetime
 
 from mongoengine import BooleanField
@@ -137,7 +138,7 @@ class Scoreboard(EmbeddedDocument):
 
     @property
     def rankings(self):
-        rankings = {}
+        rankings = OrderedDict()
         int_keys = sorted([int(key) for key in self._rankings])
         for key in int_keys:
             rankings[key] = self._rankings[str(key)]
