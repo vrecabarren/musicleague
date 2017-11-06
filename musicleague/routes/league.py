@@ -191,7 +191,6 @@ def post_manage_league(league_id):
                 cur.execute(UPDATE_LEAGUE, (name,))
     except Exception as e:
         app.logger.warning('Failed UPDATE_LEAGUE: %s', str(e))
-        pass
 
     return redirect(url_for('view_league', league_id=league_id))
 
@@ -230,9 +229,9 @@ def get_remove_league(league_id, **kwargs):
 
             with postgres_conn:
                 with postgres_conn.cursor() as cur:
-                    cur.execute(DELETE_LEAGUE, league_id)
-        except:
-            pass
+                    cur.execute(DELETE_LEAGUE, (league_id,))
+        except Exception as e:
+            app.logger.warning('Failed DELETE_LEAGUE: %s', str(e))
 
     return redirect(url_for('profile'))
 

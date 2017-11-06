@@ -68,7 +68,6 @@ def create_league(user, name=None, users=None):
                 cur.execute(INSERT_LEAGUE, (str(new_league.id), name, user.id))
     except Exception as e:
         app.logger.warning('Failed INSERT_LEAGUE: %s', str(e))
-        pass
 
     return new_league
 
@@ -94,7 +93,6 @@ def remove_league(league_id, league=None):
                 cur.execute(DELETE_LEAGUE, (league_id,))
     except Exception as e:
         app.logger.warning('Failed DELETE_LEAGUE: %s', str(e))
-        pass
 
     return league
 

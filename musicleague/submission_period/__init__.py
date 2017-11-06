@@ -57,7 +57,6 @@ def create_submission_period(
                      name, submission_due_date, vote_due_date))
     except Exception as e:
         app.logger.warning('Failed INSERT_ROUND: %s', str(e))
-        pass
 
     return new_submission_period
 
@@ -92,8 +91,8 @@ def remove_submission_period(submission_period_id, submission_period=None):
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(DELETE_ROUND, (submission_period_id,))
-    except:
-        pass
+    except Exception as e:
+        app.logger.warning('Failed DELETE_ROUND: %s', str(e))
 
     league.reload('submission_periods')
     app.logger.info('Submission period removed: %s', submission_period_id)
@@ -135,6 +134,5 @@ def update_submission_period(submission_period_id, name, description,
                     (description, name, submission_due_date, vote_due_date))
     except Exception as e:
         app.logger.warning('Failed UPDATE_ROUND: %s', str(e))
-        pass
 
     return submission_period
