@@ -65,7 +65,7 @@ def create_league(user, name=None, users=None):
 
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(INSERT_LEAGUE, (new_league.id, name, user.id))
+                cur.execute(INSERT_LEAGUE, (str(new_league.id), name, user.id))
     except Exception as e:
         app.logger.warning('Failed INSERT_LEAGUE: %s', str(e))
         pass

@@ -53,7 +53,7 @@ def create_submission_period(
             with postgres_conn.cursor() as cur:
                 cur.execute(
                     INSERT_ROUND,
-                    (new_submission_period.id, description, league.id,
+                    (str(new_submission_period.id), description, league.id,
                      name, submission_due_date, vote_due_date))
     except Exception as e:
         app.logger.warning('Failed INSERT_ROUND: %s', str(e))
