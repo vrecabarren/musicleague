@@ -11,16 +11,16 @@ def get_postgres_conn():
     """ Connect to the PostgreSQL db and init tables. """
     dsn = get_environment_setting(DATABASE_URL)
     postgres_conn = connect(dsn)
-    _init_db(postgres_conn)
+
+    with postgres_conn:
+        _init_db(postgres_conn)
+
     return postgres_conn
 
 
 def _init_db(postgres_conn):
     """ Create all tables if they don't exist. """
-    cur = postgres_conn.cursor()
-
-    cur.execute(CREATE_TABLE_USERS)
-    cur.execute(CREATE_TABLE_LEAGUES)
-    cur.execute(CREATE_TABLE_ROUNDS)
-
-    postgres_conn.commit()
+    with postgres_conn.cursor() as cur:
+        cur.execute(CREATE_TABLE_USERS)
+        cur.execute(CREATE_TABLE_LEAGUES)
+        cur.execute(CREATE_TABLE_ROUNDS)
