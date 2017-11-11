@@ -9,8 +9,6 @@ from musicleague.models import LeaguePreferences
 from musicleague.notify import user_added_to_league_notification
 from musicleague.notify import user_invited_to_league_notification
 from musicleague.persistence.statements import DELETE_LEAGUE
-from musicleague.persistence.statements import INSERT_LEAGUE
-from musicleague.persistence.statements import UPDATE_LEAGUE
 from musicleague.scoring import EntrySortKey
 from musicleague.submission_period import remove_submission_period
 from musicleague.user import get_user_by_email
@@ -60,14 +58,8 @@ def create_league(user, name=None, users=None):
     new_league.preferences = LeaguePreferences(name=name)
     new_league.save()
 
-    try:
-        from musicleague import postgres_conn
-
-        with postgres_conn:
-            with postgres_conn.cursor() as cur:
-                cur.execute(INSERT_LEAGUE, (str(new_league.id), name, user.id))
-    except Exception as e:
-        app.logger.warning('Failed INSERT_LEAGUE: %s', str(e))
+    from musicleague.persistence.insert import insert_league
+    insert_league(new_league)
 
     return new_league
 

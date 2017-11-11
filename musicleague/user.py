@@ -67,14 +67,8 @@ def create_user(id, name, email, image_url):
         preferences=UserPreferences())
     new_user.save()
 
-    try:
-        from musicleague import postgres_conn
-
-        with postgres_conn:
-            with postgres_conn.cursor() as cur:
-                cur.execute(INSERT_USER, (id, email, name))
-    except:
-        pass
+    from musicleague.persistence.insert import insert_user
+    insert_user(new_user)
 
     return new_user
 

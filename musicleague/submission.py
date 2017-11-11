@@ -36,6 +36,10 @@ def create_submission(tracks, submission_period, user, league, persist=True):
         new_submission.save()
         submission_period.submissions.append(new_submission)
         submission_period.save()
+
+        from musicleague.persistence.insert import insert_submission
+        insert_submission(new_submission)
+
     return new_submission
 
 

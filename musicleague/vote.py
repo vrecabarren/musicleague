@@ -29,6 +29,10 @@ def create_vote(votes, submission_period, user, league, persist=True):
         new_vote.save()
         submission_period.votes.append(new_vote)
         submission_period.save()
+
+    from musicleague.persistence.insert import insert_vote
+    insert_vote(new_vote)
+
     return new_vote
 
 
