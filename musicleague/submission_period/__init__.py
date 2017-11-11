@@ -46,17 +46,8 @@ def create_submission_period(
     league.submission_periods.append(new_submission_period)
     league.save()
 
-    try:
-        from musicleague import postgres_conn
-
-        with postgres_conn:
-            with postgres_conn.cursor() as cur:
-                cur.execute(
-                    INSERT_ROUND,
-                    (str(new_submission_period.id), description, league.id,
-                     name, submission_due_date, vote_due_date))
-    except Exception as e:
-        app.logger.warning('Failed INSERT_ROUND: %s', str(e))
+    from musicleague.persistence.insert import insert_round
+    insert_round(new_submission_period)
 
     return new_submission_period
 
