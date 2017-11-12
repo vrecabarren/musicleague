@@ -4,7 +4,6 @@ from musicleague.persistence.statements import INSERT_ROUND
 from musicleague.persistence.statements import INSERT_SUBMISSION
 from musicleague.persistence.statements import INSERT_USER
 from musicleague.persistence.statements import INSERT_VOTE
-from musicleague.persistence.statements import SELECT_SUBMISSION_ID
 
 
 def insert_user(user):
@@ -80,17 +79,11 @@ def insert_vote(vote):
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 for spotify_uri, weight in vote.votes.iteritems():
-                    #  Get the submission_id that this vote is targeted at
-                    cur.execute(
-                        SELECT_SUBMISSION_ID,
-                        (str(vote.submission_period.id), spotify_uri))
-                    submission_id = cur.fetchone()[0]
-
                     cur.execute(
                         INSERT_VOTE,
                         (vote.created, str(vote.submission_period.id),
-                         submission_id, str(vote.user.id),
+                         spotify_uri,
                          vote.updated or vote.created,
-                         weight))
+                         str(vote.user.id), weight))
     except Exception as e:
         app.logger.warning('Failed INSERT_VOTE: %s', str(e))

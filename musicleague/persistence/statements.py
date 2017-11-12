@@ -57,18 +57,15 @@ UPDATE_ROUND = """UPDATE rounds SET (description, name, submissions_due, votes_d
 # ===========
 
 CREATE_TABLE_SUBMISSIONS = """CREATE TABLE IF NOT EXISTS submissions (
-                                    id SERIAL PRIMARY KEY,
                                     created TIMESTAMP NOT NULL DEFAULT NOW(),
                                     round_id VARCHAR(255) NOT NULL REFERENCES rounds(id),
                                     spotify_uri VARCHAR(255) NOT NULL,
                                     submitter_id VARCHAR(255) NOT NULL REFERENCES users(id),
-                                    updated TIMESTAMP NOT NULL DEFAULT NOW());"""
+                                    updated TIMESTAMP NOT NULL DEFAULT NOW(),
+                                    UNIQUE (round_id, spotify_uri));"""
 
 INSERT_SUBMISSION = """INSERT INTO submissions (created, round_id, spotify_uri, submitter_id, updated)
                             VALUES (%s, %s, %s, %s, %s);"""
-
-SELECT_SUBMISSION_ID = "SELECT id FROM submissions WHERE round_id = %s AND spotify_uri = %s;"
-
 
 # =====
 # VOTES
@@ -76,11 +73,12 @@ SELECT_SUBMISSION_ID = "SELECT id FROM submissions WHERE round_id = %s AND spoti
 
 CREATE_TABLE_VOTES = """CREATE TABLE IF NOT EXISTS votes (
                             created TIMESTAMP DEFAULT NOW(),
-                            round_id VARCHAR(255) NOT NULL REFERENCES rounds(id),
-                            submission_id SERIAL NOT NULL REFERENCES submissions(id),
+                            round_id VARCHAR(255) NOT NULL,
+                            spotify_uri VARCHAR(255) NOT NULL,
                             updated TIMESTAMP NOT NULL DEFAULT NOW(),
                             voter_id VARCHAR(255) NOT NULL REFERENCES users(id),
-                            weight SMALLINT NOT NULL);"""
+                            weight SMALLINT NOT NULL,
+                            FOREIGN KEY (round_id, spotify_uri) REFERENCES submissions(round_id, spotify_uri));"""
 
-INSERT_VOTE = """INSERT INTO votes (created, round_id, submission_id, updated, voter_id, weight)
+INSERT_VOTE = """INSERT INTO votes (created, round_id, spotify_uri, updated, voter_id, weight)
                     VALUES (%s, %s, %s, %s, %s, %s);"""
