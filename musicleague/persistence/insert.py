@@ -12,7 +12,9 @@ def insert_user(user):
         from musicleague import postgres_conn
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(INSERT_USER, (str(user.id), user.email, user.name))
+                cur.execute(
+                    INSERT_USER,
+                    (str(user.id), user.email, user.joined, user.name))
     except Exception as e:
         app.logger.warning('Failed INSERT_USER: %s', str(e))
 
@@ -24,7 +26,10 @@ def insert_league(league):
         from musicleague import postgres_conn
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(INSERT_LEAGUE, (str(league.id), league.name, str(league.owner.id)))
+                cur.execute(
+                    INSERT_LEAGUE,
+                    (str(league.id), league.created, league.name,
+                     str(league.owner.id)))
     except Exception as e:
         app.logger.warning('Failed INSERT_LEAGUE: %s', str(e))
 
@@ -38,7 +43,7 @@ def insert_round(round):
             with postgres_conn.cursor() as cur:
                 cur.execute(
                     INSERT_ROUND,
-                    (str(round.id), round.description, str(round.league.id),
+                    (str(round.id), round.created, round.description, str(round.league.id),
                      round.name, round.submission_due_date,
                      round.vote_due_date))
     except Exception as e:
@@ -56,8 +61,10 @@ def insert_submission(submission):
                 for track in submission.tracks:
                     cur.execute(
                         INSERT_SUBMISSION,
-                        (str(submission.submission_period.id), track,
-                         str(submission.user.id)))
+                        (submission.created,
+                         str(submission.submission_period.id),
+                         track, str(submission.user.id),
+                         submission.updated))
     except Exception as e:
         app.logger.warning('Failed INSERT_SUBMISSION: %s', str(e))
 
@@ -74,9 +81,15 @@ def insert_vote(vote):
             with postgres_conn.cursor() as cur:
                 for spotify_uri, weight in vote.votes.iteritems():
                     #  Get the submission_id that this vote is targeted at
-                    cur.execute(SELECT_SUBMISSION_ID, (str(vote.submission_period.id), spotify_uri))
+                    cur.execute(
+                        SELECT_SUBMISSION_ID,
+                        (str(vote.submission_period.id), spotify_uri))
                     submission_id = next(cur.fetchone(), None)
 
-                    cur.execute(INSERT_VOTE, (str(vote.submission_period.id), submission_id, str(vote.user.id), weight))
+                    cur.execute(
+                        INSERT_VOTE,
+                        (vote.created, str(vote.submission_period.id),
+                         submission_id, str(vote.user.id), vote.updated,
+                         weight))
     except Exception as e:
         app.logger.warning('Failed INSERT_VOTE: %s', str(e))
