@@ -67,6 +67,14 @@ CREATE_TABLE_SUBMISSIONS = """CREATE TABLE IF NOT EXISTS submissions (
 INSERT_SUBMISSION = """INSERT INTO submissions (created, round_id, spotify_uri, submitter_id, updated)
                             VALUES (%s, %s, %s, %s, %s);"""
 
+SELECT_SUBMISSIONS = """SELECT submissions.spotify_uri as uri,
+                               su.id as submitter_id,
+                               su.name as submitter
+                        FROM submissions
+                        LEFT JOIN users su ON su.id = submissions.submitter_id
+                        WHERE submissions.round_id = %s
+                        ORDER BY submissions.created;"""
+
 # =====
 # VOTES
 # =====
@@ -82,3 +90,16 @@ CREATE_TABLE_VOTES = """CREATE TABLE IF NOT EXISTS votes (
 
 INSERT_VOTE = """INSERT INTO votes (created, round_id, spotify_uri, updated, voter_id, weight)
                     VALUES (%s, %s, %s, %s, %s, %s);"""
+
+SELECT_SUBMISSIONS_WITH_VOTES = """SELECT submissions.spotify_uri as uri,
+                                          su.id as submitter_id,
+                                          su.name as submitter,
+                                          vu.id as voter_id,
+                                          vu.name as voter,
+                                          votes.weight as points
+                                   FROM submissions
+                                   RIGHT JOIN votes ON votes.spotify_uri = submissions.spotify_uri
+                                   LEFT JOIN users su ON su.id = submissions.submitter_id
+                                   LEFT JOIN users vu ON vu.id = votes.voter_id
+                                   WHERE submissions.round_id = %s
+                                   ORDER BY points DESC;"""
