@@ -65,11 +65,11 @@ CREATE_TABLE_SUBMISSIONS = """CREATE TABLE IF NOT EXISTS submissions (
                                     UNIQUE (round_id, spotify_uri));"""
 
 INSERT_SUBMISSION = """INSERT INTO submissions (created, round_id, spotify_uri, submitter_id, updated)
-                            VALUES (%s, %s, %s, %s, %s);"""
+                            VALUES (%s, %s, %s, %s, %s) ON CONFLICT (round_id, spotify_uri) DO NOTHING;"""
 
 SELECT_SUBMISSIONS = """SELECT submissions.spotify_uri as uri,
                                su.id as submitter_id,
-                               su.name as submitter
+                               su.name as submitter_name
                         FROM submissions
                         LEFT JOIN users su ON su.id = submissions.submitter_id
                         WHERE submissions.round_id = %s
@@ -93,9 +93,9 @@ INSERT_VOTE = """INSERT INTO votes (created, round_id, spotify_uri, updated, vot
 
 SELECT_SUBMISSIONS_WITH_VOTES = """SELECT submissions.spotify_uri as uri,
                                           su.id as submitter_id,
-                                          su.name as submitter,
+                                          su.name as submitter_name,
                                           vu.id as voter_id,
-                                          vu.name as voter,
+                                          vu.name as voter_name,
                                           votes.weight as points
                                    FROM submissions
                                    RIGHT JOIN votes ON votes.spotify_uri = submissions.spotify_uri
