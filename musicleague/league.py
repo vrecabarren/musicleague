@@ -77,14 +77,8 @@ def remove_league(league_id, league=None):
 
     league.delete()
 
-    try:
-        from musicleague import postgres_conn
-
-        with postgres_conn:
-            with postgres_conn.cursor() as cur:
-                cur.execute(DELETE_LEAGUE, (league_id,))
-    except Exception as e:
-        app.logger.warning('Failed DELETE_LEAGUE: %s', str(e))
+    from musicleague.persistence.delete import delete_league
+    delete_league(league)
 
     return league
 
