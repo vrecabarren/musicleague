@@ -5,14 +5,18 @@
 CREATE_TABLE_USERS = """CREATE TABLE IF NOT EXISTS users (
                             id VARCHAR(255) NOT NULL PRIMARY KEY,
                             email VARCHAR(255) NOT NULL,
+                            image_url VARCHAR(255) NOT NULL,
                             joined TIMESTAMP NOT NULL DEFAULT NOW(),
-                            name VARCHAR(255) DEFAULT '');"""
+                            name VARCHAR(255) DEFAULT '',
+                            profile_bg VARCHAR(255) NOT NULL);"""
 
 DELETE_USER = "DELETE FROM users WHERE id = %s;"
 
-INSERT_USER = "INSERT INTO users (id, email, joined, name) VALUES (%s, %s, %s, %s) ON CONFLICT (id) DO NOTHING;"
+INSERT_USER = "INSERT INTO users (id, email, image_url, joined, name, profile_bg) VALUES (%s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING;"
 
-UPDATE_USER = "UPDATE users SET (email, name) = (%s, %s) WHERE id = %s;"
+SELECT_USER = "SELECT email, image_url, joined, name, profile_bg FROM users WHERE id = %s;"
+
+UPDATE_USER = "UPDATE users SET (email, image_url, name, profile_bg) = (%s, %s, %s, %s) WHERE id = %s;"
 
 # =======
 # LEAGUES

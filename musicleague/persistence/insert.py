@@ -13,7 +13,7 @@ def insert_user(user):
             with postgres_conn.cursor() as cur:
                 cur.execute(
                     INSERT_USER,
-                    (str(user.id), user.email, user.joined, user.name))
+                    (str(user.id), user.email, user.image_url, user.joined, user.name, user.profile_background))
     except Exception as e:
         app.logger.warning('Failed INSERT_USER: %s', str(e))
 
