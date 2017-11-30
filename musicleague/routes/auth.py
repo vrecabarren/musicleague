@@ -12,6 +12,7 @@ from musicleague import app
 from musicleague.bot import create_or_update_bot
 from musicleague.bot import is_bot
 from musicleague.notify.flash import flash_info
+from musicleague.persistence.select import select_user
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 from musicleague.spotify import get_spotify_oauth
@@ -31,7 +32,10 @@ def before_request():
     current_user = session['current_user'] if 'current_user' in session else ''
     g.user = None
     if current_user:
-        g.user = get_user(current_user)
+        if request.args.get('pg') == '1':
+            g.user = select_user(current_user)
+        else:
+            g.user = get_user(current_user)
 
     access_token = session['access_token'] if 'access_token' in session else ''
     g.spotify = None
