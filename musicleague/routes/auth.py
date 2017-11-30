@@ -12,6 +12,7 @@ from musicleague import app
 from musicleague.bot import create_or_update_bot
 from musicleague.bot import is_bot
 from musicleague.notify.flash import flash_info
+from musicleague.persistence.insert import insert_user
 from musicleague.persistence.select import select_user
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
@@ -34,6 +35,10 @@ def before_request():
     if current_user:
         if request.args.get('pg') == '1':
             g.user = select_user(current_user)
+            # Lazily migrate users from mongo to postgres
+            if not g.user:
+                g.user = get_user(current_user)
+                insert_user(g.user)
         else:
             g.user = get_user(current_user)
 
