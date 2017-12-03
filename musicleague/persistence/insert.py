@@ -1,5 +1,6 @@
 from musicleague import app
 from musicleague.persistence.statements import INSERT_LEAGUE
+from musicleague.persistence.statements import INSERT_MEMBERSHIP
 from musicleague.persistence.statements import INSERT_ROUND
 from musicleague.persistence.statements import INSERT_SUBMISSION
 from musicleague.persistence.statements import INSERT_USER
@@ -20,7 +21,8 @@ def insert_user(user):
 
 def insert_league(league):
     try:
-        insert_user(league.owner)
+        for u in league.users:
+            insert_user(u)
 
         from musicleague import postgres_conn
         with postgres_conn:
@@ -29,6 +31,9 @@ def insert_league(league):
                     INSERT_LEAGUE,
                     (str(league.id), league.created, league.name,
                      str(league.owner.id)))
+
+                for u in league.users:
+                    cur.execute(INSERT_MEMBERSHIP, (str(league.id), str(u.id)))
     except Exception as e:
         app.logger.warning('Failed INSERT_LEAGUE: %s', str(e))
 
