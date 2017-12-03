@@ -76,14 +76,8 @@ def remove_submission_period(submission_period_id, submission_period=None):
 
     submission_period.delete()
 
-    try:
-        from musicleague import postgres_conn
-
-        with postgres_conn:
-            with postgres_conn.cursor() as cur:
-                cur.execute(DELETE_ROUND, (submission_period_id,))
-    except Exception as e:
-        app.logger.warning('Failed DELETE_ROUND: %s', str(e))
+    from musicleague.persistence.delete import delete_round
+    delete_round(submission_period)
 
     league.reload('submission_periods')
     app.logger.info('Submission period removed: %s', submission_period_id)
