@@ -128,9 +128,15 @@ def view_user(user_id):
         for league in leagues:
             insert_league(league)
 
+    if request.args.get('pg') == '1':
+        from musicleague.persistence.select import select_memberships_count
+        contributor_leagues = select_memberships_count(page_user.id)
+    else:
+        contributor_leagues = len(get_leagues_for_user(page_user))
+
     return {
         'user': g.user,
         'page_user': page_user,
         'leagues': leagues,
-        'contributor_leagues': len(get_leagues_for_user(page_user))
+        'contributor_leagues': contributor_leagues
         }
