@@ -41,6 +41,7 @@ UPDATE_LEAGUE = "UPDATE leagues SET (name) = (%s) WHERE id = %s;"
 CREATE_TABLE_MEMBERSHIPS = """CREATE TABLE IF NOT EXISTS memberships (
                                 created TIMESTAMP NOT NULL DEFAULT NOW(),
                                 league_id VARCHAR(255) NOT NULL REFERENCES leagues(id),
+                                rank SMALLINT NOT NULL DEFAULT -1,
                                 user_id VARCHAR(255) NOT NULL REFERENCES users(id),
                                 UNIQUE (league_id, user_id));"""
 
@@ -83,6 +84,7 @@ UPDATE_ROUND = """UPDATE rounds SET (description, name, submissions_due, votes_d
 
 CREATE_TABLE_SUBMISSIONS = """CREATE TABLE IF NOT EXISTS submissions (
                                     created TIMESTAMP NOT NULL DEFAULT NOW(),
+                                    rank SMALLINT NOT NULL DEFAULT -1,
                                     round_id VARCHAR(255) NOT NULL REFERENCES rounds(id),
                                     spotify_uri VARCHAR(255) NOT NULL,
                                     submitter_id VARCHAR(255) NOT NULL REFERENCES users(id),
