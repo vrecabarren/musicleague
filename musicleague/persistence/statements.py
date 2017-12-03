@@ -46,6 +46,8 @@ CREATE_TABLE_MEMBERSHIPS = """CREATE TABLE IF NOT EXISTS memberships (
 
 DELETE_MEMBERSHIP = "DELETE FROM memberships WHERE league_id = %s AND user_id = %s;"
 
+DELETE_MEMBERSHIPS = "DELETE FROM memberships WHERE league_id = %s;"
+
 INSERT_MEMBERSHIP = """INSERT INTO memberships (league_id, user_id)
                             VALUES (%s, %s) ON CONFLICT (league_id, user_id) DO NOTHING;"""
 
