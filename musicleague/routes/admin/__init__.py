@@ -1,4 +1,5 @@
 from flask import g
+from flask import request
 
 from musicleague import app
 from musicleague import scheduler
@@ -56,6 +57,12 @@ def admin_jobs():
 @admin_required
 def admin_leagues():
     leagues = League.objects().all().order_by('preferences.name')
+
+    if request.args.get('pg_update') == '1':
+        from musicleague.persistence.insert import insert_league
+        for league in leagues:
+            insert_league(league)
+
     return {
         'user': g.user,
         'leagues': leagues
@@ -76,6 +83,12 @@ def admin_tools():
 @admin_required
 def admin_users():
     users = User.objects().all().order_by('name')
+
+    if request.args.get('pg_update') == '1':
+        from musicleague.persistence.insert import insert_user
+        for user in users:
+            insert_user(user)
+
     return {
         'user': g.user,
         'users': users
