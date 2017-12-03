@@ -54,6 +54,8 @@ INSERT_MEMBERSHIP = """INSERT INTO memberships (league_id, user_id)
 
 SELECT_MEMBERSHIPS_COUNT = "SELECT COUNT(league_id) from memberships WHERE user_id = %s;"
 
+UPDATE_MEMBERSHIP_RANK = "UPDATE memberships SET (rank) VALUES (%s) WHERE league_id = %s AND user_id = %s;"
+
 # ======
 # ROUNDS
 # ======
@@ -101,6 +103,8 @@ SELECT_SUBMISSIONS = """SELECT submissions.spotify_uri as uri,
                         LEFT JOIN users su ON su.id = submissions.submitter_id
                         WHERE submissions.round_id = %s
                         ORDER BY submissions.created;"""
+
+UPDATE_SUBMISSION_RANK = "UPDATE submissions SET (rank) VALUES (%s) WHERE round_id = %s AND spotify_uri = %s;"
 
 # =====
 # VOTES
