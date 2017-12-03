@@ -38,7 +38,14 @@ def autocomplete():
 @login_required
 def profile():
     page_user = g.user
+
     leagues = get_leagues_for_user(g.user)
+
+    if request.args.get('pg_update') == '1':
+        from musicleague.persistence.insert import insert_league
+        for league in leagues:
+            insert_league(league)
+
     return {
         'user': g.user,
         'page_user': page_user,
@@ -115,6 +122,12 @@ def view_user(user_id):
         return redirect(url_for('profile'))
     page_user = get_user(user_id)
     leagues = get_leagues_for_user(page_user)
+
+    if request.args.get('pg_update') == '1':
+        from musicleague.persistence.insert import insert_league
+        for league in leagues:
+            insert_league(league)
+
     return {
         'user': g.user,
         'page_user': page_user,
