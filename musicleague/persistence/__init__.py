@@ -3,6 +3,7 @@ from psycopg2 import connect
 from musicleague.environment import get_environment_setting
 from musicleague.environment.variables import DATABASE_URL
 from musicleague.persistence.statements import CREATE_TABLE_LEAGUES
+from musicleague.persistence.statements import CREATE_TABLE_MEMBERSHIPS
 from musicleague.persistence.statements import CREATE_TABLE_ROUNDS
 from musicleague.persistence.statements import CREATE_TABLE_SUBMISSIONS
 from musicleague.persistence.statements import CREATE_TABLE_USERS
@@ -25,6 +26,7 @@ def _init_db(postgres_conn):
     with postgres_conn.cursor() as cur:
         cur.execute(CREATE_TABLE_USERS)
         cur.execute(CREATE_TABLE_LEAGUES)
+        cur.execute(CREATE_TABLE_MEMBERSHIPS)
         cur.execute(CREATE_TABLE_ROUNDS)
         cur.execute(CREATE_TABLE_SUBMISSIONS)
         cur.execute(CREATE_TABLE_VOTES)

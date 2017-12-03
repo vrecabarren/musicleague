@@ -34,6 +34,21 @@ INSERT_LEAGUE = "INSERT INTO leagues (id, created, name, owner_id) VALUES (%s, %
 
 UPDATE_LEAGUE = "UPDATE leagues SET (name) = (%s) WHERE id = %s;"
 
+# ===========
+# MEMBERSHIPS
+# ===========
+
+CREATE_TABLE_MEMBERSHIPS = """CREATE TABLE IF NOT EXISTS memberships (
+                                created TIMESTAMP NOT NULL DEFAULT NOW(),
+                                league_id VARCHAR(255) NOT NULL REFERENCES leagues(id),
+                                user_id VARCHAR(255) NOT NULL REFERENCES users(id),
+                                UNIQUE (league_id, user_id));"""
+
+DELETE_MEMBERSHIP = "DELETE FROM memberships WHERE league_id = %s AND user_id = %s;"
+
+INSERT_MEMBERSHIP = """INSERT INTO memberships (league_id, user_id)
+                            VALUES (%s, %s) ON CONFLICT (league_id, user_id) DO NOTHING;"""
+
 # ======
 # ROUNDS
 # ======
