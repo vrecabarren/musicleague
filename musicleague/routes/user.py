@@ -43,7 +43,7 @@ def profile():
         'user': g.user,
         'page_user': page_user,
         'leagues': leagues,
-        'contributor_leagues': len(get_leagues_for_user(page_user))
+        'contributor_leagues': len(leagues)
         }
 
 
