@@ -67,6 +67,8 @@ CREATE_TABLE_ROUNDS = """CREATE TABLE IF NOT EXISTS rounds (
 
 DELETE_ROUND = "DELETE FROM users WHERE id = %s;"
 
+DELETE_ROUNDS = "DELETE FROM rounds WHERE league_id = %s;"
+
 INSERT_ROUND = """INSERT INTO rounds (id, created, description, league_id, name, submissions_due, votes_due)
                     VALUES (%s, %s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING;"""
 
