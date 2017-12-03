@@ -9,8 +9,8 @@ def delete_league(league):
         from musicleague import postgres_conn
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(DELETE_LEAGUE, (str(league.id),))
                 cur.execute(DELETE_MEMBERSHIPS, (str(league.id),))
+                cur.execute(DELETE_LEAGUE, (str(league.id),))
     except Exception as e:
         app.logger.warning('Failed DELETE_LEAGUE: %s', str(e))
 
