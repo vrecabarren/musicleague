@@ -18,6 +18,10 @@ SELECT_USER = "SELECT email, image_url, joined, name, profile_bg FROM users WHER
 
 SELECT_USERS_COUNT = "SELECT COUNT(id) FROM users;"
 
+SELECT_USERS_IN_LEAGUE = """SELECT user_id
+                                FROM memberships
+                                WHERE league_id = %s;"""
+
 UPDATE_USER = "UPDATE users SET (email, image_url, name, profile_bg) = (%s, %s, %s, %s) WHERE id = %s;"
 
 # =======
@@ -33,6 +37,8 @@ CREATE_TABLE_LEAGUES = """CREATE TABLE IF NOT EXISTS leagues (
 DELETE_LEAGUE = "DELETE FROM leagues WHERE id = %s;"
 
 INSERT_LEAGUE = "INSERT INTO leagues (id, created, name, owner_id) VALUES (%s, %s, %s, %s) ON CONFLICT (id) DO NOTHING;"
+
+SELECT_LEAGUE = "SELECT created, name, owner_id FROM leagues WHERE id = %s;"
 
 SELECT_LEAGUES_COUNT = "SELECT COUNT(id) FROM leagues;"
 

@@ -13,4 +13,16 @@ class League:
         self.id = id
         self.created = created
         self.name = name
+        self.owner = None
         self.owner_id = owner_id
+        self.submission_periods = []
+        self.users = []
+
+
+class Round:
+    def __init__(self, id, created, name, description):
+        self.id = id
+        self.created = created
+        self.name = name
+        self.description = description
+        self.league = None

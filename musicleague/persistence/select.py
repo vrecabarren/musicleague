@@ -1,5 +1,7 @@
 from musicleague import app
 from musicleague.models import User
+from musicleague.persistence.models import League
+from musicleague.persistence.statements import SELECT_LEAGUE
 from musicleague.persistence.statements import SELECT_LEAGUES_COUNT
 from musicleague.persistence.statements import SELECT_MEMBERSHIPS_COUNT
 from musicleague.persistence.statements import SELECT_ROUNDS_COUNT
@@ -7,6 +9,7 @@ from musicleague.persistence.statements import SELECT_SUBMISSIONS_COUNT
 from musicleague.persistence.statements import SELECT_VOTES_COUNT
 from musicleague.persistence.statements import SELECT_USER
 from musicleague.persistence.statements import SELECT_USERS_COUNT
+from musicleague.persistence.statements import SELECT_USERS_IN_LEAGUE
 
 
 def select_user(user_id):
@@ -32,6 +35,33 @@ def select_users_count():
                 return cur.fetchone()[0]
     except Exception as e:
         app.logger.warning('Failed SELECT_USERS_COUNT: %s', str(e))
+
+
+def select_league(league_id):
+    try:
+        from musicleague import postgres_conn
+        from musicleague.persistence.models import League as NewLeague
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(SELECT_LEAGUE, (str(league_id),))
+                league_tup = cur.fetchone()
+                l = NewLeague(
+                    id=str(league_id),
+                    created=league_tup[0],
+                    name=league_tup[1],
+                    owner_id=league_tup[2]
+                )
+
+                cur.execute(SELECT_USERS_IN_LEAGUE, (str(league_id),))
+                for user_tup in cur.fetchall():
+                    user_id = user_tup[0]
+                    u = select_user(user_id)
+                    l.users.append(u)
+                    if user_id == l.owner_id:
+                        l.owner = u
+                return l
+    except Exception as e:
+        app.logger.warning('Failed SELECT_LEAGUE: %s', str(e))
 
 
 def select_leagues_count():

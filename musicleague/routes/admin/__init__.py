@@ -110,7 +110,12 @@ def admin_leagues():
 @login_required
 @admin_required
 def admin_league(league_id):
-    league = get_league(league_id)
+    if request.args.get('pg') == '1':
+        from musicleague.persistence.select import select_league
+        league = select_league(league_id)
+    else:
+        league = get_league(league_id)
+
     return {
         'user': g.user,
         'league': league
