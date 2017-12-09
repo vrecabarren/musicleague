@@ -70,8 +70,7 @@ def insert_submission(submission):
                         INSERT_SUBMISSION,
                         (submission.created,
                          str(submission.submission_period.id),
-                         track, str(submission.user.id),
-                         submission.updated or submission.created))
+                         track, str(submission.user.id)))
     except Exception as e:
         app.logger.warning('Failed INSERT_SUBMISSION: %s', str(e))
 
@@ -91,8 +90,6 @@ def insert_vote(vote):
                     cur.execute(
                         INSERT_VOTE,
                         (vote.created, str(vote.submission_period.id),
-                         spotify_uri,
-                         vote.updated or vote.created,
-                         str(vote.user.id), weight))
+                         spotify_uri, str(vote.user.id), weight))
     except Exception as e:
         app.logger.warning('Failed INSERT_VOTE: %s', str(e))

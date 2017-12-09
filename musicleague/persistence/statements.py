@@ -90,10 +90,9 @@ CREATE_TABLE_SUBMISSIONS = """CREATE TABLE IF NOT EXISTS submissions (
                                     round_id VARCHAR(255) NOT NULL REFERENCES rounds(id),
                                     spotify_uri VARCHAR(255) NOT NULL,
                                     submitter_id VARCHAR(255) NOT NULL REFERENCES users(id),
-                                    updated TIMESTAMP NOT NULL DEFAULT NOW(),
                                     UNIQUE (round_id, spotify_uri));"""
 
-INSERT_SUBMISSION = """INSERT INTO submissions (created, round_id, spotify_uri, submitter_id, updated)
+INSERT_SUBMISSION = """INSERT INTO submissions (created, round_id, spotify_uri, submitter_id)
                             VALUES (%s, %s, %s, %s, %s) ON CONFLICT (round_id, spotify_uri) DO NOTHING;"""
 
 DELETE_SUBMISSIONS = "DELETE FROM submissions WHERE submitter_id = %s AND round_id = %s;"
@@ -116,12 +115,11 @@ CREATE_TABLE_VOTES = """CREATE TABLE IF NOT EXISTS votes (
                             created TIMESTAMP DEFAULT NOW(),
                             round_id VARCHAR(255) NOT NULL,
                             spotify_uri VARCHAR(255) NOT NULL,
-                            updated TIMESTAMP NOT NULL DEFAULT NOW(),
                             voter_id VARCHAR(255) NOT NULL REFERENCES users(id),
                             weight SMALLINT NOT NULL,
                             FOREIGN KEY (round_id, spotify_uri) REFERENCES submissions(round_id, spotify_uri));"""
 
-INSERT_VOTE = """INSERT INTO votes (created, round_id, spotify_uri, updated, voter_id, weight)
+INSERT_VOTE = """INSERT INTO votes (created, round_id, spotify_uri, voter_id, weight)
                     VALUES (%s, %s, %s, %s, %s, %s);"""
 
 DELETE_VOTES = "DELETE FROM votes WHERE voter_id = %s AND round_id = %s;"
