@@ -26,8 +26,11 @@ body {background-color: #f3f3f3; }
     {% for league in leagues %}
     <div class="row league">
         <div class="row">
-            <div class="col-md-10">
+            <div class="col-md-8">
                 <h5>{{ league.name }}</h5>
+            </div>
+            <div class="col-md-2 text-right">
+                <a href="{{ url_for('admin_league', league_id=league.id) }}" target="_blank"><h5>Admin</h5></a>
             </div>
             <div class="col-md-2 text-right">
                 <a href="{{ url_for('view_league', league_id=league.id) }}" target="_blank"><h5>View</h5></a>

@@ -29,7 +29,7 @@ body {background-color: #f3f3f3; }
                 <h5>{{ league.name }}</h5>
             </div>
             <div class="col-md-3 text-center">
-                <a href="#{{ league.id }}-submission-periods" data-toggle="collapse"><h5>{{ league.submission_periods|length }} Rounds</h5></a>
+                <h5>{{ league.submission_periods|length }} Rounds</h5>
             </div>
             <div class="col-md-3 text-center">
                 <h5>{{ league.users|length }} users</h5>
@@ -38,7 +38,7 @@ body {background-color: #f3f3f3; }
                 <a href="{{ url_for('view_league', league_id=league.id) }}" target="_blank"><h5>View</h5></a>
             </div>
         </div>
-        <div id="{{ league.id }}-submission-periods" class="collapse">
+        <div id="{{ league.id }}-submission-periods">
             <div class="row league-options">
                 <a href="{{ url_for('admin_remove_league', league_id=league.id) }}" class="btn btn-sm btn-danger">Delete</a>
             </div>
