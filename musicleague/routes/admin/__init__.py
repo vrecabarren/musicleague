@@ -1,8 +1,11 @@
 from flask import g
 from flask import request
+from rq.decorators import job
 
 from musicleague import app
+from musicleague import redis_conn
 from musicleague import scheduler
+from musicleague.league import get_league
 from musicleague.models import InvitedUser
 from musicleague.models import League
 from musicleague.models import Submission
@@ -61,12 +64,19 @@ def admin_leagues():
     if request.args.get('pg_update') == '1':
         from musicleague.persistence.insert import insert_league
         for league in leagues:
-            insert_league(league)
+            insert_league_async.delay(str(league.id))
 
     return {
         'user': g.user,
         'leagues': leagues
     }
+
+
+@job('default', connection=redis_conn)
+def insert_league_async(league_id):
+    league = get_league(league_id)
+    from musicleague.persistence.insert import insert_league
+    insert_league(league)
 
 
 @app.route(ADMIN_TOOLS_URL)
