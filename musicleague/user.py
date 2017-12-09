@@ -85,15 +85,8 @@ def update_user(id, name, email, image_url):
     user.image_url = image_url if image_url else user.image_url
     user.save()
 
-    try:
-        from musicleague import postgres_conn
-
-        with postgres_conn:
-            with postgres_conn.cursor() as cur:
-                cur.execute(INSERT_USER, (id, email, name))
-                cur.execute(UPDATE_USER, (email, name, id))
-    except:
-        pass
+    from musicleague.persistence.update import update_user
+    update_user(user)
 
     return user
 
