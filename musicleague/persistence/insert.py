@@ -36,13 +36,18 @@ def insert_league(league):
 
                 for u in league.users:
                     cur.execute(INSERT_MEMBERSHIP, (str(league.id), str(u.id)))
+
+                for round in league.submission_periods:
+                    insert_round(round, insert_deps=False)
+
     except Exception as e:
         app.logger.warning('Failed INSERT_LEAGUE: %s', str(e))
 
 
-def insert_round(round):
+def insert_round(round, insert_deps=True):
     try:
-        insert_league(round.league)
+        if insert_deps:
+            insert_league(round.league)
 
         from musicleague import postgres_conn
         with postgres_conn:
@@ -53,17 +58,18 @@ def insert_round(round):
                      round.name, round.submission_due_date,
                      round.vote_due_date))
                 for submission in round.submissions:
-                    insert_submission(submission)
+                    insert_submission(submission, insert_deps=False)
                 for vote in round.votes:
-                    insert_vote(vote)
+                    insert_vote(vote, insert_deps=False)
     except Exception as e:
         app.logger.warning('Failed INSERT_ROUND: %s', str(e))
 
 
-def insert_submission(submission):
+def insert_submission(submission, insert_deps=True):
     try:
-        insert_round(submission.submission_period)
-        insert_user(submission.user)
+        if insert_deps:
+            insert_round(submission.submission_period)
+            insert_user(submission.user)
 
         from musicleague import postgres_conn
         with postgres_conn:
@@ -79,12 +85,13 @@ def insert_submission(submission):
         app.logger.warning('Failed INSERT_SUBMISSION: %s', str(e))
 
 
-def insert_vote(vote):
+def insert_vote(vote, insert_deps=True):
     try:
-        insert_round(vote.submission_period)
-        insert_user(vote.user)
-        for submission in vote.submission_period.submissions:
-            insert_submission(submission)
+        if insert_deps:
+            insert_round(vote.submission_period)
+            insert_user(vote.user)
+            for submission in vote.submission_period.submissions:
+                insert_submission(submission)
 
         from musicleague import postgres_conn
         with postgres_conn:
