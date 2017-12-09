@@ -52,6 +52,10 @@ def insert_round(round):
                     (str(round.id), round.created, round.description, str(round.league.id),
                      round.name, round.submission_due_date,
                      round.vote_due_date))
+                for submission in round.submissions:
+                    insert_submission(submission)
+                for vote in round.votes:
+                    insert_vote(vote)
     except Exception as e:
         app.logger.warning('Failed INSERT_ROUND: %s', str(e))
 
