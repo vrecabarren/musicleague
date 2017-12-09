@@ -3,6 +3,7 @@ from flask import request
 from rq.decorators import job
 
 from musicleague import app
+from musicleague import postgres_conn
 from musicleague import redis_conn
 from musicleague import scheduler
 from musicleague.league import get_league
@@ -76,7 +77,16 @@ def admin_jobs():
 @login_required
 @admin_required
 def admin_leagues():
-    leagues = League.objects().all().order_by('preferences.name')
+    if request.args.get('pg') == '1':
+        stmt = 'SELECT id, name FROM leagues ORDER BY name;'
+        leagues = []
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(stmt)
+                for league_tup in cur.fetchall():
+                    leagues.append(League(id=league_tup[0], name=league_tup[1]))
+    else:
+        leagues = League.objects().all().order_by('preferences.name')
 
     if request.args.get('pg_update') == '1':
         from musicleague.persistence.insert import insert_league
