@@ -234,6 +234,10 @@ def get_remove_league(league_id, **kwargs):
 def view_league(league_id, **kwargs):
     league = kwargs.get('league')
 
+    if request.args.get('pg_update') == '1':
+        from musicleague.persistence.insert import insert_league
+        insert_league(league)
+
     my_submission, my_vote = None, None
     if league.current_submission_period:
         my_submission = get_my_submission(
