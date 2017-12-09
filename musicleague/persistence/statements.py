@@ -93,7 +93,7 @@ CREATE_TABLE_SUBMISSIONS = """CREATE TABLE IF NOT EXISTS submissions (
                                     UNIQUE (round_id, spotify_uri));"""
 
 INSERT_SUBMISSION = """INSERT INTO submissions (created, round_id, spotify_uri, submitter_id)
-                            VALUES (%s, %s, %s, %s, %s) ON CONFLICT (round_id, spotify_uri) DO NOTHING;"""
+                            VALUES (%s, %s, %s, %s) ON CONFLICT (round_id, spotify_uri) DO NOTHING;"""
 
 DELETE_SUBMISSIONS = "DELETE FROM submissions WHERE submitter_id = %s AND round_id = %s;"
 
@@ -120,7 +120,7 @@ CREATE_TABLE_VOTES = """CREATE TABLE IF NOT EXISTS votes (
                             FOREIGN KEY (round_id, spotify_uri) REFERENCES submissions(round_id, spotify_uri));"""
 
 INSERT_VOTE = """INSERT INTO votes (created, round_id, spotify_uri, voter_id, weight)
-                    VALUES (%s, %s, %s, %s, %s, %s);"""
+                    VALUES (%s, %s, %s, %s, %s);"""
 
 DELETE_VOTES = "DELETE FROM votes WHERE voter_id = %s AND round_id = %s;"
 
