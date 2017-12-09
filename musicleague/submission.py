@@ -9,17 +9,15 @@ def create_or_update_submission(tracks, submission_period, league, user):
     If not, create one.
     """
     # TODO Use submission_period.league instead of passing league
-    s = None
-    for submission in submission_period.submissions:
-        if submission.user == user:
-            s = submission
-            break
+    s = get_my_submission(user, submission_period)
 
     if s:
         s.tracks = tracks
         s.count += 1
         s.updated = datetime.utcnow()
         s.save()
+        from musicleague.persistence.insert import insert_submission
+        insert_submission(s)
     else:
         s = create_submission(tracks, submission_period, user, league)
 

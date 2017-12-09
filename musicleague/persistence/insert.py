@@ -1,4 +1,6 @@
 from musicleague import app
+from musicleague.persistence.statements import DELETE_SUBMISSIONS
+from musicleague.persistence.statements import DELETE_VOTES
 from musicleague.persistence.statements import INSERT_LEAGUE
 from musicleague.persistence.statements import INSERT_MEMBERSHIP
 from musicleague.persistence.statements import INSERT_ROUND
@@ -62,6 +64,7 @@ def insert_submission(submission):
         from musicleague import postgres_conn
         with postgres_conn:
             with postgres_conn.cursor() as cur:
+                cur.execute(DELETE_SUBMISSIONS, (str(submission.user.id), str(submission.submission_period.id)))
                 for track in submission.tracks:
                     cur.execute(
                         INSERT_SUBMISSION,
@@ -83,6 +86,7 @@ def insert_vote(vote):
         from musicleague import postgres_conn
         with postgres_conn:
             with postgres_conn.cursor() as cur:
+                cur.execute(DELETE_VOTES, (str(vote.user.id), str(vote.submission_period.id)))
                 for spotify_uri, weight in vote.votes.iteritems():
                     cur.execute(
                         INSERT_VOTE,
