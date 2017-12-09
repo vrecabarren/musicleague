@@ -29,6 +29,23 @@ ADMIN_USERS_URL = '/admin/users/'
 @login_required
 @admin_required
 def admin():
+    if request.args.get('pg') == '1':
+        from musicleague.persistence.select import select_leagues_count
+        from musicleague.persistence.select import select_rounds_count
+        from musicleague.persistence.select import select_submissions_count
+        from musicleague.persistence.select import select_users_count
+        from musicleague.persistence.select import select_votes_count
+        return {
+            'user': g.user,
+            'num_invited': InvitedUser.objects().count(),
+            'num_leagues': select_leagues_count(),
+            'num_rounds': select_rounds_count(),
+            'num_submissions': select_submissions_count(),
+            'num_tasks': len(scheduler.get_jobs()),
+            'num_users': select_users_count(),
+            'num_votes': select_votes_count()
+        }
+
     return {
         'user': g.user,
         'num_invited': InvitedUser.objects().count(),

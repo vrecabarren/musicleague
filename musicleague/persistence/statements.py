@@ -16,6 +16,8 @@ INSERT_USER = "INSERT INTO users (id, email, image_url, joined, name, profile_bg
 
 SELECT_USER = "SELECT email, image_url, joined, name, profile_bg FROM users WHERE id = %s;"
 
+SELECT_USERS_COUNT = "SELECT COUNT(id) FROM users;"
+
 UPDATE_USER = "UPDATE users SET (email, image_url, name, profile_bg) = (%s, %s, %s, %s) WHERE id = %s;"
 
 # =======
@@ -31,6 +33,8 @@ CREATE_TABLE_LEAGUES = """CREATE TABLE IF NOT EXISTS leagues (
 DELETE_LEAGUE = "DELETE FROM leagues WHERE id = %s;"
 
 INSERT_LEAGUE = "INSERT INTO leagues (id, created, name, owner_id) VALUES (%s, %s, %s, %s) ON CONFLICT (id) DO NOTHING;"
+
+SELECT_LEAGUES_COUNT = "SELECT COUNT(id) FROM leagues;"
 
 UPDATE_LEAGUE = "UPDATE leagues SET (name) = (%s) WHERE id = %s;"
 
@@ -77,6 +81,8 @@ DELETE_ROUNDS = "DELETE FROM rounds WHERE league_id = %s;"
 INSERT_ROUND = """INSERT INTO rounds (id, created, description, league_id, name, submissions_due, votes_due)
                     VALUES (%s, %s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING;"""
 
+SELECT_ROUNDS_COUNT = "SELECT COUNT(id) FROM rounds;"
+
 UPDATE_ROUND = """UPDATE rounds SET (description, name, submissions_due, votes_due)
                     VALUES (%s, %s, %s, %s) WHERE id = %s;"""
 
@@ -104,6 +110,8 @@ SELECT_SUBMISSIONS = """SELECT submissions.spotify_uri as uri,
                         LEFT JOIN users su ON su.id = submissions.submitter_id
                         WHERE submissions.round_id = %s
                         ORDER BY submissions.created;"""
+
+SELECT_SUBMISSIONS_COUNT = "SELECT COUNT(submitter_id) FROM submissions;"
 
 UPDATE_SUBMISSION_RANK = "UPDATE submissions SET (rank) VALUES (%s) WHERE round_id = %s AND spotify_uri = %s;"
 
@@ -136,3 +144,5 @@ SELECT_SUBMISSIONS_WITH_VOTES = """SELECT submissions.spotify_uri as uri,
                                    LEFT JOIN users vu ON vu.id = votes.voter_id
                                    WHERE submissions.round_id = %s
                                    ORDER BY points DESC;"""
+
+SELECT_VOTES_COUNT = "SELECT COUNT(voter_id) FROM votes;"
