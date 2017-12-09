@@ -1,0 +1,85 @@
+{% extends "frame.html" %}
+
+{% block title %}Music League | Admin{% endblock %}
+
+{% block css %}
+<style>
+body {background-color: #f3f3f3; }
+
+#title-bar { margin-bottom: 30px; padding: 0; }
+
+.league {
+    background-color: #fff;
+    margin-bottom: 5px;
+    padding: 10px 25px;
+}
+
+.league-options, .round-options {
+    padding: 15px 25px;
+}
+</style>
+{% endblock %}
+
+{% block page_content %}
+
+<div class="container">
+    <div class="row league">
+        <div class="row">
+            <div class="col-md-4">
+                <h5>{{ league.name }}</h5>
+            </div>
+            <div class="col-md-3 text-center">
+                <a href="#{{ league.id }}-submission-periods" data-toggle="collapse"><h5>{{ league.submission_periods|length }} Rounds</h5></a>
+            </div>
+            <div class="col-md-3 text-center">
+                <h5>{{ league.users|length }} users</h5>
+            </div>
+            <div class="col-md-2 text-right">
+                <a href="{{ url_for('view_league', league_id=league.id) }}" target="_blank"><h5>View</h5></a>
+            </div>
+        </div>
+        <div id="{{ league.id }}-submission-periods" class="collapse">
+            <div class="row league-options">
+                <a href="{{ url_for('admin_remove_league', league_id=league.id) }}" class="btn btn-sm btn-danger">Delete</a>
+            </div>
+            <div class="row">
+                <div class="col-md-11 col-md-offset-1">
+                    {% for submission_period in league.submission_periods %}
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h5>{{ submission_period.name }}</h5>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h5>{{ submission_period.submissions|length }} Submissions</h5>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h5>{{ submission_period.votes|length }} Votes</h5>
+                        </div>
+                        <div class="col-md-1 text-right">
+                            <a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=submission_period.id)}}" target="_blank"><h5>View</h5></a>
+                        </div>
+                        <div class="col-md-1 text-right">
+                            <a href="#{{ submission_period.id }}-options" data-toggle="collapse"><h5>Options</h5></a>
+                        </div>
+                        <div id="{{ submission_period.id }}-options" class="round-options collapse">
+                            <a href="{{ url_for('admin_generate_playlist', submission_period_id=submission_period.id) }}" class="btn btn-sm btn-success">Generate Playlist</a>
+                            <a href="{{ url_for('admin_reschedule_tasks', submission_period_id=submission_period.id) }}" class="btn btn-sm btn-primary">Reschedule Tasks</a>
+                            <a href="{{ url_for('admin_remove_round', league_id=league.id, submission_period_id=submission_period.id) }}" class="btn btn-sm btn-danger">Delete</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(.collapse).collapse();
+    });
+</script>
+{% endblock %}

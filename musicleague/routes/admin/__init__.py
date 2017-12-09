@@ -20,6 +20,7 @@ from musicleague.routes.decorators import templated
 
 ADMIN_URL = '/admin/'
 ADMIN_JOBS_URL = '/admin/jobs/'
+ADMIN_LEAGUE_URL = '/admin/leagues/<league_id>/'
 ADMIN_LEAGUES_URL = '/admin/leagues/'
 ADMIN_TOOLS_URL = '/admin/tools/'
 ADMIN_USERS_URL = '/admin/users/'
@@ -96,6 +97,18 @@ def admin_leagues():
     return {
         'user': g.user,
         'leagues': leagues
+    }
+
+
+@app.route(ADMIN_LEAGUE_URL)
+@templated('admin/leagues/league.html')
+@login_required
+@admin_required
+def admin_league(league_id):
+    league = get_league(league_id)
+    return {
+        'user': g.user,
+        'league': league
     }
 
 
