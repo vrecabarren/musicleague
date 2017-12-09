@@ -79,13 +79,18 @@ def admin_jobs():
 @admin_required
 def admin_leagues():
     if request.args.get('pg') == '1':
-        stmt = 'SELECT id, name FROM leagues ORDER BY name;'
+        from musicleague.persistence.models import League as NewLeague
+        stmt = 'SELECT id, created, name, owner_id FROM leagues ORDER BY name;'
         leagues = []
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(stmt)
                 for league_tup in cur.fetchall():
-                    leagues.append(League(id=league_tup[0], name=league_tup[1]))
+                    leagues.append(
+                        NewLeague(id=league_tup[0],
+                                  created=league_tup[1],
+                                  name=league_tup[2],
+                                  owner_id=league_tup[3]))
     else:
         leagues = League.objects().all().order_by('preferences.name')
 
