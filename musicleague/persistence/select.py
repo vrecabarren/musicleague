@@ -62,6 +62,7 @@ def select_league(league_id):
                 for round_tup in cur.fetchall():
                     round_id = round_tup[0]
                     r = select_round(round_id)
+                    r.league = l
                     l.submission_periods.append(r)
 
                 cur.execute(SELECT_USERS_IN_LEAGUE, (str(league_id),))
@@ -93,8 +94,6 @@ def select_league(league_id):
                         if created is not None:
                             v = Vote(user=u, votes=votes, created=created)
                             round.votes.append(v)
-
-
                 return l
     except Exception as e:
         app.logger.warning('Failed SELECT_LEAGUE: %s', str(e))
