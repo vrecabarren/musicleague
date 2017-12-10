@@ -34,9 +34,12 @@ def calculate_round_scoreboard(round):
                              reverse=True)
 
     # Rank entries and assign to round scoreboard with string keys
+    from musicleague.persistence.update import update_submission_rank
     rankings = rank_entries(entries.values())
     for rank, entries in rankings.iteritems():
         round.scoreboard._rankings[str(rank)] = entries
+        for entry in entries:
+            update_submission_rank(round, entry.uri, rank)
 
     round.save()
     return round

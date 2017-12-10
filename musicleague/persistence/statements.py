@@ -12,7 +12,8 @@ CREATE_TABLE_USERS = """CREATE TABLE IF NOT EXISTS users (
 
 DELETE_USER = "DELETE FROM users WHERE id = %s;"
 
-INSERT_USER = "INSERT INTO users (id, email, image_url, joined, name, profile_bg) VALUES (%s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING;"
+INSERT_USER = """INSERT INTO users (id, email, image_url, joined, name, profile_bg)
+                    VALUES (%s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING;"""
 
 SELECT_USER = "SELECT email, image_url, joined, name, profile_bg FROM users WHERE id = %s;"
 
@@ -64,7 +65,7 @@ INSERT_MEMBERSHIP = """INSERT INTO memberships (league_id, user_id)
 
 SELECT_MEMBERSHIPS_COUNT = "SELECT COUNT(league_id) from memberships WHERE user_id = %s;"
 
-UPDATE_MEMBERSHIP_RANK = "UPDATE memberships SET (rank) VALUES (%s) WHERE league_id = %s AND user_id = %s;"
+UPDATE_MEMBERSHIP_RANK = "UPDATE memberships SET rank = %s WHERE league_id = %s AND user_id = %s;"
 
 # ======
 # ROUNDS
@@ -114,8 +115,8 @@ INSERT_SUBMISSION = """INSERT INTO submissions (created, round_id, spotify_uri, 
 
 DELETE_SUBMISSIONS = "DELETE FROM submissions WHERE submitter_id = %s AND round_id = %s;"
 
-SELECT_SUBMISSIONS = """SELECT submissions.spotify_uri as uri,
-                               su.id as submitter_id
+SELECT_SUBMISSIONS = """SELECT submissions.spotify_uri,
+                               su.id
                         FROM submissions
                         LEFT JOIN users su ON su.id = submissions.submitter_id
                         WHERE submissions.round_id = %s
@@ -125,7 +126,7 @@ SELECT_SUBMISSIONS_COUNT = "SELECT COUNT(submitter_id) FROM submissions;"
 
 SELECT_SUBMISSIONS_FROM_USER = "SELECT created, spotify_uri FROM submissions WHERE round_id = %s AND submitter_id = %s;"
 
-UPDATE_SUBMISSION_RANK = "UPDATE submissions SET (rank) VALUES (%s) WHERE round_id = %s AND spotify_uri = %s;"
+UPDATE_SUBMISSION_RANK = "UPDATE submissions SET rank = %s WHERE round_id = %s AND spotify_uri = %s;"
 
 # =====
 # VOTES
@@ -154,12 +155,12 @@ SELECT_VOTES = """SELECT votes.spotify_uri,
 
 SELECT_VOTES_FROM_USER = "SELECT created, spotify_uri, weight FROM votes WHERE round_id = %s AND voter_id = %s;"
 
-SELECT_SUBMISSIONS_WITH_VOTES = """SELECT submissions.spotify_uri as uri,
-                                          su.id as submitter_id,
-                                          su.name as submitter_name,
-                                          vu.id as voter_id,
-                                          vu.name as voter_name,
-                                          votes.weight as points
+SELECT_SUBMISSIONS_WITH_VOTES = """SELECT submissions.spotify_uri,
+                                          su.id,
+                                          su.name,
+                                          vu.id,
+                                          vu.name,
+                                          votes.weight
                                    FROM submissions
                                    RIGHT JOIN votes ON votes.spotify_uri = submissions.spotify_uri
                                    LEFT JOIN users su ON su.id = submissions.submitter_id

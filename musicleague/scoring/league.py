@@ -43,9 +43,12 @@ def calculate_league_scoreboard(league):
                                reverse=True)
 
     # Rank entries and assign to league scoreboard with string keys
+    from musicleague.persistence.update import update_membership_rank
     rankings = rank_entries(entries.values())
     for rank, entries in rankings.iteritems():
         league.scoreboard._rankings[str(rank)] = entries
+        for entry in entries:
+            update_membership_rank(entry.league, entry.user, rank)
 
     league.save()
     return league
