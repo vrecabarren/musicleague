@@ -1,10 +1,10 @@
 from musicleague import app
 from musicleague.models import User
-from musicleague.persistence.models import League
 from musicleague.persistence.statements import SELECT_LEAGUE
 from musicleague.persistence.statements import SELECT_LEAGUES_COUNT
 from musicleague.persistence.statements import SELECT_MEMBERSHIPS_COUNT
 from musicleague.persistence.statements import SELECT_ROUNDS_COUNT
+from musicleague.persistence.statements import SELECT_ROUNDS_IN_LEAGUE
 from musicleague.persistence.statements import SELECT_SUBMISSIONS_COUNT
 from musicleague.persistence.statements import SELECT_VOTES_COUNT
 from musicleague.persistence.statements import SELECT_USER
@@ -41,6 +41,7 @@ def select_league(league_id):
     try:
         from musicleague import postgres_conn
         from musicleague.persistence.models import League as NewLeague
+        from musicleague.persistence.models import Round
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(SELECT_LEAGUE, (str(league_id),))
@@ -59,6 +60,20 @@ def select_league(league_id):
                     l.users.append(u)
                     if user_id == l.owner_id:
                         l.owner = u
+
+                cur.execute(SELECT_ROUNDS_IN_LEAGUE, (str(league_id),))
+                for round_tup in cur.fetchall():
+                    r = Round(
+                        id=round_tup[0],
+                        created=round_tup[1],
+                        description=round_tup[2],
+                        name=round_tup[3],
+                        playlist_url=round_tup[4],
+                        submissions_due=round_tup[5],
+                        votes_due=round_tup[6],
+                    )
+                    l.submission_periods.append(r)
+
                 return l
     except Exception as e:
         app.logger.warning('Failed SELECT_LEAGUE: %s', str(e))

@@ -20,9 +20,12 @@ class League:
 
 
 class Round:
-    def __init__(self, id, created, name, description):
+    def __init__(self, id, created, name, description, playlist_url, submissions_due, votes_due):
         self.id = id
         self.created = created
         self.name = name
         self.description = description
+        self.playlist_url = playlist_url
+        self.submissions_due_date = submissions_due
+        self.votes_due_date = votes_due
         self.league = None

@@ -89,6 +89,9 @@ INSERT_ROUND = """INSERT INTO rounds (id, created, description, league_id, name,
 
 SELECT_ROUNDS_COUNT = "SELECT COUNT(id) FROM rounds;"
 
+SELECT_ROUNDS_IN_LEAGUE = """SELECT id, created, description, name, playlist_url, submissions_due, votes_due
+                                FROM rounds WHERE league_id = %s ORDER BY submissions_due, votes_due;"""
+
 UPDATE_ROUND = """UPDATE rounds SET (description, name, submissions_due, votes_due)
                     VALUES (%s, %s, %s, %s) WHERE id = %s;"""
 
