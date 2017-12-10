@@ -80,8 +80,9 @@ def select_league(league_id):
                         for sub_tup in cur.fetchall():
                             created = sub_tup[0]
                             tracks.append(sub_tup[1])
-                        s = Submission(user=u, tracks=tracks, created=created)
-                        round.submissions.append(s)
+                        if created is not None:
+                            s = Submission(user=u, tracks=tracks, created=created)
+                            round.submissions.append(s)
 
                         cur.execute(SELECT_VOTES_FROM_USER, (round.id, user_id))
                         votes = {}
@@ -89,8 +90,9 @@ def select_league(league_id):
                         for vote_tup in cur.fetchall():
                             created = vote_tup[0]
                             votes[vote_tup[1]] = vote_tup[2]
-                        v = Vote(user=u, votes=votes, created=created)
-                        round.votes.append(v)
+                        if created is not None:
+                            v = Vote(user=u, votes=votes, created=created)
+                            round.votes.append(v)
 
 
                 return l
