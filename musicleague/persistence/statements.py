@@ -87,10 +87,12 @@ DELETE_ROUNDS = "DELETE FROM rounds WHERE league_id = %s;"
 INSERT_ROUND = """INSERT INTO rounds (id, created, description, league_id, name, submissions_due, votes_due)
                     VALUES (%s, %s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING;"""
 
+SELECT_ROUND = """SELECT created, description, name, playlist_url, submissions_due, votes_due
+                    FROM rounds WHERE id = %s;"""
+
 SELECT_ROUNDS_COUNT = "SELECT COUNT(id) FROM rounds;"
 
-SELECT_ROUNDS_IN_LEAGUE = """SELECT id, created, description, name, playlist_url, submissions_due, votes_due
-                                FROM rounds WHERE league_id = %s ORDER BY submissions_due, votes_due;"""
+SELECT_ROUNDS_IN_LEAGUE = """SELECT id FROM rounds WHERE league_id = %s ORDER BY submissions_due, votes_due;"""
 
 UPDATE_ROUND = """UPDATE rounds SET (description, name, submissions_due, votes_due)
                     VALUES (%s, %s, %s, %s) WHERE id = %s;"""
@@ -140,6 +142,14 @@ INSERT_VOTE = """INSERT INTO votes (created, round_id, spotify_uri, voter_id, we
                     VALUES (%s, %s, %s, %s, %s);"""
 
 DELETE_VOTES = "DELETE FROM votes WHERE voter_id = %s AND round_id = %s;"
+
+SELECT_VOTES = """SELECT votes.spotify_uri as uri,
+                         vu.id as voter_id,
+                         vu.name as voter_name
+                  FROM votes
+                  LEFT JOIN users vu ON vu.id = votes.voter_id
+                  WHERE votes.round_id = %s
+                  ORDER BY votes.created;"""
 
 SELECT_SUBMISSIONS_WITH_VOTES = """SELECT submissions.spotify_uri as uri,
                                           su.id as submitter_id,

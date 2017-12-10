@@ -3,13 +3,14 @@ from musicleague.models import User
 from musicleague.persistence.statements import SELECT_LEAGUE
 from musicleague.persistence.statements import SELECT_LEAGUES_COUNT
 from musicleague.persistence.statements import SELECT_MEMBERSHIPS_COUNT
+from musicleague.persistence.statements import SELECT_ROUND
 from musicleague.persistence.statements import SELECT_ROUNDS_COUNT
 from musicleague.persistence.statements import SELECT_ROUNDS_IN_LEAGUE
 from musicleague.persistence.statements import SELECT_SUBMISSIONS_COUNT
-from musicleague.persistence.statements import SELECT_VOTES_COUNT
 from musicleague.persistence.statements import SELECT_USER
 from musicleague.persistence.statements import SELECT_USERS_COUNT
 from musicleague.persistence.statements import SELECT_USERS_IN_LEAGUE
+from musicleague.persistence.statements import SELECT_VOTES_COUNT
 
 
 def select_user(user_id):
@@ -63,15 +64,8 @@ def select_league(league_id):
 
                 cur.execute(SELECT_ROUNDS_IN_LEAGUE, (str(league_id),))
                 for round_tup in cur.fetchall():
-                    r = Round(
-                        id=round_tup[0],
-                        created=round_tup[1],
-                        description=round_tup[2],
-                        name=round_tup[3],
-                        playlist_url=round_tup[4],
-                        submissions_due=round_tup[5],
-                        votes_due=round_tup[6],
-                    )
+                    round_id = round_tup[0]
+                    r = select_round(round_id)
                     l.submission_periods.append(r)
 
                 return l
@@ -99,6 +93,28 @@ def select_memberships_count(user_id):
                 return cur.fetchone()[0]
     except Exception as e:
         app.logger.warning('Failed SELECT_MEMBERSHIPS_COUNT: %s', str(e))
+
+
+def select_round(round_id):
+    try:
+        from musicleague import postgres_conn
+        from musicleague.persistence.models import Round
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(SELECT_ROUND, (str(round_id),))
+                round_tup = cur.fetchone()
+                r = Round(
+                    id=str(round_id),
+                    created=round_tup[0],
+                    description=round_tup[1],
+                    name=round_tup[2],
+                    playlist_url=round_tup[3],
+                    submissions_due=round_tup[4],
+                    votes_due=round_tup[5],
+                )
+                return r
+    except Exception as e:
+        app.logger.warning('Failed SELECT_ROUND: %s', str(e))
 
 
 def select_rounds_count():
