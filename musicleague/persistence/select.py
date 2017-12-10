@@ -1,5 +1,7 @@
 from musicleague import app
 from musicleague.models import User
+from musicleague.persistence.models import Submission
+from musicleague.persistence.models import Vote
 from musicleague.persistence.statements import SELECT_LEAGUE
 from musicleague.persistence.statements import SELECT_LEAGUES_COUNT
 from musicleague.persistence.statements import SELECT_MEMBERSHIPS_COUNT
@@ -7,10 +9,12 @@ from musicleague.persistence.statements import SELECT_ROUND
 from musicleague.persistence.statements import SELECT_ROUNDS_COUNT
 from musicleague.persistence.statements import SELECT_ROUNDS_IN_LEAGUE
 from musicleague.persistence.statements import SELECT_SUBMISSIONS_COUNT
+from musicleague.persistence.statements import SELECT_SUBMISSIONS_FROM_USER
 from musicleague.persistence.statements import SELECT_USER
 from musicleague.persistence.statements import SELECT_USERS_COUNT
 from musicleague.persistence.statements import SELECT_USERS_IN_LEAGUE
 from musicleague.persistence.statements import SELECT_VOTES_COUNT
+from musicleague.persistence.statements import SELECT_VOTES_FROM_USER
 
 
 def select_user(user_id):
@@ -54,6 +58,12 @@ def select_league(league_id):
                     owner_id=league_tup[2]
                 )
 
+                cur.execute(SELECT_ROUNDS_IN_LEAGUE, (str(league_id),))
+                for round_tup in cur.fetchall():
+                    round_id = round_tup[0]
+                    r = select_round(round_id)
+                    l.submission_periods.append(r)
+
                 cur.execute(SELECT_USERS_IN_LEAGUE, (str(league_id),))
                 for user_tup in cur.fetchall():
                     user_id = user_tup[0]
@@ -62,11 +72,26 @@ def select_league(league_id):
                     if user_id == l.owner_id:
                         l.owner = u
 
-                cur.execute(SELECT_ROUNDS_IN_LEAGUE, (str(league_id),))
-                for round_tup in cur.fetchall():
-                    round_id = round_tup[0]
-                    r = select_round(round_id)
-                    l.submission_periods.append(r)
+                    for round in l.submission_periods:
+
+                        cur.execute(SELECT_SUBMISSIONS_FROM_USER, (round.id, user_id))
+                        tracks = []
+                        created = None
+                        for sub_tup in cur.fetchall():
+                            created = sub_tup[0]
+                            tracks.append(sub_tup[1])
+                        s = Submission(user=u, tracks=tracks, created=created)
+                        round.submissions.append(s)
+
+                        cur.execute(SELECT_VOTES_FROM_USER, (round.id, user_id))
+                        votes = {}
+                        created = None
+                        for vote_tup in cur.fetchall():
+                            created = vote_tup[0]
+                            votes[vote_tup[1]] = vote_tup[2]
+                        v = Vote(user=u, votes=votes, created=created)
+                        round.votes.append(v)
+
 
                 return l
     except Exception as e:

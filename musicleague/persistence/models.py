@@ -26,6 +26,22 @@ class Round:
         self.name = name
         self.description = description
         self.playlist_url = playlist_url
+        self.submissions = []
         self.submissions_due_date = submissions_due
+        self.votes = []
         self.votes_due_date = votes_due
         self.league = None
+
+
+class Submission:
+    def __init__(self, user, tracks, created):
+        self.user = user
+        self.tracks = tracks
+        self.created = created
+
+
+class Vote:
+    def __init__(self, user, votes, created):
+        self.user = user
+        self.votes = votes
+        self.created = created

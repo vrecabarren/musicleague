@@ -115,14 +115,15 @@ INSERT_SUBMISSION = """INSERT INTO submissions (created, round_id, spotify_uri, 
 DELETE_SUBMISSIONS = "DELETE FROM submissions WHERE submitter_id = %s AND round_id = %s;"
 
 SELECT_SUBMISSIONS = """SELECT submissions.spotify_uri as uri,
-                               su.id as submitter_id,
-                               su.name as submitter_name
+                               su.id as submitter_id
                         FROM submissions
                         LEFT JOIN users su ON su.id = submissions.submitter_id
                         WHERE submissions.round_id = %s
                         ORDER BY submissions.created;"""
 
 SELECT_SUBMISSIONS_COUNT = "SELECT COUNT(submitter_id) FROM submissions;"
+
+SELECT_SUBMISSIONS_FROM_USER = "SELECT created, spotify_uri FROM submissions WHERE round_id = %s AND submitter_id = %s;"
 
 UPDATE_SUBMISSION_RANK = "UPDATE submissions SET (rank) VALUES (%s) WHERE round_id = %s AND spotify_uri = %s;"
 
@@ -143,13 +144,15 @@ INSERT_VOTE = """INSERT INTO votes (created, round_id, spotify_uri, voter_id, we
 
 DELETE_VOTES = "DELETE FROM votes WHERE voter_id = %s AND round_id = %s;"
 
-SELECT_VOTES = """SELECT votes.spotify_uri as uri,
-                         vu.id as voter_id,
-                         vu.name as voter_name
+SELECT_VOTES = """SELECT votes.spotify_uri,
+                         votes.weight,
+                         vu.id
                   FROM votes
                   LEFT JOIN users vu ON vu.id = votes.voter_id
                   WHERE votes.round_id = %s
                   ORDER BY votes.created;"""
+
+SELECT_VOTES_FROM_USER = "SELECT created, spotify_uri, weight FROM votes WHERE round_id = %s AND voter_id = %s;"
 
 SELECT_SUBMISSIONS_WITH_VOTES = """SELECT submissions.spotify_uri as uri,
                                           su.id as submitter_id,
