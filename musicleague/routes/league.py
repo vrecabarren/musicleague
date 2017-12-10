@@ -230,9 +230,13 @@ def get_remove_league(league_id, **kwargs):
 @app.route(VIEW_LEAGUE_URL, methods=['GET'])
 @templated('league/view/page.html')
 @login_required
-@league_required
 def view_league(league_id, **kwargs):
-    league = kwargs.get('league')
+
+    if request.args.get('pg') == '1':
+        from musicleague.persistence.select import select_league
+        league = select_league(league_id)
+    else:
+        league = get_league(league_id)
 
     if request.args.get('pg_update') == '1':
         from musicleague.persistence.insert import insert_league
