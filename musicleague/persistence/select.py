@@ -1,5 +1,6 @@
 from musicleague import app
 from musicleague.models import User
+from musicleague.persistence.models import RankingEntry
 from musicleague.persistence.models import Submission
 from musicleague.persistence.models import Vote
 from musicleague.persistence.statements import SELECT_LEAGUE
@@ -8,6 +9,7 @@ from musicleague.persistence.statements import SELECT_MEMBERSHIPS_COUNT
 from musicleague.persistence.statements import SELECT_ROUND
 from musicleague.persistence.statements import SELECT_ROUNDS_COUNT
 from musicleague.persistence.statements import SELECT_ROUNDS_IN_LEAGUE
+from musicleague.persistence.statements import SELECT_SCOREBOARD
 from musicleague.persistence.statements import SELECT_SUBMISSIONS_COUNT
 from musicleague.persistence.statements import SELECT_SUBMISSIONS_FROM_USER
 from musicleague.persistence.statements import SELECT_USER
@@ -66,10 +68,12 @@ def select_league(league_id):
                     l.submission_periods.append(r)
 
                 cur.execute(SELECT_USERS_IN_LEAGUE, (str(league_id),))
+                user_idx = {}
                 for user_tup in cur.fetchall():
                     user_id = user_tup[0]
                     u = select_user(user_id)
                     l.users.append(u)
+                    user_idx[user_id] = u
                     if user_id == l.owner_id:
                         l.owner = u
 
@@ -94,9 +98,20 @@ def select_league(league_id):
                         if created is not None:
                             v = Vote(user=u, votes=votes, created=created)
                             round.votes.append(v)
+
+                cur.execute(SELECT_SCOREBOARD, (str(league_id),))
+                for score_tup in cur.fetchall():
+                    user_id, rank = score_tup
+                    u = user_idx.get(user_id, None)
+                    le = RankingEntry(user=u, rank=rank)
+                    l.scoreboard.add_entry(le, rank)
+
+                app.logger.warning('Created league scoreboard: %s', l.scoreboard._rankings)
+                app.logger.warning('League scoreboard top: %s', l.scoreboard.top)
+
                 return l
     except Exception as e:
-        app.logger.warning('Failed SELECT_LEAGUE: %s', str(e))
+        app.logger.warning('Failed SELECT_LEAGUE: %s', str(e), exc_info=e)
 
 
 def select_leagues_count():

@@ -19,9 +19,7 @@ SELECT_USER = "SELECT email, image_url, joined, name, profile_bg FROM users WHER
 
 SELECT_USERS_COUNT = "SELECT COUNT(id) FROM users;"
 
-SELECT_USERS_IN_LEAGUE = """SELECT user_id
-                                FROM memberships
-                                WHERE league_id = %s;"""
+SELECT_USERS_IN_LEAGUE = "SELECT user_id FROM memberships WHERE league_id = %s;"
 
 UPDATE_USER = "UPDATE users SET (email, image_url, name, profile_bg) = (%s, %s, %s, %s) WHERE id = %s;"
 
@@ -66,6 +64,12 @@ INSERT_MEMBERSHIP = """INSERT INTO memberships (league_id, user_id)
 SELECT_MEMBERSHIPS_COUNT = "SELECT COUNT(league_id) from memberships WHERE user_id = %s;"
 
 UPDATE_MEMBERSHIP_RANK = "UPDATE memberships SET rank = %s WHERE league_id = %s AND user_id = %s;"
+
+SELECT_SCOREBOARD = """SELECT users.id, memberships.rank
+                        FROM memberships
+                        LEFT JOIN users ON users.id = memberships.user_id
+                        WHERE memberships.league_id = %s
+                        ORDER BY memberships.rank;"""
 
 # ======
 # ROUNDS

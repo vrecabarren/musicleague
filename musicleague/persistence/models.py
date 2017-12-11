@@ -1,3 +1,5 @@
+from collections import defaultdict
+from collections import OrderedDict
 from datetime import datetime
 
 
@@ -11,6 +13,47 @@ class User:
         self.profile_bg = profile_bg
 
 
+class RankingEntry:
+    def __init__(self, user, rank):
+        self.user = user
+        self.place = rank
+
+
+class Scoreboard:
+    _rankings = defaultdict(list)
+
+    def add_entry(self, entry, rank):
+        self._rankings[rank].append(entry)
+
+    @property
+    def rankings(self):
+        rankings = OrderedDict()
+        for key in sorted(self._rankings.keys()):
+            rankings[key] = self._rankings[key]
+        return rankings
+
+    @property
+    def top(self):
+        top = []
+
+        if 1 in self.rankings:
+            top.extend(self.rankings[1])
+            if len(top) >= 3:
+                return top[:3]
+
+        if 2 in self.rankings:
+            top.extend(self.rankings[2])
+            if len(top) >= 3:
+                return top[:3]
+
+        if 3 in self.rankings:
+            top.extend(self.rankings[3])
+            if len(top) >= 3:
+                return top[:3]
+
+        return top
+
+
 class League:
     def __init__(self, id, created, name, owner_id):
         self.id = id
@@ -18,6 +61,7 @@ class League:
         self.name = name
         self.owner = None
         self.owner_id = owner_id
+        self.scoreboard = Scoreboard()
         self.submission_periods = []
         self.users = []
 
