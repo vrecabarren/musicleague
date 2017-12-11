@@ -3,6 +3,7 @@ from rq.decorators import job
 from musicleague import app
 from musicleague import redis_conn
 from musicleague.notify import user_all_voted_notification
+from musicleague.notify import user_new_round_notification
 from musicleague.notify import user_submit_reminder_notification
 from musicleague.notify import user_vote_reminder_notification
 from musicleague.scoring.league import calculate_league_scoreboard
@@ -59,6 +60,12 @@ def complete_submission_period(submission_period_id):
         cancel_round_completion(submission_period)
         cancel_vote_reminders(submission_period)
         submission_period.save()
+
+        for idx, sp in enumerate(submission_period.league.submission_periods):
+            if str(sp.id) == str(submission_period_id):
+                if len(submission_period.league.submission_periods) > (idx + 1):
+                    user_new_round_notification(submission_period.league.submission_periods[idx + 1])
+
     except:
         app.logger.exception(
             'Error occurred while completing submission period!')

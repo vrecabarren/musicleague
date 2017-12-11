@@ -99,6 +99,16 @@ def user_last_to_vote_notification(user, submission_period):
     return True
 
 
+def user_new_round_notification(submission_period):
+    if not submission_period or not submission_period.league.users:
+        return
+
+    # NOTE: Preference is checked within the calls below
+
+    user_new_round_notification(submission_period)
+    return True
+
+
 def user_playlist_created_notification(submission_period):
     if not submission_period or not submission_period.league.users:
         return

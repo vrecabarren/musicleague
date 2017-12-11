@@ -1,0 +1,1 @@
+A new round is starting. {{ submission_period.name }} is now accepting submissions!

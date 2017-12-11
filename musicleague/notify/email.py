@@ -107,11 +107,35 @@ def user_last_to_vote_email(user, submission_period):
     )
 
 
+def user_new_round_email(submission_period):
+    if not submission_period or not submission_period.league.users:
+        return
+
+    # Less than 2 users leads to invalid BCC list
+    if len(submission_period.league.users) < 2:
+        app.logger.info('Skipping new round email with < 2 users')
+        return
+
+    to = submission_period.league.owner.email
+    bcc_list = ','.join(
+        [u.email for u in submission_period.league.users
+         if u.email and not submission_period.league.has_owner(u)
+         and u.preferences.user_playlist_created_notifications])
+
+    _send_email.delay(
+        to,
+        'Music League - Round Starting',
+        _txt_email('new_round.txt', submission_period=submission_period),
+        _html_email('new_round.html', submission_period=submission_period),
+        additional_data={'bcc': bcc_list}
+    )
+
+
 def user_playlist_created_email(submission_period):
     if not submission_period or not submission_period.league.users:
         return
 
-    # Less than 2 uses leads to invalid BCC list
+    # Less than 2 users leads to invalid BCC list
     if len(submission_period.league.users) < 2:
         app.logger.info('Skipping playlist email with < 2 users')
         return
