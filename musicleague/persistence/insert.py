@@ -74,11 +74,6 @@ def insert_submission(submission, insert_deps=True):
         from musicleague import postgres_conn
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                try:
-                    cur.execute(DELETE_SUBMISSIONS, (str(submission.user.id), str(submission.submission_period.id)))
-                except Exception:
-                    pass
-
                 for track in submission.tracks:
                     cur.execute(
                         INSERT_SUBMISSION,
@@ -100,11 +95,6 @@ def insert_vote(vote, insert_deps=True):
         from musicleague import postgres_conn
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                try:
-                    cur.execute(DELETE_VOTES, (str(vote.user.id), str(vote.submission_period.id)))
-                except Exception:
-                    pass
-
                 for spotify_uri, weight in vote.votes.iteritems():
                     cur.execute(
                         INSERT_VOTE,
