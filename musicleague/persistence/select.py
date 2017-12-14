@@ -80,21 +80,13 @@ def select_league(league_id):
                     for round in l.submission_periods:
 
                         cur.execute(SELECT_SUBMISSIONS_FROM_USER, (round.id, user_id))
-                        tracks = []
-                        created = None
-                        for sub_tup in cur.fetchall():
-                            created = sub_tup[0]
-                            tracks.append(sub_tup[1])
+                        created, tracks = cur.fetchone() if cur.rowcount else None, None
                         if created is not None:
                             s = Submission(user=u, tracks=tracks, created=created)
                             round.submissions.append(s)
 
                         cur.execute(SELECT_VOTES_FROM_USER, (round.id, user_id))
-                        votes = {}
-                        created = None
-                        for vote_tup in cur.fetchall():
-                            created = vote_tup[0]
-                            votes[vote_tup[1]] = vote_tup[2]
+                        created, votes = cur.fetchone() if cur.rowcount else None, None
                         if created is not None:
                             v = Vote(user=u, votes=votes, created=created)
                             round.votes.append(v)

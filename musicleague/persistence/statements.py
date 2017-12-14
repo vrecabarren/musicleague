@@ -128,7 +128,11 @@ SELECT_SUBMISSIONS = """SELECT submissions.spotify_uri,
 
 SELECT_SUBMISSIONS_COUNT = "SELECT COUNT(submitter_id) FROM submissions;"
 
-SELECT_SUBMISSIONS_FROM_USER = "SELECT created, spotify_uri FROM submissions WHERE round_id = %s AND submitter_id = %s;"
+SELECT_SUBMISSIONS_FROM_USER = """SELECT created, array_agg(spotify_uri)
+                                    FROM submissions WHERE round_id = %s AND submitter_id = %s
+                                    GROUP BY created
+                                    ORDER BY created DESC
+                                    LIMIT 1;"""
 
 UPDATE_SUBMISSION_RANK = "UPDATE submissions SET rank = %s WHERE round_id = %s AND spotify_uri = %s;"
 
@@ -157,7 +161,11 @@ SELECT_VOTES = """SELECT votes.spotify_uri,
                   WHERE votes.round_id = %s
                   ORDER BY votes.created;"""
 
-SELECT_VOTES_FROM_USER = "SELECT created, spotify_uri, weight FROM votes WHERE round_id = %s AND voter_id = %s;"
+SELECT_VOTES_FROM_USER = """SELECT created, json_object_agg(spotify_uri, weight)
+                                FROM votes WHERE round_id = %s AND voter_id = %s
+                                GROUP BY created
+                                ORDER BY created DESC
+                                LIMIT 1;"""
 
 SELECT_SUBMISSIONS_WITH_VOTES = """SELECT submissions.spotify_uri,
                                           su.id,
