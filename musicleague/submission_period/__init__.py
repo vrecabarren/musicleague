@@ -111,8 +111,8 @@ def update_submission_period(submission_period_id, name, description,
             with postgres_conn.cursor() as cur:
                 cur.execute(
                     INSERT_ROUND,
-                    (submission_period_id, description,
-                     submission_period.league.id,
+                    (str(submission_period_id), description,
+                     str(submission_period.league.id),
                      name, submission_due_date, vote_due_date))
                 cur.execute(
                     UPDATE_ROUND,
