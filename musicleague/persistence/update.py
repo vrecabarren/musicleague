@@ -14,7 +14,7 @@ def update_user(user):
                     (user.email, user.image_url, user.name,
                      user.profile_background, str(user.id)))
     except Exception as e:
-        app.logger.warning('Failed INSERT_USER: %s', str(e))
+        app.logger.warning('Failed INSERT_USER: %s', str(e), exc_info=e)
 
 
 def update_membership_rank(league, user, rank):
@@ -24,7 +24,7 @@ def update_membership_rank(league, user, rank):
             with postgres_conn.cursor() as cur:
                 cur.execute(UPDATE_MEMBERSHIP_RANK, (rank, str(league.id), str(user.id)))
     except Exception as e:
-        app.logger.warning('Failed UPDATE_MEMBERSHIP_RANK: %s', str(e))
+        app.logger.warning('Failed UPDATE_MEMBERSHIP_RANK: %s', str(e), exc_info=e)
 
 
 def update_submission_rank(round, spotify_uri, rank):
@@ -34,4 +34,4 @@ def update_submission_rank(round, spotify_uri, rank):
             with postgres_conn.cursor() as cur:
                 cur.execute(UPDATE_SUBMISSION_RANK, (rank, str(round.id), spotify_uri))
     except Exception as e:
-        app.logger.warning('Failed UPDATE_SUBMISSION_RANK: %s', str(e))
+        app.logger.warning('Failed UPDATE_SUBMISSION_RANK: %s', str(e), exc_info=e)

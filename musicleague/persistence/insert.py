@@ -18,7 +18,7 @@ def insert_user(user):
                     INSERT_USER,
                     (str(user.id), user.email, user.image_url, user.joined, user.name, user.profile_background))
     except Exception as e:
-        app.logger.warning('Failed INSERT_USER: %s', str(e))
+        app.logger.warning('Failed INSERT_USER: %s', str(e), exc_info=e)
 
 
 def insert_league(league):
@@ -41,7 +41,7 @@ def insert_league(league):
                     insert_round(round, insert_deps=False)
 
     except Exception as e:
-        app.logger.warning('Failed INSERT_LEAGUE: %s', str(e))
+        app.logger.warning('Failed INSERT_LEAGUE: %s', str(e), exc_info=e)
 
 
 def insert_round(round, insert_deps=True):
@@ -62,7 +62,7 @@ def insert_round(round, insert_deps=True):
                 for vote in round.votes:
                     insert_vote(vote, insert_deps=False)
     except Exception as e:
-        app.logger.warning('Failed INSERT_ROUND: %s', str(e))
+        app.logger.warning('Failed INSERT_ROUND: %s', str(e), exc_info=e)
 
 
 def insert_submission(submission, insert_deps=True):
@@ -81,7 +81,7 @@ def insert_submission(submission, insert_deps=True):
                          str(submission.submission_period.id),
                          track, str(submission.user.id)))
     except Exception as e:
-        app.logger.warning('Failed INSERT_SUBMISSION: %s', str(e))
+        app.logger.warning('Failed INSERT_SUBMISSION: %s', str(e), exc_info=e)
 
 
 def insert_vote(vote, insert_deps=True):
@@ -103,4 +103,4 @@ def insert_vote(vote, insert_deps=True):
                          spotify_uri, str(vote.user.id),
                          weight))
     except Exception as e:
-        app.logger.warning('Failed INSERT_VOTE: %s', str(e))
+        app.logger.warning('Failed INSERT_VOTE: %s', str(e), exc_info=e)

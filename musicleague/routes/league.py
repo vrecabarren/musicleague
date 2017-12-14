@@ -187,10 +187,10 @@ def post_manage_league(league_id):
 
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(INSERT_LEAGUE, (league_id, name, g.user.id))
+                cur.execute(INSERT_LEAGUE, (league_id, league.created, name, g.user.id))
                 cur.execute(UPDATE_LEAGUE, (name, league_id))
     except Exception as e:
-        app.logger.warning('Failed UPDATE_LEAGUE: %s', str(e))
+        app.logger.warning('Failed UPDATE_LEAGUE: %s', str(e), exc_info=e)
 
     return redirect(url_for('view_league', league_id=league_id))
 

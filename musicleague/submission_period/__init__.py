@@ -111,13 +111,16 @@ def update_submission_period(submission_period_id, name, description,
             with postgres_conn.cursor() as cur:
                 cur.execute(
                     INSERT_ROUND,
-                    (str(submission_period_id), description,
+                    (str(submission_period_id),
+                     submission_period.created,
+                     description,
                      str(submission_period.league.id),
-                     name, submission_due_date, vote_due_date))
+                     name,
+                     submission_due_date, vote_due_date))
                 cur.execute(
                     UPDATE_ROUND,
                     (description, name, submission_due_date, vote_due_date))
     except Exception as e:
-        app.logger.warning('Failed UPDATE_ROUND: %s', str(e))
+        app.logger.warning('Failed UPDATE_ROUND: %s', str(e), exc_info=e)
 
     return submission_period
