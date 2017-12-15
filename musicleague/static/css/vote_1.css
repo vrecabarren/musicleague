@@ -20,6 +20,8 @@ div, span {
     font-family: 'Cubano', sans-serif;
     font-size: 60px;
     line-height: 72px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Status Bar */

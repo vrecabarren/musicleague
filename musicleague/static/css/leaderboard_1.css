@@ -19,6 +19,8 @@ div, span {
     font-size: 60px;
     line-height: 72px;
     margin-bottom: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 #title-bar .top-rankings {
     background-color: rgba(1, 36, 154, 0.85);
