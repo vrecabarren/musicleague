@@ -9,7 +9,7 @@
 {% block title_bar_content %}
 <span class="league-created">Public League Created {{ moment(league.created).format('MM.DD.YY') }}</span>
 
-<span class="league-title">{{ league.name }}</span>
+<span class="league-title" title="{{ league.name }}">{{ league.name }}</span>
 
 <div class="container">
     <div class="row">
