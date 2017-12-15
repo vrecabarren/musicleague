@@ -191,25 +191,23 @@
 
     .league-item .members {
         line-height: 50px;
-        margin-right: 25px;
     }
 
-        .league-item .members a {
-            color: #02B8EF !important;
-            cursor: pointer;
-            font-size: 14px;
-            line-height: 19px;
-        }
+        .league-item .members .images { margin-bottom: 10px; }
 
-            .league-item .members .images { margin-bottom: 10px; }
+            .league-item .members .images img {
+                height: 40px;
+                width: 40px;
+            }
 
-                .league-item .members .images img {
-                    height: 40px;
-                    margin-right: -25px;
-                    width: 40px;
-                }
+            .league-item .members .images a {
+                color: #02B8EF !important;
+                cursor: pointer;
+                font-size: 14px;
+                line-height: 40px;
+            }
 
-                /** .league-item .members .images img:last-child { margin-right: 0px; } **/
+            /** .league-item .members .images img:last-child { margin-right: 0px; } **/
 
     .league-item .admin { margin-top: 15px; }
 

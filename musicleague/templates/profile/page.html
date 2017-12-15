@@ -5,7 +5,7 @@
 {% block css %}
 <link href="http://jschr.github.io/bootstrap-modal/css/bootstrap-modal-bs3patch.css" rel="stylesheet" />
 <link href="http://jschr.github.io/bootstrap-modal/css/bootstrap-modal.css" rel="stylesheet" />
-<link rel="stylesheet" href="/static/css/profile_1.css">
+<link rel="stylesheet" href="/static/css/profile_2.css">
 <style>
     #img-bar {
         background-image: url('https://s3.amazonaws.com/musicleague-static-assets/images/{{ page_user.profile_background }}') !important;
@@ -89,11 +89,20 @@
                     </div>
                     <div class="members">
                         <div class="images">
-                            {% for member in league.users if member.image_url %}
+                            {% for member in league.users[:4] if member.image_url %}
                             <img src="{{ member.image_url }}" alt="{{ member.name }}" class="img img-circle">
                             {% endfor %}
+                            {% if league.users|length > 4 %}
+                            <div style="background: none; display: inline-table; height: 40px; vertical-align: middle; width: 40px;">
+                               <div style="display: table-cell; text-align: center; vertical-align: middle;">
+                                    <a href="#" data-toggle="popover" data-trigger="hover" data-placement="right" data-container="body" data-content="{{ league.users|map(attribute='name')|join('<br>') }}">
+                                        &#43;&nbsp;{{ league.users|length - 4 }}
+                                    </a>
+                               </div>
+                            </div>
+                            {% endif %}
                         </div>
-                        <a href="#" data-toggle="popover" data-trigger="hover" data-placement="right" data-container="body" data-content="{{ league.users|map(attribute='name')|join('<br>') }}">{{ league.users|length }} Member{% if league.users|length != 1 %}s{% endif %}</a>
+                        <!--<a href="#" data-toggle="popover" data-trigger="hover" data-placement="right" data-container="body" data-content="{{ league.users|map(attribute='name')|join('<br>') }}">{{ league.users|length }} Member{% if league.users|length != 1 %}s{% endif %}</a>-->
                     </div>
                     {% if league.has_owner(user) %}
                     <div class="admin">
