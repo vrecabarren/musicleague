@@ -50,7 +50,7 @@
                                 {% set progress_perc = (round.submissions|length / league.users|length * 100)|int %}
                                 {% set content = "<strong>Submitted:</strong><br>" + round.have_submitted|map(attribute='name')|join('<br>') + "<hr><strong>Waiting for:</strong><br>" + round.have_not_submitted|map(attribute='name')|join('<br>') %}
                             {% else %}
-                                {% set progress_perc = (round.votes|length / league.users|length * 100)|int %}
+                                {% set progress_perc = (round.votes|length / round.have_submitted|length * 100)|int %}
                                 {% set content = "<strong>Voted:</strong><br>" + round.have_voted|map(attribute='name')|join('<br>') + "<hr><strong>Waiting for:</strong><br>" + round.have_not_voted|map(attribute='name')|join('<br>') %}
                             {% endif %}
                             <div class="bar-progress progress progress-toggle" data-trigger="hover">
