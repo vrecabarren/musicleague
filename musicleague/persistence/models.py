@@ -13,10 +13,27 @@ class User:
         self.profile_bg = profile_bg
 
 
+class ScoreboardEntry:
+    def __init__(self, submission, rank, uri, votes):
+        self.submission = submission
+        self.place = rank
+        self.uri = uri
+        self.votes = votes
+
+    @property
+    def points(self):
+        return sum([vote.votes.get(self.uri, 0) for vote in self.votes])
+
+
 class RankingEntry:
     def __init__(self, user, rank):
         self.user = user
         self.place = rank
+        self.entries = []
+
+    @property
+    def points(self):
+        return sum([entry.points for entry in self.entries])
 
 
 class Scoreboard:
