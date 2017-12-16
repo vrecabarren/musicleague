@@ -89,6 +89,19 @@ class League:
         return next(
             (sp for sp in self.submission_periods if not sp.is_complete), None)
 
+    @property
+    def is_active(self):
+        return not (self.is_inactive or self.is_complete)
+
+    @property
+    def is_inactive(self):
+        return len(self.submission_periods) == 0
+
+    @property
+    def is_complete(self):
+        return (not self.is_inactive and
+                all((sp.is_complete for sp in self.submission_periods)))
+
     def has_owner(self, user):
         return self.owner and self.owner.id == user.id
 
