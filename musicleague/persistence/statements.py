@@ -8,7 +8,8 @@ CREATE_TABLE_USERS = """CREATE TABLE IF NOT EXISTS users (
                             image_url VARCHAR(255) NOT NULL,
                             joined TIMESTAMP NOT NULL DEFAULT NOW(),
                             name VARCHAR(255) DEFAULT '',
-                            profile_bg VARCHAR(255) NOT NULL);"""
+                            profile_bg VARCHAR(255) NOT NULL,
+                            is_admin BOOL NOT NULL DEFAULT FALSE);"""
 
 DELETE_USER = "DELETE FROM users WHERE id = %s;"
 
