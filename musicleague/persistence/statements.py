@@ -70,6 +70,13 @@ SELECT_MEMBERSHIPS_FOR_USER = """SELECT memberships.league_id
                                     WHERE memberships.user_id = %s
                                     ORDER BY leagues.created DESC;"""
 
+SELECT_MEMBERSHIPS_PLACED_FOR_USER = """SELECT rank, count(league_id)
+                                            FROM memberships
+                                            WHERE user_id = %s
+                                            AND rank IN (1,2,3)
+                                            GROUP BY rank
+                                            ORDER BY rank;"""
+
 UPDATE_MEMBERSHIP_RANK = "UPDATE memberships SET rank = %s WHERE league_id = %s AND user_id = %s;"
 
 SELECT_SCOREBOARD = """SELECT users.id, memberships.rank

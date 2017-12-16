@@ -26,9 +26,9 @@
     <div id="user-img" style="background: url('{{ page_user.guaranteed_image_url }}') no-repeat center; background-size: cover;"></div>
     <div id="scores-outer" class="hidden-xs">
         <div id="scores-inner">
-            <span class="score-item">1st - <span class="score">00</span></span>
-            <span class="score-item">2nd - <span class="score">00</span></span>
-            <span class="score-item">3rd - <span class="score">00</span></span>
+            <span class="score-item">1st - <span class="score">{{ "%02d" % placed_leagues[1] }}</span></span>
+                <span class="score-item">2nd - <span class="score">{{ "%02d" % placed_leagues[2] }}</span></span>
+                <span class="score-item">3rd - <span class="score">{{ "%02d" % placed_leagues[3] }}</span></span>
         </div>
         <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/star_lightblue.svg" alt="" id="scores-star">
     </div>
@@ -47,9 +47,9 @@
         </div>
         <div id="scores-outer">
             <div id="scores-inner">
-                <span class="score-item">1st - <span class="score">0</span></span>
-                <span class="score-item">2nd - <span class="score">0</span></span>
-                <span class="score-item">3rd - <span class="score">0</span></span>
+                <span class="score-item">1st - <span class="score">{{ "%02d" % placed_leagues[1] }}</span></span>
+                <span class="score-item">2nd - <span class="score">{{ "%02d" % placed_leagues[2] }}</span></span>
+                <span class="score-item">3rd - <span class="score">{{ "%02d" % placed_leagues[3] }}</span></span>
             </div>
         </div>
     </div>

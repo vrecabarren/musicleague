@@ -12,6 +12,7 @@ from musicleague.persistence.statements import SELECT_LEAGUE
 from musicleague.persistence.statements import SELECT_LEAGUES_COUNT
 from musicleague.persistence.statements import SELECT_MEMBERSHIPS_COUNT
 from musicleague.persistence.statements import SELECT_MEMBERSHIPS_FOR_USER
+from musicleague.persistence.statements import SELECT_MEMBERSHIPS_PLACED_FOR_USER
 from musicleague.persistence.statements import SELECT_ROUND
 from musicleague.persistence.statements import SELECT_ROUNDS_COUNT
 from musicleague.persistence.statements import SELECT_ROUNDS_IN_LEAGUE
@@ -169,6 +170,22 @@ def select_memberships_count(user_id):
                 return cur.fetchone()[0]
     except Exception as e:
         app.logger.warning('Failed SELECT_MEMBERSHIPS_COUNT: %s', str(e), exc_info=e)
+
+
+def select_memberships_placed(user_id):
+    placed = defaultdict(int)
+    try:
+        from musicleague import postgres_conn
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(SELECT_MEMBERSHIPS_PLACED_FOR_USER, (str(user_id),))
+                for placed_tup in cur.fetchall():
+                    rank, count = placed_tup
+                    placed[rank] = count
+    except Exception as e:
+        app.logger.warning('Failed SELECT_MEMBERSHIPS_PLACED_FOR_USER: %s', str(e), exc_info=e)
+
+    return placed
 
 
 def select_round(round_id):

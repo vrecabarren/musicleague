@@ -1,3 +1,4 @@
+from collections import defaultdict
 import json
 
 from flask import g
@@ -42,9 +43,12 @@ def profile():
 
     if request.args.get('pg') == '1':
         from musicleague.persistence.select import select_leagues_for_user
+        from musicleague.persistence.select import select_memberships_placed
         leagues = select_leagues_for_user(page_user.id)
+        placed_leagues = select_memberships_placed(page_user.id)
     else:
         leagues = get_leagues_for_user(page_user)
+        placed_leagues = defaultdict(int)
 
     if request.args.get('pg_update') == '1':
         from musicleague.persistence.insert import insert_league
@@ -55,7 +59,8 @@ def profile():
         'user': g.user,
         'page_user': page_user,
         'leagues': leagues,
-        'contributor_leagues': len(leagues)
+        'contributor_leagues': len(leagues),
+        'placed_leagues': placed_leagues
         }
 
 
@@ -130,9 +135,12 @@ def view_user(user_id):
 
     if request.args.get('pg') == '1':
         from musicleague.persistence.select import select_leagues_for_user
+        from musicleague.persistence.select import select_memberships_placed
         leagues = select_leagues_for_user(page_user.id)
+        placed_leagues = select_memberships_placed(page_user.id)
     else:
         leagues = get_leagues_for_user(page_user)
+        placed_leagues = defaultdict(int)
 
     if request.args.get('pg_update') == '1':
         from musicleague.persistence.insert import insert_league
@@ -143,5 +151,6 @@ def view_user(user_id):
         'user': g.user,
         'page_user': page_user,
         'leagues': leagues,
-        'contributor_leagues': select_memberships_count(page_user.id)
+        'contributor_leagues': select_memberships_count(page_user.id),
+        'placed_leagues': placed_leagues
         }
