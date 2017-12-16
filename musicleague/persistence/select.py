@@ -109,16 +109,12 @@ def select_league(league_id):
                     user_entry_idx[entry.submission.user.id].append(entry)
 
                 cur.execute(SELECT_SCOREBOARD, (str(league_id),))
-                app.logger.info('Leaderboard _rankings pre: %s', l.scoreboard._rankings)
                 for scoreboard_tup in cur.fetchall():
                     user_id, rank = scoreboard_tup
                     u = user_idx.get(user_id, None)
                     le = RankingEntry(user=u, rank=rank)
                     le.entries = user_entry_idx[user_id]
-                    app.logger.info('Adding user %s to leaderboard at rank %d', user_id, rank)
                     l.scoreboard.add_entry(le, rank)
-
-                app.logger.info('Leaderboard _rankings post: %s', l.scoreboard._rankings)
 
                 return l
     except Exception as e:
