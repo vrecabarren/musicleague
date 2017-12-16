@@ -2,7 +2,9 @@ from collections import defaultdict
 
 from musicleague import app
 from musicleague.models import User
+from musicleague.persistence.models import League
 from musicleague.persistence.models import RankingEntry
+from musicleague.persistence.models import Round
 from musicleague.persistence.models import ScoreboardEntry
 from musicleague.persistence.models import Submission
 from musicleague.persistence.models import Vote
@@ -48,28 +50,30 @@ def select_users_count():
         app.logger.warning('Failed SELECT_USERS_COUNT: %s', str(e), exc_info=e)
 
 
-def select_league(league_id):
+def select_league(league_id, exclude_properties=None):
+    if exclude_properties is None:
+        exclude_properties = []
+
     try:
         from musicleague import postgres_conn
-        from musicleague.persistence.models import League as NewLeague
-        from musicleague.persistence.models import Round
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(SELECT_LEAGUE, (str(league_id),))
                 league_tup = cur.fetchone()
-                l = NewLeague(
+                l = League(
                     id=str(league_id),
                     created=league_tup[0],
                     name=league_tup[1],
                     owner_id=league_tup[2]
                 )
 
-                cur.execute(SELECT_ROUNDS_IN_LEAGUE, (str(league_id),))
-                for round_tup in cur.fetchall():
-                    round_id = round_tup[0]
-                    r = select_round(round_id)
-                    r.league = l
-                    l.submission_periods.append(r)
+                if 'rounds' not in exclude_properties:
+                    cur.execute(SELECT_ROUNDS_IN_LEAGUE, (str(league_id),))
+                    for round_tup in cur.fetchall():
+                        round_id = round_tup[0]
+                        r = select_round(round_id)
+                        r.league = l
+                        l.submission_periods.append(r)
 
                 cur.execute(SELECT_USERS_IN_LEAGUE, (str(league_id),))
                 user_idx = {}
@@ -82,47 +86,53 @@ def select_league(league_id):
                     if user_id == l.owner_id:
                         l.owner = u
 
-                    for round in l.submission_periods:
+                    if 'submissions' not in exclude_properties or 'rounds' not in exclude_properties:
+                        for round in l.submission_periods:
 
-                        cur.execute(SELECT_SUBMISSIONS_FROM_USER, (round.id, user_id))
-                        created_tracks = cur.fetchone() if cur.rowcount else (None, None)
-                        created, tracks = created_tracks
-                        if created is not None and tracks is not None:
-                            s = Submission(user=u, tracks=tracks.keys(), created=created)
-                            round.submissions.append(s)
-                            for uri, ranking in tracks.iteritems():
-                                uri_entry_idx[uri] = ScoreboardEntry(s, ranking, uri)
+                            cur.execute(SELECT_SUBMISSIONS_FROM_USER, (round.id, user_id))
+                            created_tracks = cur.fetchone() if cur.rowcount else (None, None)
+                            created, tracks = created_tracks
+                            if created is not None and tracks is not None:
+                                s = Submission(user=u, tracks=tracks.keys(), created=created)
+                                round.submissions.append(s)
+                                for uri, ranking in tracks.iteritems():
+                                    uri_entry_idx[uri] = ScoreboardEntry(s, ranking, uri)
 
                 for user in l.users:
-                    for round in l.submission_periods:
+                    if 'votes' not in exclude_properties or 'rounds' not in exclude_properties:
+                        for round in l.submission_periods:
 
-                        cur.execute(SELECT_VOTES_FROM_USER, (round.id, user.id))
-                        created_votes = cur.fetchone() if cur.rowcount else (None, None)
-                        created, votes = created_votes
-                        if created is not None and votes is not None:
-                            v = Vote(user=user, votes=votes, created=created)
-                            round.votes.append(v)
-                            for uri, weight in votes.iteritems():
-                                uri_entry_idx[uri].votes.append(v)
+                            cur.execute(SELECT_VOTES_FROM_USER, (round.id, user.id))
+                            created_votes = cur.fetchone() if cur.rowcount else (None, None)
+                            created, votes = created_votes
+                            if created is not None and votes is not None:
+                                v = Vote(user=user, votes=votes, created=created)
+                                round.votes.append(v)
+                                for uri, weight in votes.iteritems():
+                                    uri_entry_idx[uri].votes.append(v)
 
-                user_entry_idx = defaultdict(list)
-                for entry in uri_entry_idx.values():
-                    user_entry_idx[entry.submission.user.id].append(entry)
+                if 'scoreboard' not in exclude_properties:
+                    user_entry_idx = defaultdict(list)
+                    for entry in uri_entry_idx.values():
+                        user_entry_idx[entry.submission.user.id].append(entry)
 
-                cur.execute(SELECT_SCOREBOARD, (str(league_id),))
-                for scoreboard_tup in cur.fetchall():
-                    user_id, rank = scoreboard_tup
-                    u = user_idx.get(user_id, None)
-                    le = RankingEntry(user=u, rank=rank)
-                    le.entries = user_entry_idx[user_id]
-                    l.scoreboard.add_entry(le, rank)
+                    cur.execute(SELECT_SCOREBOARD, (str(league_id),))
+                    for scoreboard_tup in cur.fetchall():
+                        user_id, rank = scoreboard_tup
+                        u = user_idx.get(user_id, None)
+                        le = RankingEntry(user=u, rank=rank)
+                        le.entries = user_entry_idx[user_id]
+                        l.scoreboard.add_entry(le, rank)
 
                 return l
     except Exception as e:
         app.logger.warning('Failed SELECT_LEAGUE: %s', str(e), exc_info=e)
 
 
-def select_leagues_for_user(user_id):
+def select_leagues_for_user(user_id, exclude_properties=None):
+    if exclude_properties is None:
+        exclude_properties = []
+
     leagues = []
     try:
         from musicleague import postgres_conn
@@ -131,7 +141,7 @@ def select_leagues_for_user(user_id):
                 cur.execute(SELECT_MEMBERSHIPS_FOR_USER, (str(user_id),))
                 for membership_tup in cur.fetchall():
                     league_id = membership_tup[0]
-                    league = select_league(league_id)
+                    league = select_league(league_id, exclude_properties=exclude_properties)
                     leagues.append(league)
     except Exception as e:
         app.logger.warning('Failed SELECT_MEMBERSHIPS_FOR_USER: %s', str(e), exc_info=e)
@@ -164,7 +174,6 @@ def select_memberships_count(user_id):
 def select_round(round_id):
     try:
         from musicleague import postgres_conn
-        from musicleague.persistence.models import Round
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(SELECT_ROUND, (str(round_id),))

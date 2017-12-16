@@ -42,7 +42,7 @@ def profile():
 
     if request.args.get('pg') == '1':
         from musicleague.persistence.select import select_leagues_for_user
-        leagues = select_leagues_for_user(page_user.id)
+        leagues = select_leagues_for_user(page_user.id, exclude_properties=['rounds', 'submissions', 'votes', 'scoreboard'])
     else:
         leagues = get_leagues_for_user(g.user)
 
