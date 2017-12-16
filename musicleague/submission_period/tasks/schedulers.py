@@ -1,3 +1,4 @@
+from datetime import datetime
 from datetime import timedelta
 import logging
 
@@ -58,6 +59,11 @@ def schedule_submission_reminders(submission_period):
     # Cancel scheduled notification job if one exists
     cancel_submission_reminders(submission_period)
 
+    if notify_time < datetime.now():
+        logging.info('Not rescheduling submission reminder - '
+                     'datetime has passed for %s.', submission_period.id)
+        return
+
     # Schedule new submission reminder task
     job = scheduler.enqueue_at(
         notify_time, send_submission_reminders, str(submission_period.id))
@@ -76,6 +82,10 @@ def schedule_vote_reminders(submission_period):
 
     # Cancel scheduled notification job if one exists
     cancel_vote_reminders(submission_period)
+
+    if notify_time < datetime.now():
+        logging.info('Not rescheduling vote reminder - '
+                     'datetime has passed for %s.', submission_period.id)
 
     # Schedule new vote reminder task
     job = scheduler.enqueue_at(
