@@ -4,10 +4,11 @@ from datetime import datetime
 
 
 class User:
-    def __init__(self, id, email, image_url, joined, name, profile_bg):
+    def __init__(self, id, email, image_url, is_admin, joined, name, profile_bg):
         self.id = id
         self.email = email
         self.image_url = image_url
+        self.is_admin = is_admin
         self.joined = joined
         self.name = name
         self.profile_bg = profile_bg
@@ -127,14 +128,6 @@ class Round:
         return self.playlist_url != ''
 
     @property
-    def accepting_submissions(self):
-        """ Return True if the submission due date has not yet passed
-        for this round and not all submissions have been received.
-        """
-        return (self.have_not_submitted and
-                (self.submission_due_date > datetime.utcnow()))
-
-    @property
     def accepting_late_submissions(self):
         """ Return True if the league owner chose to accept late
         submissions and the vote due date for this round has not
@@ -145,14 +138,12 @@ class Round:
                 (self.vote_due_date > datetime.utcnow()))
 
     @property
-    def have_submitted(self):
-        """ Return the list of users who have submitted. """
-        return [submission.user for submission in self.submissions]
-
-    @property
-    def have_not_submitted(self):
-        """ Return the list of users who have not submitted yet. """
-        return list(set(self.league.users) - set(self.have_submitted))
+    def accepting_submissions(self):
+        """ Return True if the submission due date has not yet passed
+        for this round and not all submissions have been received.
+        """
+        return (self.have_not_submitted and
+                (self.submission_due_date > datetime.utcnow()))
 
     @property
     def accepting_votes(self):
@@ -165,12 +156,19 @@ class Round:
                 (self.vote_due_date > datetime.utcnow()))
 
     @property
-    def have_voted(self):
-        """ Return the list of users who have voted.
-        The potential list of users only includes those who
-        submitted for this round.
+    def all_tracks(self):
+        """ Return the chain all submitted tracks together into a single list.
+        This is useful for limiting the number of Spotify API calls.
         """
-        return [vote.user for vote in self.votes]
+        all_tracks = []
+        for submission in self.submissions:
+            all_tracks.extend(filter(len, submission.tracks))
+        return all_tracks
+
+    @property
+    def have_not_submitted(self):
+        """ Return the list of users who have not submitted yet. """
+        return list(set(self.league.users) - set(self.have_submitted))
 
     @property
     def have_not_voted(self):
@@ -181,14 +179,17 @@ class Round:
         return list(set(self.have_submitted) - set(self.have_voted))
 
     @property
-    def all_tracks(self):
-        """ Return the chain all submitted tracks together into a single list.
-        This is useful for limiting the number of Spotify API calls.
+    def have_submitted(self):
+        """ Return the list of users who have submitted. """
+        return [submission.user for submission in self.submissions]
+
+    @property
+    def have_voted(self):
+        """ Return the list of users who have voted.
+        The potential list of users only includes those who
+        submitted for this round.
         """
-        all_tracks = []
-        for submission in self.submissions:
-            all_tracks.extend(filter(len, submission.tracks))
-        return all_tracks
+        return [vote.user for vote in self.votes]
 
     @property
     def is_complete(self):
