@@ -19,7 +19,7 @@ SELECT_USER = "SELECT email, image_url, joined, name, profile_bg FROM users WHER
 
 SELECT_USERS_COUNT = "SELECT COUNT(id) FROM users;"
 
-SELECT_USERS_IN_LEAGUE = "SELECT user_id FROM memberships WHERE league_id = %s;"
+SELECT_USERS_IN_LEAGUE = "SELECT user_id FROM memberships WHERE league_id = %s ORDER BY created;"
 
 UPDATE_USER = "UPDATE users SET (email, image_url, name, profile_bg) = (%s, %s, %s, %s) WHERE id = %s;"
 
