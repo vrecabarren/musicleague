@@ -44,7 +44,7 @@ def profile():
         from musicleague.persistence.select import select_leagues_for_user
         leagues = select_leagues_for_user(page_user.id, exclude_properties=['rounds', 'submissions', 'votes', 'scoreboard'])
     else:
-        leagues = get_leagues_for_user(g.user)
+        leagues = get_leagues_for_user(page_user)
 
     if request.args.get('pg_update') == '1':
         from musicleague.persistence.insert import insert_league
@@ -125,8 +125,14 @@ def save_notification_settings():
 def view_user(user_id):
     if user_id == str(g.user.id):
         return redirect(url_for('profile'))
+
     page_user = get_user(user_id)
-    leagues = get_leagues_for_user(page_user)
+
+    if request.args.get('pg') == '1':
+        from musicleague.persistence.select import select_leagues_for_user
+        leagues = select_leagues_for_user(page_user.id, exclude_properties=['rounds', 'submissions', 'votes', 'scoreboard'])
+    else:
+        leagues = get_leagues_for_user(page_user)
 
     if request.args.get('pg_update') == '1':
         from musicleague.persistence.insert import insert_league
