@@ -119,7 +119,7 @@
             <div class="visible-xs">
                 <div class="members">
                     {% for member in league.users %}
-                    <img src="{{ member.image_url }}" alt="{{ member.name }}" class="img img-circle">
+                    <img src="{{ member.guaranteed_image_url }}" alt="{{ member.name }}" class="img img-circle">
                     {% endfor %}
                     <span id="member-count">{{ league.users|length }} Members
                         <span class="members-toggle">
@@ -156,7 +156,7 @@
                     <div style="display: table-cell; padding: 10px 20px 10px 0; vertical-align: middle;">
                         <div class="members">
                             {% for member in league.users %}
-                            <img src="{{ member.image_url }}" alt="{{ member.name }}" class="img img-circle">
+                            <img src="{{ member.guaranteed_image_url }}" alt="{{ member.name }}" class="img img-circle">
                             {% endfor %}
                             <span id="member-count">{{ league.users|length }} Members
                                 <span class="members-toggle">
@@ -231,7 +231,7 @@
                 {% for member in row %}
                 <div class="col-xs-12 col-sm-6 col-lg-4 member text-left">
                     <a href="{{ url_for('view_user', user_id=member.id) }}" title="{{ member.name }}">
-                        <img src="{{ member.image_url }}" alt="" class="img img-circle">
+                        <img src="{{ member.guaranteed_image_url }}" alt="" class="img img-circle">
                         {% if league.has_owner(member) %}
                         <span class="owner-star"></span>
                         {% endif %}

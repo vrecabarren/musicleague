@@ -89,7 +89,7 @@
                     </div>
                     <div class="members">
                         <div class="images">
-                            {% for member in league.users[:4] if member.image_url %}
+                            {% for member in league.users[:4] %}
                             <img src="{{ member.guaranteed_image_url }}" alt="{{ member.name }}" class="img img-circle">
                             {% endfor %}
                             {% if league.users|length > 4 %}
