@@ -34,14 +34,24 @@ def insert_league(league):
                     (str(league.id), league.created, league.name,
                      str(league.owner.id)))
 
-                for u in league.users:
-                    cur.execute(INSERT_MEMBERSHIP, (str(league.id), str(u.id)))
+                for user in league.users:
+                    insert_membership(league, user)
 
                 for round in league.submission_periods:
                     insert_round(round, insert_deps=False)
 
     except Exception as e:
         app.logger.warning('Failed INSERT_LEAGUE: %s', str(e), exc_info=e)
+
+
+def insert_membership(league, user):
+    try:
+        from musicleague import postgres_conn
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(INSERT_MEMBERSHIP, (str(league.id), str(user.id)))
+    except Exception as e:
+        app.logger.warning('Failed INSERT_MEMBERSHIP: %s', str(e), exc_info=e)
 
 
 def insert_round(round, insert_deps=True):

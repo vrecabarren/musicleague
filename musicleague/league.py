@@ -20,6 +20,9 @@ def add_user(league, user_email, notify=True):
         league.users.append(user)
         league.save()
 
+        from musicleague.persistence.insert import insert_membership
+        insert_membership(league, user)
+
         if notify:
             user_added_to_league_notification(user, league)
 
