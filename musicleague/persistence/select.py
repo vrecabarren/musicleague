@@ -110,6 +110,9 @@ def select_league(league_id, exclude_properties=None):
                                 v = Vote(user=user, votes=votes, created=created)
                                 round.votes.append(v)
                                 for uri, weight in votes.iteritems():
+                                    if uri not in uri_entry_idx:
+                                        # TODO Deal with case where submitter was removed from league
+                                        continue
                                     uri_entry_idx[uri].votes.append(v)
 
                 if 'scoreboard' not in exclude_properties:
