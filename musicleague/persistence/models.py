@@ -76,6 +76,7 @@ class League:
     def __init__(self, id, created, name, owner_id):
         self.id = id
         self.created = created
+        self.is_public = True
         self.name = name
         self.owner = None
         self.owner_id = owner_id
