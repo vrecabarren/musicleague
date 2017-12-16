@@ -1,6 +1,9 @@
+from collections import defaultdict
+
 from musicleague import app
 from musicleague.models import User
 from musicleague.persistence.models import RankingEntry
+from musicleague.persistence.models import ScoreboardEntry
 from musicleague.persistence.models import Submission
 from musicleague.persistence.models import Vote
 from musicleague.persistence.statements import SELECT_LEAGUE
@@ -69,6 +72,7 @@ def select_league(league_id):
 
                 cur.execute(SELECT_USERS_IN_LEAGUE, (str(league_id),))
                 user_idx = {}
+                uri_entry_idx = {}
                 for user_tup in cur.fetchall():
                     user_id = user_tup[0]
                     u = select_user(user_id)
@@ -80,26 +84,41 @@ def select_league(league_id):
                     for round in l.submission_periods:
 
                         cur.execute(SELECT_SUBMISSIONS_FROM_USER, (round.id, user_id))
-                        created, tracks = cur.fetchone() if cur.rowcount else None, None
-                        if created is not None:
-                            s = Submission(user=u, tracks=tracks, created=created)
+                        created_tracks = cur.fetchone() if cur.rowcount else (None, None)
+                        created, tracks = created_tracks
+                        if created is not None and tracks is not None:
+                            s = Submission(user=u, tracks=tracks.keys(), created=created)
                             round.submissions.append(s)
+                            for uri, ranking in tracks.iteritems():
+                                uri_entry_idx[uri] = ScoreboardEntry(s, ranking, uri)
 
-                        cur.execute(SELECT_VOTES_FROM_USER, (round.id, user_id))
-                        created, votes = cur.fetchone() if cur.rowcount else None, None
-                        if created is not None:
-                            v = Vote(user=u, votes=votes, created=created)
+                for user in l.users:
+                    for round in l.submission_periods:
+
+                        cur.execute(SELECT_VOTES_FROM_USER, (round.id, user.id))
+                        created_votes = cur.fetchone() if cur.rowcount else (None, None)
+                        created, votes = created_votes
+                        if created is not None and votes is not None:
+                            v = Vote(user=user, votes=votes, created=created)
                             round.votes.append(v)
+                            for uri, weight in votes.iteritems():
+                                uri_entry_idx[uri].votes.append(v)
+
+                user_entry_idx = defaultdict(list)
+                for entry in uri_entry_idx.values():
+                    user_entry_idx[entry.submission.user.id].append(entry)
 
                 cur.execute(SELECT_SCOREBOARD, (str(league_id),))
-                for score_tup in cur.fetchall():
-                    user_id, rank = score_tup
+                app.logger.info('Leaderboard _rankings pre: %s', l.scoreboard._rankings)
+                for scoreboard_tup in cur.fetchall():
+                    user_id, rank = scoreboard_tup
                     u = user_idx.get(user_id, None)
                     le = RankingEntry(user=u, rank=rank)
+                    le.entries = user_entry_idx[user_id]
+                    app.logger.info('Adding user %s to leaderboard at rank %d', user_id, rank)
                     l.scoreboard.add_entry(le, rank)
 
-                app.logger.warning('Created league scoreboard: %s', l.scoreboard._rankings)
-                app.logger.warning('League scoreboard top: %s', l.scoreboard.top)
+                app.logger.info('Leaderboard _rankings post: %s', l.scoreboard._rankings)
 
                 return l
     except Exception as e:

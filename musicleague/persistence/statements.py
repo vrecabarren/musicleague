@@ -67,7 +67,7 @@ UPDATE_MEMBERSHIP_RANK = "UPDATE memberships SET rank = %s WHERE league_id = %s 
 
 SELECT_SCOREBOARD = """SELECT users.id, memberships.rank
                         FROM memberships
-                        LEFT JOIN users ON users.id = memberships.user_id
+                        INNER JOIN users ON users.id = memberships.user_id
                         WHERE memberships.league_id = %s
                         ORDER BY memberships.rank;"""
 
@@ -129,7 +129,7 @@ SELECT_SUBMISSIONS = """SELECT submissions.spotify_uri,
 
 SELECT_SUBMISSIONS_COUNT = "SELECT COUNT(submitter_id) FROM submissions;"
 
-SELECT_SUBMISSIONS_FROM_USER = """SELECT created, array_agg(spotify_uri)
+SELECT_SUBMISSIONS_FROM_USER = """SELECT created, json_object_agg(spotify_uri, rank)
                                     FROM submissions WHERE round_id = %s AND submitter_id = %s
                                     GROUP BY created
                                     ORDER BY created DESC

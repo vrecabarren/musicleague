@@ -14,11 +14,11 @@ class User:
 
 
 class ScoreboardEntry:
-    def __init__(self, submission, rank, uri, votes):
+    def __init__(self, submission, rank, uri):
         self.submission = submission
         self.place = rank
         self.uri = uri
-        self.votes = votes
+        self.votes = []
 
     @property
     def points(self):
@@ -37,7 +37,8 @@ class RankingEntry:
 
 
 class Scoreboard:
-    _rankings = defaultdict(list)
+    def __init__(self):
+        self._rankings = defaultdict(list)
 
     def add_entry(self, entry, rank):
         self._rankings[rank].append(entry)
