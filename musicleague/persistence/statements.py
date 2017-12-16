@@ -64,7 +64,11 @@ INSERT_MEMBERSHIP = """INSERT INTO memberships (league_id, user_id)
 
 SELECT_MEMBERSHIPS_COUNT = "SELECT COUNT(league_id) from memberships WHERE user_id = %s;"
 
-SELECT_MEMBERSHIPS_FOR_USER = "SELECT league_id FROM memberships WHERE user_id = %s ORDER BY created DESC;"
+SELECT_MEMBERSHIPS_FOR_USER = """SELECT memberships.league_id
+                                    FROM memberships
+                                    INNER JOIN leagues ON leagues.id = memberships.league_id
+                                    WHERE memberships.user_id = %s
+                                    ORDER BY leagues.created DESC;"""
 
 UPDATE_MEMBERSHIP_RANK = "UPDATE memberships SET rank = %s WHERE league_id = %s AND user_id = %s;"
 
