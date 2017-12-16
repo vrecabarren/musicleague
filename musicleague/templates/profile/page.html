@@ -23,7 +23,7 @@
             <span class="owned-leagues">Rocked</span>
         </div>
     </div>
-    <div id="user-img" style="background: url('{{ page_user.image_url }}') no-repeat center; background-size: cover;"></div>
+    <div id="user-img" style="background: url('{{ page_user.guaranteed_image_url }}') no-repeat center; background-size: cover;"></div>
     <div id="scores-outer" class="hidden-xs">
         <div id="scores-inner">
             <span class="score-item">1st - <span class="score">00</span></span>
@@ -90,7 +90,7 @@
                     <div class="members">
                         <div class="images">
                             {% for member in league.users[:4] if member.image_url %}
-                            <img src="{{ member.image_url }}" alt="{{ member.name }}" class="img img-circle">
+                            <img src="{{ member.guaranteed_image_url }}" alt="{{ member.name }}" class="img img-circle">
                             {% endfor %}
                             {% if league.users|length > 4 %}
                             <div style="background: none; display: inline-table; height: 40px; vertical-align: middle; width: 40px;">

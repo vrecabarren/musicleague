@@ -1,5 +1,8 @@
 from collections import OrderedDict
 from datetime import datetime
+from random import choice
+from time import time
+import urlparse
 
 from mongoengine import BooleanField
 from mongoengine import DateTimeField
@@ -77,6 +80,22 @@ class User(Document):
     @property
     def is_admin(self):
         return self.ADMIN in self.roles or str(self.id) == '123000996'
+
+    @property
+    def guaranteed_image_url(self):
+        parsed_image_url = urlparse.urlparse(self.image_url)
+        if 'fbcdn' not in parsed_image_url.netloc:
+            return self.image_url
+
+        parsed_qs = urlparse.parse_qs(parsed_image_url.query)
+        if 'oe' in parsed_qs and len(parsed_qs['oe']) > 0:
+            hex_expiry = parsed_qs['oe'][0]
+            expiry = int(hex_expiry, 16)
+            if expiry < int(time()):
+                from musicleague.user import DEFAULT_AVATARS
+                return choice(DEFAULT_AVATARS)
+        return self.image_url
+
 
 
 class Bot(Document):
