@@ -40,7 +40,11 @@ def autocomplete():
 def profile():
     page_user = g.user
 
-    leagues = get_leagues_for_user(g.user)
+    if request.args.get('pg') == '1':
+        from musicleague.persistence.select import select_leagues_for_user
+        leagues = select_leagues_for_user(page_user.id)
+    else:
+        leagues = get_leagues_for_user(g.user)
 
     if request.args.get('pg_update') == '1':
         from musicleague.persistence.insert import insert_league

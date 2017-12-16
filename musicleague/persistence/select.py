@@ -9,6 +9,7 @@ from musicleague.persistence.models import Vote
 from musicleague.persistence.statements import SELECT_LEAGUE
 from musicleague.persistence.statements import SELECT_LEAGUES_COUNT
 from musicleague.persistence.statements import SELECT_MEMBERSHIPS_COUNT
+from musicleague.persistence.statements import SELECT_MEMBERSHIPS_FOR_USER
 from musicleague.persistence.statements import SELECT_ROUND
 from musicleague.persistence.statements import SELECT_ROUNDS_COUNT
 from musicleague.persistence.statements import SELECT_ROUNDS_IN_LEAGUE
@@ -119,6 +120,23 @@ def select_league(league_id):
                 return l
     except Exception as e:
         app.logger.warning('Failed SELECT_LEAGUE: %s', str(e), exc_info=e)
+
+
+def select_leagues_for_user(user_id):
+    leagues = []
+    try:
+        from musicleague import postgres_conn
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(SELECT_MEMBERSHIPS_FOR_USER, (str(user_id),))
+                for membership_tup in cur.fetchall():
+                    league_id = membership_tup[0]
+                    league = select_league(league_id)
+                    leagues.append(league)
+    except Exception as e:
+        app.logger.warning('Failed SELECT_MEMBERSHIPS_FOR_USER: %s', str(e), exc_info=e)
+
+    return leagues
 
 
 def select_leagues_count():
