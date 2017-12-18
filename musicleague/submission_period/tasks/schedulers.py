@@ -1,6 +1,7 @@
 from datetime import datetime
 from datetime import timedelta
 import logging
+from pytz import utc
 
 from musicleague import scheduler
 from musicleague.environment import is_deployed
@@ -59,7 +60,7 @@ def schedule_submission_reminders(submission_period):
     # Cancel scheduled notification job if one exists
     cancel_submission_reminders(submission_period)
 
-    if notify_time < datetime.now():
+    if notify_time < utc.localize(datetime.now()):
         logging.info('Not rescheduling submission reminder - '
                      'datetime has passed for %s.', submission_period.id)
         return
@@ -83,7 +84,7 @@ def schedule_vote_reminders(submission_period):
     # Cancel scheduled notification job if one exists
     cancel_vote_reminders(submission_period)
 
-    if notify_time < datetime.now():
+    if notify_time < utc.localize(datetime.now()):
         logging.info('Not rescheduling vote reminder - '
                      'datetime has passed for %s.', submission_period.id)
 
