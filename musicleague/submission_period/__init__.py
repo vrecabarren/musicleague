@@ -119,7 +119,7 @@ def update_submission_period(submission_period_id, name, description,
                      submission_due_date, vote_due_date))
                 cur.execute(
                     UPDATE_ROUND,
-                    (description, name, submission_due_date, vote_due_date))
+                    (description, name, submission_due_date, vote_due_date, str(submission_period_id)))
     except Exception as e:
         app.logger.warning('Failed UPDATE_ROUND: %s', str(e), exc_info=e)
 
