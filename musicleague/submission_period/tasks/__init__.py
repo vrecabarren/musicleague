@@ -54,7 +54,11 @@ def complete_submission_period(submission_period_id):
 
         submission_period = get_submission_period(submission_period_id)
         calculate_round_scoreboard(submission_period)
+
+        # Reload league to include updates to scored round
+        submission_period.league.reload('submission_periods')
         calculate_league_scoreboard(submission_period.league)
+
         user_all_voted_notification(submission_period)
 
         cancel_round_completion(submission_period)
