@@ -6,6 +6,7 @@ from musicleague.notify.email import user_all_voted_email
 from musicleague.notify.email import user_invited_to_league_email
 from musicleague.notify.email import user_last_to_submit_email
 from musicleague.notify.email import user_last_to_vote_email
+from musicleague.notify.email import user_new_round_email
 from musicleague.notify.email import user_playlist_created_email
 from musicleague.notify.email import user_submit_reminder_email
 from musicleague.notify.email import user_vote_reminder_email
@@ -105,7 +106,7 @@ def user_new_round_notification(submission_period):
 
     # NOTE: Preference is checked within the calls below
 
-    user_new_round_notification(submission_period)
+    user_new_round_email(submission_period)
     return True
 
 
