@@ -1,12 +1,12 @@
 from collections import defaultdict
 
 from musicleague import app
-from musicleague.models import User
 from musicleague.persistence.models import League
 from musicleague.persistence.models import RankingEntry
 from musicleague.persistence.models import Round
 from musicleague.persistence.models import ScoreboardEntry
 from musicleague.persistence.models import Submission
+from musicleague.persistence.models import User
 from musicleague.persistence.models import Vote
 from musicleague.persistence.statements import SELECT_LEAGUE
 from musicleague.persistence.statements import SELECT_LEAGUES_COUNT
@@ -32,10 +32,8 @@ def select_user(user_id):
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(SELECT_USER, (str(user_id),))
-                u = User()
-                u.id = user_id
-                u.email, u.image_url, u.joined, u.name, u.profile_background = cur.fetchone()
-                return u
+                email, image_url, is_admin, joined, name, profile_bg = cur.fetchone()
+                return User(user_id, email, image_url, is_admin, joined, name, profile_bg)
     except Exception as e:
         app.logger.warning('Failed SELECT_USER: %s', str(e), exc_info=e)
 

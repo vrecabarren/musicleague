@@ -16,7 +16,7 @@ DELETE_USER = "DELETE FROM users WHERE id = %s;"
 INSERT_USER = """INSERT INTO users (id, email, image_url, joined, name, profile_bg)
                     VALUES (%s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING;"""
 
-SELECT_USER = "SELECT email, image_url, joined, name, profile_bg FROM users WHERE id = %s;"
+SELECT_USER = "SELECT email, image_url, is_admin, joined, name, profile_bg FROM users WHERE id = %s;"
 
 SELECT_USERS_COUNT = "SELECT COUNT(id) FROM users;"
 

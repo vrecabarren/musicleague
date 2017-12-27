@@ -14,7 +14,7 @@ class User:
         self.is_admin = is_admin
         self.joined = joined
         self.name = name
-        self.profile_bg = profile_bg
+        self.profile_background = profile_bg
 
     @property
     def guaranteed_image_url(self):
