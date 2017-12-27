@@ -32,7 +32,8 @@ CREATE_TABLE_LEAGUES = """CREATE TABLE IF NOT EXISTS leagues (
                             id VARCHAR(255) PRIMARY KEY,
                             created TIMESTAMP NOT NULL DEFAULT NOW(),
                             name VARCHAR(255) NOT NULL,
-                            owner_id VARCHAR(255) NOT NULL REFERENCES users(id));"""
+                            owner_id VARCHAR(255) NOT NULL REFERENCES users(id),
+                            status SMALLINT NOT NULL DEFAULT 0);"""
 
 DELETE_LEAGUE = "DELETE FROM leagues WHERE id = %s;"
 
@@ -96,6 +97,7 @@ CREATE_TABLE_ROUNDS = """CREATE TABLE IF NOT EXISTS rounds (
                             league_id VARCHAR(255) NOT NULL REFERENCES leagues(id),
                             name VARCHAR(255) NOT NULL,
                             playlist_url VARCHAR(255) DEFAULT '',
+                            status SMALLINT NOT NULL DEFAULT 0,
                             submissions_due TIMESTAMP NOT NULL,
                             votes_due TIMESTAMP NOT NULL);"""
 
