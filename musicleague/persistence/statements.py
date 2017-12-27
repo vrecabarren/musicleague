@@ -136,12 +136,18 @@ INSERT_SUBMISSION = """INSERT INTO submissions (created, round_id, spotify_uri, 
 
 DELETE_SUBMISSIONS = "DELETE FROM submissions WHERE submitter_id = %s AND round_id = %s;"
 
-SELECT_SUBMISSIONS = """SELECT submissions.spotify_uri,
-                               su.id
-                        FROM submissions
-                        LEFT JOIN users su ON su.id = submissions.submitter_id
-                        WHERE submissions.round_id = %s
-                        ORDER BY submissions.created;"""
+SELECT_SUBMISSIONS = """SELECT created, league_id, round_id, submitter_id, tracks
+                            FROM (
+                                SELECT created, league_id, round_id, submitter_id, tracks,
+                                RANK() OVER (PARTITION BY round_id, submitter_id ORDER BY created) AS rn
+                                FROM (
+                                    SELECT created, round_id, submitter_id, ARRAY_AGG(spotify_uri) as tracks
+                                    FROM submissions
+                                    GROUP BY round_id, submitter_id, created
+                                    ORDER BY created DESC
+                                ) AS s
+                            ) AS s
+                            WHERE league_id = %s AND rn = 1;"""
 
 SELECT_SUBMISSIONS_COUNT = "SELECT COUNT(submitter_id) FROM submissions;"
 
