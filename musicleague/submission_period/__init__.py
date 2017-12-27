@@ -36,10 +36,10 @@ def create_submission_period(
     new_submission_period.id = ObjectId()
     league.submission_periods.append(new_submission_period)
 
-    schedule_playlist_creation(new_submission_period)
-    schedule_round_completion(new_submission_period)
-    schedule_submission_reminders(new_submission_period)
-    schedule_vote_reminders(new_submission_period)
+    # schedule_playlist_creation(new_submission_period)
+    # schedule_round_completion(new_submission_period)
+    # schedule_submission_reminders(new_submission_period)
+    # schedule_vote_reminders(new_submission_period)
 
     app.logger.info('Submission period created: %s', new_submission_period.id)
 
