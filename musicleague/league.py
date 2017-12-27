@@ -2,13 +2,11 @@ from datetime import datetime
 
 from haikunator import Haikunator
 
-from musicleague import app
 from musicleague.models import InvitedUser
 from musicleague.models import League
 from musicleague.models import LeaguePreferences
 from musicleague.notify import user_added_to_league_notification
 from musicleague.notify import user_invited_to_league_notification
-from musicleague.persistence.statements import DELETE_LEAGUE
 from musicleague.scoring import EntrySortKey
 from musicleague.submission_period import remove_submission_period
 from musicleague.user import get_user_by_email
@@ -18,7 +16,6 @@ def add_user(league, user_email, notify=True):
     user = get_user_by_email(user_email)
     if user and user not in league.users:
         league.users.append(user)
-        league.save()
 
         from musicleague.persistence.insert import insert_membership
         insert_membership(league, user)
@@ -30,7 +27,6 @@ def add_user(league, user_email, notify=True):
         invited_user = InvitedUser(email=user_email)
         invited_user.save()
         league.invited_users.append(invited_user)
-        league.save()
 
         if notify:
             user_invited_to_league_notification(invited_user, league)
@@ -45,7 +41,6 @@ def remove_user(league, user_id):
         else:
             remaining_users.append(user)
     league.users = remaining_users
-    league.save()
 
 
 def create_league(user, name=None, users=None):
@@ -59,7 +54,6 @@ def create_league(user, name=None, users=None):
 
     new_league = League(owner=user, users=members, created=datetime.utcnow())
     new_league.preferences = LeaguePreferences(name=name)
-    new_league.save()
 
     from musicleague.persistence.insert import insert_league
     insert_league(new_league)
@@ -77,8 +71,6 @@ def remove_league(league_id, league=None):
     for submission_period in league.submission_periods:
         remove_submission_period(submission_period.id,
                                  submission_period=submission_period)
-
-    league.delete()
 
     from musicleague.persistence.delete import delete_league
     delete_league(league)
