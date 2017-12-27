@@ -51,15 +51,15 @@ def create_league(user, name=None, users=None):
 
     new_league = League(id=ObjectId(), created=datetime.utcnow(), name=name, owner_id=user.id)
 
+    from musicleague.persistence.insert import insert_league
+    insert_league(new_league)
+
     members = [user]
     if users is not None:
         members = list(set(members + users))
 
     for member in members:
         insert_membership(new_league, member)
-
-    from musicleague.persistence.insert import insert_league
-    insert_league(new_league)
 
     return new_league
 
