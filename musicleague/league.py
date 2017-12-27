@@ -4,10 +4,10 @@ from bson.objectid import ObjectId
 from haikunator import Haikunator
 
 from musicleague.models import InvitedUser
-from musicleague.models import League
-from musicleague.models import LeaguePreferences
 from musicleague.notify import user_added_to_league_notification
 from musicleague.notify import user_invited_to_league_notification
+from musicleague.persistence.insert import insert_membership
+from musicleague.persistence.models import League
 from musicleague.scoring import EntrySortKey
 from musicleague.submission_period import remove_submission_period
 from musicleague.user import get_user_by_email
@@ -49,13 +49,14 @@ def create_league(user, name=None, users=None):
         haikunator = Haikunator()
         name = haikunator.haikunate(token_length=0)
 
+    new_league = League(id=ObjectId(), created=datetime.utcnow(), name=name, owner_id=user.id)
+
     members = [user]
     if users is not None:
         members = list(set(members + users))
 
-    new_league = League(owner=user, users=members, created=datetime.utcnow())
-    new_league.id = ObjectId()
-    new_league.preferences = LeaguePreferences(name=name)
+    for member in members:
+        insert_membership(new_league, member)
 
     from musicleague.persistence.insert import insert_league
     insert_league(new_league)
