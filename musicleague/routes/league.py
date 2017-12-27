@@ -9,15 +9,14 @@ from flask import request
 from flask import url_for
 
 from musicleague import app
+from musicleague.environment import is_dev
+from musicleague.environment import is_production
 from musicleague.league import add_user
 from musicleague.league import create_league
 from musicleague.league import get_league
 from musicleague.league import remove_league
 from musicleague.league import remove_user
 from musicleague.notify.flash import flash_error
-from musicleague.persistence.statements import DELETE_LEAGUE
-from musicleague.persistence.statements import INSERT_LEAGUE
-from musicleague.persistence.statements import UPDATE_LEAGUE
 from musicleague.routes.decorators import admin_required
 from musicleague.routes.decorators import league_required
 from musicleague.routes.decorators import login_required
@@ -68,7 +67,6 @@ def post_create_league():
     league.preferences.max_points_per_song = int(max_up_per_song or 0)
     league.preferences.downvote_bank_size = int(downvote_size)
     league.preferences.max_downvotes_per_song = int(max_down_per_song or 0)
-    league.save()
 
     for email in emails:
         add_user(league, email, notify=True)
@@ -85,8 +83,6 @@ def post_create_league():
         create_submission_period(
             league, new_round['name'], new_round['description'],
             submission_due_date, vote_due_date)
-
-    league.save()
 
     app.logger.info('Creating league: %s', league.id)
 
@@ -225,14 +221,12 @@ def get_remove_league(league_id, **kwargs):
 @login_required
 def view_league(league_id, **kwargs):
 
-    if request.args.get('pg') == '1':
-        from musicleague.persistence.select import select_league
-        league = select_league(league_id)
-    else:
-        league = get_league(league_id)
+    from musicleague.persistence.select import select_league
+    league = select_league(league_id)
 
     if request.args.get('pg_update') == '1':
         from musicleague.persistence.insert import insert_league
+        league = get_league(league_id)
         insert_league(league)
 
     my_submission, my_vote = None, None

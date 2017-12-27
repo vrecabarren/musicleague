@@ -7,6 +7,7 @@ from flask import request
 from flask import url_for
 
 from musicleague import app
+from musicleague.environment import is_dev
 from musicleague.models import User
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
@@ -41,19 +42,10 @@ def autocomplete():
 def profile():
     page_user = g.user
 
-    if request.args.get('pg') == '1':
-        from musicleague.persistence.select import select_leagues_for_user
-        from musicleague.persistence.select import select_memberships_placed
-        leagues = select_leagues_for_user(page_user.id)
-        placed_leagues = select_memberships_placed(page_user.id)
-    else:
-        leagues = get_leagues_for_user(page_user)
-        placed_leagues = defaultdict(int)
-
-    if request.args.get('pg_update') == '1':
-        from musicleague.persistence.insert import insert_league
-        for league in leagues:
-            insert_league(league)
+    from musicleague.persistence.select import select_leagues_for_user
+    from musicleague.persistence.select import select_memberships_placed
+    leagues = select_leagues_for_user(page_user.id)
+    placed_leagues = select_memberships_placed(page_user.id)
 
     return {
         'user': g.user,
@@ -133,19 +125,10 @@ def view_user(user_id):
 
     page_user = get_user(user_id)
 
-    if request.args.get('pg') == '1':
-        from musicleague.persistence.select import select_leagues_for_user
-        from musicleague.persistence.select import select_memberships_placed
-        leagues = select_leagues_for_user(page_user.id)
-        placed_leagues = select_memberships_placed(page_user.id)
-    else:
-        leagues = get_leagues_for_user(page_user)
-        placed_leagues = defaultdict(int)
-
-    if request.args.get('pg_update') == '1':
-        from musicleague.persistence.insert import insert_league
-        for league in leagues:
-            insert_league(league)
+    from musicleague.persistence.select import select_leagues_for_user
+    from musicleague.persistence.select import select_memberships_placed
+    leagues = select_leagues_for_user(page_user.id)
+    placed_leagues = select_memberships_placed(page_user.id)
 
     return {
         'user': g.user,

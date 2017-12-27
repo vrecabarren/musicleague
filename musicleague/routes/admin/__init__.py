@@ -6,6 +6,7 @@ from musicleague import app
 from musicleague import postgres_conn
 from musicleague import redis_conn
 from musicleague import scheduler
+from musicleague.environment import is_dev
 from musicleague.league import get_league
 from musicleague.models import InvitedUser
 from musicleague.models import League
@@ -31,7 +32,7 @@ ADMIN_USERS_URL = '/admin/users/'
 @login_required
 @admin_required
 def admin():
-    if request.args.get('pg') == '1':
+    if request.args.get('pg') == '1' or is_dev():
         from musicleague.persistence.select import select_leagues_count
         from musicleague.persistence.select import select_rounds_count
         from musicleague.persistence.select import select_submissions_count
@@ -78,7 +79,7 @@ def admin_jobs():
 @login_required
 @admin_required
 def admin_leagues():
-    if request.args.get('pg') == '1':
+    if request.args.get('pg') == '1' or is_dev():
         from musicleague.persistence.models import League as NewLeague
         stmt = 'SELECT id, created, name, owner_id FROM leagues ORDER BY name;'
         leagues = []
@@ -110,7 +111,7 @@ def admin_leagues():
 @login_required
 @admin_required
 def admin_league(league_id):
-    if request.args.get('pg') == '1':
+    if request.args.get('pg') == '1' or is_dev():
         from musicleague.persistence.select import select_league
         league = select_league(league_id)
     else:

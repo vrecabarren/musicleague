@@ -11,6 +11,7 @@ from spotipy import Spotify
 from musicleague import app
 from musicleague.bot import create_or_update_bot
 from musicleague.bot import is_bot
+from musicleague.environment import is_dev
 from musicleague.notify.flash import flash_info
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
@@ -32,16 +33,12 @@ def before_request():
     g.user = None
     if current_user:
         from musicleague.persistence.select import select_user
-        g.user = get_user(current_user)
-        p_user = select_user(current_user)
+        g.user = select_user(current_user)
         # Lazily migrate users from mongo to postgres
-        if not p_user:
+        if not g.user:
+            g.user = get_user(current_user)
             from musicleague.persistence.insert import insert_user
             insert_user(g.user)
-            p_user = select_user(current_user)
-
-        if request.args.get('pg') == '1':
-            g.user = p_user
 
     access_token = session['access_token'] if 'access_token' in session else ''
     g.spotify = None
