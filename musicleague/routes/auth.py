@@ -32,12 +32,16 @@ def before_request():
     g.user = None
     if current_user:
         from musicleague.persistence.select import select_user
-        g.user = select_user(current_user)
+        g.user = get_user(current_user)
+        p_user = select_user(current_user)
         # Lazily migrate users from mongo to postgres
-        if not g.user:
+        if not p_user:
             from musicleague.persistence.insert import insert_user
-            g.user = get_user(current_user)
             insert_user(g.user)
+            p_user = select_user(current_user)
+
+        if request.args.get('pg') == '1':
+            g.user = p_user
 
     access_token = session['access_token'] if 'access_token' in session else ''
     g.spotify = None
