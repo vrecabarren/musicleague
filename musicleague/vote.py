@@ -4,31 +4,25 @@ from musicleague.models import Vote
 
 
 def create_or_update_vote(votes, submission_period, league, user):
-    v = None
-    for vote in submission_period.votes:
-        if vote.user == user:
-            v = vote
-            break
+    v = next((vote for vote in submission_period.votes if vote.user == user), None)
 
     if v:
         v.votes = votes
         v.count += 1
         v.updated = datetime.utcnow()
-        v.save()
+
+        from musicleague.persistence.insert import insert_vote
+        insert_vote(v)
     else:
         v = create_vote(votes, submission_period, user, league)
 
     return v
 
 
-def create_vote(votes, submission_period, user, league, persist=True):
+def create_vote(votes, submission_period, user, league):
     new_vote = Vote(
         votes=votes, user=user, created=datetime.utcnow(), league=league,
         submission_period=submission_period)
-    if persist:
-        new_vote.save()
-        submission_period.votes.append(new_vote)
-        submission_period.save()
 
     from musicleague.persistence.insert import insert_vote
     insert_vote(new_vote)
