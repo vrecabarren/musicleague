@@ -50,6 +50,7 @@ def create_league(user, name=None, users=None):
         name = haikunator.haikunate(token_length=0)
 
     new_league = League(id=ObjectId(), created=datetime.utcnow(), name=name, owner_id=user.id)
+    new_league.owner = user
 
     from musicleague.persistence.insert import insert_league
     insert_league(new_league)
