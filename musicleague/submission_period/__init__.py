@@ -1,6 +1,8 @@
 from datetime import datetime
 from datetime import timedelta
 
+from bson import ObjectId
+
 from musicleague import app
 from musicleague.models import SubmissionPeriod
 from musicleague.persistence.statements import DELETE_ROUND
@@ -31,20 +33,15 @@ def create_submission_period(
         submission_due_date=submission_due_date,
         vote_due_date=vote_due_date)
 
-    # Save to get id for notification tasks
-    new_submission_period.save()
+    new_submission_period.id = ObjectId()
+    league.submission_periods.append(new_submission_period)
 
     schedule_playlist_creation(new_submission_period)
     schedule_round_completion(new_submission_period)
     schedule_submission_reminders(new_submission_period)
     schedule_vote_reminders(new_submission_period)
 
-    new_submission_period.save()
-
     app.logger.info('Submission period created: %s', new_submission_period.id)
-
-    league.submission_periods.append(new_submission_period)
-    league.save()
 
     from musicleague.persistence.insert import insert_round
     insert_round(new_submission_period)

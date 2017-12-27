@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from bson.objectid import ObjectId
 from haikunator import Haikunator
 
 from musicleague.models import InvitedUser
@@ -53,6 +54,7 @@ def create_league(user, name=None, users=None):
         members = list(set(members + users))
 
     new_league = League(owner=user, users=members, created=datetime.utcnow())
+    new_league.id = ObjectId()
     new_league.preferences = LeaguePreferences(name=name)
 
     from musicleague.persistence.insert import insert_league
