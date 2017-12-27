@@ -46,6 +46,10 @@ def is_deployed():
     return get_setting(DEPLOYED)
 
 
+def is_dev():
+    return is_deployed() and not is_production()
+
+
 def is_production():
     return is_deployed() and get_setting(PRODUCTION)
 
