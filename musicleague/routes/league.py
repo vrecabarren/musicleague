@@ -16,6 +16,7 @@ from musicleague.league import remove_league
 from musicleague.league import remove_user
 from musicleague.notify.flash import flash_error
 from musicleague.persistence.select import select_league
+from musicleague.persistence.update import update_league
 from musicleague.routes.decorators import admin_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
@@ -172,7 +173,6 @@ def post_manage_league(league_id):
     if league.scoreboard:
         league = calculate_league_scoreboard(league)
 
-    from musicleague.persistence.update import update_league
     update_league(league)
 
     return redirect(url_for('view_league', league_id=league_id))
@@ -212,8 +212,6 @@ def get_remove_league(league_id, **kwargs):
 @templated('league/view/page.html')
 @login_required
 def view_league(league_id, **kwargs):
-
-    from musicleague.persistence.select import select_league
     league = select_league(league_id)
 
     if request.args.get('pg_update') == '1':

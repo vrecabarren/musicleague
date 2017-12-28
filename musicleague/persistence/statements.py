@@ -101,7 +101,7 @@ CREATE_TABLE_ROUNDS = """CREATE TABLE IF NOT EXISTS rounds (
                             submissions_due TIMESTAMP NOT NULL,
                             votes_due TIMESTAMP NOT NULL);"""
 
-DELETE_ROUND = "DELETE FROM users WHERE id = %s;"
+DELETE_ROUND = "DELETE FROM rounds WHERE id = %s;"
 
 DELETE_ROUNDS = "DELETE FROM rounds WHERE league_id = %s;"
 
