@@ -1,4 +1,5 @@
 from collections import defaultdict
+from pytz import utc
 
 from musicleague import app
 from musicleague.persistence.models import League
@@ -202,8 +203,8 @@ def select_round(round_id):
                     description=round_tup[1],
                     name=round_tup[2],
                     playlist_url=round_tup[3],
-                    submissions_due=round_tup[4],
-                    votes_due=round_tup[5],
+                    submissions_due=utc.localize(round_tup[4]),
+                    votes_due=utc.localize(round_tup[5]),
                 )
                 return r
     except Exception as e:
