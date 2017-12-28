@@ -1,6 +1,7 @@
 from collections import defaultdict
 from collections import OrderedDict
 from datetime import datetime
+from pytz import utc
 from random import choice
 from time import time
 import urlparse
@@ -163,7 +164,7 @@ class Round:
         """
         return (self.league.preferences.late_submissions and
                 self.have_not_submitted and
-                (self.vote_due_date > datetime.utcnow()))
+                (self.vote_due_date > utc.localize(datetime.utcnow())))
 
     @property
     def accepting_submissions(self):
@@ -171,7 +172,7 @@ class Round:
         for this round and not all submissions have been received.
         """
         return (self.have_not_submitted and
-                (self.submission_due_date > datetime.utcnow()))
+                (self.submission_due_date > utc.localize(datetime.utcnow())))
 
     @property
     def accepting_votes(self):
@@ -181,7 +182,7 @@ class Round:
         """
         return ((not self.accepting_submissions) and
                 self.have_not_voted and
-                (self.vote_due_date > datetime.utcnow()))
+                (self.vote_due_date > utc.localize(datetime.utcnow())))
 
     @property
     def all_tracks(self):
@@ -224,7 +225,7 @@ class Round:
         """ Return True if voting due date for this round has
         passed or all submissions/votes are in.
         """
-        if self.vote_due_date < datetime.utcnow():
+        if self.vote_due_date < utc.localize(datetime.utcnow()):
             return True
         return not (self.accepting_submissions or self.accepting_votes)
 
