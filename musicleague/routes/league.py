@@ -124,15 +124,14 @@ def post_manage_league(league_id):
     edited_rounds = json.loads(request.form.get('edited-rounds', []))
     deleted_rounds = json.loads(request.form.get('deleted-rounds', []))
 
-    league = get_league(league_id)
-    league.preferences.name = name
+    league = select_league(league_id)
+    league.name = name
     league.preferences.track_count = int(num_tracks)
     league.preferences.point_bank_size = int(upvote_size)
     league.preferences.max_points_per_song = int(max_up_per_song or 0)
     league.preferences.downvote_bank_size = int(downvote_size)
     league.preferences.max_downvotes_per_song = int(max_down_per_song or 0)
     league.users.extend(added_members)
-    league.save()
 
     for email in emails:
         add_user(league, email, notify=True)
@@ -173,11 +172,8 @@ def post_manage_league(league_id):
             app.logger.warning('Error while attempting to delete round %s: %s',
                                deleted_round, str(e))
 
-    league.reload('submission_periods')
     if league.scoreboard:
         league = calculate_league_scoreboard(league)
-
-    league.save()
 
     from musicleague.persistence.update import update_league
     update_league(league)
