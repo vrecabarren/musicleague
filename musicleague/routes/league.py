@@ -17,6 +17,7 @@ from musicleague.league import get_league
 from musicleague.league import remove_league
 from musicleague.league import remove_user
 from musicleague.notify.flash import flash_error
+from musicleague.persistence.select import select_league
 from musicleague.routes.decorators import admin_required
 from musicleague.routes.decorators import league_required
 from musicleague.routes.decorators import login_required
@@ -93,7 +94,7 @@ def post_create_league():
 @templated('league/manage/page.html')
 @login_required
 def get_manage_league(league_id):
-    league = get_league(league_id)
+    league = select_league(league_id)
     if not league or not league.has_owner(g.user):
         app.logger.warning('Unauthorized user attempted access')
         flash_error('You must be owner of the league to access that page')
