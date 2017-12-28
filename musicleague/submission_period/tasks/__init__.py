@@ -6,6 +6,7 @@ from musicleague.notify import user_all_voted_notification
 from musicleague.notify import user_new_round_notification
 from musicleague.notify import user_submit_reminder_notification
 from musicleague.notify import user_vote_reminder_notification
+from musicleague.persistence.select import select_round
 from musicleague.scoring.league import calculate_league_scoreboard
 from musicleague.scoring.round import calculate_round_scoreboard
 from musicleague.spotify import create_or_update_playlist
@@ -26,11 +27,10 @@ def complete_submission_process(submission_period_id):
         return
 
     try:
-        from musicleague.submission_period import get_submission_period
         from musicleague.submission_period.tasks.cancelers import cancel_playlist_creation  # noqa
         from musicleague.submission_period.tasks.cancelers import cancel_submission_reminders  # noqa
 
-        submission_period = get_submission_period(submission_period_id)
+        submission_period = select_round(submission_period_id)
         create_or_update_playlist(submission_period)
         cancel_playlist_creation(submission_period)
         cancel_submission_reminders(submission_period)
@@ -48,11 +48,10 @@ def complete_submission_period(submission_period_id):
         return
 
     try:
-        from musicleague.submission_period import get_submission_period
         from musicleague.submission_period.tasks.cancelers import cancel_round_completion  # noqa
         from musicleague.submission_period.tasks.cancelers import cancel_vote_reminders
 
-        submission_period = get_submission_period(submission_period_id)
+        submission_period = select_round(submission_period_id)
         calculate_round_scoreboard(submission_period)
 
         # Reload league to include updates to scored round
@@ -83,9 +82,7 @@ def create_playlist(submission_period_id):
 
     try:
         with app.app_context():
-            from musicleague.submission_period import get_submission_period
-
-            submission_period = get_submission_period(submission_period_id)
+            submission_period = select_round(submission_period_id)
             create_or_update_playlist(submission_period)
     except:
         app.logger.exception('Error occurred while creating playlist!')
@@ -98,9 +95,7 @@ def send_submission_reminders(submission_period_id):
         return False
 
     try:
-        from musicleague.submission_period import get_submission_period
-
-        submission_period = get_submission_period(submission_period_id)
+        submission_period = select_round(submission_period_id)
         for user in submission_period.have_not_submitted:
             app.logger.warning('%s has not submitted! Notifying.', user.name)
             user_submit_reminder_notification(user, submission_period)
@@ -118,9 +113,7 @@ def send_vote_reminders(submission_period_id):
         return False
 
     try:
-        from musicleague.submission_period import get_submission_period
-
-        submission_period = get_submission_period(submission_period_id)
+        submission_period = select_round(submission_period_id)
         for user in submission_period.have_not_voted:
             app.logger.warning('%s has not submitted! Notifying.', user.name)
             user_vote_reminder_notification(user, submission_period)

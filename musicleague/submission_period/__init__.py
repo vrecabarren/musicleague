@@ -5,7 +5,10 @@ from bson import ObjectId
 
 from musicleague import app
 from musicleague.models import SubmissionPeriod
+from musicleague.persistence.delete import delete_round
+from musicleague.persistence.insert import insert_round
 from musicleague.persistence.models import Round
+from musicleague.persistence.select import select_round
 from musicleague.persistence.statements import INSERT_ROUND
 from musicleague.persistence.statements import UPDATE_ROUND
 from musicleague.submission_period.tasks.cancelers import cancel_pending_task
@@ -41,10 +44,9 @@ def create_submission_period(
     # schedule_submission_reminders(new_submission_period)
     # schedule_vote_reminders(new_submission_period)
 
-    app.logger.info('Submission period created: %s', new_submission_period.id)
-
-    from musicleague.persistence.insert import insert_round
     insert_round(new_submission_period)
+
+    app.logger.info('Submission period created: %s', new_submission_period.id)
 
     return new_submission_period
 
@@ -59,24 +61,18 @@ def get_submission_period(submission_period_id):
 
 def remove_submission_period(submission_period_id, submission_period=None):
     if submission_period is None:
-        submission_period = get_submission_period(submission_period_id)
+        submission_period = select_round(submission_period_id)
 
     if (not submission_period or
             str(submission_period.id) != str(submission_period_id)):
         return
 
-    league = submission_period.league
-
     # Cancel all scheduled tasks
-    for pending_task_id in submission_period.pending_tasks.values():
-        cancel_pending_task(pending_task_id)
+    # for pending_task_id in submission_period.pending_tasks.values():
+    #     cancel_pending_task(pending_task_id)
 
-    submission_period.delete()
-
-    from musicleague.persistence.delete import delete_round
     delete_round(submission_period)
 
-    league.reload('submission_periods')
     app.logger.info('Submission period removed: %s', submission_period_id)
 
     return submission_period
@@ -84,7 +80,7 @@ def remove_submission_period(submission_period_id, submission_period=None):
 
 def update_submission_period(submission_period_id, name, description,
                              submission_due_date, vote_due_date):
-    submission_period = get_submission_period(submission_period_id)
+    submission_period = select_round(submission_period_id)
     if not submission_period:
         return
 

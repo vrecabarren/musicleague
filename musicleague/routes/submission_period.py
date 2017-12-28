@@ -11,6 +11,7 @@ from musicleague.notify.flash import flash_error
 from musicleague.notify.flash import flash_success
 from musicleague.notify.flash import flash_warning
 from musicleague.persistence.select import select_league
+from musicleague.persistence.select import select_round
 from musicleague.routes.decorators import admin_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
@@ -33,7 +34,7 @@ VIEW_SUBMISSION_PERIOD_URL = '/l/<league_id>/<submission_period_id>/'
 @templated('email/html/all_voted.html')
 @login_required
 def view_round_email(league_id, submission_period_id):
-    submission_period = get_submission_period(submission_period_id)
+    submission_period = select_round(submission_period_id)
     return {'submission_period': submission_period, 'user': g.user}
 
 
@@ -105,7 +106,8 @@ def save_submission_period_settings(league_id, submission_period_id,
 @login_required
 def view_submission_period(league_id, submission_period_id):
     league = select_league(league_id)
-    submission_period = get_submission_period(submission_period_id)
+    # TODO Get this from the league instead of another SELECT
+    submission_period = select_round(submission_period_id)
     if not submission_period:
         flash_error('Round not found')
         return redirect(url_for('view_league', league_id=league.id))
@@ -139,7 +141,7 @@ def view_submission_period(league_id, submission_period_id):
 @login_required
 @admin_required
 def score_round(league_id, submission_period_id):
-    submission_period = get_submission_period(submission_period_id)
+    submission_period = select_round(submission_period_id)
     submission_period = calculate_round_scoreboard(submission_period)
     calculate_league_scoreboard(submission_period.league)
     return str(len(submission_period.scoreboard)), 200

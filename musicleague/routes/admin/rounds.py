@@ -2,10 +2,10 @@ from flask import redirect
 from flask import request
 
 from musicleague import app
+from musicleague.persistence.select import select_round
 from musicleague.routes.decorators import admin_required
 from musicleague.routes.decorators import login_required
 from musicleague.spotify import create_or_update_playlist
-from musicleague.submission_period import get_submission_period
 from musicleague.submission_period import remove_submission_period
 from musicleague.submission_period.tasks.schedulers import schedule_playlist_creation  # noqa
 from musicleague.submission_period.tasks.schedulers import schedule_round_completion  # noqa
@@ -25,7 +25,7 @@ def admin_generate_playlist(submission_period_id):
     if not submission_period_id:
         return
 
-    submission_period = get_submission_period(submission_period_id)
+    submission_period = select_round(submission_period_id)
     if not submission_period:
         return
 
@@ -53,7 +53,7 @@ def admin_reschedule_tasks(submission_period_id):
     if not submission_period_id:
         return
 
-    submission_period = get_submission_period(submission_period_id)
+    submission_period = select_round(submission_period_id)
     if not submission_period:
         return
 

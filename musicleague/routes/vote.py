@@ -11,12 +11,13 @@ from flask import url_for
 from musicleague import app
 from musicleague.notify import owner_user_voted_notification
 from musicleague.notify import user_last_to_vote_notification
+from musicleague.persistence.select import select_round
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 from musicleague.submission import get_my_submission
-from musicleague.submission_period import get_submission_period
 from musicleague.submission_period.tasks import complete_submission_period
-from musicleague.vote import create_or_update_vote, get_my_vote
+from musicleague.vote import create_or_update_vote
+from musicleague.vote import get_my_vote
 
 VOTE_URL = '/l/<league_id>/<submission_period_id>/vote/'
 
@@ -25,7 +26,7 @@ VOTE_URL = '/l/<league_id>/<submission_period_id>/vote/'
 @templated('vote/page.html')
 @login_required
 def view_vote(league_id, submission_period_id):
-    submission_period = get_submission_period(submission_period_id)
+    submission_period = select_round(submission_period_id)
     league = submission_period.league
     if not league.has_user(g.user):
         return redirect(url_for('view_league', league_id=league.id))
@@ -65,7 +66,7 @@ def view_vote(league_id, submission_period_id):
 @login_required
 def vote(league_id, submission_period_id):
     start = timer()
-    submission_period = get_submission_period(submission_period_id)
+    submission_period = select_round(submission_period_id)
     app.logger.info('Submission period loaded after %s s', timer() - start)
     if not submission_period or not submission_period.league:
         return "No submission period or league", httplib.INTERNAL_SERVER_ERROR
