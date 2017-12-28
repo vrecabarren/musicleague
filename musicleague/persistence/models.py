@@ -137,7 +137,7 @@ class League:
         return self.owner and self.owner.id == user.id
 
     def has_user(self, user):
-        return self.users and user in self.users
+        return any((u for u in self.users if u.id == user.id))
 
 
 class Round:
