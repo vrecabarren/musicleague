@@ -11,6 +11,7 @@ from flask import url_for
 from musicleague import app
 from musicleague.notify import owner_user_submitted_notification
 from musicleague.notify import user_last_to_submit_notification
+from musicleague.persistence.select import select_league
 from musicleague.persistence.select import select_round
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
@@ -29,8 +30,9 @@ SUBMIT_URL = '/l/<league_id>/<submission_period_id>/submit/'
 @templated('submit/page.html')
 @login_required
 def view_submit(league_id, submission_period_id):
-    submission_period = select_round(submission_period_id)
-    league = submission_period.league
+    league = select_league(league_id)
+    submission_period = next((sp for sp in league.submission_periods
+                              if sp.id == submission_period_id), None)
     if not league.has_user(g.user):
         return redirect(url_for('view_league', league_id=league.id))
 
@@ -53,19 +55,18 @@ def view_submit(league_id, submission_period_id):
 @login_required
 def submit(league_id, submission_period_id):
     # TODO: Way too much happens in this function
-    submission_period = select_round(submission_period_id)
-    if not submission_period or not submission_period.league:
+    league = select_league(league_id)
+    submission_period = next((sp for sp in league.submission_periods
+                              if sp.id == submission_period_id), None)
+    if not league or not submission_period:
         return "No submission period or league", httplib.INTERNAL_SERVER_ERROR
 
-    if not submission_period.league.has_user(g.user):
+    if not league.has_user(g.user):
         return "Not a member of this league", httplib.UNAUTHORIZED
 
     if (not submission_period.accepting_submissions and
             not submission_period.accepting_late_submissions):
         return redirect(request.referrer)
-
-    # Process submission
-    league = submission_period.league
 
     try:
         tracks = json.loads(request.form.get('songs'))

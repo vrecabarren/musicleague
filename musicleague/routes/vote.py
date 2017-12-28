@@ -11,7 +11,7 @@ from flask import url_for
 from musicleague import app
 from musicleague.notify import owner_user_voted_notification
 from musicleague.notify import user_last_to_vote_notification
-from musicleague.persistence.select import select_round
+from musicleague.persistence.select import select_league
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 from musicleague.submission import get_my_submission
@@ -26,8 +26,9 @@ VOTE_URL = '/l/<league_id>/<submission_period_id>/vote/'
 @templated('vote/page.html')
 @login_required
 def view_vote(league_id, submission_period_id):
-    submission_period = select_round(submission_period_id)
-    league = submission_period.league
+    league = select_league(league_id)
+    submission_period = next((sp for sp in league.submission_periods
+                              if sp.id == submission_period_id), None)
     if not league.has_user(g.user):
         return redirect(url_for('view_league', league_id=league.id))
 
@@ -66,19 +67,21 @@ def view_vote(league_id, submission_period_id):
 @login_required
 def vote(league_id, submission_period_id):
     start = timer()
-    submission_period = select_round(submission_period_id)
+    league = select_league(league_id)
+    submission_period = next((sp for sp in league.submission_periods
+                              if sp.id == submission_period_id), None)
     app.logger.info('Submission period loaded after %s s', timer() - start)
-    if not submission_period or not submission_period.league:
+    if not league or not submission_period:
         return "No submission period or league", httplib.INTERNAL_SERVER_ERROR
 
-    if not submission_period.league.has_user(g.user):
+    if not league.has_user(g.user):
         app.logger.warning('No membership - redirecting after %s s', timer() - start)
         return "Not a member of this league", httplib.UNAUTHORIZED
 
     # If this user didn't submit for this round, don't allow them to vote
     if g.user not in submission_period.have_submitted:
         app.logger.warning('No submission - redirecting after %s s', timer() - start)
-        return redirect(url_for('view_league', league_id=submission_period.league.id))
+        return redirect(url_for('view_league', league_id=league_id))
 
     # If this round is no longer accepting votes, redirect
     if not submission_period.accepting_votes:
@@ -100,7 +103,6 @@ def vote(league_id, submission_period_id):
     app.logger.info('Removed zero values after %s s', timer() - start)
 
     # Process votes
-    league = submission_period.league
     app.logger.info('Creating/updating vote after %s s', timer() - start)
     vote = create_or_update_vote(votes, submission_period, league, g.user)
     app.logger.info('Vote created/updated after %s s', timer() - start)
