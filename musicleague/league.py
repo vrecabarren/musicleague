@@ -7,6 +7,7 @@ from musicleague.models import InvitedUser
 from musicleague.notify import user_added_to_league_notification
 from musicleague.notify import user_invited_to_league_notification
 from musicleague.persistence.delete import delete_league
+from musicleague.persistence.delete import delete_membership
 from musicleague.persistence.insert import insert_league
 from musicleague.persistence.insert import insert_membership
 from musicleague.persistence.models import League
@@ -39,6 +40,8 @@ def remove_user(league, user_id):
     for user in league.users:
         if str(user.id) != user_id:
             remaining_users.append(user)
+        else:
+            delete_membership(league, user)
     league.users = remaining_users
 
 
