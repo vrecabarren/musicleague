@@ -91,6 +91,15 @@ class Scoreboard:
         return top
 
 
+class LeaguePreferences:
+    def __init__(self):
+        self.track_count = 2
+        self.point_bank_size = 6
+        self.max_points_per_song = 0
+        self.downvote_bank_size = 0
+        self.max_downvotes_per_song = 0
+
+
 class League:
     def __init__(self, id, created, name, owner_id):
         self.id = id
@@ -99,6 +108,7 @@ class League:
         self.name = name
         self.owner = None
         self.owner_id = owner_id
+        self.preferences = LeaguePreferences()
         self.scoreboard = Scoreboard()
         self.submission_periods = []
         self.users = []
