@@ -253,6 +253,7 @@ class Submission:
         self.created = created
         self.league = None
         self.submission_period = None
+        self.count = 1
 
 
 class Vote:
@@ -262,3 +263,4 @@ class Vote:
         self.created = created
         self.league = None
         self.submission_period = None
+        self.count = 1
