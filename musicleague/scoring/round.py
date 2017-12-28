@@ -2,8 +2,8 @@ from collections import Counter
 
 from itertools import groupby
 
-from musicleague.models import Scoreboard
-from musicleague.models import ScoreboardEntry
+from musicleague.persistence.models import Scoreboard
+from musicleague.persistence.models import ScoreboardEntry
 from musicleague.scoring import EntrySortKey
 
 
@@ -41,7 +41,6 @@ def calculate_round_scoreboard(round):
         for entry in entries:
             update_submission_rank(round, entry.uri, rank)
 
-    round.save()
     return round
 
 

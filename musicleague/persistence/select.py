@@ -96,7 +96,7 @@ def select_league(league_id, exclude_properties=None):
                                 s = Submission(user=u, tracks=tracks.keys(), created=created)
                                 round.submissions.append(s)
                                 for uri, ranking in tracks.iteritems():
-                                    uri_entry_idx[uri] = ScoreboardEntry(s, ranking, uri)
+                                    uri_entry_idx[uri] = ScoreboardEntry(uri=uri, submission=s, place=ranking)
 
                 for user in l.users:
                     if 'votes' not in exclude_properties or 'rounds' not in exclude_properties:
@@ -123,7 +123,7 @@ def select_league(league_id, exclude_properties=None):
                     for scoreboard_tup in cur.fetchall():
                         user_id, rank = scoreboard_tup
                         u = user_idx.get(user_id, None)
-                        le = RankingEntry(user=u, rank=rank)
+                        le = RankingEntry(league=l, user=u, place=rank)
                         le.entries = user_entry_idx[user_id]
                         l.scoreboard.add_entry(le, rank)
 

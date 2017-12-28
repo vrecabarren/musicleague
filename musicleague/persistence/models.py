@@ -34,9 +34,9 @@ class User:
 
 
 class ScoreboardEntry:
-    def __init__(self, submission, rank, uri):
+    def __init__(self, uri, submission, **kwargs):
         self.submission = submission
-        self.place = rank
+        self.place = kwargs.get('place', -1)
         self.uri = uri
         self.votes = []
 
@@ -46,9 +46,10 @@ class ScoreboardEntry:
 
 
 class RankingEntry:
-    def __init__(self, user, rank):
+    def __init__(self, league, user, **kwargs):
         self.user = user
-        self.place = rank
+        self.place = kwargs.get('place', -1)
+        self.league = league
         self.entries = []
 
     @property
