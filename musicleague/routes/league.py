@@ -9,8 +9,6 @@ from flask import request
 from flask import url_for
 
 from musicleague import app
-from musicleague.environment import is_dev
-from musicleague.environment import is_production
 from musicleague.league import add_user
 from musicleague.league import create_league
 from musicleague.league import get_league
@@ -19,7 +17,6 @@ from musicleague.league import remove_user
 from musicleague.notify.flash import flash_error
 from musicleague.persistence.select import select_league
 from musicleague.routes.decorators import admin_required
-from musicleague.routes.decorators import league_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 from musicleague.scoring.league import calculate_league_scoreboard
@@ -183,18 +180,17 @@ def post_manage_league(league_id):
 
 @app.route(JOIN_LEAGUE_URL, methods=['GET'])
 @login_required
-@league_required
 def join_league(league_id, **kwargs):
-    league = kwargs.get('league')
+    league = select_league(league_id)
     add_user(league, g.user.email, notify=False)
 
     # If this URL is from an invitation email, delete the placeholder
-    invite_id = request.args.get('invite_id')
-    if invite_id:
-        invited_user = next((iu for iu in league.invited_users
-                             if str(iu.id) == invite_id), None)
-        if invited_user:
-            invited_user.delete()
+    # invite_id = request.args.get('invite_id')
+    # if invite_id:
+    #     invited_user = next((iu for iu in league.invited_users
+    #                          if str(iu.id) == invite_id), None)
+    #     if invited_user:
+    #         invited_user.delete()
 
     app.logger.info('User joined league: %s', league.id)
 
@@ -203,12 +199,11 @@ def join_league(league_id, **kwargs):
 
 @app.route(REMOVE_LEAGUE_URL)
 @login_required
-@league_required
 def get_remove_league(league_id, **kwargs):
-    league = kwargs.get('league')
+    league = select_league(league_id)
     if league and league.has_owner(g.user):
         app.logger.info('Removing league: %s', league.id)
-        league = remove_league(league_id, league=league)
+        remove_league(league_id, league=league)
 
     return redirect(url_for('profile'))
 
@@ -254,9 +249,8 @@ def view_league(league_id, **kwargs):
 @app.route(VIEW_LEAGUE_URL + 'score/')
 @login_required
 @admin_required
-@league_required
 def score_league(league_id, **kwargs):
-    league = kwargs.get('league')
+    league = select_league(league_id)
     league = calculate_league_scoreboard(league)
     ret = {rank: [entry.user.id for entry in entries]
            for rank, entries in league.scoreboard.rankings.iteritems()}
@@ -266,7 +260,6 @@ def score_league(league_id, **kwargs):
 @app.route(LEADERBOARD_URL)
 @templated('leaderboard/page.html')
 @login_required
-@league_required
 def view_leaderboard(league_id, **kwargs):
-    league = kwargs.get('league')
+    league = select_league(league_id)
     return {'user': g.user, 'league': league}

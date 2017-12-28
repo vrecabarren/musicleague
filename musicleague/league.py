@@ -6,8 +6,11 @@ from haikunator import Haikunator
 from musicleague.models import InvitedUser
 from musicleague.notify import user_added_to_league_notification
 from musicleague.notify import user_invited_to_league_notification
+from musicleague.persistence.delete import delete_league
+from musicleague.persistence.insert import insert_league
 from musicleague.persistence.insert import insert_membership
 from musicleague.persistence.models import League
+from musicleague.persistence.select import select_league
 from musicleague.scoring import EntrySortKey
 from musicleague.submission_period import remove_submission_period
 from musicleague.user import get_user_by_email
@@ -35,11 +38,8 @@ def add_user(league, user_email, notify=True):
 
 def remove_user(league, user_id):
     remaining_users = []
-    removed_user = None
     for user in league.users:
-        if str(user.id) == user_id:
-            removed_user = user
-        else:
+        if str(user.id) != user_id:
             remaining_users.append(user)
     league.users = remaining_users
 
@@ -52,7 +52,6 @@ def create_league(user, name=None, users=None):
     new_league = League(id=ObjectId(), created=datetime.utcnow(), name=name, owner_id=user.id)
     new_league.owner = user
 
-    from musicleague.persistence.insert import insert_league
     insert_league(new_league)
 
     members = [user]
@@ -67,7 +66,7 @@ def create_league(user, name=None, users=None):
 
 def remove_league(league_id, league=None):
     if league is None:
-        league = get_league(league_id)
+        league = select_league(league_id)
 
     if not league or str(league.id) != str(league_id):
         return
@@ -76,7 +75,6 @@ def remove_league(league_id, league=None):
         remove_submission_period(submission_period.id,
                                  submission_period=submission_period)
 
-    from musicleague.persistence.delete import delete_league
     delete_league(league)
 
     return league

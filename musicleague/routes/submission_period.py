@@ -7,12 +7,11 @@ from flask import request
 from flask import url_for
 
 from musicleague import app
-from musicleague.league import get_league
 from musicleague.notify.flash import flash_error
 from musicleague.notify.flash import flash_success
 from musicleague.notify.flash import flash_warning
+from musicleague.persistence.select import select_league
 from musicleague.routes.decorators import admin_required
-from musicleague.routes.decorators import league_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 from musicleague.scoring.league import calculate_league_scoreboard
@@ -40,9 +39,8 @@ def view_round_email(league_id, submission_period_id):
 
 @app.route(CREATE_SUBMISSION_PERIOD_URL, methods=['POST'])
 @login_required
-@league_required
 def post_create_submission_period(league_id, **kwargs):
-    league = kwargs.get('league')
+    league = select_league(league_id)
     if league.has_owner(g.user):
         name = request.form.get('name')
         description = request.form.get('description')
@@ -68,9 +66,8 @@ def post_create_submission_period(league_id, **kwargs):
 
 @app.route(REMOVE_SUBMISSION_PERIOD_URL)
 @login_required
-@league_required
 def r_remove_submission_period(league_id, submission_period_id, **kwargs):
-    league = kwargs.get('league')
+    league = select_league(league_id)
     if league.has_owner(g.user):
         submission_period = remove_submission_period(submission_period_id)
         flash_success("<strong>{}</strong> removed."
@@ -80,7 +77,6 @@ def r_remove_submission_period(league_id, submission_period_id, **kwargs):
 
 @app.route(SETTINGS_URL, methods=['POST'])
 @login_required
-@league_required
 def save_submission_period_settings(league_id, submission_period_id,
                                     **kwargs):
     name = request.form.get('name')
@@ -108,7 +104,7 @@ def save_submission_period_settings(league_id, submission_period_id,
 @templated('results/page.html')
 @login_required
 def view_submission_period(league_id, submission_period_id):
-    league = get_league(league_id)
+    league = select_league(league_id)
     submission_period = get_submission_period(submission_period_id)
     if not submission_period:
         flash_error('Round not found')
