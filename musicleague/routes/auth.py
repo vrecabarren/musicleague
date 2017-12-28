@@ -28,6 +28,7 @@ USER_ID_URL = '/id/'
 
 @app.before_request
 def before_request():
+    app.logger.info('Processing pre-request for endpoint: %s', request.endpoint)
     if request.endpoint == 'logout':
         return
 
