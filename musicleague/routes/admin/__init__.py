@@ -1,19 +1,13 @@
 from flask import g
 from flask import request
-from rq.decorators import job
 
 from musicleague import app
 from musicleague import postgres_conn
-from musicleague import redis_conn
 from musicleague import scheduler
-from musicleague.environment import is_dev
-from musicleague.league import get_league
 from musicleague.models import InvitedUser
-from musicleague.models import League
-from musicleague.models import Submission
-from musicleague.models import SubmissionPeriod
 from musicleague.models import User
-from musicleague.models import Vote
+from musicleague.persistence.models import League
+from musicleague.persistence.select import select_league
 from musicleague.routes.decorators import admin_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
@@ -32,32 +26,20 @@ ADMIN_USERS_URL = '/admin/users/'
 @login_required
 @admin_required
 def admin():
-    if request.args.get('pg') == '1' or is_dev():
-        from musicleague.persistence.select import select_leagues_count
-        from musicleague.persistence.select import select_rounds_count
-        from musicleague.persistence.select import select_submissions_count
-        from musicleague.persistence.select import select_users_count
-        from musicleague.persistence.select import select_votes_count
-        return {
-            'user': g.user,
-            'num_invited': InvitedUser.objects().count(),
-            'num_leagues': select_leagues_count(),
-            'num_rounds': select_rounds_count(),
-            'num_submissions': select_submissions_count(),
-            'num_tasks': len(scheduler.get_jobs()),
-            'num_users': select_users_count(),
-            'num_votes': select_votes_count()
-        }
-
+    from musicleague.persistence.select import select_leagues_count
+    from musicleague.persistence.select import select_rounds_count
+    from musicleague.persistence.select import select_submissions_count
+    from musicleague.persistence.select import select_users_count
+    from musicleague.persistence.select import select_votes_count
     return {
         'user': g.user,
         'num_invited': InvitedUser.objects().count(),
-        'num_leagues': League.objects().count(),
-        'num_rounds': SubmissionPeriod.objects().count(),
-        'num_submissions': Submission.objects().count(),
+        'num_leagues': select_leagues_count(),
+        'num_rounds': select_rounds_count(),
+        'num_submissions': select_submissions_count(),
         'num_tasks': len(scheduler.get_jobs()),
-        'num_users': User.objects().count(),
-        'num_votes': Vote.objects().count()
+        'num_users': select_users_count(),
+        'num_votes': select_votes_count()
     }
 
 
@@ -79,26 +61,17 @@ def admin_jobs():
 @login_required
 @admin_required
 def admin_leagues():
-    if request.args.get('pg') == '1' or is_dev():
-        from musicleague.persistence.models import League as NewLeague
-        stmt = 'SELECT id, created, name, owner_id FROM leagues ORDER BY name;'
-        leagues = []
-        with postgres_conn:
-            with postgres_conn.cursor() as cur:
-                cur.execute(stmt)
-                for league_tup in cur.fetchall():
-                    leagues.append(
-                        NewLeague(id=league_tup[0],
-                                  created=league_tup[1],
-                                  name=league_tup[2],
-                                  owner_id=league_tup[3]))
-    else:
-        leagues = League.objects().all().order_by('preferences.name')
-
-    if request.args.get('pg_update') == '1':
-        from musicleague.persistence.insert import insert_league
-        for league in leagues:
-            insert_league_async.delay(str(league.id))
+    stmt = 'SELECT id, created, name, owner_id FROM leagues ORDER BY name;'
+    leagues = []
+    with postgres_conn:
+        with postgres_conn.cursor() as cur:
+            cur.execute(stmt)
+            for league_tup in cur.fetchall():
+                leagues.append(
+                    League(id=league_tup[0],
+                           created=league_tup[1],
+                           name=league_tup[2],
+                           owner_id=league_tup[3]))
 
     return {
         'user': g.user,
@@ -111,23 +84,12 @@ def admin_leagues():
 @login_required
 @admin_required
 def admin_league(league_id):
-    if request.args.get('pg') == '1' or is_dev():
-        from musicleague.persistence.select import select_league
-        league = select_league(league_id)
-    else:
-        league = get_league(league_id)
+    league = select_league(league_id)
 
     return {
         'user': g.user,
         'league': league
     }
-
-
-@job('default', connection=redis_conn)
-def insert_league_async(league_id):
-    league = get_league(league_id)
-    from musicleague.persistence.insert import insert_league
-    insert_league(league)
 
 
 @app.route(ADMIN_TOOLS_URL)

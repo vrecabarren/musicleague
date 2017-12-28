@@ -38,7 +38,6 @@ def view_round_email(league_id, submission_period_id):
     return {'submission_period': submission_period, 'user': g.user}
 
 
-
 @app.route(CREATE_SUBMISSION_PERIOD_URL, methods=['POST'])
 @login_required
 @league_required
