@@ -15,9 +15,6 @@ def create_or_update_submission(tracks, submission_period, league, user):
     if s:
         s.tracks = tracks
         s.count += 1
-        s.updated = datetime.utcnow()
-        s.save()
-        from musicleague.persistence.insert import insert_submission
         insert_submission(s)
     else:
         s = create_submission(tracks, submission_period, user, league)
