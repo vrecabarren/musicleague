@@ -146,6 +146,7 @@ class Round:
         self.name = name
         self.description = description
         self.playlist_url = playlist_url
+        self.scoreboard = Scoreboard()
         self.submissions = []
         self.submission_due_date = submissions_due
         self.votes = []
