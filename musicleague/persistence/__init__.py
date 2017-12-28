@@ -6,6 +6,7 @@ from musicleague.persistence.statements import CREATE_TABLE_LEAGUES
 from musicleague.persistence.statements import CREATE_TABLE_MEMBERSHIPS
 from musicleague.persistence.statements import CREATE_TABLE_ROUNDS
 from musicleague.persistence.statements import CREATE_TABLE_SUBMISSIONS
+from musicleague.persistence.statements import CREATE_TABLE_USER_PREFERENCES
 from musicleague.persistence.statements import CREATE_TABLE_USERS
 from musicleague.persistence.statements import CREATE_TABLE_VOTES
 
@@ -25,6 +26,7 @@ def _init_db(postgres_conn):
     """ Create all tables if they don't exist. """
     with postgres_conn.cursor() as cur:
         cur.execute(CREATE_TABLE_USERS)
+        cur.execute(CREATE_TABLE_USER_PREFERENCES)
         cur.execute(CREATE_TABLE_LEAGUES)
         cur.execute(CREATE_TABLE_MEMBERSHIPS)
         cur.execute(CREATE_TABLE_ROUNDS)

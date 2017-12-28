@@ -1,3 +1,20 @@
+# ================
+# USER PREFERENCES
+# ================
+
+CREATE_TABLE_USER_PREFERENCES = """CREATE TABLE IF NOT EXISTS user_preferences (
+                                        user_id VARCHAR(255) NOT NULL REFERENCES users(id),
+                                        owner_all_users_submitted_notifications BOOL NOT NULL DEFAULT TRUE,
+                                        owner_all_users_voted_notifications BOOL NOT NULL DEFAULT TRUE,
+                                        owner_user_left_notifications BOOL NOT NULL DEFAULT TRUE,
+                                        owner_user_submitted_notifications BOOL NOT NULL DEFAULT TRUE,
+                                        owner_user_voted_notifications BOOL NOT NULL DEFAULT TRUE,
+                                        user_added_to_league_notifications BOOL NOT NULL DEFAULT TRUE,
+                                        user_playlist_created_notifications BOOL NOT NULL DEFAULT TRUE,
+                                        user_removed_from_league_notifications BOOL NOT NULL DEFAULT TRUE,
+                                        user_submit_reminder_notifications BOOL NOT NULL DEFAULT TRUE,
+                                        user_vote_reminder_notifications BOOL NOT NULL DEFAULT TRUE);"""
+
 # =====
 # USERS
 # =====
