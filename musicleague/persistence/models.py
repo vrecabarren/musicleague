@@ -251,6 +251,8 @@ class Submission:
         self.user = user
         self.tracks = tracks
         self.created = created
+        self.league = None
+        self.submission_period = None
 
 
 class Vote:
@@ -258,3 +260,5 @@ class Vote:
         self.user = user
         self.votes = votes
         self.created = created
+        self.league = None
+        self.submission_period = None

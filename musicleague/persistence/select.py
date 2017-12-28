@@ -94,6 +94,8 @@ def select_league(league_id, exclude_properties=None):
                             created, tracks = created_tracks
                             if created is not None and tracks is not None:
                                 s = Submission(user=u, tracks=tracks.keys(), created=created)
+                                s.league = l
+                                s.submission_period = round
                                 round.submissions.append(s)
                                 for uri, ranking in tracks.iteritems():
                                     uri_entry_idx[uri] = ScoreboardEntry(uri=uri, submission=s, place=ranking)
@@ -107,6 +109,8 @@ def select_league(league_id, exclude_properties=None):
                             created, votes = created_votes
                             if created is not None and votes is not None:
                                 v = Vote(user=user, votes=votes, created=created)
+                                v.league = l
+                                v.submission_period = round
                                 round.votes.append(v)
                                 for uri, weight in votes.iteritems():
                                     if uri not in uri_entry_idx:
