@@ -23,7 +23,7 @@ def update_league(league):
         from musicleague import postgres_conn
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(UPDATE_LEAGUE, (league.name, str(league.id)))
+                cur.execute(UPDATE_LEAGUE, (league.name, league.status, str(league.id)))
     except Exception as e:
         app.logger.warning('Failed UPDATE_LEAGUE: %s', str(e), exc_info=e)
 

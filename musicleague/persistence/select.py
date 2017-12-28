@@ -64,7 +64,8 @@ def select_league(league_id, exclude_properties=None):
                     id=str(league_id),
                     created=league_tup[0],
                     name=league_tup[1],
-                    owner_id=league_tup[2]
+                    owner_id=league_tup[2],
+                    status=league_tup[3],
                 )
 
                 if 'rounds' not in exclude_properties:

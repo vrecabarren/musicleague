@@ -1,6 +1,5 @@
 from musicleague import app
-from musicleague.persistence.statements import DELETE_SUBMISSIONS
-from musicleague.persistence.statements import DELETE_VOTES
+from musicleague.persistence.models import LeagueStatus
 from musicleague.persistence.statements import INSERT_LEAGUE
 from musicleague.persistence.statements import INSERT_MEMBERSHIP
 from musicleague.persistence.statements import INSERT_ROUND
@@ -29,10 +28,17 @@ def insert_league(league):
         from musicleague import postgres_conn
         with postgres_conn:
             with postgres_conn.cursor() as cur:
+                if league.is_complete:
+                    status = LeagueStatus.COMPLETE
+                elif league.is_active:
+                    status = LeagueStatus.IN_PROGRESS
+                else:
+                    status = LeagueStatus.COMPLETE
+
                 cur.execute(
                     INSERT_LEAGUE,
                     (str(league.id), league.created, league.name,
-                     str(league.owner.id)))
+                     str(league.owner.id), status))
 
                 for user in league.users:
                     insert_membership(league, user)

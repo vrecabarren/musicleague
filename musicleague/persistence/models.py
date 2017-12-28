@@ -118,8 +118,14 @@ class LeaguePreferences:
         self.max_downvotes_per_song = 0
 
 
+class LeagueStatus:
+    CREATED = 0
+    IN_PROGRESS = 5
+    COMPLETE = 10
+
+
 class League:
-    def __init__(self, id, created, name, owner_id):
+    def __init__(self, id, created, name, owner_id, status):
         self.id = id
         self.created = created
         self.is_public = True
@@ -128,6 +134,7 @@ class League:
         self.owner_id = owner_id
         self.preferences = LeaguePreferences()
         self.scoreboard = Scoreboard()
+        self.status = status
         self.submission_periods = []
         self.users = []
 

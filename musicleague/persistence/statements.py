@@ -54,13 +54,13 @@ CREATE_TABLE_LEAGUES = """CREATE TABLE IF NOT EXISTS leagues (
 
 DELETE_LEAGUE = "DELETE FROM leagues WHERE id = %s;"
 
-INSERT_LEAGUE = "INSERT INTO leagues (id, created, name, owner_id) VALUES (%s, %s, %s, %s) ON CONFLICT (id) DO NOTHING;"
+INSERT_LEAGUE = "INSERT INTO leagues (id, created, name, owner_id, status) VALUES (%s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING;"
 
-SELECT_LEAGUE = "SELECT created, name, owner_id FROM leagues WHERE id = %s;"
+SELECT_LEAGUE = "SELECT created, name, owner_id, status FROM leagues WHERE id = %s;"
 
 SELECT_LEAGUES_COUNT = "SELECT COUNT(id) FROM leagues;"
 
-UPDATE_LEAGUE = "UPDATE leagues SET (name) = (%s) WHERE id = %s;"
+UPDATE_LEAGUE = "UPDATE leagues SET (name, status) VALUES (%s, %s) WHERE id = %s;"
 
 # ===========
 # MEMBERSHIPS
