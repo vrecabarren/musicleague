@@ -20,8 +20,6 @@ def add_user(league, user_email, notify=True):
     user = get_user_by_email(user_email)
     if user and user not in league.users:
         league.users.append(user)
-
-        from musicleague.persistence.insert import insert_membership
         insert_membership(league, user)
 
         if notify:
