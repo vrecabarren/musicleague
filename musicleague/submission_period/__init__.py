@@ -5,7 +5,7 @@ from bson import ObjectId
 
 from musicleague import app
 from musicleague.models import SubmissionPeriod
-from musicleague.persistence.statements import DELETE_ROUND
+from musicleague.persistence.models import Round
 from musicleague.persistence.statements import INSERT_ROUND
 from musicleague.persistence.statements import UPDATE_ROUND
 from musicleague.submission_period.tasks.cancelers import cancel_pending_task
@@ -25,15 +25,15 @@ def create_submission_period(
         datetime.utcnow() + timedelta(days=5))
     vote_due_date = vote_due_date or (datetime.utcnow() + timedelta(days=7))
 
-    new_submission_period = SubmissionPeriod(
+    new_submission_period = Round(
+        id=ObjectId(),
+        created=datetime.utcnow(),
         name=name,
         description=description,
-        created=datetime.utcnow(),
-        league=league,
-        submission_due_date=submission_due_date,
-        vote_due_date=vote_due_date)
-
-    new_submission_period.id = ObjectId()
+        playlist_url='',
+        submissions_due=submission_due_date,
+        votes_due=vote_due_date)
+    new_submission_period.league = league
     league.submission_periods.append(new_submission_period)
 
     # schedule_playlist_creation(new_submission_period)
