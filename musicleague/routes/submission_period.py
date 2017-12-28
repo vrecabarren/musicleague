@@ -106,9 +106,9 @@ def save_submission_period_settings(league_id, submission_period_id,
 @login_required
 def view_submission_period(league_id, submission_period_id):
     league = select_league(league_id)
-    # TODO Get this from the league instead of another SELECT
-    submission_period = select_round(submission_period_id)
-    if not submission_period:
+    submission_period = next((sp for sp in league.submission_periods
+                              if sp.id == submission_period_id), None)
+    if not league or not submission_period:
         flash_error('Round not found')
         return redirect(url_for('view_league', league_id=league.id))
 
@@ -141,7 +141,9 @@ def view_submission_period(league_id, submission_period_id):
 @login_required
 @admin_required
 def score_round(league_id, submission_period_id):
-    submission_period = select_round(submission_period_id)
+    league = select_league(league_id)
+    submission_period = next((sp for sp in league.submission_periods
+                              if sp.id == submission_period_id), None)
     submission_period = calculate_round_scoreboard(submission_period)
-    calculate_league_scoreboard(submission_period.league)
+    calculate_league_scoreboard(league)
     return str(len(submission_period.scoreboard)), 200
