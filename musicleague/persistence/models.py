@@ -7,6 +7,21 @@ from time import time
 import urlparse
 
 
+class UserPreferences:
+    def __init__(self):
+        self.owner_all_users_submitted_notifications = True
+        self.owner_all_users_voted_notifications = True
+        self.owner_user_left_notifications = True
+        self.owner_user_submitted_notifications = True
+        self.owner_user_voted_notifications = True
+
+        self.user_added_to_league_notifications = True
+        self.user_playlist_created_notifications = True
+        self.user_removed_from_league_notifications = True
+        self.user_submit_reminder_notifications = True
+        self.user_vote_reminder_notifications = True
+
+
 class User:
     def __init__(self, id, email, image_url, is_admin, joined, name, profile_bg):
         self.id = id
@@ -15,6 +30,7 @@ class User:
         self.is_admin = is_admin
         self.joined = joined
         self.name = name
+        self.preferences = UserPreferences()
         self.profile_background = profile_bg
 
     @property
