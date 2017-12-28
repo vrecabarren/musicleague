@@ -87,7 +87,7 @@ def insert_submission(submission, insert_deps=True):
                 for track in submission.tracks:
                     cur.execute(
                         INSERT_SUBMISSION,
-                        ((submission.updated or submission.created),
+                        (submission.created,
                          str(submission.submission_period.id),
                          track, str(submission.user.id)))
     except Exception as e:
@@ -108,7 +108,7 @@ def insert_vote(vote, insert_deps=True):
                 for spotify_uri, weight in vote.votes.iteritems():
                     cur.execute(
                         INSERT_VOTE,
-                        ((vote.updated or vote.created),
+                        (vote.created,
                          str(vote.submission_period.id),
                          spotify_uri, str(vote.user.id),
                          weight))
