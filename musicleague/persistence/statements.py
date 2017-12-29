@@ -62,6 +62,8 @@ SELECT_LEAGUES_COUNT = "SELECT COUNT(id) FROM leagues;"
 
 UPDATE_LEAGUE = "UPDATE leagues SET (name, status) VALUES (%s, %s) WHERE id = %s;"
 
+UPDATE_LEAGUE_STATUS = "UPDATE leagues SET status = %s WHERE id = %s;"
+
 # ===========
 # MEMBERSHIPS
 # ===========
@@ -125,7 +127,7 @@ DELETE_ROUNDS = "DELETE FROM rounds WHERE league_id = %s;"
 INSERT_ROUND = """INSERT INTO rounds (id, created, description, league_id, name, submissions_due, votes_due)
                     VALUES (%s, %s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING;"""
 
-SELECT_ROUND = """SELECT created, description, name, playlist_url, submissions_due, votes_due
+SELECT_ROUND = """SELECT league_id, created, description, name, playlist_url, submissions_due, votes_due
                     FROM rounds WHERE id = %s;"""
 
 SELECT_ROUNDS_COUNT = "SELECT COUNT(id) FROM rounds;"
@@ -134,6 +136,8 @@ SELECT_ROUNDS_IN_LEAGUE = """SELECT id FROM rounds WHERE league_id = %s ORDER BY
 
 UPDATE_ROUND = """UPDATE rounds SET (description, name, submissions_due, votes_due)
                     VALUES (%s, %s, %s, %s) WHERE id = %s;"""
+
+UPDATE_ROUND_STATUS = "UPDATE rounds SET status = %s WHERE id = %s;"
 
 # ===========
 # SUBMISSIONS

@@ -120,8 +120,8 @@ class LeaguePreferences:
 
 class LeagueStatus:
     CREATED = 0
-    IN_PROGRESS = 5
-    COMPLETE = 10
+    IN_PROGRESS = 10
+    COMPLETE = 20
 
 
 class League:
@@ -163,18 +163,26 @@ class League:
         return any((u for u in self.users if u.id == user.id))
 
 
+class RoundStatus:
+    CREATED = 0
+    COMPLETE = 20
+
+
 class Round:
-    def __init__(self, id, created, name, description, playlist_url, submissions_due, votes_due):
+    def __init__(self, id, league_id, created, name, description, playlist_url, submissions_due, votes_due):
         self.id = id
         self.created = created
         self.name = name
         self.description = description
+        self.league_id = league_id
         self.playlist_url = playlist_url
         self.scoreboard = Scoreboard()
         self.submissions = []
         self.submission_due_date = submissions_due
         self.votes = []
         self.vote_due_date = votes_due
+
+        # TODO Remove this - only fetch league when needed using league_id
         self.league = None
 
     @property

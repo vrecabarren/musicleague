@@ -204,12 +204,13 @@ def select_round(round_id):
                 round_tup = cur.fetchone()
                 r = Round(
                     id=str(round_id),
-                    created=round_tup[0],
-                    description=round_tup[1],
-                    name=round_tup[2],
-                    playlist_url=round_tup[3],
-                    submissions_due=utc.localize(round_tup[4]),
-                    votes_due=utc.localize(round_tup[5]),
+                    league_id=round_tup[0],
+                    created=round_tup[1],
+                    description=round_tup[2],
+                    name=round_tup[3],
+                    playlist_url=round_tup[4],
+                    submissions_due=utc.localize(round_tup[5]),
+                    votes_due=utc.localize(round_tup[6]),
                 )
                 return r
     except Exception as e:

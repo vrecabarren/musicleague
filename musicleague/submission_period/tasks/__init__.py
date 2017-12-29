@@ -6,7 +6,10 @@ from musicleague.notify import user_all_voted_notification
 from musicleague.notify import user_new_round_notification
 from musicleague.notify import user_submit_reminder_notification
 from musicleague.notify import user_vote_reminder_notification
+from musicleague.persistence.models import RoundStatus
+from musicleague.persistence.select import select_league
 from musicleague.persistence.select import select_round
+from musicleague.persistence.update import update_round_status
 from musicleague.scoring.league import calculate_league_scoreboard
 from musicleague.scoring.round import calculate_round_scoreboard
 from musicleague.spotify import create_or_update_playlist
@@ -34,7 +37,6 @@ def complete_submission_process(submission_period_id):
         create_or_update_playlist(submission_period)
         cancel_playlist_creation(submission_period)
         cancel_submission_reminders(submission_period)
-        submission_period.save()
 
     except:
         app.logger.exception(
@@ -53,18 +55,17 @@ def complete_submission_period(submission_period_id):
 
         submission_period = select_round(submission_period_id)
         calculate_round_scoreboard(submission_period)
+        update_round_status(submission_period, RoundStatus.COMPLETE)
 
-        # Reload league to include updates to scored round
-        submission_period.league.reload('submission_periods')
-        calculate_league_scoreboard(submission_period.league)
+        league = select_league(submission_period.league_id)
+        calculate_league_scoreboard(league)
 
         user_all_voted_notification(submission_period)
 
         cancel_round_completion(submission_period)
         cancel_vote_reminders(submission_period)
-        submission_period.save()
 
-        for idx, sp in enumerate(submission_period.league.submission_periods):
+        for idx, sp in enumerate(league.submission_periods):
             if str(sp.id) == str(submission_period_id):
                 if len(submission_period.league.submission_periods) > (idx + 1):
                     user_new_round_notification(submission_period.league.submission_periods[idx + 1])
