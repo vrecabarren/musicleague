@@ -124,8 +124,8 @@ DELETE_ROUND = "DELETE FROM rounds WHERE id = %s;"
 
 DELETE_ROUNDS = "DELETE FROM rounds WHERE league_id = %s;"
 
-INSERT_ROUND = """INSERT INTO rounds (id, created, description, league_id, name, submissions_due, votes_due)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING;"""
+INSERT_ROUND = """INSERT INTO rounds (id, created, description, league_id, name, status, submissions_due, votes_due)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING;"""
 
 SELECT_ROUND = """SELECT league_id, created, description, name, playlist_url, submissions_due, votes_due
                     FROM rounds WHERE id = %s;"""

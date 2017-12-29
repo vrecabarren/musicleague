@@ -1,5 +1,6 @@
 from musicleague import app
 from musicleague.persistence.models import LeagueStatus
+from musicleague.persistence.models import RoundStatus
 from musicleague.persistence.statements import INSERT_LEAGUE
 from musicleague.persistence.statements import INSERT_MEMBERSHIP
 from musicleague.persistence.statements import INSERT_ROUND
@@ -68,10 +69,15 @@ def insert_round(round, insert_deps=True):
         from musicleague import postgres_conn
         with postgres_conn:
             with postgres_conn.cursor() as cur:
+                if round.is_complete:
+                    status = RoundStatus.COMPLETE
+                else:
+                    status = RoundStatus.CREATED
+
                 cur.execute(
                     INSERT_ROUND,
                     (str(round.id), round.created, round.description, str(round.league.id),
-                     round.name, round.submission_due_date,
+                     round.name, status, round.submission_due_date,
                      round.vote_due_date))
                 for submission in round.submissions:
                     insert_submission(submission, insert_deps=False)
