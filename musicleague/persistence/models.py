@@ -182,8 +182,13 @@ class Round:
         self.votes = []
         self.vote_due_date = votes_due
 
-        # TODO Remove this - only fetch league when needed using league_id
+        # TODO Remove this
+        # By populating the league_id attribute above, we can fetch league when needed
         self.league = None
+
+        # TODO Remove this
+        # This shouldn't need to be loaded/persisted every time the round is
+        self.pending_tasks = {}
 
     @property
     def playlist_created(self):
