@@ -30,6 +30,7 @@ def create_submission_period(
 
     new_submission_period = Round(
         id=ObjectId(),
+        league_id=str(league.id),
         created=datetime.utcnow(),
         name=name,
         description=description,
