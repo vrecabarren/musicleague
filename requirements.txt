@@ -9,7 +9,9 @@ psycopg2==2.7.3.2
 pytz==2017.2
 redis==2.10.6
 requests==2.18.4
-rq==0.8.1
-rq-scheduler==0.7.0
+# rq==0.8.1
+git+git://github.com/nvie/rq.git@master
+# rq-scheduler==0.7.0
+git+git://github.com/ui/rq-scheduler.git@master
 # spotipy
-git+git://github.com/nathancoleman/spotipy.git@playlist_description_support
+git+git://github.com/plamere/spotipy.git@master
