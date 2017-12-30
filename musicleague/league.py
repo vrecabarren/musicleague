@@ -11,6 +11,7 @@ from musicleague.persistence.delete import delete_membership
 from musicleague.persistence.insert import insert_league
 from musicleague.persistence.insert import insert_membership
 from musicleague.persistence.models import League
+from musicleague.persistence.models import LeagueStatus
 from musicleague.persistence.select import select_league
 from musicleague.scoring import EntrySortKey
 from musicleague.submission_period import remove_submission_period
@@ -50,7 +51,8 @@ def create_league(user, name=None, users=None):
         haikunator = Haikunator()
         name = haikunator.haikunate(token_length=0)
 
-    new_league = League(id=ObjectId(), created=datetime.utcnow(), name=name, owner_id=user.id)
+    new_league = League(id=ObjectId(), created=datetime.utcnow(), name=name,
+                        owner_id=user.id, status=LeagueStatus.CREATED)
     new_league.owner = user
 
     insert_league(new_league)
