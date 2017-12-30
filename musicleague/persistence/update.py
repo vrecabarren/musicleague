@@ -2,6 +2,7 @@ from musicleague import app
 from musicleague.persistence.statements import UPDATE_LEAGUE
 from musicleague.persistence.statements import UPDATE_LEAGUE_STATUS
 from musicleague.persistence.statements import UPDATE_MEMBERSHIP_RANK
+from musicleague.persistence.statements import UPDATE_ROUND
 from musicleague.persistence.statements import UPDATE_ROUND_STATUS
 from musicleague.persistence.statements import UPDATE_SUBMISSION_RANK
 from musicleague.persistence.statements import UPDATE_USER
@@ -48,6 +49,18 @@ def update_membership_rank(league, user, rank):
                 cur.execute(UPDATE_MEMBERSHIP_RANK, (rank, str(league.id), str(user.id)))
     except Exception as e:
         app.logger.warning('Failed UPDATE_MEMBERSHIP_RANK: %s', str(e), exc_info=e)
+
+
+def update_round(round):
+    try:
+        from musicleague import postgres_conn
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(
+                    UPDATE_ROUND,
+                    (round.description, round.name, round.submission_due_date, round.vote_due_date, round.id))
+    except Exception as e:
+        app.logger.warning('Failed UPDATE_ROUND: %s', str(e), exc_info=e)
 
 
 def update_round_status(round, status):

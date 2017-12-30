@@ -9,8 +9,7 @@ from musicleague.persistence.delete import delete_round
 from musicleague.persistence.insert import insert_round
 from musicleague.persistence.models import Round
 from musicleague.persistence.select import select_round
-from musicleague.persistence.statements import INSERT_ROUND
-from musicleague.persistence.statements import UPDATE_ROUND
+from musicleague.persistence.update import update_round
 from musicleague.submission_period.tasks.cancelers import cancel_pending_task
 from musicleague.submission_period.tasks.schedulers import schedule_playlist_creation  # noqa
 from musicleague.submission_period.tasks.schedulers import schedule_round_completion  # noqa
@@ -40,10 +39,10 @@ def create_submission_period(
     new_submission_period.league = league
     league.submission_periods.append(new_submission_period)
 
-    # schedule_playlist_creation(new_submission_period)
-    # schedule_round_completion(new_submission_period)
-    # schedule_submission_reminders(new_submission_period)
-    # schedule_vote_reminders(new_submission_period)
+    schedule_playlist_creation(new_submission_period)
+    schedule_round_completion(new_submission_period)
+    schedule_submission_reminders(new_submission_period)
+    schedule_vote_reminders(new_submission_period)
 
     insert_round(new_submission_period)
 
@@ -96,25 +95,8 @@ def update_submission_period(submission_period_id, name, description,
     schedule_submission_reminders(submission_period)
     schedule_vote_reminders(submission_period)
 
-    submission_period.save()
+    update_round(submission_period)
 
-    try:
-        from musicleague import postgres_conn
-
-        with postgres_conn:
-            with postgres_conn.cursor() as cur:
-                cur.execute(
-                    INSERT_ROUND,
-                    (str(submission_period_id),
-                     submission_period.created,
-                     description,
-                     str(submission_period.league.id),
-                     name,
-                     submission_due_date, vote_due_date))
-                cur.execute(
-                    UPDATE_ROUND,
-                    (description, name, submission_due_date, vote_due_date, str(submission_period_id)))
-    except Exception as e:
-        app.logger.warning('Failed UPDATE_ROUND: %s', str(e), exc_info=e)
+    app.logger.info('Submission period updated: %s', submission_period_id)
 
     return submission_period
