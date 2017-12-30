@@ -5,6 +5,7 @@ from pytz import utc
 
 from musicleague import scheduler
 from musicleague.environment import is_deployed
+from musicleague.persistence.select import select_league
 from musicleague.submission_period.tasks import complete_submission_period
 from musicleague.submission_period.tasks import complete_submission_process
 from musicleague.submission_period.tasks import send_submission_reminders
@@ -54,7 +55,9 @@ def schedule_submission_reminders(submission_period):
     if not is_deployed():
         return
 
-    diff = submission_period.league.preferences.submission_reminder_time
+    league = select_league(submission_period.league_id)
+
+    diff = league.preferences.submission_reminder_time
     notify_time = submission_period.submission_due_date - timedelta(hours=diff)
 
     # Cancel scheduled notification job if one exists
@@ -78,7 +81,9 @@ def schedule_vote_reminders(submission_period):
     if not is_deployed():
         return
 
-    diff = submission_period.league.preferences.vote_reminder_time
+    league = select_league(submission_period.league_id)
+
+    diff = league.preferences.vote_reminder_time
     notify_time = submission_period.vote_due_date - timedelta(hours=diff)
 
     # Cancel scheduled notification job if one exists

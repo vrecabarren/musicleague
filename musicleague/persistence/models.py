@@ -110,12 +110,15 @@ class Scoreboard:
 
 
 class LeaguePreferences:
+    # TODO Not persisted/modifiable
     def __init__(self):
         self.track_count = 2
         self.point_bank_size = 6
         self.max_points_per_song = 0
         self.downvote_bank_size = 0
         self.max_downvotes_per_song = 0
+        self.submission_reminder_time = 2
+        self.vote_reminder_time = 2
 
 
 class LeagueStatus:
