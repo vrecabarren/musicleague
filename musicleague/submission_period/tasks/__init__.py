@@ -38,9 +38,9 @@ def complete_submission_process(submission_period_id):
         cancel_playlist_creation(submission_period)
         cancel_submission_reminders(submission_period)
 
-    except:
+    except Exception as e:
         app.logger.exception(
-            'Error occurred while completing submission process!')
+            'Error occurred while completing submission process!', exc_info=e)
 
 
 @job('default', connection=redis_conn)
@@ -70,9 +70,9 @@ def complete_submission_period(submission_period_id):
                 if len(submission_period.league.submission_periods) > (idx + 1):
                     user_new_round_notification(submission_period.league.submission_periods[idx + 1])
 
-    except:
+    except Exception as e:
         app.logger.exception(
-            'Error occurred while completing submission period!')
+            'Error occurred while completing submission period!', exc_info=e)
 
 
 @job('default', connection=redis_conn)
@@ -85,8 +85,8 @@ def create_playlist(submission_period_id):
         with app.app_context():
             submission_period = select_round(submission_period_id)
             create_or_update_playlist(submission_period)
-    except:
-        app.logger.exception('Error occurred while creating playlist!')
+    except Exception as e:
+        app.logger.exception('Error occurred while creating playlist!', exc_info=e)
 
 
 @job('default', connection=redis_conn)
@@ -103,7 +103,7 @@ def send_submission_reminders(submission_period_id):
         return True
 
     except Exception as e:
-        app.logger.exception('Error while sending submission reminders: %s', e)
+        app.logger.exception('Error while sending submission reminders!', exc_info=e)
         return False
 
 
@@ -121,5 +121,5 @@ def send_vote_reminders(submission_period_id):
         return True
 
     except Exception as e:
-        app.logger.exception('Error while sending vote reminders: %s', e)
+        app.logger.exception('Error while sending vote reminders!', exc_info=e)
         return False

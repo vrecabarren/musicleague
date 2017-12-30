@@ -61,6 +61,5 @@ def admin_reschedule_tasks(submission_period_id):
     schedule_round_completion(submission_period)
     schedule_submission_reminders(submission_period)
     schedule_vote_reminders(submission_period)
-    submission_period.save()
 
     return redirect(request.referrer)
