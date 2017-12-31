@@ -7,8 +7,10 @@ from musicleague import app
 from musicleague.models import SubmissionPeriod
 from musicleague.persistence.delete import delete_round
 from musicleague.persistence.insert import insert_round
+from musicleague.persistence.models import LeagueStatus
 from musicleague.persistence.models import Round
 from musicleague.persistence.select import select_round
+from musicleague.persistence.update import update_league_status
 from musicleague.persistence.update import update_round
 from musicleague.submission_period.tasks.cancelers import cancel_pending_task
 from musicleague.submission_period.tasks.schedulers import schedule_playlist_creation  # noqa
@@ -45,6 +47,7 @@ def create_submission_period(
     schedule_vote_reminders(new_submission_period)
 
     insert_round(new_submission_period)
+    update_league_status(league.id, LeagueStatus.IN_PROGRESS)
 
     app.logger.info('Submission period created: %s', new_submission_period.id)
 
@@ -72,6 +75,8 @@ def remove_submission_period(submission_period_id, submission_period=None):
     #     cancel_pending_task(pending_task_id)
 
     delete_round(submission_period)
+
+    # TODO Determine if league status changes
 
     app.logger.info('Submission period removed: %s', submission_period_id)
 
