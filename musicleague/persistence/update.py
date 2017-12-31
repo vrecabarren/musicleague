@@ -58,7 +58,7 @@ def update_round(round):
             with postgres_conn.cursor() as cur:
                 cur.execute(
                     UPDATE_ROUND,
-                    (round.description, round.name, round.submission_due_date, round.vote_due_date, round.id))
+                    (round.description, round.name, round.status, round.submission_due_date, round.vote_due_date, round.id))
     except Exception as e:
         app.logger.warning('Failed UPDATE_ROUND: %s', str(e), exc_info=e)
 

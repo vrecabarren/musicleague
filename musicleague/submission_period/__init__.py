@@ -9,6 +9,7 @@ from musicleague.persistence.delete import delete_round
 from musicleague.persistence.insert import insert_round
 from musicleague.persistence.models import LeagueStatus
 from musicleague.persistence.models import Round
+from musicleague.persistence.models import RoundStatus
 from musicleague.persistence.select import select_round
 from musicleague.persistence.select import select_rounds_incomplete_count
 from musicleague.persistence.update import update_league_status
@@ -103,6 +104,11 @@ def update_submission_period(submission_period_id, name, description,
     submission_period.submission_due_date = submission_due_date
     submission_period.vote_due_date = vote_due_date
 
+    if submission_period.is_complete:
+        submission_period.status = RoundStatus.COMPLETE
+    else:
+        submission_period.status = RoundStatus.CREATED
+
     # Reschedule playlist creation and submission/vote reminders if needed
     schedule_playlist_creation(submission_period)
     schedule_round_completion(submission_period)
@@ -110,8 +116,6 @@ def update_submission_period(submission_period_id, name, description,
     schedule_vote_reminders(submission_period)
 
     update_round(submission_period)
-
-    # TODO Update round/league status
 
     app.logger.info('Submission period updated: %s', submission_period_id)
 
