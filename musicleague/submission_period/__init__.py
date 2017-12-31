@@ -10,9 +10,14 @@ from musicleague.persistence.insert import insert_round
 from musicleague.persistence.models import LeagueStatus
 from musicleague.persistence.models import Round
 from musicleague.persistence.select import select_round
+from musicleague.persistence.select import select_rounds_incomplete_count
 from musicleague.persistence.update import update_league_status
 from musicleague.persistence.update import update_round
 from musicleague.submission_period.tasks.cancelers import cancel_pending_task
+from musicleague.submission_period.tasks.cancelers import cancel_playlist_creation  # noqa
+from musicleague.submission_period.tasks.cancelers import cancel_round_completion  # noqa
+from musicleague.submission_period.tasks.cancelers import cancel_submission_reminders  # noqa
+from musicleague.submission_period.tasks.cancelers import cancel_vote_reminders  # noqa
 from musicleague.submission_period.tasks.schedulers import schedule_playlist_creation  # noqa
 from musicleague.submission_period.tasks.schedulers import schedule_round_completion  # noqa
 from musicleague.submission_period.tasks.schedulers import schedule_submission_reminders  # noqa
@@ -71,12 +76,16 @@ def remove_submission_period(submission_period_id, submission_period=None):
         return
 
     # Cancel all scheduled tasks
-    # for pending_task_id in submission_period.pending_tasks.values():
-    #     cancel_pending_task(pending_task_id)
+    cancel_playlist_creation(submission_period)
+    cancel_round_completion(submission_period)
+    cancel_submission_reminders(submission_period)
+    cancel_vote_reminders(submission_period)
 
     delete_round(submission_period)
 
-    # TODO Determine if league status changes
+    num_incomplete = select_rounds_incomplete_count(submission_period.league_id)
+    if num_incomplete == 0:
+        update_league_status(submission_period.league_id, LeagueStatus.COMPLETE)
 
     app.logger.info('Submission period removed: %s', submission_period_id)
 
@@ -101,6 +110,8 @@ def update_submission_period(submission_period_id, name, description,
     schedule_vote_reminders(submission_period)
 
     update_round(submission_period)
+
+    # TODO Update round/league status
 
     app.logger.info('Submission period updated: %s', submission_period_id)
 

@@ -132,7 +132,11 @@ SELECT_ROUND = """SELECT league_id, created, description, name, playlist_url, su
 
 SELECT_ROUNDS_COUNT = "SELECT COUNT(id) FROM rounds;"
 
-SELECT_ROUNDS_IN_LEAGUE = """SELECT id FROM rounds WHERE league_id = %s ORDER BY submissions_due, votes_due;"""
+SELECT_ROUNDS_IN_LEAGUE = "SELECT id FROM rounds WHERE league_id = %s ORDER BY submissions_due, votes_due;"
+
+SELECT_ROUNDS_IN_LEAGUE_WITH_STATUS = """SELECT id FROM rounds
+                                            WHERE league_id = %s AND status = %s
+                                            ORDER BY submissions_due, votes_due;"""
 
 UPDATE_ROUND = """UPDATE rounds SET (description, name, submissions_due, votes_due)
                     = (%s, %s, %s, %s) WHERE id = %s;"""

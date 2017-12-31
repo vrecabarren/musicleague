@@ -5,6 +5,7 @@ from musicleague import app
 from musicleague.persistence.models import League
 from musicleague.persistence.models import RankingEntry
 from musicleague.persistence.models import Round
+from musicleague.persistence.models import RoundStatus
 from musicleague.persistence.models import ScoreboardEntry
 from musicleague.persistence.models import Submission
 from musicleague.persistence.models import User
@@ -17,6 +18,7 @@ from musicleague.persistence.statements import SELECT_MEMBERSHIPS_PLACED_FOR_USE
 from musicleague.persistence.statements import SELECT_ROUND
 from musicleague.persistence.statements import SELECT_ROUNDS_COUNT
 from musicleague.persistence.statements import SELECT_ROUNDS_IN_LEAGUE
+from musicleague.persistence.statements import SELECT_ROUNDS_IN_LEAGUE_WITH_STATUS
 from musicleague.persistence.statements import SELECT_SCOREBOARD
 from musicleague.persistence.statements import SELECT_SUBMISSIONS_COUNT
 from musicleague.persistence.statements import SELECT_SUBMISSIONS_FROM_USER
@@ -226,6 +228,19 @@ def select_rounds_count():
                 return cur.fetchone()[0]
     except Exception as e:
         app.logger.warning('Failed SELECT_ROUNDS_COUNT: %s', str(e), exc_info=e)
+
+
+def select_rounds_incomplete_count(league_id):
+    try:
+        from musicleague import postgres_conn
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(SELECT_ROUNDS_IN_LEAGUE_WITH_STATUS, (league_id, RoundStatus.CREATED))
+                return cur.rowcount
+    except Exception as e:
+        app.logger.warning('Failed SELECT_ROUNDS_IN_LEAGUE_WITH_STATUS: %s', str(e), exc_info=e)
+
+    return -1
 
 
 def select_submissions_count():
