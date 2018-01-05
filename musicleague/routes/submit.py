@@ -1,5 +1,6 @@
 import httplib
 import json
+from timeit import default_timer as timer
 
 from flask import g
 from flask import redirect
@@ -52,16 +53,19 @@ def view_submit(league_id, submission_period_id):
 @app.route(SUBMIT_URL, methods=['POST'])
 @login_required
 def submit(league_id, submission_period_id):
-    # TODO: Way too much happens in this function
+    start = timer()
     submission_period = get_submission_period(submission_period_id)
+    app.logger.info('Submission period loaded after %ss', timer() - start)
     if not submission_period or not submission_period.league:
         return "No submission period or league", httplib.INTERNAL_SERVER_ERROR
 
     if not submission_period.league.has_user(g.user):
+        app.logger.warning('No membership - redirecting after %ss', timer() - start)
         return "Not a member of this league", httplib.UNAUTHORIZED
 
     if (not submission_period.accepting_submissions and
             not submission_period.accepting_late_submissions):
+        app.logger.warning('No longer accepting submissions - redirecting after %ss', timer() - start)
         return redirect(request.referrer)
 
     # Process submission
@@ -111,21 +115,27 @@ def submit(league_id, submission_period_id):
                 access_token=session['access_token'])
 
     # Create a new submission on the round as current user
+    app.logger.info('Creating/updating submission after %ss', timer() - start)
     submission = create_or_update_submission(
         tracks, submission_period, league, g.user)
+    app.logger.info('Submission created/updated after %ss', timer() - start)
 
     # If someone besides owner is submitting, notify the owner
     if g.user.id != league.owner.id:
+        app.logger.info('Notifying owner of user submission after %ss', timer() - start)
         owner_user_submitted_notification(submission)
 
     remaining = submission_period.have_not_submitted
     if not remaining:
+        app.logger.info('Completing submission process after %ss', timer() - start)
         complete_submission_process.delay(submission_period.id)
 
     # Don't send submission reminder if this user is resubmitting. In this
     # case, the last user to submit will have already gotten a notification.
     elif submission.count < 2 and len(remaining) == 1:
+        app.logger.info('Notifying final submitter after %ss', timer() - start)
         last_user = remaining[0]
         user_last_to_submit_notification(last_user, submission_period)
 
+    app.logger.info('Submit request complete after %ss', timer() - start)
     return redirect(url_for('view_league', league_id=league_id))
