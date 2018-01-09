@@ -9,10 +9,12 @@ from flask import url_for
 from musicleague import app
 from musicleague.environment import is_dev
 from musicleague.models import User
+from musicleague.persistence.models import UserPreferences
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 from musicleague.league import get_leagues_for_user
 from musicleague.persistence.select import select_memberships_count
+from musicleague.persistence.update import upsert_user_preferences
 from musicleague.user import create_or_update_user
 from musicleague.user import get_user
 
@@ -108,11 +110,12 @@ def view_notification_settings():
 def save_notification_settings():
     user = g.user
 
-    for field_name in user.preferences._fields:
-        enabled = request.form.get(field_name) == 'on'
-        user.preferences[field_name] = enabled
+    for k in user.preferences.settings_keys():
+        enabled = request.form.get(k) == 'on'
+        user.preferences.__dict__[k] = enabled
 
-    user.save()
+    upsert_user_preferences(user)
+
     return redirect(request.referrer)
 
 

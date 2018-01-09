@@ -15,6 +15,57 @@ CREATE_TABLE_USER_PREFERENCES = """CREATE TABLE IF NOT EXISTS user_preferences (
                                         user_submit_reminder_notifications BOOL NOT NULL DEFAULT TRUE,
                                         user_vote_reminder_notifications BOOL NOT NULL DEFAULT TRUE);"""
 
+SELECT_USER_PREFERENCES = """SELECT owner_all_users_submitted_notifications,
+                                    owner_all_users_voted_notifications,
+                                    owner_user_left_notifications,
+                                    owner_user_submitted_notifications,
+                                    owner_user_voted_notifications,
+                                    user_added_to_league_notifications,
+                                    user_playlist_created_notifications,
+                                    user_removed_from_league_notifications,
+                                    user_submit_reminder_notifications,
+                                    user_vote_reminder_notifications
+                            FROM user_preferences
+                            WHERE user_id = %s;"""
+
+UPSERT_USER_PREFERENCES = """INSERT INTO user_preferences (user_id,
+                                                           owner_all_users_submitted_notifications,
+                                                           owner_all_users_voted_notifications
+                                                           owner_user_left_notifications,
+                                                           owner_user_submitted_notifications,
+                                                           owner_user_voted_notifications,
+                                                           user_added_to_league_notifications,
+                                                           user_playlist_created_notifications,
+                                                           user_removed_from_league_notifications,
+                                                           user_submit_reminder_notifications,
+                                                           user_vote_reminder_notifications)
+                             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                             ON CONFLICT (user_id)
+                             DO
+                                UPDATE
+                                    SET (user_id,
+                                         owner_all_users_submitted_notifications,
+                                         owner_all_users_voted_notifications
+                                         owner_user_left_notifications,
+                                         owner_user_submitted_notifications,
+                                         owner_user_voted_notifications,
+                                         user_added_to_league_notifications,
+                                         user_playlist_created_notifications,
+                                         user_removed_from_league_notifications,
+                                         user_submit_reminder_notifications,
+                                         user_vote_reminder_notifications)
+                                    =   (EXCLUDED.owner_all_users_submitted_notifications,
+                                         EXCLUDED.owner_all_users_voted_notifications
+                                         EXCLUDED.owner_user_left_notifications,
+                                         EXCLUDED.owner_user_submitted_notifications,
+                                         EXCLUDED.owner_user_voted_notifications,
+                                         EXCLUDED.user_added_to_league_notifications,
+                                         EXCLUDED.user_playlist_created_notifications,
+                                         EXCLUDED.user_removed_from_league_notifications,
+                                         EXCLUDED.user_submit_reminder_notifications,
+                                         EXCLUDED.user_vote_reminder_notifications)
+                                    WHERE user_id = EXCLUDED.user_id);"""
+
 # =====
 # USERS
 # =====

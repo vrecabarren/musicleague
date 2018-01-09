@@ -21,6 +21,10 @@ class UserPreferences:
         self.user_submit_reminder_notifications = True
         self.user_vote_reminder_notifications = True
 
+    def settings_keys(self):
+        return [k for k in self.__dict__.keys()
+                if k.startswith('owner_') or k.startswith('user_')]
+
 
 class User:
     def __init__(self, id, email, image_url, is_admin, joined, name, profile_bg):
