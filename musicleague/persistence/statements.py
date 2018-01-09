@@ -30,7 +30,7 @@ SELECT_USER_PREFERENCES = """SELECT owner_all_users_submitted_notifications,
 
 UPSERT_USER_PREFERENCES = """INSERT INTO user_preferences (user_id,
                                                            owner_all_users_submitted_notifications,
-                                                           owner_all_users_voted_notifications
+                                                           owner_all_users_voted_notifications,
                                                            owner_user_left_notifications,
                                                            owner_user_submitted_notifications,
                                                            owner_user_voted_notifications,
@@ -43,9 +43,8 @@ UPSERT_USER_PREFERENCES = """INSERT INTO user_preferences (user_id,
                              ON CONFLICT (user_id)
                              DO
                                 UPDATE
-                                    SET (user_id,
-                                         owner_all_users_submitted_notifications,
-                                         owner_all_users_voted_notifications
+                                    SET (owner_all_users_submitted_notifications,
+                                         owner_all_users_voted_notifications,
                                          owner_user_left_notifications,
                                          owner_user_submitted_notifications,
                                          owner_user_voted_notifications,
@@ -55,7 +54,7 @@ UPSERT_USER_PREFERENCES = """INSERT INTO user_preferences (user_id,
                                          user_submit_reminder_notifications,
                                          user_vote_reminder_notifications)
                                     =   (EXCLUDED.owner_all_users_submitted_notifications,
-                                         EXCLUDED.owner_all_users_voted_notifications
+                                         EXCLUDED.owner_all_users_voted_notifications,
                                          EXCLUDED.owner_user_left_notifications,
                                          EXCLUDED.owner_user_submitted_notifications,
                                          EXCLUDED.owner_user_voted_notifications,
@@ -64,7 +63,7 @@ UPSERT_USER_PREFERENCES = """INSERT INTO user_preferences (user_id,
                                          EXCLUDED.user_removed_from_league_notifications,
                                          EXCLUDED.user_submit_reminder_notifications,
                                          EXCLUDED.user_vote_reminder_notifications)
-                                    WHERE user_id = EXCLUDED.user_id);"""
+                                    WHERE user_preferences.user_id = EXCLUDED.user_id;"""
 
 # =====
 # USERS
