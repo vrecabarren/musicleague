@@ -46,13 +46,13 @@
                             <h1>As a League Owner</h1>
                         </div>
 
-                        {% for field_name in user.preferences._fields %}
-                            {% if user.preferences._fields[field_name].role == user.preferences.OWNER_PREFERENCE_ROLE %}
+                        {% for field_name in sorted(user.preferences.__dict__.keys()) %}
+                            {% if field_name.startswith('owner_') %}
                             <div class="form-group">
                                 <div class="checkbox checkbox-slider--b-flat">
                                     <label>
-                                        <input type="checkbox" {% if user.preferences[field_name] %}checked{% endif %} name="{{ field_name }}">
-                                        <span>{{ user.preferences._fields[field_name].verbose_name }}</span>
+                                        <input type="checkbox" {% if user.preferences.__dict__[field_name] %}checked{% endif %} name="{{ field_name }}">
+                                        <span>{{ ' '.join(field_name.split('_')[1:]).title() }}</span>
                                     </label>
                                 </div>
                             </div>
@@ -73,13 +73,13 @@
                             <h1>As a League Contributor</h1>
                         </div>
 
-                        {% for field_name in user.preferences._fields %}
-                            {% if user.preferences._fields[field_name].role == user.preferences.USER_PREFERENCE_ROLE %}
+                        {% for field_name in sorted(user.preferences.__dict__.keys()) %}
+                            {% if field_name.startswith('user_') %}
                             <div class="form-group">
                                 <div class="checkbox checkbox-slider--b-flat">
                                     <label>
-                                        <input type="checkbox" {% if user.preferences[field_name] %}checked{% endif %} name="{{ field_name }}">
-                                        <span>{{ user.preferences._fields[field_name].verbose_name }}</span>
+                                        <input type="checkbox" {% if user.preferences.__dict__[field_name] %}checked{% endif %} name="{{ field_name }}">
+                                        <span>{{ ' '.join(field_name.split('_')[1:]).title() }}</span>
                                     </label>
                                 </div>
                             </div>
