@@ -3,7 +3,7 @@
 # ================
 
 CREATE_TABLE_USER_PREFERENCES = """CREATE TABLE IF NOT EXISTS user_preferences (
-                                        user_id VARCHAR(255) NOT NULL REFERENCES users(id),
+                                        user_id VARCHAR(255) NOT NULL PRIMARY KEY REFERENCES users(id),
                                         owner_all_users_submitted_notifications BOOL NOT NULL DEFAULT TRUE,
                                         owner_all_users_voted_notifications BOOL NOT NULL DEFAULT TRUE,
                                         owner_user_left_notifications BOOL NOT NULL DEFAULT TRUE,
