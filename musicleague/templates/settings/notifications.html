@@ -46,17 +46,15 @@
                             <h1>As a League Owner</h1>
                         </div>
 
-                        {% for field_name in sorted(user.preferences.__dict__.keys()) %}
-                            {% if field_name.startswith('owner_') %}
-                            <div class="form-group">
-                                <div class="checkbox checkbox-slider--b-flat">
-                                    <label>
-                                        <input type="checkbox" {% if user.preferences.__dict__[field_name] %}checked{% endif %} name="{{ field_name }}">
-                                        <span>{{ ' '.join(field_name.split('_')[1:]).title() }}</span>
-                                    </label>
-                                </div>
+                        {% for field_name in user.preferences.owner_keys() %}
+                        <div class="form-group">
+                            <div class="checkbox checkbox-slider--b-flat">
+                                <label>
+                                    <input type="checkbox" {% if user.preferences.__dict__[field_name] %}checked{% endif %} name="{{ field_name }}">
+                                    <span>{{ ' '.join(field_name.split('_')[1:]).title() }}</span>
+                                </label>
                             </div>
-                            {% endif %}
+                        </div>
                         {% endfor %}
 
                     </div>
@@ -73,8 +71,7 @@
                             <h1>As a League Contributor</h1>
                         </div>
 
-                        {% for field_name in sorted(user.preferences.__dict__.keys()) %}
-                            {% if field_name.startswith('user_') %}
+                        {% for field_name in user.preferences.user_keys() %}
                             <div class="form-group">
                                 <div class="checkbox checkbox-slider--b-flat">
                                     <label>
@@ -83,7 +80,6 @@
                                     </label>
                                 </div>
                             </div>
-                            {% endif %}
                         {% endfor %}
 
                     </div>

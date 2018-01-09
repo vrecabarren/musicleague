@@ -22,8 +22,13 @@ class UserPreferences:
         self.user_vote_reminder_notifications = True
 
     def settings_keys(self):
-        return [k for k in self.__dict__.keys()
-                if k.startswith('owner_') or k.startswith('user_')]
+        return self.owner_keys() + self.user_keys()
+
+    def user_keys(self):
+        return sorted([k for k in self.__dict__.keys() if k.startswith('user_')])
+
+    def owner_keys(self):
+        return sorted([k for k in self.__dict__.keys() if k.startswith('owner_')])
 
 
 class User:
