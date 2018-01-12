@@ -1,4 +1,3 @@
-from collections import defaultdict
 import json
 
 from flask import g
@@ -7,15 +6,12 @@ from flask import request
 from flask import url_for
 
 from musicleague import app
-from musicleague.environment import is_dev
 from musicleague.models import User
-from musicleague.persistence.models import UserPreferences
+from musicleague.persistence.update import update_user
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
-from musicleague.league import get_leagues_for_user
 from musicleague.persistence.select import select_memberships_count
 from musicleague.persistence.update import upsert_user_preferences
-from musicleague.user import create_or_update_user
 from musicleague.user import get_user
 
 
@@ -74,10 +70,10 @@ def view_profile_settings():
 @app.route(PROFILE_SETTINGS_URL, methods=['POST'])
 @login_required
 def save_profile_settings():
-    name = request.form.get('name')
-    email = request.form.get('email')
-    image_url = request.form.get('image_url')
-    create_or_update_user(g.user.id, name, email, image_url)
+    g.user.name = request.form.get('name')
+    g.user.email = request.form.get('email')
+    g.user.image_url = request.form.get('image_url')
+    update_user(g.user)
     return redirect(request.referrer)
 
 
@@ -85,15 +81,14 @@ def save_profile_settings():
 @login_required
 def sync_profile_settings():
     spotify_user = g.spotify.current_user()
-    user_email = spotify_user.get('email')
-    user_display_name = spotify_user.get('display_name')
+    g.user.email = spotify_user.get('email')
+    g.user.name = spotify_user.get('display_name')
     user_images = spotify_user.get('images')
     user_image_url = ''
     if user_images:
-        user_image_url = user_images[0].get('url', user_image_url)
+        g.user.image_url = user_images[0].get('url', user_image_url)
 
-    create_or_update_user(g.user.id, user_display_name, user_email,
-                          user_image_url)
+    update_user(g.user)
 
     return redirect(request.referrer)
 
