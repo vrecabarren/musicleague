@@ -6,6 +6,7 @@ from musicleague.persistence.statements import UPDATE_ROUND
 from musicleague.persistence.statements import UPDATE_ROUND_STATUS
 from musicleague.persistence.statements import UPDATE_SUBMISSION_RANK
 from musicleague.persistence.statements import UPDATE_USER
+from musicleague.persistence.statements import UPSERT_USER
 from musicleague.persistence.statements import UPSERT_USER_PREFERENCES
 
 
@@ -22,6 +23,23 @@ def update_user(user):
         app.logger.warning('Failed UPDATE_USER: %s', str(e), exc_info=e)
 
 
+def upsert_user(user):
+    try:
+        from musicleague import postgres_conn
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(
+                    UPSERT_USER,
+                    (str(user.id),
+                     user.email,
+                     user.image_url,
+                     user.joined,
+                     user.name,
+                     user.profile_background))
+    except Exception as e:
+        app.logger.warning('Failed UPSERT_USER: %s', str(e), exc_info=e)
+
+
 def upsert_user_preferences(user):
     try:
         from musicleague import postgres_conn
@@ -29,7 +47,7 @@ def upsert_user_preferences(user):
             with postgres_conn.cursor() as cur:
                 cur.execute(
                     UPSERT_USER_PREFERENCES,
-                    (user.id,
+                    (str(user.id),
                      user.preferences.owner_all_users_submitted_notifications,
                      user.preferences.owner_all_users_voted_notifications,
                      user.preferences.owner_user_left_notifications,

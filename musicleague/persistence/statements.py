@@ -91,6 +91,13 @@ SELECT_USERS_IN_LEAGUE = "SELECT user_id FROM memberships WHERE league_id = %s O
 
 UPDATE_USER = "UPDATE users SET (email, image_url, name, profile_bg) = (%s, %s, %s, %s) WHERE id = %s;"
 
+UPSERT_USER = """INSERT INTO users (id, email, image_url, joined, name, profile_bg)
+                    VALUES (%s, %s, %s, %s, %s, %s)
+                    ON CONFLICT (id) DO UPDATE
+                    SET (email, image_url, joined, name, profile_bg)
+                    = (EXCLUDED.email, EXCLUDED.image_url, EXCLUDED.joined, EXCLUDED.name, EXCLUDED.profile_bg)
+                    WHERE users.id = EXCLUDED.id;"""
+
 # =======
 # LEAGUES
 # =======
