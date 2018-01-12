@@ -28,6 +28,7 @@ VIEW_USER_URL = '/user/<user_id>/'
 @login_required
 def autocomplete():
     term = request.form.get('query')
+    # TODO Migrate to Postgres
     results = User.objects(name__icontains=term).all().limit(10)
     results = [{'label': user.name, 'id': user.id}
                for user in results if user.id != g.user.id]

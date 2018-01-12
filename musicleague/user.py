@@ -5,8 +5,6 @@ from musicleague.errors import UserDoesNotExistError
 from musicleague.errors import UserExistsError
 from musicleague.models import User
 from musicleague.models import UserPreferences
-from musicleague.persistence.statements import INSERT_USER
-from musicleague.persistence.statements import UPDATE_USER
 
 
 DEFAULT_AVATARS = [

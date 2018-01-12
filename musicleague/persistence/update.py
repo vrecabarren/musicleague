@@ -18,7 +18,8 @@ def update_user(user):
                 cur.execute(
                     UPDATE_USER,
                     (user.email, user.image_url, user.name,
-                     user.profile_background, str(user.id)))
+                     user.profile_background, user.is_admin,
+                     str(user.id)))
     except Exception as e:
         app.logger.warning('Failed UPDATE_USER: %s', str(e), exc_info=e)
 
@@ -35,7 +36,8 @@ def upsert_user(user):
                      user.image_url,
                      user.joined,
                      user.name,
-                     user.profile_background))
+                     user.profile_background,
+                     user.is_admin))
     except Exception as e:
         app.logger.warning('Failed UPSERT_USER: %s', str(e), exc_info=e)
 
