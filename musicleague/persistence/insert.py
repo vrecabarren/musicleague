@@ -22,13 +22,13 @@ def insert_user(user):
         app.logger.warning('Failed INSERT_USER: %s', str(e), exc_info=e)
 
 
-def insert_invited_user(user):
+def insert_invited_user(user, league_id):
     try:
         from musicleague import postgres_conn
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(
-                    INSERT_INVITED_USER, (str(user.id), user.email, str(user.league_id)))
+                    INSERT_INVITED_USER, (str(user.id), user.email, str(league_id)))
     except Exception as e:
         app.logger.warning('Failed INSERT_INVITED_USER: %s', str(e), exc_info=e)
 
@@ -38,7 +38,7 @@ def insert_league(league):
         for u in league.users:
             insert_user(u)
         for u in league.invited_users:
-            insert_invited_user(u)
+            insert_invited_user(u, str(league.id))
 
         from musicleague import postgres_conn
         from musicleague.persistence.update import upsert_round

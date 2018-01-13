@@ -29,7 +29,7 @@ def add_user(league, user_email, notify=True):
 
     elif user is None:
         invited_user = InvitedUser(id=str(ObjectId()), email=user_email, league_id=league.id)
-        insert_invited_user(invited_user)
+        insert_invited_user(invited_user, str(league.id))
         league.invited_users.append(invited_user)
 
         if notify:
