@@ -170,7 +170,7 @@ def select_league(league_id, exclude_properties=None):
 
                 cur.execute(SELECT_USERS_IN_LEAGUE, (str(league_id),))
                 user_idx = {}
-                uri_entry_idx = {}
+                round_uri_entry_idx = defaultdict(dict)
                 for user_tup in cur.fetchall():
                     user_id = user_tup[0]
                     u = select_user(user_id)
@@ -192,8 +192,7 @@ def select_league(league_id, exclude_properties=None):
                                 round.submissions.append(s)
                                 for uri, ranking in tracks.iteritems():
                                     entry = ScoreboardEntry(uri=uri, submission=s, place=ranking)
-                                    uri_entry_idx[uri] = entry
-                                    round.scoreboard.add_entry(entry, ranking)
+                                    round_uri_entry_idx[round.id][uri] = entry
 
                 for user in l.users:
                     if 'votes' not in exclude_properties or 'rounds' not in exclude_properties:
@@ -208,15 +207,20 @@ def select_league(league_id, exclude_properties=None):
                                 v.submission_period = round
                                 round.votes.append(v)
                                 for uri, weight in votes.iteritems():
-                                    if uri not in uri_entry_idx:
+                                    if (round.id not in round_uri_entry_idx or
+                                            uri not in round_uri_entry_idx[round.id]):
                                         # TODO Deal with case where submitter was removed from league
                                         continue
-                                    uri_entry_idx[uri].votes.append(v)
+                                    round_uri_entry_idx[round.id][uri].votes.append(v)
 
                 if 'scoreboard' not in exclude_properties:
+
                     user_entry_idx = defaultdict(list)
-                    for entry in uri_entry_idx.values():
-                        user_entry_idx[entry.submission.user.id].append(entry)
+                    for round in l.submission_periods:
+                        entries_by_uri = round_uri_entry_idx[round.id]
+                        for entry in entries_by_uri.values():
+                            round.scoreboard.add_entry(entry, entry.place)
+                            user_entry_idx[entry.submission.user.id].append(entry)
 
                     cur.execute(SELECT_SCOREBOARD, (str(league_id),))
                     for scoreboard_tup in cur.fetchall():
