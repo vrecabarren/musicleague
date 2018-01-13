@@ -6,6 +6,7 @@ from musicleague.persistence.statements import UPDATE_ROUND
 from musicleague.persistence.statements import UPDATE_ROUND_STATUS
 from musicleague.persistence.statements import UPDATE_SUBMISSION_RANK
 from musicleague.persistence.statements import UPDATE_USER
+from musicleague.persistence.statements import UPSERT_BOT
 from musicleague.persistence.statements import UPSERT_USER
 from musicleague.persistence.statements import UPSERT_USER_PREFERENCES
 
@@ -40,6 +41,21 @@ def upsert_user(user):
                      user.is_admin))
     except Exception as e:
         app.logger.warning('Failed UPSERT_USER: %s', str(e), exc_info=e)
+
+
+def upsert_bot(bot):
+    try:
+        from musicleague import postgres_conn
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(
+                    UPSERT_BOT,
+                    (str(bot.id),
+                     bot.access_token,
+                     bot.refresh_token,
+                     bot.expires_at))
+    except Exception as e:
+        app.logger.warning('Failed UPSERT_BOT: %s', str(e), exc_info=e)
 
 
 def upsert_user_preferences(user):

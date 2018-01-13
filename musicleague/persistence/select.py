@@ -2,6 +2,7 @@ from collections import defaultdict
 from pytz import utc
 
 from musicleague import app
+from musicleague.persistence.models import Bot
 from musicleague.persistence.models import InvitedUser
 from musicleague.persistence.models import League
 from musicleague.persistence.models import RankingEntry
@@ -11,6 +12,7 @@ from musicleague.persistence.models import ScoreboardEntry
 from musicleague.persistence.models import Submission
 from musicleague.persistence.models import User
 from musicleague.persistence.models import Vote
+from musicleague.persistence.statements import SELECT_BOT
 from musicleague.persistence.statements import SELECT_INVITED_USERS_COUNT
 from musicleague.persistence.statements import SELECT_INVITED_USERS_IN_LEAGUE
 from musicleague.persistence.statements import SELECT_LEAGUE
@@ -32,6 +34,22 @@ from musicleague.persistence.statements import SELECT_USERS_COUNT
 from musicleague.persistence.statements import SELECT_USERS_IN_LEAGUE
 from musicleague.persistence.statements import SELECT_VOTES_COUNT
 from musicleague.persistence.statements import SELECT_VOTES_FROM_USER
+
+
+def select_bot(bot_id):
+    try:
+        from musicleague import postgres_conn
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(SELECT_BOT, (str(bot_id),))
+                if cur.rowcount < 1:
+                    return None
+
+                access_token, refresh_token, expires_at = cur.fetchone()
+                bot = Bot(id=bot_id, access_token=access_token, refresh_token=refresh_token, expires_at=expires_at)
+                return bot
+    except Exception as e:
+        app.logger.warning('Failed SELECT_BOT: %s', str(e), exc_info=e)
 
 
 def select_user(user_id):

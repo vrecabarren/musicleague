@@ -65,6 +65,14 @@ class InvitedUser:
         self.league_id = league_id
 
 
+class Bot:
+    def __init__(self, id, access_token, refresh_token, expires_at):
+        self.id = id
+        self.access_token = access_token
+        self.refresh_token = refresh_token
+        self.expires_at = expires_at
+
+
 class ScoreboardEntry:
     def __init__(self, uri, submission, **kwargs):
         self.submission = submission

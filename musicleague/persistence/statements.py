@@ -119,6 +119,25 @@ SELECT_INVITED_USERS_COUNT = "SELECT COUNT(id) FROM invited_users;"
 
 SELECT_INVITED_USERS_IN_LEAGUE = "SELECT id, email FROM invited_users WHERE league_id = %s ORDER BY invited;"
 
+# ====
+# BOTS
+# ====
+
+CREATE_TABLE_BOTS = """CREATE TABLE IF NOT EXISTS bots (
+                            id VARCHAR(255) NOT NULL PRIMARY KEY,
+                            access_token VARCHAR(255) NOT NULL,
+                            refresh_token VARCHAR(255) NOT NULL,
+                            expires_at INT NOT NULL);"""
+
+SELECT_BOT = "SELECT access_token, refresh_token, expires_at FROM bots WHERE id = %s;"
+
+UPSERT_BOT = """INSERT INTO bots (id, access_token, refresh_token, expires_at)
+                    VALUES (%s, %s, %s, %s)
+                    ON CONFLICT (id) DO UPDATE
+                    SET (access_token, refresh_token, expires_at)
+                    = (EXCLUDED.access_token, EXCLUDED.refresh_token, EXCLUDED.expires_at)
+                    WHERE bots.id = EXCLUDED.id;"""
+
 # =======
 # LEAGUES
 # =======
