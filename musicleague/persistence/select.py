@@ -23,6 +23,7 @@ from musicleague.persistence.statements import SELECT_SCOREBOARD
 from musicleague.persistence.statements import SELECT_SUBMISSIONS_COUNT
 from musicleague.persistence.statements import SELECT_SUBMISSIONS_FROM_USER
 from musicleague.persistence.statements import SELECT_USER
+from musicleague.persistence.statements import SELECT_USER_BY_EMAIL
 from musicleague.persistence.statements import SELECT_USER_PREFERENCES
 from musicleague.persistence.statements import SELECT_USERS_COUNT
 from musicleague.persistence.statements import SELECT_USERS_IN_LEAGUE
@@ -36,6 +37,9 @@ def select_user(user_id):
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(SELECT_USER, (str(user_id),))
+                if cur.rowcount < 1:
+                    return None
+
                 email, image_url, is_admin, joined, name, profile_bg = cur.fetchone()
                 u = User(user_id, email, image_url, is_admin, joined, name, profile_bg)
 
@@ -56,6 +60,37 @@ def select_user(user_id):
                 return u
     except Exception as e:
         app.logger.warning('Failed SELECT_USER: %s', str(e), exc_info=e)
+
+
+def select_user_by_email(user_email):
+    try:
+        from musicleague import postgres_conn
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(SELECT_USER_BY_EMAIL, (user_email,))
+                if cur.rowcount < 1:
+                    return None
+
+                user_id, image_url, is_admin, joined, name, profile_bg = cur.fetchone()
+                u = User(user_id, user_email, image_url, is_admin, joined, name, profile_bg)
+
+                # TODO This could be done in one fetch with a join
+                cur.execute(SELECT_USER_PREFERENCES, (str(user_id),))
+                if cur.rowcount > 0:
+                    (u.preferences.owner_all_users_submitted_notifications,
+                     u.preferences.owner_all_users_voted_notifications,
+                     u.preferences.owner_user_left_notifications,
+                     u.preferences.owner_user_submitted_notifications,
+                     u.preferences.owner_user_voted_notifications,
+                     u.preferences.user_added_to_league_notifications,
+                     u.preferences.user_playlist_created_notifications,
+                     u.preferences.user_removed_from_league_notifications,
+                     u.preferences.user_submit_reminder_notifications,
+                     u.preferences.user_vote_reminder_notifications) = cur.fetchone()
+
+                return u
+    except Exception as e:
+        app.logger.warning('Failed SELECT_USER_BY_EMAIL: %s', str(e), exc_info=e)
 
 
 def select_users_count():

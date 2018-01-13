@@ -85,6 +85,8 @@ INSERT_USER = """INSERT INTO users (id, email, image_url, joined, name, profile_
 
 SELECT_USER = "SELECT email, image_url, is_admin, joined, name, profile_bg FROM users WHERE id = %s;"
 
+SELECT_USER_BY_EMAIL = "SELECT id, image_url, is_admin, joined, name, profile_bg FROM users WHERE email = %s;"
+
 SELECT_USERS_COUNT = "SELECT COUNT(id) FROM users;"
 
 SELECT_USERS_IN_LEAGUE = "SELECT user_id FROM memberships WHERE league_id = %s ORDER BY created;"

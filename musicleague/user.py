@@ -5,6 +5,9 @@ from musicleague.errors import UserDoesNotExistError
 from musicleague.errors import UserExistsError
 from musicleague.models import User
 from musicleague.models import UserPreferences
+from musicleague.persistence.select import select_user
+from musicleague.persistence.select import select_user_by_email
+from musicleague.persistence.update import upsert_user
 
 
 DEFAULT_AVATARS = [
@@ -63,10 +66,8 @@ def create_user(id, name, email, image_url):
         id=id, name=name, email=email, joined=datetime.utcnow(),
         image_url=image_url, profile_background=profile_background,
         preferences=UserPreferences())
-    new_user.save()
 
-    from musicleague.persistence.insert import insert_user
-    insert_user(new_user)
+    upsert_user(new_user)
 
     return new_user
 
@@ -81,10 +82,8 @@ def update_user(id, name, email, image_url):
     user.name = name if name else user.name
     user.email = email if email else user.email
     user.image_url = image_url if image_url else user.image_url
-    user.save()
 
-    from musicleague.persistence.update import update_user
-    update_user(user)
+    upsert_user(user)
 
     return user
 
@@ -101,30 +100,26 @@ def create_or_update_user(id, name, email, image_url):
 
 
 def get_user(id):
-    try:
-        user = User.objects.get(id=id)
-        updated = False
-
-        if not user.image_url:
-            user.image_url = choice(DEFAULT_AVATARS)
-            updated = True
-
-        if not user.profile_background:
-            user.profile_background = choice(PROFILE_BACKGROUNDS)
-            updated = True
-
-        if updated:
-            user.save()
-
-        return user
-
-    except User.DoesNotExist:
+    user = select_user(id)
+    if user is None:
         return None
+
+    updated = False
+
+    if not user.image_url:
+        user.image_url = choice(DEFAULT_AVATARS)
+        updated = True
+
+    if not user.profile_background:
+        user.profile_background = choice(PROFILE_BACKGROUNDS)
+        updated = True
+
+    if updated:
+        upsert_user(user)
+
+    return user
 
 
 def get_user_by_email(email):
-    try:
-        user = User.objects(email=email).get()
-        return user
-    except User.DoesNotExist:
-        return None
+    # TODO No need for this function
+    return select_user_by_email(email)
