@@ -20,7 +20,7 @@
                             <span style="color: #FFFFFF; font-size: 24px;">{{ league.owner.name }} has invited you to <strong>{{ league.name }}</strong>!</span>
                         </div>
                         <br>
-                        <a href="{{ url_for('view_league', league_id=league.id, invitation=user.id, _external=True) }}" style="background-color: none; border: 3px solid #FFFFFF; border-radius: 8px; color: #FFFFFF; display: inline-block; font-size: 22px; font-weight: bold; padding: 20px; text-decoration: none; width: 200px;">Let&#39;s Do This&#33;</a>
+                        <a href="{{ url_for('join_league', league_id=league.id, invitation=user.id, _external=True) }}" style="background-color: none; border: 3px solid #FFFFFF; border-radius: 8px; color: #FFFFFF; display: inline-block; font-size: 22px; font-weight: bold; padding: 20px; text-decoration: none; width: 200px;">Let&#39;s Do This&#33;</a>
                     </div>
                 </td>
             </tr>
