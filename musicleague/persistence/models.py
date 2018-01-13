@@ -176,13 +176,25 @@ class League:
         return not (self.is_inactive or self.is_complete)
 
     @property
+    def is_active_v2(self):
+        return not (self.is_inactive_v2 or self.is_complete_v2)
+
+    @property
     def is_inactive(self):
         return len(self.submission_periods) == 0
+
+    @property
+    def is_inactive_v2(self):
+        return self.status == LeagueStatus.CREATED
 
     @property
     def is_complete(self):
         return (not self.is_inactive and
                 all((sp.is_complete for sp in self.submission_periods)))
+
+    @property
+    def is_complete_v2(self):
+        return self.status == LeagueStatus.COMPLETE
 
     def has_owner(self, user):
         return self.owner and self.owner.id == user.id
