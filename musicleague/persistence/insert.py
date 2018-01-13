@@ -61,6 +61,10 @@ def insert_league(league):
 
                 for round in league.submission_periods:
                     upsert_round(round)
+                    for submission in round.submissions:
+                        insert_submission(submission, insert_deps=False)
+                    for vote in round.votes:
+                        insert_vote(vote, insert_deps=False)
 
     except Exception as e:
         app.logger.warning('Failed INSERT_LEAGUE: %s', str(e), exc_info=e)
