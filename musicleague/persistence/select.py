@@ -2,6 +2,7 @@ from collections import defaultdict
 from pytz import utc
 
 from musicleague import app
+from musicleague.persistence.models import InvitedUser
 from musicleague.persistence.models import League
 from musicleague.persistence.models import RankingEntry
 from musicleague.persistence.models import Round
@@ -11,6 +12,7 @@ from musicleague.persistence.models import Submission
 from musicleague.persistence.models import User
 from musicleague.persistence.models import Vote
 from musicleague.persistence.statements import SELECT_INVITED_USERS_COUNT
+from musicleague.persistence.statements import SELECT_INVITED_USERS_IN_LEAGUE
 from musicleague.persistence.statements import SELECT_LEAGUE
 from musicleague.persistence.statements import SELECT_LEAGUES_COUNT
 from musicleague.persistence.statements import SELECT_MEMBERSHIPS_COUNT
@@ -141,6 +143,11 @@ def select_league(league_id, exclude_properties=None):
                         r = select_round(round_id)
                         r.league = l
                         l.submission_periods.append(r)
+
+                cur.execute(SELECT_INVITED_USERS_IN_LEAGUE, (str(league_id),))
+                for user_tup in cur.fetchall():
+                    invite_id, email = user_tup
+                    l.invited_users.append(InvitedUser(invite_id, email, league_id))
 
                 cur.execute(SELECT_USERS_IN_LEAGUE, (str(league_id),))
                 user_idx = {}

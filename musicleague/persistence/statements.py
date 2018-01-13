@@ -117,6 +117,8 @@ INSERT_INVITED_USER = "INSERT INTO invited_users (id, email, league_id) VALUES (
 
 SELECT_INVITED_USERS_COUNT = "SELECT COUNT(id) FROM invited_users;"
 
+SELECT_INVITED_USERS_IN_LEAGUE = "SELECT id, email FROM invited_users WHERE league_id = %s ORDER BY invited;"
+
 # =======
 # LEAGUES
 # =======
