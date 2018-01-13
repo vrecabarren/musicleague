@@ -43,6 +43,10 @@ class User:
         self.profile_background = profile_bg
 
     @property
+    def first_name(self):
+        return self.name.split(' ')[0]
+
+    @property
     def guaranteed_image_url(self):
         parsed_image_url = urlparse.urlparse(self.image_url)
         if 'fbcdn' not in parsed_image_url.netloc:
