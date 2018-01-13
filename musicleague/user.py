@@ -48,7 +48,7 @@ def update_user_from_spotify_user(user, spotify_user):
     user_image_url = ''
     if user_images:
         user.image_url = user_images[0].get('url', user_image_url)
-        user.save()
+        upsert_user(user)
 
     return user
 
