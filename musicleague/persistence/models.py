@@ -211,8 +211,10 @@ class Round:
         """ Return True if the league owner chose to accept late
         submissions and the vote due date for this round has not
         yet passed. Return False if all users have already submitted.
+
+        NOTE: Currently hardcoded to return False
         """
-        return (self.league.preferences.late_submissions and
+        return (False and
                 self.have_not_submitted and
                 (self.vote_due_date > utc.localize(datetime.utcnow())))
 
