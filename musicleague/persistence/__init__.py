@@ -1,4 +1,5 @@
 from psycopg2 import connect
+from psycopg2 import extensions
 
 from musicleague.environment import get_environment_setting
 from musicleague.environment.variables import DATABASE_URL
@@ -18,6 +19,8 @@ def get_postgres_conn():
     dsn = get_environment_setting(DATABASE_URL)
     postgres_conn = connect(dsn)
     postgres_conn.set_client_encoding('UNICODE')
+    extensions.register_type(extensions.UNICODE, postgres_conn)
+    extensions.register_type(extensions.UNICODEARRAY, postgres_conn)
 
     with postgres_conn:
         _init_db(postgres_conn)
