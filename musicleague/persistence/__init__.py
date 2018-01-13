@@ -17,6 +17,7 @@ def get_postgres_conn():
     """ Connect to the PostgreSQL db and init tables. """
     dsn = get_environment_setting(DATABASE_URL)
     postgres_conn = connect(dsn)
+    postgres_conn.set_client_encoding('UNICODE')
 
     with postgres_conn:
         _init_db(postgres_conn)
