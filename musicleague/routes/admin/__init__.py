@@ -4,7 +4,9 @@ from flask import request
 from musicleague import app
 from musicleague import postgres_conn
 from musicleague import scheduler
+from musicleague.league import get_league
 from musicleague.models import User
+from musicleague.persistence.insert import insert_league
 from musicleague.persistence.models import League
 from musicleague.persistence.select import select_invited_users_count
 from musicleague.persistence.select import select_league
@@ -86,6 +88,10 @@ def admin_leagues():
 @admin_required
 def admin_league(league_id):
     league = select_league(league_id)
+
+    if request.args.get('pg_update') == '1':
+        league = get_league(league_id)
+        insert_league(league)
 
     return {
         'user': g.user,

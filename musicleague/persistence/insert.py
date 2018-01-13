@@ -37,6 +37,8 @@ def insert_league(league):
     try:
         for u in league.users:
             insert_user(u)
+        for u in league.invited_users:
+            insert_invited_user(u)
 
         from musicleague import postgres_conn
         with postgres_conn:
