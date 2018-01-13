@@ -162,10 +162,11 @@ def select_league(league_id, exclude_properties=None):
                         r.league = l
                         l.submission_periods.append(r)
 
-                cur.execute(SELECT_INVITED_USERS_IN_LEAGUE, (str(league_id),))
-                for user_tup in cur.fetchall():
-                    invite_id, email = user_tup
-                    l.invited_users.append(InvitedUser(invite_id, email, league_id))
+                if 'invited_users' not in exclude_properties:
+                    cur.execute(SELECT_INVITED_USERS_IN_LEAGUE, (str(league_id),))
+                    for user_tup in cur.fetchall():
+                        invite_id, email = user_tup
+                        l.invited_users.append(InvitedUser(invite_id, email, league_id))
 
                 cur.execute(SELECT_USERS_IN_LEAGUE, (str(league_id),))
                 user_idx = {}

@@ -43,7 +43,7 @@ def profile():
 
     from musicleague.persistence.select import select_leagues_for_user
     from musicleague.persistence.select import select_memberships_placed
-    leagues = select_leagues_for_user(page_user.id)
+    leagues = select_leagues_for_user(page_user.id, exclude_properties=['rounds', 'invited_users', 'scoreboard'])
     placed_leagues = select_memberships_placed(page_user.id)
 
     return {
@@ -126,7 +126,7 @@ def view_user(user_id):
 
     from musicleague.persistence.select import select_leagues_for_user
     from musicleague.persistence.select import select_memberships_placed
-    leagues = select_leagues_for_user(page_user.id)
+    leagues = select_leagues_for_user(page_user.id, exclude_properties=['rounds', 'invited_users', 'scoreboard'])
     placed_leagues = select_memberships_placed(page_user.id)
 
     return {
