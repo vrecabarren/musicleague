@@ -53,7 +53,7 @@ def create_submission_period(
     schedule_vote_reminders(new_submission_period)
 
     insert_round(new_submission_period)
-    update_league_status(league.id, LeagueStatus.IN_PROGRESS)
+    update_league_status(league, LeagueStatus.IN_PROGRESS)
 
     app.logger.info('Submission period created: %s', new_submission_period.id)
 
