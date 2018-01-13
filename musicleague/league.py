@@ -84,10 +84,11 @@ def remove_league(league_id, league=None):
 
 
 def get_league(league_id):
+    from musicleague.models import League as MLeague
     try:
-        league = League.objects.get(id=league_id)
+        league = MLeague.objects.get(id=league_id)
         return league
-    except League.DoesNotExist:
+    except MLeague.DoesNotExist:
         return None
 
 
