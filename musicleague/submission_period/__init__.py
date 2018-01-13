@@ -36,7 +36,7 @@ def create_submission_period(
     vote_due_date = vote_due_date or (datetime.utcnow() + timedelta(days=7))
 
     new_submission_period = Round(
-        id=ObjectId(),
+        id=str(ObjectId()),
         league_id=str(league.id),
         created=datetime.utcnow(),
         name=name,

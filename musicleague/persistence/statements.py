@@ -100,6 +100,23 @@ UPSERT_USER = """INSERT INTO users (id, email, image_url, joined, name, profile_
                     = (EXCLUDED.email, EXCLUDED.image_url, EXCLUDED.joined, EXCLUDED.name, EXCLUDED.profile_bg, EXCLUDED.is_admin)
                     WHERE users.id = EXCLUDED.id;"""
 
+# =============
+# INVITED USERS
+# =============
+
+CREATE_TABLE_INVITED_USERS = """CREATE TABLE IF NOT EXISTS invited_users (
+                                    id VARCHAR(255) NOT NULL PRIMARY KEY,
+                                    invited TIMESTAMP NOT NULL DEFAULT NOW(),
+                                    email VARCHAR(255) NOT NULL,
+                                    league_id VARCHAR(255) NOT NULL REFERENCES leagues(id),
+                                    UNIQUE (email, league_id));"""
+
+DELETE_INVITED_USER = "DELETE FROM invited_users WHERE id = %s;"
+
+INSERT_INVITED_USER = "INSERT INTO invited_users (id, email, league_id) VALUES (%s, %s, %s) ON CONFLICT (email, league_id) DO NOTHING;"
+
+SELECT_INVITED_USERS_COUNT = "SELECT COUNT(id) FROM invited_users;"
+
 # =======
 # LEAGUES
 # =======

@@ -58,6 +58,13 @@ class User:
         return self.image_url
 
 
+class InvitedUser:
+    def __init__(self, id, email, league_id):
+        self.id = id
+        self.email = email
+        self.league_id = league_id
+
+
 class ScoreboardEntry:
     def __init__(self, uri, submission, **kwargs):
         self.submission = submission
@@ -140,6 +147,7 @@ class League:
     def __init__(self, id, created, name, owner_id, status):
         self.id = id
         self.created = created
+        self.invited_users = []
         self.is_public = True
         self.name = name
         self.owner = None

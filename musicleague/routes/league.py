@@ -15,6 +15,7 @@ from musicleague.league import get_league
 from musicleague.league import remove_league
 from musicleague.league import remove_user
 from musicleague.notify.flash import flash_error
+from musicleague.persistence.delete import delete_invited_user
 from musicleague.persistence.insert import insert_membership
 from musicleague.persistence.select import select_league
 from musicleague.persistence.select import select_user
@@ -189,12 +190,9 @@ def join_league(league_id, **kwargs):
     add_user(league, g.user.email, notify=False)
 
     # If this URL is from an invitation email, delete the placeholder
-    # invite_id = request.args.get('invite_id')
-    # if invite_id:
-    #     invited_user = next((iu for iu in league.invited_users
-    #                          if str(iu.id) == invite_id), None)
-    #     if invited_user:
-    #         invited_user.delete()
+    invite_id = request.args.get('invitation')
+    if invite_id:
+        delete_invited_user(invite_id)
 
     app.logger.info('User joined league: %s', league.id)
 

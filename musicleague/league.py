@@ -3,13 +3,13 @@ from datetime import datetime
 from bson.objectid import ObjectId
 from haikunator import Haikunator
 
-from musicleague.models import InvitedUser
 from musicleague.notify import user_added_to_league_notification
 from musicleague.notify import user_invited_to_league_notification
 from musicleague.persistence.delete import delete_league
 from musicleague.persistence.delete import delete_membership
-from musicleague.persistence.insert import insert_league
+from musicleague.persistence.insert import insert_league, insert_invited_user
 from musicleague.persistence.insert import insert_membership
+from musicleague.persistence.models import InvitedUser
 from musicleague.persistence.models import League
 from musicleague.persistence.models import LeagueStatus
 from musicleague.persistence.select import select_league
@@ -28,8 +28,8 @@ def add_user(league, user_email, notify=True):
             user_added_to_league_notification(user, league)
 
     elif user is None:
-        invited_user = InvitedUser(email=user_email)
-        invited_user.save()
+        invited_user = InvitedUser(id=str(ObjectId()), email=user_email, league_id=league.id)
+        insert_invited_user(invited_user)
         league.invited_users.append(invited_user)
 
         if notify:
@@ -51,7 +51,7 @@ def create_league(user, name=None, users=None):
         haikunator = Haikunator()
         name = haikunator.haikunate(token_length=0)
 
-    new_league = League(id=ObjectId(), created=datetime.utcnow(), name=name,
+    new_league = League(id=str(ObjectId()), created=datetime.utcnow(), name=name,
                         owner_id=user.id, status=LeagueStatus.CREATED)
     new_league.owner = user
 

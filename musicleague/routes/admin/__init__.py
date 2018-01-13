@@ -4,10 +4,15 @@ from flask import request
 from musicleague import app
 from musicleague import postgres_conn
 from musicleague import scheduler
-from musicleague.models import InvitedUser
 from musicleague.models import User
 from musicleague.persistence.models import League
+from musicleague.persistence.select import select_invited_users_count
 from musicleague.persistence.select import select_league
+from musicleague.persistence.select import select_leagues_count
+from musicleague.persistence.select import select_rounds_count
+from musicleague.persistence.select import select_submissions_count
+from musicleague.persistence.select import select_users_count
+from musicleague.persistence.select import select_votes_count
 from musicleague.routes.decorators import admin_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
@@ -26,14 +31,9 @@ ADMIN_USERS_URL = '/admin/users/'
 @login_required
 @admin_required
 def admin():
-    from musicleague.persistence.select import select_leagues_count
-    from musicleague.persistence.select import select_rounds_count
-    from musicleague.persistence.select import select_submissions_count
-    from musicleague.persistence.select import select_users_count
-    from musicleague.persistence.select import select_votes_count
     return {
         'user': g.user,
-        'num_invited': InvitedUser.objects().count(),
+        'num_invited': select_invited_users_count(),
         'num_leagues': select_leagues_count(),
         'num_rounds': select_rounds_count(),
         'num_submissions': select_submissions_count(),

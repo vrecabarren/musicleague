@@ -1,6 +1,7 @@
 from musicleague import app
 from musicleague.persistence.models import LeagueStatus
 from musicleague.persistence.models import RoundStatus
+from musicleague.persistence.statements import INSERT_INVITED_USER
 from musicleague.persistence.statements import INSERT_LEAGUE
 from musicleague.persistence.statements import INSERT_MEMBERSHIP
 from musicleague.persistence.statements import INSERT_ROUND
@@ -19,6 +20,17 @@ def insert_user(user):
                     (str(user.id), user.email, user.image_url, user.joined, user.name, user.profile_background))
     except Exception as e:
         app.logger.warning('Failed INSERT_USER: %s', str(e), exc_info=e)
+
+
+def insert_invited_user(user):
+    try:
+        from musicleague import postgres_conn
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(
+                    INSERT_INVITED_USER, (str(user.id), user.email, str(user.league_id)))
+    except Exception as e:
+        app.logger.warning('Failed INSERT_INVITED_USER: %s', str(e), exc_info=e)
 
 
 def insert_league(league):

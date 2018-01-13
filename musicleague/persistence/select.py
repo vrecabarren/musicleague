@@ -10,6 +10,7 @@ from musicleague.persistence.models import ScoreboardEntry
 from musicleague.persistence.models import Submission
 from musicleague.persistence.models import User
 from musicleague.persistence.models import Vote
+from musicleague.persistence.statements import SELECT_INVITED_USERS_COUNT
 from musicleague.persistence.statements import SELECT_LEAGUE
 from musicleague.persistence.statements import SELECT_LEAGUES_COUNT
 from musicleague.persistence.statements import SELECT_MEMBERSHIPS_COUNT
@@ -102,6 +103,17 @@ def select_users_count():
                 return cur.fetchone()[0]
     except Exception as e:
         app.logger.warning('Failed SELECT_USERS_COUNT: %s', str(e), exc_info=e)
+
+
+def select_invited_users_count():
+    try:
+        from musicleague import postgres_conn
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(SELECT_INVITED_USERS_COUNT)
+                return cur.fetchone()[0]
+    except Exception as e:
+        app.logger.warning('Failed SELECT_INVITED_USERS_COUNT: %s', str(e), exc_info=e)
 
 
 def select_league(league_id, exclude_properties=None):
