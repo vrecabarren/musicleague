@@ -191,7 +191,9 @@ def select_league(league_id, exclude_properties=None):
                                 s.submission_period = round
                                 round.submissions.append(s)
                                 for uri, ranking in tracks.iteritems():
-                                    uri_entry_idx[uri] = ScoreboardEntry(uri=uri, submission=s, place=ranking)
+                                    entry = ScoreboardEntry(uri=uri, submission=s, place=ranking)
+                                    uri_entry_idx[uri] = entry
+                                    round.scoreboard.add_entry(entry, ranking)
 
                 for user in l.users:
                     if 'votes' not in exclude_properties or 'rounds' not in exclude_properties:

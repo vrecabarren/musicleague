@@ -146,4 +146,4 @@ def score_round(league_id, submission_period_id):
                               if sp.id == submission_period_id), None)
     submission_period = calculate_round_scoreboard(submission_period)
     calculate_league_scoreboard(league)
-    return str(len(submission_period.scoreboard)), 200
+    return 'Updated', 200
