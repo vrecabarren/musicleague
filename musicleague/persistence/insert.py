@@ -41,6 +41,7 @@ def insert_league(league):
             insert_invited_user(u)
 
         from musicleague import postgres_conn
+        from musicleague.persistence.update import upsert_round
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 if league.is_complete:
@@ -59,7 +60,7 @@ def insert_league(league):
                     insert_membership(league, user)
 
                 for round in league.submission_periods:
-                    insert_round(round, insert_deps=False)
+                    upsert_round(round)
 
     except Exception as e:
         app.logger.warning('Failed INSERT_LEAGUE: %s', str(e), exc_info=e)

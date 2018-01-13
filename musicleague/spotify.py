@@ -12,7 +12,7 @@ from musicleague.environment.variables import SPOTIFY_CLIENT_ID
 from musicleague.environment.variables import SPOTIFY_CLIENT_SECRET
 from musicleague.environment.variables import SPOTIFY_REDIRECT_URI
 from musicleague.notify import user_playlist_created_notification
-from musicleague.persistence.update import update_round
+from musicleague.persistence.update import upsert_round
 
 
 OAUTH_SCOPES = 'user-read-email playlist-modify-public'
@@ -108,7 +108,7 @@ def create_or_update_playlist(submission_period):
         playlist = create_playlist(submission_period)
         playlist_url = playlist['external_urls']['spotify']
         submission_period.playlist_url = playlist_url
-        update_round(submission_period)
+        upsert_round(submission_period)
         user_playlist_created_notification(submission_period)
 
     else:

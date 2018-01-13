@@ -240,6 +240,14 @@ UPDATE_ROUND = """UPDATE rounds SET (description, name, status, submissions_due,
 
 UPDATE_ROUND_STATUS = "UPDATE rounds SET status = %s WHERE id = %s;"
 
+UPSERT_ROUND = """INSERT INTO rounds (id, created, description, league_id, name, playlist_url, status, submissions_due, votes_due)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    ON CONFLICT (id) DO UPDATE
+                    SET (created, description, league_id, name, playlist_url, status, submissions_due, votes_due)
+                    = (EXCLUDED.created, EXCLUDED.description, EXCLUDED.league_id, EXCLUDED.name, EXCLUDED.playlist_url,
+                       EXCLUDED.status, EXCLUDED.submissions_due, EXCLUDED.votes_due)
+                    WHERE rounds.id = EXCLUDED.id"""
+
 # ===========
 # SUBMISSIONS
 # ===========

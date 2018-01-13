@@ -1,4 +1,6 @@
 from musicleague import app
+from musicleague.persistence.models import Round
+from musicleague.persistence.models import RoundStatus
 from musicleague.persistence.statements import UPDATE_LEAGUE
 from musicleague.persistence.statements import UPDATE_LEAGUE_STATUS
 from musicleague.persistence.statements import UPDATE_MEMBERSHIP_RANK
@@ -7,6 +9,7 @@ from musicleague.persistence.statements import UPDATE_ROUND_STATUS
 from musicleague.persistence.statements import UPDATE_SUBMISSION_RANK
 from musicleague.persistence.statements import UPDATE_USER
 from musicleague.persistence.statements import UPSERT_BOT
+from musicleague.persistence.statements import UPSERT_ROUND
 from musicleague.persistence.statements import UPSERT_USER
 from musicleague.persistence.statements import UPSERT_USER_PREFERENCES
 
@@ -120,6 +123,26 @@ def update_round(round):
                     (round.description, round.name, round.status, round.submission_due_date, round.vote_due_date, round.id))
     except Exception as e:
         app.logger.warning('Failed UPDATE_ROUND: %s', str(e), exc_info=e)
+
+
+def upsert_round(round):
+    try:
+        from musicleague import postgres_conn
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                if type(round) is Round:
+                    league_id = round.league_id
+                    status = round.status
+                else:
+                    league_id = str(round.league.id)
+                    status = RoundStatus.COMPLETE if round.is_complete else RoundStatus.CREATED
+
+                cur.execute(
+                    UPSERT_ROUND,
+                    (str(round.id), round.created, round.description, league_id, round.name,
+                     round.playlist_url, status, round.submission_due_date, round.vote_due_date))
+    except Exception as e:
+        app.logger.warning('Failed UPSERT_ROUND: %s', str(e), exc_info=e)
 
 
 def update_round_status(round, status):
