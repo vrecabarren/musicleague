@@ -94,8 +94,8 @@ def remove_submission_period(submission_period_id, submission_period=None):
 
 
 def update_submission_period(submission_period_id, name, description,
-                             submission_due_date, vote_due_date):
-    submission_period = select_round(submission_period_id)
+                             submission_due_date, vote_due_date, submission_period=None):
+    submission_period = submission_period or select_round(submission_period_id)
     if not submission_period:
         return
 

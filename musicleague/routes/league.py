@@ -18,6 +18,7 @@ from musicleague.notify.flash import flash_error
 from musicleague.persistence.delete import delete_invited_user
 from musicleague.persistence.insert import insert_membership
 from musicleague.persistence.select import select_league
+from musicleague.persistence.select import select_round
 from musicleague.persistence.select import select_user
 from musicleague.persistence.update import update_league
 from musicleague.routes.decorators import admin_required
@@ -164,9 +165,16 @@ def post_manage_league(league_id):
         vote_due_date = utc.localize(
             datetime.strptime(vote_due_date_str, '%m/%d/%y %I%p'))
 
+        round = select_round(edited_round['id'])
+        if not round:
+            continue
+
+        round.league = league
+
         update_submission_period(
             edited_round['id'], edited_round['name'],
-            edited_round['description'], submission_due_date, vote_due_date)
+            edited_round['description'], submission_due_date, vote_due_date,
+            submission_period=round)
 
     for deleted_round in deleted_rounds:
         try:
