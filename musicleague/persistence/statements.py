@@ -262,7 +262,10 @@ CREATE_TABLE_SUBMISSIONS = """CREATE TABLE IF NOT EXISTS submissions (
 
 INSERT_SUBMISSION = """INSERT INTO submissions (created, round_id, spotify_uri, submitter_id)
                             VALUES (%s, %s, %s, %s)
-                            ON CONFLICT (round_id, spotify_uri) DO NOTHING;"""
+                            ON CONFLICT (round_id, spotify_uri) DO UPDATE
+                            SET created = EXCLUDED.created
+                            WHERE submissions.round_id = EXCLUDED.round_id
+                            AND submissions.spotify_uri = EXCLUDED.spotify_uri;"""
 
 DELETE_SUBMISSIONS = "DELETE FROM submissions WHERE submitter_id = %s AND round_id = %s;"
 

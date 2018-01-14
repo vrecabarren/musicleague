@@ -13,6 +13,7 @@ def create_or_update_submission(tracks, submission_period, league, user):
     s = get_my_submission(user, submission_period)
 
     if s:
+        s.created = datetime.utcnow()
         s.tracks = tracks
         s.count += 1
         insert_submission(s, insert_deps=False)
