@@ -307,7 +307,12 @@ CREATE_TABLE_VOTES = """CREATE TABLE IF NOT EXISTS votes (
 
 INSERT_VOTE = """INSERT INTO votes (created, round_id, spotify_uri, voter_id, weight)
                     VALUES (%s, %s, %s, %s, %s)
-                    ON CONFLICT (created, round_id, spotify_uri, voter_id, weight) DO NOTHING;"""
+                    ON CONFLICT (created, round_id, spotify_uri, voter_id, weight) DO UPDATE
+                    SET (created, weight)
+                    = (EXCLUDED.created, EXCLUDED.weight)
+                    WHERE votes.round_id = EXCLUDED.round_id
+                    AND votes.spotify_uri = EXCLUDED.spotify_uri
+                    AND votes.voter_id = EXCLUDED.voter_id;"""
 
 DELETE_VOTES = "DELETE FROM votes WHERE voter_id = %s AND round_id = %s;"
 

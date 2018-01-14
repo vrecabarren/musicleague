@@ -9,11 +9,11 @@ def create_or_update_submission(tracks, submission_period, league, user):
     submission_period, update it with the latest set of tracks submitted.
     If not, create one.
     """
-    # TODO Use submission_period.league instead of passing league
     s = get_my_submission(user, submission_period)
 
     if s:
         s.created = datetime.utcnow()
+        s.updated = datetime.utcnow()
         s.tracks = tracks
         s.count += 1
         insert_submission(s, insert_deps=False)
@@ -25,7 +25,6 @@ def create_or_update_submission(tracks, submission_period, league, user):
 
 def create_submission(tracks, submission_period, user, league, persist=True):
     """ Create a new Submission for specified user in the specified round. """
-    # TODO Use submission_period.league instead of passing league
     new_submission = Submission(user=user, tracks=tracks, created=datetime.utcnow())
     new_submission.league = league
     new_submission.submission_period = submission_period
@@ -40,8 +39,9 @@ def create_submission(tracks, submission_period, user, league, persist=True):
 def get_submission(submission_id):
     """ Return submission if submission_id found; otherwise, return None. """
     try:
-        return Submission.objects(id=submission_id).get()
-    except Submission.DoesNotExist:
+        from musicleague.models import Submission as MSubmission
+        return MSubmission.objects(id=submission_id).get()
+    except MSubmission.DoesNotExist:
         return None
 
 
