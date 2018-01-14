@@ -37,8 +37,6 @@ def insert_league(league):
     try:
         for u in league.users:
             insert_user(u)
-        for u in league.invited_users:
-            insert_invited_user(u, str(league.id))
 
         from musicleague import postgres_conn
         from musicleague.persistence.update import upsert_round
@@ -65,6 +63,9 @@ def insert_league(league):
                         insert_submission(submission, insert_deps=False)
                     for vote in round.votes:
                         insert_vote(vote, insert_deps=False)
+
+        for u in league.invited_users:
+            insert_invited_user(u, str(league.id))
 
     except Exception as e:
         app.logger.warning('Failed INSERT_LEAGUE: %s', str(e), exc_info=e)
