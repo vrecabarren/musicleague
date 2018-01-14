@@ -106,6 +106,10 @@ def create_or_update_playlist(submission_period):
         # Create new playlist and link to this submission period
         app.logger.info("Creating playlist for round: %s", submission_period.id)
         playlist = create_playlist(submission_period)
+        if not playlist:
+            app.logger.error('There was a problem creating the playlist')
+            return
+
         playlist_url = playlist['external_urls']['spotify']
         submission_period.playlist_url = playlist_url
         upsert_round(submission_period)
