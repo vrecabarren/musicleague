@@ -33,8 +33,8 @@ def schedule_round_completion(submission_period):
         logging.info('Round completion changed to %s for %s.',
                      completion_time, job.id)
 
-    except NoSuchJobError:
-        # If job has not been previously scheduled, enqueue
+    except (NoSuchJobError, ValueError):
+        # If job has not been previously scheduled or is no longer in queue, enqueue
         job = scheduler.enqueue_at(
             completion_time, complete_submission_period, str(submission_period.id),
             job_id=job_id)
@@ -59,8 +59,8 @@ def schedule_playlist_creation(submission_period):
         logging.info('Playlist creation changed to %s for %s',
                      creation_time, job.id)
 
-    except NoSuchJobError:
-        # If job has not been previously scheduled, enqueue
+    except (NoSuchJobError, ValueError):
+        # If job has not been previously scheduled or is no longer in queue, enqueue
         job = scheduler.enqueue_at(
             creation_time, complete_submission_process, str(submission_period.id),
             job_id=job_id)
@@ -97,7 +97,7 @@ def schedule_submission_reminders(submission_period):
         logging.info('Submission reminder changed to %s for %s.',
                      notify_time, job.id)
 
-    except NoSuchJobError:
+    except (NoSuchJobError, ValueError):
         # If job jas not been previously scheduled, enqueue
         job = scheduler.enqueue_at(
             notify_time, send_submission_reminders, str(submission_period.id),
@@ -135,8 +135,8 @@ def schedule_vote_reminders(submission_period):
         logging.info('Vote reminder changed to %s for %s.',
                      notify_time, job.id)
 
-    except NoSuchJobError:
-        # If job has not been previously scheduled, enqueue
+    except (NoSuchJobError, ValueError):
+        # If job has not been previously scheduled or is no longer in queue, enqueue
         job = scheduler.enqueue_at(
             notify_time, send_vote_reminders, str(submission_period.id),
             job_id=job_id)
