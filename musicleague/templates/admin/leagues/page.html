@@ -26,13 +26,16 @@ body {background-color: #f3f3f3; }
     {% for league in leagues %}
     <div class="row league">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-9">
                 <h5>{{ league.name }}</h5>
             </div>
-            <div class="col-md-2 text-right">
+            <div class="col-md-1 text-right">
                 <a href="{{ url_for('admin_league', league_id=league.id, pg_update=1) }}" target="_blank"><h5>Admin</h5></a>
             </div>
-            <div class="col-md-2 text-right">
+            <div class="col-md-1 text-right">
+                <a href="{{ url_for('score_league', league_id=league.id) }}" target="_blank"><h5>Score</h5></a>
+            </div>
+            <div class="col-md-1 text-right">
                 <a href="{{ url_for('view_league', league_id=league.id) }}" target="_blank"><h5>View</h5></a>
             </div>
         </div>
