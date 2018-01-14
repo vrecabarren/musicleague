@@ -72,7 +72,7 @@ def create_playlist(submission_period):
 
 
 def update_playlist(submission_period):
-    if not submission_period or not submission_period.playlist_id:
+    if not submission_period or not submission_period.playlist_url:
         return
 
     if not is_deployed():
@@ -107,7 +107,7 @@ def create_or_update_playlist(submission_period):
         app.logger.info("Creating playlist for round: %s", submission_period.id)
         playlist = create_playlist(submission_period)
         if not playlist:
-            app.logger.error('There was a problem creating the playlist')
+            app.logger.error('There was a problem creating the playlist with tracks: %s', submission_period.all_tracks)
             return
 
         playlist_url = playlist['external_urls']['spotify']
