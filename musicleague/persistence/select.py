@@ -220,7 +220,8 @@ def select_league(league_id, exclude_properties=None):
                         entries_by_uri = round_uri_entry_idx[round.id]
                         for entry in entries_by_uri.values():
                             round.scoreboard.add_entry(entry, entry.place)
-                            user_entry_idx[entry.submission.user.id].append(entry)
+                            if round.is_complete:
+                                user_entry_idx[entry.submission.user.id].append(entry)
 
                     cur.execute(SELECT_SCOREBOARD, (str(league_id),))
                     for scoreboard_tup in cur.fetchall():
