@@ -82,7 +82,7 @@ def vote(league_id, submission_period_id):
         return "Not a member of this league", httplib.UNAUTHORIZED
 
     # If this user didn't submit for this round, don't allow them to vote
-    if g.user not in submission_period.have_submitted:
+    if not get_my_submission(g.user, submission_period):
         app.logger.warning('No submission - redirecting after %ss', timer() - start)
         return redirect(url_for('view_league', league_id=league_id))
 
