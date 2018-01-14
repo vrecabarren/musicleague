@@ -9,6 +9,7 @@ from musicleague.notify import user_vote_reminder_notification
 from musicleague.persistence.models import LeagueStatus
 from musicleague.persistence.models import RoundStatus
 from musicleague.persistence.select import select_league
+from musicleague.persistence.select import select_league_id_for_round
 from musicleague.persistence.select import select_round
 from musicleague.persistence.update import update_league_status
 from musicleague.persistence.update import update_round_status
@@ -35,7 +36,11 @@ def complete_submission_process(submission_period_id):
         from musicleague.submission_period.tasks.cancelers import cancel_playlist_creation  # noqa
         from musicleague.submission_period.tasks.cancelers import cancel_submission_reminders  # noqa
 
-        submission_period = select_round(submission_period_id)
+        league_id = select_league_id_for_round(submission_period_id)
+        league = select_league(league_id, exclude_properties=['votes', 'scoreboard', 'invited_users'])
+        submission_period = next((r for r in league.submission_periods
+                                  if r.id == submission_period_id), None)
+
         create_or_update_playlist(submission_period)
         cancel_playlist_creation(submission_period)
         cancel_submission_reminders(submission_period)
@@ -85,7 +90,11 @@ def create_playlist(submission_period_id):
 
     try:
         with app.app_context():
-            submission_period = select_round(submission_period_id)
+            league_id = select_league_id_for_round(submission_period_id)
+            league = select_league(league_id, exclude_properties=['votes', 'scoreboard', 'invited_users'])
+            submission_period = next((r for r in league.submission_periods
+                                      if r.id == submission_period_id), None)
+
             create_or_update_playlist(submission_period)
     except Exception as e:
         app.logger.exception('Error occurred while creating playlist!', exc_info=e)

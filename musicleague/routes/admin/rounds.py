@@ -2,6 +2,8 @@ from flask import redirect
 from flask import request
 
 from musicleague import app
+from musicleague.persistence.select import select_league
+from musicleague.persistence.select import select_league_id_for_round
 from musicleague.persistence.select import select_round
 from musicleague.routes.decorators import admin_required
 from musicleague.routes.decorators import login_required
@@ -25,7 +27,11 @@ def admin_generate_playlist(submission_period_id):
     if not submission_period_id:
         return
 
-    submission_period = select_round(submission_period_id)
+    league_id = select_league_id_for_round(submission_period_id)
+    league = select_league(league_id, exclude_properties=['votes', 'scoreboard', 'invited_users'])
+    submission_period = next((r for r in league.submission_periods
+                              if r.id == submission_period_id), None)
+
     if not submission_period:
         return
 

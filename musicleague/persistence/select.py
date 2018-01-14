@@ -16,6 +16,7 @@ from musicleague.persistence.statements import SELECT_BOT
 from musicleague.persistence.statements import SELECT_INVITED_USERS_COUNT
 from musicleague.persistence.statements import SELECT_INVITED_USERS_IN_LEAGUE
 from musicleague.persistence.statements import SELECT_LEAGUE
+from musicleague.persistence.statements import SELECT_LEAGUE_ID_FOR_ROUND
 from musicleague.persistence.statements import SELECT_LEAGUES_COUNT
 from musicleague.persistence.statements import SELECT_MEMBERSHIPS_COUNT
 from musicleague.persistence.statements import SELECT_MEMBERSHIPS_FOR_USER
@@ -179,7 +180,7 @@ def select_league(league_id, exclude_properties=None):
                     if user_id == l.owner_id:
                         l.owner = u
 
-                    if 'submissions' not in exclude_properties or 'rounds' not in exclude_properties:
+                    if 'submissions' not in exclude_properties and 'rounds' not in exclude_properties:
                         for round in l.submission_periods:
 
                             cur.execute(SELECT_SUBMISSIONS_FROM_USER, (round.id, user_id))
@@ -195,7 +196,7 @@ def select_league(league_id, exclude_properties=None):
                                     round_uri_entry_idx[round.id][uri] = entry
 
                 for user in l.users:
-                    if 'votes' not in exclude_properties or 'rounds' not in exclude_properties:
+                    if 'votes' not in exclude_properties and 'rounds' not in exclude_properties:
                         for round in l.submission_periods:
 
                             cur.execute(SELECT_VOTES_FROM_USER, (round.id, user.id))
@@ -314,6 +315,17 @@ def select_round(round_id):
                 return r
     except Exception as e:
         app.logger.warning('Failed SELECT_ROUND: %s', str(e), exc_info=e)
+
+
+def select_league_id_for_round(round_id):
+    try:
+        from musicleague import postgres_conn
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(SELECT_LEAGUE_ID_FOR_ROUND, (str(round_id),))
+                return cur.fetchone()[0]
+    except Exception as e:
+        app.logger.warning('Failed SELECT_LEAGUE_ID_FOR_ROUND: %s', str(e), exc_info=e)
 
 
 def select_rounds_count():
