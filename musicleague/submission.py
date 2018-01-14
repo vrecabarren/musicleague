@@ -15,7 +15,7 @@ def create_or_update_submission(tracks, submission_period, league, user):
     if s:
         s.tracks = tracks
         s.count += 1
-        insert_submission(s)
+        insert_submission(s, insert_deps=False)
     else:
         s = create_submission(tracks, submission_period, user, league)
 
@@ -31,7 +31,7 @@ def create_submission(tracks, submission_period, user, league, persist=True):
 
     submission_period.submissions.append(new_submission)
 
-    insert_submission(new_submission)
+    insert_submission(new_submission, insert_deps=False)
 
     return new_submission
 
