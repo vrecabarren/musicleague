@@ -6,9 +6,11 @@ from musicleague.notify import user_all_voted_notification
 from musicleague.notify import user_new_round_notification
 from musicleague.notify import user_submit_reminder_notification
 from musicleague.notify import user_vote_reminder_notification
+from musicleague.persistence.models import LeagueStatus
 from musicleague.persistence.models import RoundStatus
 from musicleague.persistence.select import select_league
 from musicleague.persistence.select import select_round
+from musicleague.persistence.update import update_league_status
 from musicleague.persistence.update import update_round_status
 from musicleague.scoring.league import calculate_league_scoreboard
 from musicleague.scoring.round import calculate_round_scoreboard
@@ -65,10 +67,10 @@ def complete_submission_period(submission_period_id):
         cancel_round_completion(submission_period)
         cancel_vote_reminders(submission_period)
 
-        for idx, sp in enumerate(league.submission_periods):
-            if str(sp.id) == str(submission_period_id):
-                if len(submission_period.league.submission_periods) > (idx + 1):
-                    user_new_round_notification(submission_period.league.submission_periods[idx + 1])
+        if league.is_complete:
+            update_league_status(league, LeagueStatus.COMPLETE)
+        else:
+            user_new_round_notification(league.current_submission_period)
 
     except Exception as e:
         app.logger.exception(
