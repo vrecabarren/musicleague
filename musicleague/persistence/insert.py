@@ -1,6 +1,8 @@
 from musicleague import app
 from musicleague.persistence.models import LeagueStatus
 from musicleague.persistence.models import RoundStatus
+from musicleague.persistence.statements import DELETE_VOTES
+from musicleague.persistence.statements import DELETE_VOTES_FOR_URIS
 from musicleague.persistence.statements import INSERT_INVITED_USER
 from musicleague.persistence.statements import INSERT_LEAGUE
 from musicleague.persistence.statements import INSERT_MEMBERSHIP
@@ -8,6 +10,8 @@ from musicleague.persistence.statements import INSERT_ROUND
 from musicleague.persistence.statements import INSERT_SUBMISSION
 from musicleague.persistence.statements import INSERT_USER
 from musicleague.persistence.statements import INSERT_VOTE
+from musicleague.persistence.statements import DELETE_SUBMISSIONS
+from musicleague.persistence.statements import SELECT_SUBMISSIONS_FROM_USER
 
 
 def insert_user(user):
@@ -119,6 +123,27 @@ def insert_submission(submission, insert_deps=True):
         from musicleague import postgres_conn
         with postgres_conn:
             with postgres_conn.cursor() as cur:
+                # Determine if user previously submitted
+                cur.execute(
+                    SELECT_SUBMISSIONS_FROM_USER,
+                    (str(submission.submission_period.id),
+                     str(submission.user.id)))
+                if cur.rowcount > 0:
+                    ranked_tracks = cur.fetchone()[1]
+
+                    # Remove votes for previously submitted tracks
+                    cur.execute(
+                        DELETE_VOTES_FOR_URIS,
+                        (str(submission.submission_period.id),
+                         ranked_tracks.keys()))
+
+                    # Remove previously submitted tracks
+                    cur.execute(
+                        DELETE_SUBMISSIONS,
+                        (str(submission.submission_period.id),
+                         str(submission.user.id)))
+
+                # Insert tracks for new submission
                 for track in submission.tracks:
                     cur.execute(
                         INSERT_SUBMISSION,
@@ -140,6 +165,13 @@ def insert_vote(vote, insert_deps=True):
         from musicleague import postgres_conn
         with postgres_conn:
             with postgres_conn.cursor() as cur:
+                # Remove previously submitted votes
+                cur.execute(
+                    DELETE_VOTES,
+                    str(vote.submission_period.id),
+                    str(vote.user.id))
+
+                # Insert weights for new vote
                 for spotify_uri, weight in vote.votes.iteritems():
                     cur.execute(
                         INSERT_VOTE,

@@ -301,7 +301,7 @@ INSERT_SUBMISSION = """INSERT INTO submissions (created, round_id, spotify_uri, 
                             WHERE submissions.round_id = EXCLUDED.round_id
                             AND submissions.spotify_uri = EXCLUDED.spotify_uri;"""
 
-DELETE_SUBMISSIONS = "DELETE FROM submissions WHERE submitter_id = %s AND round_id = %s;"
+DELETE_SUBMISSIONS = "DELETE FROM submissions WHERE round_id = %s AND submitter_id = %s;"
 
 SELECT_SUBMISSIONS = """SELECT created, league_id, round_id, submitter_id, tracks
                             FROM (
@@ -348,7 +348,9 @@ INSERT_VOTE = """INSERT INTO votes (created, round_id, spotify_uri, voter_id, we
                     AND votes.spotify_uri = EXCLUDED.spotify_uri
                     AND votes.voter_id = EXCLUDED.voter_id;"""
 
-DELETE_VOTES = "DELETE FROM votes WHERE voter_id = %s AND round_id = %s;"
+DELETE_VOTES = "DELETE FROM votes WHERE round_id = %s and voter_id = %s;"
+
+DELETE_VOTES_FOR_URIS = "DELETE FROM votes WHERE round_id = %s AND spotify_uri IN %s;"
 
 SELECT_VOTES = """SELECT votes.spotify_uri,
                          votes.weight,
