@@ -283,7 +283,11 @@ class Round:
     @property
     def have_not_submitted(self):
         """ Return the list of users who have not submitted yet. """
-        return list(set(self.league.users) - set(self.have_submitted))
+        u_idx = {u.id: u for u in self.league.users + self.have_submitted}
+        league_member_ids = set([u.id for u in self.league.users])
+        have_submitted_ids = set([u.id for u in self.have_submitted])
+        have_not_submitted_ids = league_member_ids - have_submitted_ids
+        return [u_idx.get(u_id) for u_id in have_not_submitted_ids]
 
     @property
     def have_not_voted(self):
@@ -291,7 +295,11 @@ class Round:
         The potential list of users only includes those who
         submitted for this round.
         """
-        return list(set(self.have_submitted) - set(self.have_voted))
+        u_idx = {u.id: u for u in self.have_submitted + self.have_voted}
+        have_submitted_ids = set([u.id for u in self.have_submitted])
+        have_voted_ids = set([u.id for u in self.have_voted])
+        have_not_voted_ids = have_submitted_ids - have_voted_ids
+        return [u_idx.get(u_id) for u_id in have_not_voted_ids]
 
     @property
     def have_submitted(self):
