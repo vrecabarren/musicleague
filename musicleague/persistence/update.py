@@ -102,8 +102,8 @@ def upsert_league_preferences(league):
                 cur.execute(
                     UPSERT_LEAGUE_PREFERENCES,
                     (str(league.id), league.preferences.track_count,
-                     league.preferences.upvote_bank_size,
-                     league.preferences.max_upvotes_per_song,
+                     league.preferences.point_bank_size,
+                     league.preferences.max_points_per_song,
                      league.preferences.downvote_bank_size,
                      league.preferences.max_downvotes_per_song,
                      league.preferences.submission_reminder_delta,

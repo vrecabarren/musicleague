@@ -250,7 +250,7 @@ def select_league_preferences(league_id):
                     return None
 
                 lp = LeaguePreferences()
-                (lp.track_count, lp.upvote_bank_size, lp.max_upvotes_per_song,
+                (lp.track_count, lp.point_bank_size, lp.max_points_per_song,
                  lp.downvote_bank_size, lp.max_downvotes_per_song,
                  lp.submission_reminder_delta, lp.vote_reminder_delta) = cur.fetchone()
                 return lp
