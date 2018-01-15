@@ -5,6 +5,7 @@ from musicleague.environment import get_environment_setting
 from musicleague.environment.variables import DATABASE_URL
 from musicleague.persistence.statements import CREATE_TABLE_BOTS
 from musicleague.persistence.statements import CREATE_TABLE_INVITED_USERS
+from musicleague.persistence.statements import CREATE_TABLE_LEAGUE_PREFERENCES
 from musicleague.persistence.statements import CREATE_TABLE_LEAGUES
 from musicleague.persistence.statements import CREATE_TABLE_MEMBERSHIPS
 from musicleague.persistence.statements import CREATE_TABLE_ROUNDS
@@ -34,6 +35,7 @@ def _init_db(postgres_conn):
         cur.execute(CREATE_TABLE_USERS)
         cur.execute(CREATE_TABLE_USER_PREFERENCES)
         cur.execute(CREATE_TABLE_LEAGUES)
+        cur.execute(CREATE_TABLE_LEAGUE_PREFERENCES)
         cur.execute(CREATE_TABLE_MEMBERSHIPS)
         cur.execute(CREATE_TABLE_INVITED_USERS)
         cur.execute(CREATE_TABLE_ROUNDS)
