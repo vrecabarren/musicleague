@@ -17,7 +17,7 @@ from musicleague.persistence.statements import SELECT_SUBMISSIONS_FROM_USER
 
 def insert_user(user):
     try:
-        postgress_conn = get_postgres_conn()
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(
@@ -29,7 +29,7 @@ def insert_user(user):
 
 def insert_invited_user(user, league_id):
     try:
-        postgress_conn = get_postgres_conn()
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(
@@ -43,7 +43,7 @@ def insert_league(league):
         for u in league.users:
             insert_user(u)
 
-        postgress_conn = get_postgres_conn()
+        postgres_conn = get_postgres_conn()
         from musicleague.persistence.update import upsert_league_preferences
         from musicleague.persistence.update import upsert_round
         with postgres_conn:
@@ -81,7 +81,7 @@ def insert_league(league):
 
 def insert_membership(league, user):
     try:
-        postgress_conn = get_postgres_conn()
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(INSERT_MEMBERSHIP, (str(league.id), str(user.id)))
@@ -94,7 +94,7 @@ def insert_round(round, insert_deps=True):
         if insert_deps:
             insert_league(round.league)
 
-        postgress_conn = get_postgres_conn()
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 if round.is_complete:
@@ -121,7 +121,7 @@ def insert_submission(submission, insert_deps=True):
             insert_round(submission.submission_period)
             insert_user(submission.user)
 
-        postgress_conn = get_postgres_conn()
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 # Determine if user previously submitted
@@ -163,7 +163,7 @@ def insert_vote(vote, insert_deps=True):
             for submission in vote.submission_period.submissions:
                 insert_submission(submission)
 
-        postgress_conn = get_postgres_conn()
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 # Remove previously submitted votes
