@@ -16,7 +16,6 @@ from musicleague.environment import get_server_name
 from musicleague.environment import is_deployed
 from musicleague.environment import parse_mongolab_uri
 from musicleague.environment.variables import MONGODB_URI
-from musicleague.persistence import get_postgres_conn
 
 from settings import MONGO_DB_NAME
 
@@ -43,12 +42,6 @@ if is_deployed():
                  password=password)
 else:
     db = connect(MONGO_DB_NAME, host=MONGODB_URI.default)
-
-try:
-    postgres_conn = get_postgres_conn()
-except Exception as e:
-    app.logger.warning('Failed to connect to Postgres: %s', str(e))
-    pass
 
 redis_conn = Redis.from_url(get_redis_url())
 queue = Queue(connection=redis_conn)

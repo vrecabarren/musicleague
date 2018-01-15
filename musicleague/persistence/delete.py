@@ -1,4 +1,5 @@
 from musicleague import app
+from musicleague.persistence import get_postgres_conn
 from musicleague.persistence.statements import DELETE_INVITED_USER
 from musicleague.persistence.statements import DELETE_LEAGUE
 from musicleague.persistence.statements import DELETE_MEMBERSHIP
@@ -9,7 +10,7 @@ from musicleague.persistence.statements import DELETE_ROUNDS
 
 def delete_league(league):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(DELETE_MEMBERSHIPS, (str(league.id),))
@@ -21,7 +22,7 @@ def delete_league(league):
 
 def delete_round(round):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(DELETE_ROUND, (str(round.id),))
@@ -31,7 +32,7 @@ def delete_round(round):
 
 def delete_membership(league, user):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(DELETE_MEMBERSHIP, (str(league.id), str(user.id)))
@@ -41,7 +42,7 @@ def delete_membership(league, user):
 
 def delete_invited_user(invite_id):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(DELETE_INVITED_USER, (invite_id,))

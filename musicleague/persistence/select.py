@@ -2,6 +2,7 @@ from collections import defaultdict
 from pytz import utc
 
 from musicleague import app
+from musicleague.persistence import get_postgres_conn
 from musicleague.persistence.models import Bot
 from musicleague.persistence.models import InvitedUser
 from musicleague.persistence.models import League
@@ -41,7 +42,7 @@ from musicleague.persistence.statements import SELECT_VOTES_COUNT
 
 def select_bot(bot_id):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(SELECT_BOT, (str(bot_id),))
@@ -57,7 +58,7 @@ def select_bot(bot_id):
 
 def select_user(user_id):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(SELECT_USER, (str(user_id),))
@@ -88,7 +89,7 @@ def select_user(user_id):
 
 def select_user_by_email(user_email):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(SELECT_USER_BY_EMAIL, (user_email,))
@@ -119,7 +120,7 @@ def select_user_by_email(user_email):
 
 def select_users_count():
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(SELECT_USERS_COUNT)
@@ -130,7 +131,7 @@ def select_users_count():
 
 def select_invited_users_count():
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(SELECT_INVITED_USERS_COUNT)
@@ -144,7 +145,7 @@ def select_league(league_id, exclude_properties=None):
         exclude_properties = []
 
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(SELECT_LEAGUE, (str(league_id),))
@@ -248,7 +249,7 @@ def select_league(league_id, exclude_properties=None):
 
 def select_league_preferences(league_id):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(SELECT_LEAGUE_PREFERENCES, (str(league_id),))
@@ -270,7 +271,7 @@ def select_leagues_for_user(user_id, exclude_properties=None):
 
     leagues = []
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(SELECT_MEMBERSHIPS_FOR_USER, (str(user_id),))
@@ -286,7 +287,7 @@ def select_leagues_for_user(user_id, exclude_properties=None):
 
 def select_leagues_count():
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(SELECT_LEAGUES_COUNT)
@@ -297,7 +298,7 @@ def select_leagues_count():
 
 def select_memberships_count(user_id):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(SELECT_MEMBERSHIPS_COUNT, (str(user_id),))
@@ -309,7 +310,7 @@ def select_memberships_count(user_id):
 def select_memberships_placed(user_id):
     placed = defaultdict(int)
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(SELECT_MEMBERSHIPS_PLACED_FOR_USER, (str(user_id),))
@@ -324,7 +325,7 @@ def select_memberships_placed(user_id):
 
 def select_round(round_id):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(SELECT_ROUND, (str(round_id),))
@@ -346,7 +347,7 @@ def select_round(round_id):
 
 def select_league_id_for_round(round_id):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(SELECT_LEAGUE_ID_FOR_ROUND, (str(round_id),))
@@ -357,7 +358,7 @@ def select_league_id_for_round(round_id):
 
 def select_rounds_count():
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(SELECT_ROUNDS_COUNT)
@@ -368,7 +369,7 @@ def select_rounds_count():
 
 def select_rounds_incomplete_count(league_id):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(SELECT_ROUNDS_IN_LEAGUE_WITH_STATUS, (league_id, RoundStatus.CREATED))
@@ -381,7 +382,7 @@ def select_rounds_incomplete_count(league_id):
 
 def select_submissions_count():
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(SELECT_SUBMISSIONS_COUNT)
@@ -392,7 +393,7 @@ def select_submissions_count():
 
 def select_votes_count():
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(SELECT_VOTES_COUNT)

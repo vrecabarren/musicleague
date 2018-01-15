@@ -1,4 +1,5 @@
 from musicleague import app
+from musicleague.persistence import get_postgres_conn
 from musicleague.persistence.models import Round
 from musicleague.persistence.models import RoundStatus
 from musicleague.persistence.statements import UPDATE_LEAGUE
@@ -17,7 +18,7 @@ from musicleague.persistence.statements import UPSERT_USER_PREFERENCES
 
 def update_user(user):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(
@@ -31,7 +32,7 @@ def update_user(user):
 
 def upsert_user(user):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(
@@ -49,7 +50,7 @@ def upsert_user(user):
 
 def upsert_bot(bot):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(
@@ -64,7 +65,7 @@ def upsert_bot(bot):
 
 def upsert_user_preferences(user):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(
@@ -86,7 +87,7 @@ def upsert_user_preferences(user):
 
 def update_league(league):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(UPDATE_LEAGUE, (league.name, league.status, str(league.id)))
@@ -96,7 +97,7 @@ def update_league(league):
 
 def upsert_league_preferences(league):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(
@@ -114,7 +115,7 @@ def upsert_league_preferences(league):
 
 def update_league_status(league, status):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(UPDATE_LEAGUE_STATUS, (status, str(league.id)))
@@ -124,7 +125,7 @@ def update_league_status(league, status):
 
 def update_membership_rank(league, user, rank):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(UPDATE_MEMBERSHIP_RANK, (rank, str(league.id), str(user.id)))
@@ -134,7 +135,7 @@ def update_membership_rank(league, user, rank):
 
 def update_round(round):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(
@@ -146,7 +147,7 @@ def update_round(round):
 
 def upsert_round(round):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 if type(round) is Round:
@@ -166,7 +167,7 @@ def upsert_round(round):
 
 def update_round_status(round, status):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(UPDATE_ROUND_STATUS, (status, str(round.id)))
@@ -176,7 +177,7 @@ def update_round_status(round, status):
 
 def update_submission_rank(round, spotify_uri, rank):
     try:
-        from musicleague import postgres_conn
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(UPDATE_SUBMISSION_RANK, (rank, str(round.id), spotify_uri))

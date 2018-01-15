@@ -1,3 +1,4 @@
+from psycopg2._psycopg import OperationalError
 from rq.decorators import job
 
 from musicleague import app
@@ -10,7 +11,6 @@ from musicleague.persistence.models import LeagueStatus
 from musicleague.persistence.models import RoundStatus
 from musicleague.persistence.select import select_league
 from musicleague.persistence.select import select_league_id_for_round
-from musicleague.persistence.select import select_round
 from musicleague.persistence.update import update_league_status
 from musicleague.persistence.update import update_round_status
 from musicleague.scoring.league import calculate_league_scoreboard
@@ -95,8 +95,7 @@ def create_playlist(submission_period_id):
         with app.app_context():
             league_id = select_league_id_for_round(submission_period_id)
             league = select_league(league_id, exclude_properties=['votes', 'scoreboard', 'invited_users'])
-            submission_period = next((r for r in league.submission_periods
-                                      if r.id == submission_period_id), None)
+            submission_period = next((r for r in league.submission_periods if r.id == submission_period_id), None)
 
             create_or_update_playlist(submission_period)
     except Exception as e:
@@ -110,7 +109,9 @@ def send_submission_reminders(submission_period_id):
         return False
 
     try:
-        submission_period = select_round(submission_period_id)
+        league_id = select_league_id_for_round(submission_period_id)
+        league = select_league(league_id, exclude_properties=['votes', 'scoreboard', 'invited_users'])
+        submission_period = next((r for r in league.submission_periods if r.id == submission_period_id), None)
         for user in submission_period.have_not_submitted:
             app.logger.warning('%s has not submitted! Notifying.', user.name)
             user_submit_reminder_notification(user, submission_period)
@@ -128,9 +129,11 @@ def send_vote_reminders(submission_period_id):
         return False
 
     try:
-        submission_period = select_round(submission_period_id)
+        league_id = select_league_id_for_round(submission_period_id)
+        league = select_league(league_id, exclude_properties=['scoreboard', 'invited_users'])
+        submission_period = next((r for r in league.submission_periods if r.id == submission_period_id), None)
         for user in submission_period.have_not_voted:
-            app.logger.warning('%s has not submitted! Notifying.', user.name)
+            app.logger.warning('%s has not voted! Notifying.', user.name)
             user_vote_reminder_notification(user, submission_period)
         return True
 

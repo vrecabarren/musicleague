@@ -15,18 +15,26 @@ from musicleague.persistence.statements import CREATE_TABLE_USERS
 from musicleague.persistence.statements import CREATE_TABLE_VOTES
 
 
+_pg_conn = None
+
+
 def get_postgres_conn():
     """ Connect to the PostgreSQL db and init tables. """
+    global _pg_conn
+
+    if _pg_conn is not None and not _pg_conn.closed:
+        return _pg_conn
+
     dsn = get_environment_setting(DATABASE_URL)
-    postgres_conn = connect(dsn)
-    postgres_conn.set_client_encoding('UNICODE')
-    extensions.register_type(extensions.UNICODE, postgres_conn)
-    extensions.register_type(extensions.UNICODEARRAY, postgres_conn)
+    _pg_conn = connect(dsn)
+    _pg_conn.set_client_encoding('UNICODE')
+    extensions.register_type(extensions.UNICODE, _pg_conn)
+    extensions.register_type(extensions.UNICODEARRAY, _pg_conn)
 
-    with postgres_conn:
-        _init_db(postgres_conn)
+    with _pg_conn:
+        _init_db(_pg_conn)
 
-    return postgres_conn
+    return _pg_conn
 
 
 def _init_db(postgres_conn):

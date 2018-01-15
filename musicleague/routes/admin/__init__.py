@@ -2,10 +2,10 @@ from flask import g
 from flask import request
 
 from musicleague import app
-from musicleague import postgres_conn
 from musicleague import scheduler
 from musicleague.league import get_league
 from musicleague.models import User
+from musicleague.persistence import get_postgres_conn
 from musicleague.persistence.insert import insert_league
 from musicleague.persistence.models import League
 from musicleague.persistence.select import select_invited_users_count
@@ -69,6 +69,7 @@ def admin_leagues():
     else:
         stmt = 'SELECT id, created, name, owner_id, status FROM leagues ORDER BY name;'
         leagues = []
+        postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(stmt)
