@@ -39,6 +39,7 @@ def insert_league(league):
             insert_user(u)
 
         from musicleague import postgres_conn
+        from musicleague.persistence.update import upsert_league_preferences
         from musicleague.persistence.update import upsert_round
         with postgres_conn:
             with postgres_conn.cursor() as cur:
@@ -63,6 +64,8 @@ def insert_league(league):
                         insert_submission(submission, insert_deps=False)
                     for vote in round.votes:
                         insert_vote(vote, insert_deps=False)
+
+        upsert_league_preferences(league)
 
         for u in league.invited_users:
             insert_invited_user(u, str(league.id))
