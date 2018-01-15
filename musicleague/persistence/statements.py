@@ -303,18 +303,9 @@ INSERT_SUBMISSION = """INSERT INTO submissions (created, round_id, spotify_uri, 
 
 DELETE_SUBMISSIONS = "DELETE FROM submissions WHERE round_id = %s AND submitter_id = %s;"
 
-SELECT_SUBMISSIONS = """SELECT created, league_id, round_id, submitter_id, tracks
-                            FROM (
-                                SELECT created, league_id, round_id, submitter_id, tracks,
-                                RANK() OVER (PARTITION BY round_id, submitter_id ORDER BY created) AS rn
-                                FROM (
-                                    SELECT created, round_id, submitter_id, ARRAY_AGG(spotify_uri) as tracks
-                                    FROM submissions
-                                    GROUP BY round_id, submitter_id, created
-                                    ORDER BY created DESC
-                                ) AS s
-                            ) AS s
-                            WHERE league_id = %s AND rn = 1;"""
+SELECT_SUBMISSIONS = """SELECT created, submitter_id, json_object_agg(spotify_uri, rank)
+                            FROM submissions WHERE round_id = %s
+                            GROUP BY submitter_id, created;"""
 
 SELECT_SUBMISSIONS_COUNT = "SELECT COUNT(submitter_id) FROM submissions;"
 
@@ -352,13 +343,9 @@ DELETE_VOTES = "DELETE FROM votes WHERE round_id = %s and voter_id = %s;"
 
 DELETE_VOTES_FOR_URIS = "DELETE FROM votes WHERE round_id = %s AND spotify_uri = ANY(%s);"
 
-SELECT_VOTES = """SELECT votes.spotify_uri,
-                         votes.weight,
-                         vu.id
-                  FROM votes
-                  LEFT JOIN users vu ON vu.id = votes.voter_id
-                  WHERE votes.round_id = %s
-                  ORDER BY votes.created;"""
+SELECT_VOTES = """SELECT created, voter_id, json_object_agg(spotify_uri, weight)
+                    FROM votes WHERE round_id = %s
+                    GROUP BY voter_id, created;"""
 
 SELECT_VOTES_FROM_USER = """SELECT created, json_object_agg(spotify_uri, weight)
                                 FROM votes WHERE round_id = %s AND voter_id = %s

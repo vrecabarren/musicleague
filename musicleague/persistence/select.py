@@ -28,6 +28,7 @@ from musicleague.persistence.statements import SELECT_ROUNDS_COUNT
 from musicleague.persistence.statements import SELECT_ROUNDS_IN_LEAGUE
 from musicleague.persistence.statements import SELECT_ROUNDS_IN_LEAGUE_WITH_STATUS
 from musicleague.persistence.statements import SELECT_SCOREBOARD
+from musicleague.persistence.statements import SELECT_SUBMISSIONS
 from musicleague.persistence.statements import SELECT_SUBMISSIONS_COUNT
 from musicleague.persistence.statements import SELECT_SUBMISSIONS_FROM_USER
 from musicleague.persistence.statements import SELECT_USER
@@ -35,6 +36,7 @@ from musicleague.persistence.statements import SELECT_USER_BY_EMAIL
 from musicleague.persistence.statements import SELECT_USER_PREFERENCES
 from musicleague.persistence.statements import SELECT_USERS_COUNT
 from musicleague.persistence.statements import SELECT_USERS_IN_LEAGUE
+from musicleague.persistence.statements import SELECT_VOTES
 from musicleague.persistence.statements import SELECT_VOTES_COUNT
 from musicleague.persistence.statements import SELECT_VOTES_FROM_USER
 
@@ -183,39 +185,44 @@ def select_league(league_id, exclude_properties=None):
                     if user_id == l.owner_id:
                         l.owner = u
 
-                    if 'submissions' not in exclude_properties and 'rounds' not in exclude_properties:
-                        for round in l.submission_periods:
+                for round in l.submission_periods:
+                    if 'submissions' not in exclude_properties:
+                        cur.execute(SELECT_SUBMISSIONS, (str(round.id),))
+                        for submission_tup in cur.fetchall():
+                            created, user_id, tracks = submission_tup
+                            submitter = user_idx.get(user_id, None)
+                            if submitter is None:
+                                continue
 
-                            cur.execute(SELECT_SUBMISSIONS_FROM_USER, (round.id, user_id))
-                            created_tracks = cur.fetchone() if cur.rowcount else (None, None)
-                            created, tracks = created_tracks
-                            if created is not None and tracks is not None:
-                                s = Submission(user=u, tracks=tracks.keys(), created=created)
-                                s.league = l
-                                s.submission_period = round
-                                round.submissions.append(s)
-                                for uri, ranking in tracks.iteritems():
-                                    entry = ScoreboardEntry(uri=uri, submission=s, place=ranking)
-                                    round_uri_entry_idx[round.id][uri] = entry
+                            s = Submission(user=submitter, tracks=tracks.keys(), created=created)
+                            s.league = l
+                            s.submission_period = round
+                            round.submissions.append(s)
+                            for uri, ranking in tracks.iteritems():
+                                entry = ScoreboardEntry(uri=uri, submission=s, place=ranking)
+                                round_uri_entry_idx[round.id][uri] = entry
 
-                for user in l.users:
-                    if 'votes' not in exclude_properties and 'rounds' not in exclude_properties:
-                        for round in l.submission_periods:
+                    if 'votes' not in exclude_properties:
+                        cur.execute(SELECT_VOTES, (str(round.id),))
+                        for vote_tup in cur.fetchall():
+                            created, user_id, votes = vote_tup
+                            voter = user_idx.get(user_id, None)
+                            if voter is None:
+                                continue
 
-                            cur.execute(SELECT_VOTES_FROM_USER, (round.id, user.id))
-                            created_votes = cur.fetchone() if cur.rowcount else (None, None)
-                            created, votes = created_votes
-                            if created is not None and votes is not None:
-                                v = Vote(user=user, votes=votes, created=created)
-                                v.league = l
-                                v.submission_period = round
-                                round.votes.append(v)
-                                for uri, weight in votes.iteritems():
-                                    if (round.id not in round_uri_entry_idx or
-                                            uri not in round_uri_entry_idx[round.id]):
-                                        # TODO Deal with case where submitter was removed from league
-                                        continue
-                                    round_uri_entry_idx[round.id][uri].votes.append(v)
+                            v = Vote(user=voter, votes=votes, created=created)
+                            v.league = l
+                            v.submission_period = round
+                            round.votes.append(v)
+                            for uri, weight in votes.iteritems():
+                                # TODO Deal with case where submitter was removed from league
+                                if round.id not in round_uri_entry_idx:
+                                    continue
+
+                                if uri not in round_uri_entry_idx[round.id]:
+                                    continue
+
+                                round_uri_entry_idx[round.id][uri].votes.append(v)
 
                 if 'scoreboard' not in exclude_properties:
 
