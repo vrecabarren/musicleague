@@ -12,7 +12,7 @@
         --><div class="col-xs-12 col-sm-5 vcenter">
                 <div class="row">
                     <div class="text-center-xs">
-                        {% if round.is_complete or league.has_owner(user) %}
+                        {% if round.is_complete or league.has_owner(user) or user.is_admin %}
                         <a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=round.id) }}" class="round-title{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ round.name }}</a>
                         {% else %}
                         <span class="round-title{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ round.name }}</span>
