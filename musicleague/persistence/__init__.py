@@ -1,6 +1,7 @@
 from psycopg2 import connect
 from psycopg2 import extensions
 
+from musicleague import app
 from musicleague.environment import get_environment_setting
 from musicleague.environment.variables import DATABASE_URL
 from musicleague.persistence.statements import CREATE_TABLE_BOTS
@@ -24,6 +25,8 @@ def get_postgres_conn():
 
     if _pg_conn is not None and not _pg_conn.closed:
         return _pg_conn
+
+    app.logger.info('PostgreSQL connection closed. Connecting...')
 
     dsn = get_environment_setting(DATABASE_URL)
     _pg_conn = connect(dsn)
