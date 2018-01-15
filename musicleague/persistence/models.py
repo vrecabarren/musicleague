@@ -145,6 +145,8 @@ class LeaguePreferences:
         self.max_points_per_song = 0
         self.downvote_bank_size = 0
         self.max_downvotes_per_song = 0
+
+        # TODO Make reminder times configurable
         self.submission_reminder_time = 2
         self.vote_reminder_time = 2
 

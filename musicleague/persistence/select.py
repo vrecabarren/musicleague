@@ -5,6 +5,7 @@ from musicleague import app
 from musicleague.persistence.models import Bot
 from musicleague.persistence.models import InvitedUser
 from musicleague.persistence.models import League
+from musicleague.persistence.models import LeaguePreferences
 from musicleague.persistence.models import RankingEntry
 from musicleague.persistence.models import Round
 from musicleague.persistence.models import RoundStatus
@@ -17,6 +18,7 @@ from musicleague.persistence.statements import SELECT_INVITED_USERS_COUNT
 from musicleague.persistence.statements import SELECT_INVITED_USERS_IN_LEAGUE
 from musicleague.persistence.statements import SELECT_LEAGUE
 from musicleague.persistence.statements import SELECT_LEAGUE_ID_FOR_ROUND
+from musicleague.persistence.statements import SELECT_LEAGUE_PREFERENCES
 from musicleague.persistence.statements import SELECT_LEAGUES_COUNT
 from musicleague.persistence.statements import SELECT_MEMBERSHIPS_COUNT
 from musicleague.persistence.statements import SELECT_MEMBERSHIPS_FOR_USER
@@ -154,6 +156,7 @@ def select_league(league_id, exclude_properties=None):
                     owner_id=league_tup[2],
                     status=league_tup[3],
                 )
+                l.preferences = select_league_preferences(league_id)
 
                 if 'rounds' not in exclude_properties:
                     cur.execute(SELECT_ROUNDS_IN_LEAGUE, (str(league_id),))
@@ -235,6 +238,24 @@ def select_league(league_id, exclude_properties=None):
                 return l
     except Exception as e:
         app.logger.warning('Failed SELECT_LEAGUE: %s', str(e), exc_info=e)
+
+
+def select_league_preferences(league_id):
+    try:
+        from musicleague import postgres_conn
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(SELECT_LEAGUE_PREFERENCES, (str(league_id),))
+                if cur.rowcount < 1:
+                    return None
+
+                lp = LeaguePreferences()
+                (lp.track_count, lp.upvote_bank_size, lp.max_upvotes_per_song,
+                 lp.downvote_bank_size, lp.max_downvotes_per_song,
+                 lp.submission_reminder_delta, lp.vote_reminder_delta) = cur.fetchone()
+                return lp
+    except Exception as e:
+        app.logger.warning('Failed SELECT_LEAGUE_PREFERENCES: %s', str(e), exc_info=e)
 
 
 def select_leagues_for_user(user_id, exclude_properties=None):

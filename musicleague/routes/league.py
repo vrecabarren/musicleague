@@ -21,6 +21,7 @@ from musicleague.persistence.select import select_league
 from musicleague.persistence.select import select_round
 from musicleague.persistence.select import select_user
 from musicleague.persistence.update import update_league
+from musicleague.persistence.update import upsert_league_preferences
 from musicleague.routes.decorators import admin_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
@@ -65,11 +66,12 @@ def post_create_league():
     rounds = json.loads(request.form.get('added-rounds', []))
 
     league = create_league(g.user, name=name, users=members)
-    # league.preferences.track_count = int(num_tracks)
-    # league.preferences.point_bank_size = int(upvote_size)
-    # league.preferences.max_points_per_song = int(max_up_per_song or 0)
-    # league.preferences.downvote_bank_size = int(downvote_size)
-    # league.preferences.max_downvotes_per_song = int(max_down_per_song or 0)
+    league.preferences.track_count = int(num_tracks)
+    league.preferences.point_bank_size = int(upvote_size)
+    league.preferences.max_points_per_song = int(max_up_per_song or 0)
+    league.preferences.downvote_bank_size = int(downvote_size)
+    league.preferences.max_downvotes_per_song = int(max_down_per_song or 0)
+    upsert_league_preferences(league)
 
     for email in emails:
         add_user(league, email, notify=True)
@@ -133,6 +135,7 @@ def post_manage_league(league_id):
     league.preferences.max_points_per_song = int(max_up_per_song or 0)
     league.preferences.downvote_bank_size = int(downvote_size)
     league.preferences.max_downvotes_per_song = int(max_down_per_song or 0)
+    upsert_league_preferences(league)
 
     for added_member in added_members:
         insert_membership(league, added_member)

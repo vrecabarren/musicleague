@@ -138,6 +138,38 @@ UPSERT_BOT = """INSERT INTO bots (id, access_token, refresh_token, expires_at)
                     = (EXCLUDED.access_token, EXCLUDED.refresh_token, EXCLUDED.expires_at)
                     WHERE bots.id = EXCLUDED.id;"""
 
+# ==================
+# LEAGUE PREFERENCES
+# ==================
+
+CREATE_TABE_LEAGUE_PREFERENCES = """CREATE TABLE IF NOT EXISTS league_preferences (
+                                    league_id VARCHAR(255) NOT NULL PRIMARY KEY REFERENCES leagues(id),
+                                    track_count SMALLINT NOT NULL,
+                                    upvote_bank_size SMALLINT NOT NULL,
+                                    max_upvotes_per_song SMALLINT NOT NULL,
+                                    downvote_bank_size SMALLINT NOT NULL,
+                                    max_downvotes_per_song SMALLINT NOT NULL,
+                                    submission_reminder_delta SMALLINT NOT NULL,
+                                    vote_reminder_delta SMALLINT NOT NULL);"""
+
+SELECT_LEAGUE_PREFERENCES = """SELECT track_count, upvote_bank_size, max_upvotes_per_song, downvote_bank_size,
+                                      max_downvotes_per_song, submission_reminder_delta, vote_reminder_delta
+                                    FROM league_preferences WHERE league_id = %s;"""
+
+UPSERT_LEAGUE_PREFERENCES = """INSERT INTO league_preferences
+                                (league_id, track_count, upvote_bank_size, max_upvotes_per_song,
+                                 downvote_bank_size, max_downvotes_per_song, submission_reminder_delta,
+                                 vote_reminder_delta)
+                                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                                ON CONFLICT (league_id) DO UPDATE
+                                SET (track_count, upvote_bank_size, max_upvotes_per_song,
+                                     downvote_bank_size, max_downvotes_per_song,
+                                     submission_reminder_delta, vote_reminder_delta)
+                                = (EXCLUDED.track_count, EXCLUDED.upvote_bank_size, EXCLUDED.max_upvotes_per_song,
+                                   EXCLUDED.downvote_bank_size, EXCLUDED.max_downvotes_per_song,
+                                   EXCLUDED.submission_reminder_delta, EXCLUDED.vote_reminder_delta)
+                                WHERE league_preferences.league_id = EXCLUDED.league_id;"""
+
 # =======
 # LEAGUES
 # =======

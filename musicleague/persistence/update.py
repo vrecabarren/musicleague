@@ -9,6 +9,7 @@ from musicleague.persistence.statements import UPDATE_ROUND_STATUS
 from musicleague.persistence.statements import UPDATE_SUBMISSION_RANK
 from musicleague.persistence.statements import UPDATE_USER
 from musicleague.persistence.statements import UPSERT_BOT
+from musicleague.persistence.statements import UPSERT_LEAGUE_PREFERENCES
 from musicleague.persistence.statements import UPSERT_ROUND
 from musicleague.persistence.statements import UPSERT_USER
 from musicleague.persistence.statements import UPSERT_USER_PREFERENCES
@@ -91,6 +92,24 @@ def update_league(league):
                 cur.execute(UPDATE_LEAGUE, (league.name, league.status, str(league.id)))
     except Exception as e:
         app.logger.warning('Failed UPDATE_LEAGUE: %s', str(e), exc_info=e)
+
+
+def upsert_league_preferences(league):
+    try:
+        from musicleague import postgres_conn
+        with postgres_conn:
+            with postgres_conn.cursor() as cur:
+                cur.execute(
+                    UPSERT_LEAGUE_PREFERENCES,
+                    (str(league.id), league.preferences.track_count,
+                     league.preferences.upvote_bank_size,
+                     league.preferences.max_upvotes_per_song,
+                     league.preferences.downvote_bank_size,
+                     league.preferences.max_downvotes_per_song,
+                     league.preferences.submission_reminder_delta,
+                     league.preferences.vote_reminder_delta))
+    except Exception as e:
+        app.logger.warning('Failed UPSERT_LEAGUE_PREFERENCES: %s', str(e), exc_info=e)
 
 
 def update_league_status(league, status):
