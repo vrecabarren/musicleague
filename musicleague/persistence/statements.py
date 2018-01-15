@@ -350,7 +350,7 @@ INSERT_VOTE = """INSERT INTO votes (created, round_id, spotify_uri, voter_id, we
 
 DELETE_VOTES = "DELETE FROM votes WHERE round_id = %s and voter_id = %s;"
 
-DELETE_VOTES_FOR_URIS = "DELETE FROM votes WHERE round_id = %s AND spotify_uri IN %s;"
+DELETE_VOTES_FOR_URIS = "DELETE FROM votes WHERE round_id = %s AND spotify_uri = ANY(%s);"
 
 SELECT_VOTES = """SELECT votes.spotify_uri,
                          votes.weight,
