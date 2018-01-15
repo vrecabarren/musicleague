@@ -60,7 +60,10 @@ def complete_submission_period(submission_period_id):
         from musicleague.submission_period.tasks.cancelers import cancel_round_completion  # noqa
         from musicleague.submission_period.tasks.cancelers import cancel_vote_reminders
 
-        submission_period = select_round(submission_period_id)
+        league_id = select_league_id_for_round(submission_period_id)
+        league = select_league(league_id)
+        submission_period = next((r for r in league.submission_periods
+                                  if r.id == submission_period_id), None)
         calculate_round_scoreboard(submission_period)
         update_round_status(submission_period, RoundStatus.COMPLETE)
 

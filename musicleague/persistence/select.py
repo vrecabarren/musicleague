@@ -30,7 +30,6 @@ from musicleague.persistence.statements import SELECT_ROUNDS_IN_LEAGUE_WITH_STAT
 from musicleague.persistence.statements import SELECT_SCOREBOARD
 from musicleague.persistence.statements import SELECT_SUBMISSIONS
 from musicleague.persistence.statements import SELECT_SUBMISSIONS_COUNT
-from musicleague.persistence.statements import SELECT_SUBMISSIONS_FROM_USER
 from musicleague.persistence.statements import SELECT_USER
 from musicleague.persistence.statements import SELECT_USER_BY_EMAIL
 from musicleague.persistence.statements import SELECT_USER_PREFERENCES
@@ -38,7 +37,6 @@ from musicleague.persistence.statements import SELECT_USERS_COUNT
 from musicleague.persistence.statements import SELECT_USERS_IN_LEAGUE
 from musicleague.persistence.statements import SELECT_VOTES
 from musicleague.persistence.statements import SELECT_VOTES_COUNT
-from musicleague.persistence.statements import SELECT_VOTES_FROM_USER
 
 
 def select_bot(bot_id):
