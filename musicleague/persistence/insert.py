@@ -168,8 +168,8 @@ def insert_vote(vote, insert_deps=True):
                 # Remove previously submitted votes
                 cur.execute(
                     DELETE_VOTES,
-                    str(vote.submission_period.id),
-                    str(vote.user.id))
+                    (str(vote.submission_period.id),
+                     str(vote.user.id)))
 
                 # Insert weights for new vote
                 for spotify_uri, weight in vote.votes.iteritems():
