@@ -106,8 +106,8 @@ def upsert_league_preferences(league):
                      league.preferences.max_points_per_song,
                      league.preferences.downvote_bank_size,
                      league.preferences.max_downvotes_per_song,
-                     league.preferences.submission_reminder_delta,
-                     league.preferences.vote_reminder_delta))
+                     league.preferences.submission_reminder_time,
+                     league.preferences.vote_reminder_time))
     except Exception as e:
         app.logger.warning('Failed UPSERT_LEAGUE_PREFERENCES: %s', str(e), exc_info=e)
 

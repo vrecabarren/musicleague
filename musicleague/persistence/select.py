@@ -252,7 +252,7 @@ def select_league_preferences(league_id):
                 lp = LeaguePreferences()
                 (lp.track_count, lp.point_bank_size, lp.max_points_per_song,
                  lp.downvote_bank_size, lp.max_downvotes_per_song,
-                 lp.submission_reminder_delta, lp.vote_reminder_delta) = cur.fetchone()
+                 lp.submission_reminder_time, lp.vote_reminder_time) = cur.fetchone()
                 return lp
     except Exception as e:
         app.logger.warning('Failed SELECT_LEAGUE_PREFERENCES: %s', str(e), exc_info=e)
