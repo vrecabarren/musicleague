@@ -232,13 +232,14 @@ def select_league(league_id, exclude_properties=None):
                             if round.is_complete:
                                 user_entry_idx[entry.submission.user.id].append(entry)
 
-                    cur.execute(SELECT_SCOREBOARD, (str(league_id),))
-                    for scoreboard_tup in cur.fetchall():
-                        user_id, rank = scoreboard_tup
-                        u = user_idx.get(user_id, None)
-                        le = RankingEntry(league=l, user=u, place=rank)
-                        le.entries = user_entry_idx[user_id]
-                        l.scoreboard.add_entry(le, rank)
+                    if len(user_entry_idx):
+                        cur.execute(SELECT_SCOREBOARD, (str(league_id),))
+                        for scoreboard_tup in cur.fetchall():
+                            user_id, rank = scoreboard_tup
+                            u = user_idx.get(user_id, None)
+                            le = RankingEntry(league=l, user=u, place=rank)
+                            le.entries = user_entry_idx[user_id]
+                            l.scoreboard.add_entry(le, rank)
 
                 return l
     except Exception as e:
