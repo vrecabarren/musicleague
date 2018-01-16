@@ -1,4 +1,5 @@
 import logging
+import logmatic
 
 from flask import Flask
 from flask_moment import Moment
@@ -25,12 +26,12 @@ app = Flask(__name__)
 moment = Moment(app)
 app.secret_key = get_secret_key()
 
-streamHandler = logging.StreamHandler()
-streamHandler.setLevel(logging.INFO)
+handler = logging.StreamHandler()
+handler.setFormatter(logmatic.JsonFormatter())
 
-log = app.logger
-log.setLevel(logging.DEBUG)
-log.addHandler(streamHandler)
+del app.logger.handlers[:]
+app.logger.addHandler(handler)
+app.logger.setLevel(logging.INFO)
 
 if is_deployed():
     server_name = get_server_name()

@@ -4,6 +4,7 @@ Flask-Moment==0.5.2
 gunicorn==19.7.1
 haikunator==2.1.0
 Logentries==0.17
+logmatic-python
 mongoengine==0.14.3
 psycopg2==2.7.3.2
 pytz==2017.2
