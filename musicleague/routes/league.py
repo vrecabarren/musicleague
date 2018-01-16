@@ -69,7 +69,7 @@ def post_create_league():
     league.preferences.track_count = int(num_tracks)
     league.preferences.point_bank_size = int(upvote_size)
     league.preferences.max_points_per_song = int(max_up_per_song or 0)
-    league.preferences.downvote_bank_size = int(downvote_size)
+    league.preferences.downvote_bank_size = int(downvote_size or 0)
     league.preferences.max_downvotes_per_song = int(max_down_per_song or 0)
     upsert_league_preferences(league)
 
