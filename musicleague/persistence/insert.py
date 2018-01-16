@@ -24,7 +24,7 @@ def insert_user(user):
                     INSERT_USER,
                     (str(user.id), user.email, user.image_url, user.joined, user.name, user.profile_background))
     except Exception as e:
-        app.logger.warning('Failed INSERT_USER: %s', str(e), exc_info=e)
+        app.logger.error('Failed INSERT_USER', exc_info=e)
 
 
 def insert_invited_user(user, league_id):
@@ -35,7 +35,7 @@ def insert_invited_user(user, league_id):
                 cur.execute(
                     INSERT_INVITED_USER, (str(user.id), user.email, str(league_id)))
     except Exception as e:
-        app.logger.warning('Failed INSERT_INVITED_USER: %s', str(e), exc_info=e)
+        app.logger.error('Failed INSERT_INVITED_USER', exc_info=e)
 
 
 def insert_league(league):
@@ -76,7 +76,7 @@ def insert_league(league):
             insert_invited_user(u, str(league.id))
 
     except Exception as e:
-        app.logger.warning('Failed INSERT_LEAGUE: %s', str(e), exc_info=e)
+        app.logger.error('Failed INSERT_LEAGUE', exc_info=e)
 
 
 def insert_membership(league, user):
@@ -86,7 +86,7 @@ def insert_membership(league, user):
             with postgres_conn.cursor() as cur:
                 cur.execute(INSERT_MEMBERSHIP, (str(league.id), str(user.id)))
     except Exception as e:
-        app.logger.warning('Failed INSERT_MEMBERSHIP: %s', str(e), exc_info=e)
+        app.logger.error('Failed INSERT_MEMBERSHIP', exc_info=e)
 
 
 def insert_round(round, insert_deps=True):
@@ -112,7 +112,7 @@ def insert_round(round, insert_deps=True):
                 for vote in round.votes:
                     insert_vote(vote, insert_deps=False)
     except Exception as e:
-        app.logger.warning('Failed INSERT_ROUND: %s', str(e), exc_info=e)
+        app.logger.error('Failed INSERT_ROUND', exc_info=e)
 
 
 def insert_submission(submission, insert_deps=True):
@@ -152,7 +152,7 @@ def insert_submission(submission, insert_deps=True):
                          str(submission.submission_period.id),
                          track, str(submission.user.id)))
     except Exception as e:
-        app.logger.warning('Failed INSERT_SUBMISSION: %s', str(e), exc_info=e)
+        app.logger.error('Failed INSERT_SUBMISSION', exc_info=e)
 
 
 def insert_vote(vote, insert_deps=True):
@@ -181,4 +181,4 @@ def insert_vote(vote, insert_deps=True):
                          spotify_uri, str(vote.user.id),
                          weight))
     except Exception as e:
-        app.logger.warning('Failed INSERT_VOTE: %s', str(e), exc_info=e)
+        app.logger.error('Failed INSERT_VOTE', exc_info=e)

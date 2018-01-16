@@ -17,7 +17,7 @@ def delete_league(league):
                 cur.execute(DELETE_ROUNDS, (str(league.id),))
                 cur.execute(DELETE_LEAGUE, (str(league.id),))
     except Exception as e:
-        app.logger.warning('Failed DELETE_LEAGUE: %s', str(e), exc_info=e)
+        app.logger.error('Failed DELETE_LEAGUE', exc_info=e)
 
 
 def delete_round(round):
@@ -27,7 +27,7 @@ def delete_round(round):
             with postgres_conn.cursor() as cur:
                 cur.execute(DELETE_ROUND, (str(round.id),))
     except Exception as e:
-        app.logger.warning('Failed DELETE_ROUND: %s', str(e), exc_info=e)
+        app.logger.error('Failed DELETE_ROUND', exc_info=e)
 
 
 def delete_membership(league, user):
@@ -37,7 +37,7 @@ def delete_membership(league, user):
             with postgres_conn.cursor() as cur:
                 cur.execute(DELETE_MEMBERSHIP, (str(league.id), str(user.id)))
     except Exception as e:
-        app.logger.warning('Failed DELETE_MEMBERSHIP: %s', str(e), exc_info=e)
+        app.logger.error('Failed DELETE_MEMBERSHIP', exc_info=e)
 
 
 def delete_invited_user(invite_id):
@@ -47,4 +47,4 @@ def delete_invited_user(invite_id):
             with postgres_conn.cursor() as cur:
                 cur.execute(DELETE_INVITED_USER, (invite_id,))
     except Exception as e:
-        app.logger.warning('Failed DELETE_INVITED_USER: %s', str(e), exc_info=e)
+        app.logger.error('Failed DELETE_INVITED_USER', exc_info=e)

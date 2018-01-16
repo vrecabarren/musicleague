@@ -53,7 +53,7 @@ def select_bot(bot_id):
                 bot = Bot(id=bot_id, access_token=access_token, refresh_token=refresh_token, expires_at=expires_at)
                 return bot
     except Exception as e:
-        app.logger.warning('Failed SELECT_BOT: %s', str(e), exc_info=e)
+        app.logger.error('Failed SELECT_BOT', exc_info=e)
 
 
 def select_user(user_id):
@@ -84,7 +84,7 @@ def select_user(user_id):
 
                 return u
     except Exception as e:
-        app.logger.warning('Failed SELECT_USER: %s', str(e), exc_info=e)
+        app.logger.error('Failed SELECT_USER', exc_info=e)
 
 
 def select_user_by_email(user_email):
@@ -115,7 +115,7 @@ def select_user_by_email(user_email):
 
                 return u
     except Exception as e:
-        app.logger.warning('Failed SELECT_USER_BY_EMAIL: %s', str(e), exc_info=e)
+        app.logger.error('Failed SELECT_USER_BY_EMAIL', exc_info=e)
 
 
 def select_users_count():
@@ -126,7 +126,7 @@ def select_users_count():
                 cur.execute(SELECT_USERS_COUNT)
                 return cur.fetchone()[0]
     except Exception as e:
-        app.logger.warning('Failed SELECT_USERS_COUNT: %s', str(e), exc_info=e)
+        app.logger.error('Failed SELECT_USERS_COUNT', exc_info=e)
 
 
 def select_invited_users_count():
@@ -137,7 +137,7 @@ def select_invited_users_count():
                 cur.execute(SELECT_INVITED_USERS_COUNT)
                 return cur.fetchone()[0]
     except Exception as e:
-        app.logger.warning('Failed SELECT_INVITED_USERS_COUNT: %s', str(e), exc_info=e)
+        app.logger.error('Failed SELECT_INVITED_USERS_COUNT', exc_info=e)
 
 
 def select_league(league_id, exclude_properties=None):
@@ -244,7 +244,7 @@ def select_league(league_id, exclude_properties=None):
 
                 return l
     except Exception as e:
-        app.logger.warning('Failed SELECT_LEAGUE: %s', str(e), exc_info=e)
+        app.logger.error('Failed SELECT_LEAGUE', exc_info=e)
 
 
 def select_league_preferences(league_id):
@@ -262,7 +262,7 @@ def select_league_preferences(league_id):
                  lp.submission_reminder_time, lp.vote_reminder_time) = cur.fetchone()
                 return lp
     except Exception as e:
-        app.logger.warning('Failed SELECT_LEAGUE_PREFERENCES: %s', str(e), exc_info=e)
+        app.logger.error('Failed SELECT_LEAGUE_PREFERENCES', exc_info=e)
 
 
 def select_leagues_for_user(user_id, exclude_properties=None):
@@ -280,7 +280,7 @@ def select_leagues_for_user(user_id, exclude_properties=None):
                     league = select_league(league_id, exclude_properties=exclude_properties)
                     leagues.append(league)
     except Exception as e:
-        app.logger.warning('Failed SELECT_MEMBERSHIPS_FOR_USER: %s', str(e), exc_info=e)
+        app.logger.error('Failed SELECT_MEMBERSHIPS_FOR_USER', exc_info=e)
 
     return leagues
 
@@ -293,7 +293,7 @@ def select_leagues_count():
                 cur.execute(SELECT_LEAGUES_COUNT)
                 return cur.fetchone()[0]
     except Exception as e:
-        app.logger.warning('Failed SELECT_LEAGUES_COUNT: %s', str(e), exc_info=e)
+        app.logger.error('Failed SELECT_LEAGUES_COUNT', exc_info=e)
 
 
 def select_memberships_count(user_id):
@@ -304,7 +304,7 @@ def select_memberships_count(user_id):
                 cur.execute(SELECT_MEMBERSHIPS_COUNT, (str(user_id),))
                 return cur.fetchone()[0]
     except Exception as e:
-        app.logger.warning('Failed SELECT_MEMBERSHIPS_COUNT: %s', str(e), exc_info=e)
+        app.logger.error('Failed SELECT_MEMBERSHIPS_COUNT', exc_info=e)
 
 
 def select_memberships_placed(user_id):
@@ -318,7 +318,7 @@ def select_memberships_placed(user_id):
                     rank, count = placed_tup
                     placed[rank] = count
     except Exception as e:
-        app.logger.warning('Failed SELECT_MEMBERSHIPS_PLACED_FOR_USER: %s', str(e), exc_info=e)
+        app.logger.error('Failed SELECT_MEMBERSHIPS_PLACED_FOR_USER', exc_info=e)
 
     return placed
 
@@ -342,7 +342,7 @@ def select_round(round_id):
                 )
                 return r
     except Exception as e:
-        app.logger.warning('Failed SELECT_ROUND: %s', str(e), exc_info=e)
+        app.logger.error('Failed SELECT_ROUND', exc_info=e)
 
 
 def select_league_id_for_round(round_id):
@@ -353,7 +353,7 @@ def select_league_id_for_round(round_id):
                 cur.execute(SELECT_LEAGUE_ID_FOR_ROUND, (str(round_id),))
                 return cur.fetchone()[0]
     except Exception as e:
-        app.logger.warning('Failed SELECT_LEAGUE_ID_FOR_ROUND: %s', str(e), exc_info=e)
+        app.logger.error('Failed SELECT_LEAGUE_ID_FOR_ROUND', exc_info=e)
 
 
 def select_rounds_count():
@@ -364,7 +364,7 @@ def select_rounds_count():
                 cur.execute(SELECT_ROUNDS_COUNT)
                 return cur.fetchone()[0]
     except Exception as e:
-        app.logger.warning('Failed SELECT_ROUNDS_COUNT: %s', str(e), exc_info=e)
+        app.logger.error('Failed SELECT_ROUNDS_COUNT', exc_info=e)
 
 
 def select_rounds_incomplete_count(league_id):
@@ -375,7 +375,7 @@ def select_rounds_incomplete_count(league_id):
                 cur.execute(SELECT_ROUNDS_IN_LEAGUE_WITH_STATUS, (league_id, RoundStatus.CREATED))
                 return cur.rowcount
     except Exception as e:
-        app.logger.warning('Failed SELECT_ROUNDS_IN_LEAGUE_WITH_STATUS: %s', str(e), exc_info=e)
+        app.logger.error('Failed SELECT_ROUNDS_IN_LEAGUE_WITH_STATUS', exc_info=e)
 
     return -1
 
@@ -388,7 +388,7 @@ def select_submissions_count():
                 cur.execute(SELECT_SUBMISSIONS_COUNT)
                 return cur.fetchone()[0]
     except Exception as e:
-        app.logger.warning('Failed SELECT_SUBMISSIONS_COUNT: %s', str(e), exc_info=e)
+        app.logger.error('Failed SELECT_SUBMISSIONS_COUNT', exc_info=e)
 
 
 def select_votes_count():
@@ -399,4 +399,4 @@ def select_votes_count():
                 cur.execute(SELECT_VOTES_COUNT)
                 return cur.fetchone()[0]
     except Exception as e:
-        app.logger.warning('Failed SELECT_VOTES_COUNT: %s', str(e), exc_info=e)
+        app.logger.error('Failed SELECT_VOTES_COUNT', exc_info=e)
