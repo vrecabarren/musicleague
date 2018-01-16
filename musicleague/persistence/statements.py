@@ -347,23 +347,4 @@ SELECT_VOTES = """SELECT created, voter_id, json_object_agg(spotify_uri, weight)
                     FROM votes WHERE round_id = %s
                     GROUP BY voter_id, created;"""
 
-SELECT_VOTES_FROM_USER = """SELECT created, json_object_agg(spotify_uri, weight)
-                                FROM votes WHERE round_id = %s AND voter_id = %s
-                                GROUP BY created
-                                ORDER BY created DESC
-                                LIMIT 1;"""
-
-SELECT_SUBMISSIONS_WITH_VOTES = """SELECT submissions.spotify_uri,
-                                          su.id,
-                                          su.name,
-                                          vu.id,
-                                          vu.name,
-                                          votes.weight
-                                   FROM submissions
-                                   RIGHT JOIN votes ON votes.spotify_uri = submissions.spotify_uri
-                                   LEFT JOIN users su ON su.id = submissions.submitter_id
-                                   LEFT JOIN users vu ON vu.id = votes.voter_id
-                                   WHERE submissions.round_id = %s
-                                   ORDER BY points DESC;"""
-
 SELECT_VOTES_COUNT = "SELECT COUNT(voter_id) FROM votes;"
