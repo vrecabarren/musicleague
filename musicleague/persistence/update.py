@@ -113,12 +113,12 @@ def upsert_league_preferences(league):
         app.logger.error('Failed UPSERT_LEAGUE_PREFERENCES', exc_info=e)
 
 
-def update_league_status(league, status):
+def update_league_status(league_id, status):
     try:
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(UPDATE_LEAGUE_STATUS, (status, str(league.id)))
+                cur.execute(UPDATE_LEAGUE_STATUS, (status, str(league_id)))
     except Exception as e:
         app.logger.error('Failed UPDATE_LEAGUE_STATUS', exc_info=e)
 

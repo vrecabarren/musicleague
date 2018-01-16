@@ -76,7 +76,7 @@ def complete_submission_period(submission_period_id):
         cancel_vote_reminders(submission_period)
 
         if league.is_complete:
-            update_league_status(league, LeagueStatus.COMPLETE)
+            update_league_status(league.id, LeagueStatus.COMPLETE)
         else:
             user_new_round_notification(league.current_submission_period)
 
