@@ -113,7 +113,7 @@ def send_submission_reminders(submission_period_id):
         league = select_league(league_id, exclude_properties=['votes', 'scoreboard', 'invited_users'])
         submission_period = next((r for r in league.submission_periods if r.id == submission_period_id), None)
         for user in submission_period.have_not_submitted:
-            app.logger.warning('%s has not submitted! Notifying.', user.name)
+            app.logger.debug('%s has not submitted! Notifying.', user.name)
             user_submit_reminder_notification(user, submission_period)
         return True
 
@@ -133,7 +133,7 @@ def send_vote_reminders(submission_period_id):
         league = select_league(league_id, exclude_properties=['scoreboard', 'invited_users'])
         submission_period = next((r for r in league.submission_periods if r.id == submission_period_id), None)
         for user in submission_period.have_not_voted:
-            app.logger.warning('%s has not voted! Notifying.', user.name)
+            app.logger.debug('%s has not voted! Notifying.', user.name)
             user_vote_reminder_notification(user, submission_period)
         return True
 
