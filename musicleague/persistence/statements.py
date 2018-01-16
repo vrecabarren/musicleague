@@ -152,6 +152,8 @@ CREATE_TABLE_LEAGUE_PREFERENCES = """CREATE TABLE IF NOT EXISTS league_preferenc
                                         submission_reminder_delta SMALLINT NOT NULL,
                                         vote_reminder_delta SMALLINT NOT NULL);"""
 
+DELETE_LEAGUE_PREFERENCES = "DELETE FROM league_preferences WHERE league_id = %s;"
+
 SELECT_LEAGUE_PREFERENCES = """SELECT track_count, upvote_bank_size, max_upvotes_per_song, downvote_bank_size,
                                       max_downvotes_per_song, submission_reminder_delta, vote_reminder_delta
                                     FROM league_preferences WHERE league_id = %s;"""
