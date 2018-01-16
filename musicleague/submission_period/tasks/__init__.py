@@ -1,4 +1,3 @@
-from psycopg2._psycopg import OperationalError
 from rq.decorators import job
 
 from musicleague import app
@@ -47,7 +46,8 @@ def complete_submission_process(submission_period_id):
 
     except Exception as e:
         app.logger.exception(
-            'Error occurred while completing submission process!', exc_info=e)
+            'Error occurred while completing submission process!', exc_info=e,
+            extra={'round': submission_period_id})
 
 
 @job('default', connection=redis_conn)
@@ -82,7 +82,8 @@ def complete_submission_period(submission_period_id):
 
     except Exception as e:
         app.logger.exception(
-            'Error occurred while completing submission period!', exc_info=e)
+            'Error occurred while completing submission period!', exc_info=e,
+            extra={'round': submission_period_id})
 
 
 @job('default', connection=redis_conn)
@@ -99,7 +100,8 @@ def create_playlist(submission_period_id):
 
             create_or_update_playlist(submission_period)
     except Exception as e:
-        app.logger.exception('Error occurred while creating playlist!', exc_info=e)
+        app.logger.exception('Error occurred while creating playlist!', exc_info=e,
+                             extra={'round': submission_period_id})
 
 
 @job('default', connection=redis_conn)
@@ -113,12 +115,13 @@ def send_submission_reminders(submission_period_id):
         league = select_league(league_id, exclude_properties=['votes', 'scoreboard', 'invited_users'])
         submission_period = next((r for r in league.submission_periods if r.id == submission_period_id), None)
         for user in submission_period.have_not_submitted:
-            app.logger.debug('%s has not submitted! Notifying.', user.name)
+            app.logger.debug('User has not submitted! Notifying.', extra={'user': str(user.id)})
             user_submit_reminder_notification(user, submission_period)
         return True
 
     except Exception as e:
-        app.logger.exception('Error while sending submission reminders!', exc_info=e)
+        app.logger.exception('Error while sending submission reminders!', exc_info=e,
+                             extra={'round': submission_period_id})
         return False
 
 
@@ -133,10 +136,11 @@ def send_vote_reminders(submission_period_id):
         league = select_league(league_id, exclude_properties=['scoreboard', 'invited_users'])
         submission_period = next((r for r in league.submission_periods if r.id == submission_period_id), None)
         for user in submission_period.have_not_voted:
-            app.logger.debug('%s has not voted! Notifying.', user.name)
+            app.logger.debug('User has not voted! Notifying.', extra={'user': str(user.id)})
             user_vote_reminder_notification(user, submission_period)
         return True
 
     except Exception as e:
-        app.logger.exception('Error while sending vote reminders!', exc_info=e)
+        app.logger.exception('Error while sending vote reminders!', exc_info=e,
+                             extra={'round': submission_period_id})
         return False
