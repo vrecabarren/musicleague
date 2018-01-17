@@ -94,10 +94,6 @@ def admin_leagues():
 def admin_league(league_id):
     league = select_league(league_id)
 
-    if request.args.get('pg_update') == '1':
-        league = get_league(league_id)
-        insert_league(league)
-
     return {
         'user': g.user,
         'league': league
