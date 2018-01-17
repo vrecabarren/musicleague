@@ -27,7 +27,7 @@ def create_vote(votes, submission_period, user, league):
 
     submission_period.votes.append(new_vote)
 
-    insert_vote(new_vote, insert_deps=False)
+    insert_vote(new_vote)
 
     return new_vote
 

@@ -59,9 +59,9 @@ def insert_league(league):
                 for round in league.submission_periods:
                     upsert_round(round)
                     for submission in round.submissions:
-                        insert_submission(submission, insert_deps=False)
+                        insert_submission(submission)
                     for vote in round.votes:
-                        insert_vote(vote, insert_deps=False)
+                        insert_vote(vote)
 
         upsert_league_preferences(league)
 
@@ -82,11 +82,8 @@ def insert_membership(league, user):
         app.logger.error('Failed INSERT_MEMBERSHIP', exc_info=e)
 
 
-def insert_round(round, insert_deps=True):
+def insert_round(round):
     try:
-        if insert_deps:
-            insert_league(round.league)
-
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
@@ -96,19 +93,15 @@ def insert_round(round, insert_deps=True):
                      round.name, RoundStatus.CREATED, round.submission_due_date,
                      round.vote_due_date))
                 for submission in round.submissions:
-                    insert_submission(submission, insert_deps=False)
+                    insert_submission(submission)
                 for vote in round.votes:
-                    insert_vote(vote, insert_deps=False)
+                    insert_vote(vote)
     except Exception as e:
         app.logger.error('Failed INSERT_ROUND', exc_info=e)
 
 
-def insert_submission(submission, insert_deps=True):
+def insert_submission(submission):
     try:
-        if insert_deps:
-            insert_round(submission.submission_period)
-            insert_user(submission.user)
-
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
@@ -143,14 +136,8 @@ def insert_submission(submission, insert_deps=True):
         app.logger.error('Failed INSERT_SUBMISSION', exc_info=e)
 
 
-def insert_vote(vote, insert_deps=True):
+def insert_vote(vote):
     try:
-        if insert_deps:
-            insert_round(vote.submission_period)
-            insert_user(vote.user)
-            for submission in vote.submission_period.submissions:
-                insert_submission(submission)
-
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
