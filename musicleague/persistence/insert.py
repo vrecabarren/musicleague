@@ -48,17 +48,10 @@ def insert_league(league):
         from musicleague.persistence.update import upsert_round
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                if league.is_complete:
-                    status = LeagueStatus.COMPLETE
-                elif league.is_active:
-                    status = LeagueStatus.IN_PROGRESS
-                else:
-                    status = LeagueStatus.COMPLETE
-
                 cur.execute(
                     INSERT_LEAGUE,
                     (str(league.id), league.created, league.name,
-                     str(league.owner.id), status))
+                     str(league.owner.id), LeagueStatus.CREATED))
 
                 for user in league.users:
                     insert_membership(league, user)
@@ -97,15 +90,10 @@ def insert_round(round, insert_deps=True):
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                if round.is_complete:
-                    status = RoundStatus.COMPLETE
-                else:
-                    status = RoundStatus.CREATED
-
                 cur.execute(
                     INSERT_ROUND,
                     (str(round.id), round.created, round.description, str(round.league.id),
-                     round.name, status, round.submission_due_date,
+                     round.name, RoundStatus.CREATED, round.submission_due_date,
                      round.vote_due_date))
                 for submission in round.submissions:
                     insert_submission(submission, insert_deps=False)
