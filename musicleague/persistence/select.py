@@ -45,7 +45,7 @@ def select_bot(bot_id):
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(SELECT_BOT, (str(bot_id),))
+                cur.execute(SELECT_BOT, (bot_id,))
                 if cur.rowcount < 1:
                     return None
 
@@ -61,7 +61,7 @@ def select_user(user_id):
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(SELECT_USER, (str(user_id),))
+                cur.execute(SELECT_USER, (user_id,))
                 if cur.rowcount < 1:
                     return None
 
@@ -69,7 +69,7 @@ def select_user(user_id):
                 u = User(user_id, email, image_url, is_admin, joined, name, profile_bg)
 
                 # TODO This could be done in one fetch with a join
-                cur.execute(SELECT_USER_PREFERENCES, (str(user_id),))
+                cur.execute(SELECT_USER_PREFERENCES, (user_id,))
                 if cur.rowcount > 0:
                     (u.preferences.owner_all_users_submitted_notifications,
                      u.preferences.owner_all_users_voted_notifications,
@@ -100,7 +100,7 @@ def select_user_by_email(user_email):
                 u = User(user_id, user_email, image_url, is_admin, joined, name, profile_bg)
 
                 # TODO This could be done in one fetch with a join
-                cur.execute(SELECT_USER_PREFERENCES, (str(user_id),))
+                cur.execute(SELECT_USER_PREFERENCES, (user_id,))
                 if cur.rowcount > 0:
                     (u.preferences.owner_all_users_submitted_notifications,
                      u.preferences.owner_all_users_voted_notifications,
@@ -148,10 +148,10 @@ def select_league(league_id, exclude_properties=None):
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(SELECT_LEAGUE, (str(league_id),))
+                cur.execute(SELECT_LEAGUE, (league_id,))
                 league_tup = cur.fetchone()
                 l = League(
-                    id=str(league_id),
+                    id=league_id,
                     created=league_tup[0],
                     name=league_tup[1],
                     owner_id=league_tup[2],
@@ -160,7 +160,7 @@ def select_league(league_id, exclude_properties=None):
                 l.preferences = select_league_preferences(league_id)
 
                 if 'rounds' not in exclude_properties:
-                    cur.execute(SELECT_ROUNDS_IN_LEAGUE, (str(league_id),))
+                    cur.execute(SELECT_ROUNDS_IN_LEAGUE, (league_id,))
                     for round_tup in cur.fetchall():
                         round_id = round_tup[0]
                         r = select_round(round_id)
@@ -168,12 +168,12 @@ def select_league(league_id, exclude_properties=None):
                         l.submission_periods.append(r)
 
                 if 'invited_users' not in exclude_properties:
-                    cur.execute(SELECT_INVITED_USERS_IN_LEAGUE, (str(league_id),))
+                    cur.execute(SELECT_INVITED_USERS_IN_LEAGUE, (league_id,))
                     for user_tup in cur.fetchall():
                         invite_id, email = user_tup
                         l.invited_users.append(InvitedUser(invite_id, email, league_id))
 
-                cur.execute(SELECT_USERS_IN_LEAGUE, (str(league_id),))
+                cur.execute(SELECT_USERS_IN_LEAGUE, (league_id,))
                 user_idx = {}
                 round_uri_entry_idx = defaultdict(dict)
                 for user_tup in cur.fetchall():
@@ -186,7 +186,7 @@ def select_league(league_id, exclude_properties=None):
 
                 for round in l.submission_periods:
                     if 'submissions' not in exclude_properties:
-                        cur.execute(SELECT_SUBMISSIONS, (str(round.id),))
+                        cur.execute(SELECT_SUBMISSIONS, (round.id,))
                         for submission_tup in cur.fetchall():
                             created, user_id, tracks = submission_tup
                             submitter = user_idx.get(user_id, None)
@@ -202,7 +202,7 @@ def select_league(league_id, exclude_properties=None):
                                 round_uri_entry_idx[round.id][uri] = entry
 
                     if 'votes' not in exclude_properties:
-                        cur.execute(SELECT_VOTES, (str(round.id),))
+                        cur.execute(SELECT_VOTES, (round.id,))
                         for vote_tup in cur.fetchall():
                             created, user_id, votes = vote_tup
                             voter = user_idx.get(user_id, None)
@@ -234,7 +234,7 @@ def select_league(league_id, exclude_properties=None):
                                 user_entry_idx[entry.submission.user.id].append(entry)
 
                     if len(user_entry_idx):
-                        cur.execute(SELECT_SCOREBOARD, (str(league_id),))
+                        cur.execute(SELECT_SCOREBOARD, (league_id,))
                         for scoreboard_tup in cur.fetchall():
                             user_id, rank = scoreboard_tup
                             u = user_idx.get(user_id, None)
@@ -252,7 +252,7 @@ def select_league_preferences(league_id):
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(SELECT_LEAGUE_PREFERENCES, (str(league_id),))
+                cur.execute(SELECT_LEAGUE_PREFERENCES, (league_id,))
                 if cur.rowcount < 1:
                     return None
 
@@ -274,7 +274,7 @@ def select_leagues_for_user(user_id, exclude_properties=None):
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(SELECT_MEMBERSHIPS_FOR_USER, (str(user_id),))
+                cur.execute(SELECT_MEMBERSHIPS_FOR_USER, (user_id,))
                 for membership_tup in cur.fetchall():
                     league_id = membership_tup[0]
                     league = select_league(league_id, exclude_properties=exclude_properties)
@@ -301,7 +301,7 @@ def select_memberships_count(user_id):
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(SELECT_MEMBERSHIPS_COUNT, (str(user_id),))
+                cur.execute(SELECT_MEMBERSHIPS_COUNT, (user_id,))
                 return cur.fetchone()[0]
     except Exception as e:
         app.logger.error('Failed SELECT_MEMBERSHIPS_COUNT', exc_info=e)
@@ -313,7 +313,7 @@ def select_memberships_placed(user_id):
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(SELECT_MEMBERSHIPS_PLACED_FOR_USER, (str(user_id),))
+                cur.execute(SELECT_MEMBERSHIPS_PLACED_FOR_USER, (user_id,))
                 for placed_tup in cur.fetchall():
                     rank, count = placed_tup
                     placed[rank] = count
@@ -328,10 +328,10 @@ def select_round(round_id):
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(SELECT_ROUND, (str(round_id),))
+                cur.execute(SELECT_ROUND, (round_id,))
                 round_tup = cur.fetchone()
                 r = Round(
-                    id=str(round_id),
+                    id=round_id,
                     league_id=round_tup[0],
                     created=round_tup[1],
                     description=round_tup[2],
@@ -350,7 +350,7 @@ def select_league_id_for_round(round_id):
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(SELECT_LEAGUE_ID_FOR_ROUND, (str(round_id),))
+                cur.execute(SELECT_LEAGUE_ID_FOR_ROUND, (round_id,))
                 return cur.fetchone()[0]
     except Exception as e:
         app.logger.error('Failed SELECT_LEAGUE_ID_FOR_ROUND', exc_info=e)

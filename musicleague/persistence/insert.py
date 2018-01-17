@@ -22,7 +22,7 @@ def insert_user(user):
             with postgres_conn.cursor() as cur:
                 cur.execute(
                     INSERT_USER,
-                    (str(user.id), user.email, user.image_url, user.joined, user.name, user.profile_background))
+                    (user.id, user.email, user.image_url, user.joined, user.name, user.profile_background))
     except Exception as e:
         app.logger.error('Failed INSERT_USER', exc_info=e)
 
@@ -33,7 +33,7 @@ def insert_invited_user(user, league_id):
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(
-                    INSERT_INVITED_USER, (str(user.id), user.email, str(league_id)))
+                    INSERT_INVITED_USER, (user.id, user.email, league_id))
     except Exception as e:
         app.logger.error('Failed INSERT_INVITED_USER', exc_info=e)
 
@@ -50,8 +50,8 @@ def insert_league(league):
             with postgres_conn.cursor() as cur:
                 cur.execute(
                     INSERT_LEAGUE,
-                    (str(league.id), league.created, league.name,
-                     str(league.owner.id), LeagueStatus.CREATED))
+                    (league.id, league.created, league.name,
+                     league.owner.id, LeagueStatus.CREATED))
 
                 for user in league.users:
                     insert_membership(league, user)
@@ -66,7 +66,7 @@ def insert_league(league):
         upsert_league_preferences(league)
 
         for u in league.invited_users:
-            insert_invited_user(u, str(league.id))
+            insert_invited_user(u, league.id)
 
     except Exception as e:
         app.logger.error('Failed INSERT_LEAGUE', exc_info=e)
@@ -77,7 +77,7 @@ def insert_membership(league, user):
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(INSERT_MEMBERSHIP, (str(league.id), str(user.id)))
+                cur.execute(INSERT_MEMBERSHIP, (league.id, user.id))
     except Exception as e:
         app.logger.error('Failed INSERT_MEMBERSHIP', exc_info=e)
 
@@ -92,7 +92,7 @@ def insert_round(round, insert_deps=True):
             with postgres_conn.cursor() as cur:
                 cur.execute(
                     INSERT_ROUND,
-                    (str(round.id), round.created, round.description, str(round.league.id),
+                    (round.id, round.created, round.description, round.league.id,
                      round.name, RoundStatus.CREATED, round.submission_due_date,
                      round.vote_due_date))
                 for submission in round.submissions:
@@ -115,30 +115,30 @@ def insert_submission(submission, insert_deps=True):
                 # Determine if user previously submitted
                 cur.execute(
                     SELECT_SUBMISSIONS_FROM_USER,
-                    (str(submission.submission_period.id),
-                     str(submission.user.id)))
+                    (submission.submission_period.id,
+                     submission.user.id))
                 if cur.rowcount > 0:
                     ranked_tracks = cur.fetchone()[1]
 
                     # Remove votes for previously submitted tracks
                     cur.execute(
                         DELETE_VOTES_FOR_URIS,
-                        (str(submission.submission_period.id),
+                        (submission.submission_period.id,
                          ranked_tracks.keys()))
 
                     # Remove previously submitted tracks
                     cur.execute(
                         DELETE_SUBMISSIONS,
-                        (str(submission.submission_period.id),
-                         str(submission.user.id)))
+                        (submission.submission_period.id,
+                         submission.user.id))
 
                 # Insert tracks for new submission
                 for track in submission.tracks:
                     cur.execute(
                         INSERT_SUBMISSION,
                         (submission.created,
-                         str(submission.submission_period.id),
-                         track, str(submission.user.id)))
+                         submission.submission_period.id,
+                         track, submission.user.id))
     except Exception as e:
         app.logger.error('Failed INSERT_SUBMISSION', exc_info=e)
 
@@ -157,16 +157,16 @@ def insert_vote(vote, insert_deps=True):
                 # Remove previously submitted votes
                 cur.execute(
                     DELETE_VOTES,
-                    (str(vote.submission_period.id),
-                     str(vote.user.id)))
+                    (vote.submission_period.id,
+                     vote.user.id))
 
                 # Insert weights for new vote
                 for spotify_uri, weight in vote.votes.iteritems():
                     cur.execute(
                         INSERT_VOTE,
                         (vote.created,
-                         str(vote.submission_period.id),
-                         spotify_uri, str(vote.user.id),
+                         vote.submission_period.id,
+                         spotify_uri, vote.user.id,
                          weight))
     except Exception as e:
         app.logger.error('Failed INSERT_VOTE', exc_info=e)

@@ -17,19 +17,19 @@ def delete_league(league):
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(SELECT_ROUNDS_IN_LEAGUE, (str(league.id),))
+                cur.execute(SELECT_ROUNDS_IN_LEAGUE, (league.id,))
                 for round_id_tup in cur.fetchall():
                     round_id = round_id_tup[0]
                     cur.execute(DELETE_VOTES_FOR_ROUND, (round_id,))
                     cur.execute(DELETE_SUBMISSIONS_FOR_ROUND, (round_id,))
 
-                cur.execute(DELETE_MEMBERSHIPS, (str(league.id),))
-                cur.execute(DELETE_ROUNDS, (str(league.id),))
-                cur.execute(DELETE_LEAGUE_PREFERENCES, (str(league.id),))
-                cur.execute(DELETE_LEAGUE, (str(league.id),))
+                cur.execute(DELETE_MEMBERSHIPS, (league.id,))
+                cur.execute(DELETE_ROUNDS, (league.id,))
+                cur.execute(DELETE_LEAGUE_PREFERENCES, (league.id,))
+                cur.execute(DELETE_LEAGUE, (league.id,))
     except Exception as e:
         app.logger.error('Failed DELETE_LEAGUE', exc_info=e,
-                         extra={'league': str(league.id)})
+                         extra={'league': league.id})
 
 
 def delete_round(round):
@@ -37,10 +37,10 @@ def delete_round(round):
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(DELETE_ROUND, (str(round.id),))
+                cur.execute(DELETE_ROUND, (round.id,))
     except Exception as e:
         app.logger.error('Failed DELETE_ROUND', exc_info=e,
-                         extra={'round': str(round.id)})
+                         extra={'round': round.id})
 
 
 def delete_membership(league, user):
@@ -48,10 +48,10 @@ def delete_membership(league, user):
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(DELETE_MEMBERSHIP, (str(league.id), str(user.id)))
+                cur.execute(DELETE_MEMBERSHIP, (league.id, user.id))
     except Exception as e:
         app.logger.error('Failed DELETE_MEMBERSHIP', exc_info=e,
-                         extra={'user': str(user.id), 'league': str(league.id)})
+                         extra={'user': user.id, 'league': league.id})
 
 
 def delete_invited_user(invite_id):

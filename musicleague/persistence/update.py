@@ -25,9 +25,9 @@ def update_user(user):
                     UPDATE_USER,
                     (user.email, user.image_url, user.name,
                      user.profile_background, user.is_admin,
-                     str(user.id)))
+                     user.id))
     except Exception as e:
-        app.logger.error('Failed UPDATE_USER', exc_info=e, extra={'user': str(user.id)})
+        app.logger.error('Failed UPDATE_USER', exc_info=e, extra={'user': user.id})
 
 
 def upsert_user(user):
@@ -37,7 +37,7 @@ def upsert_user(user):
             with postgres_conn.cursor() as cur:
                 cur.execute(
                     UPSERT_USER,
-                    (str(user.id),
+                    (user.id,
                      user.email,
                      user.image_url,
                      user.joined,
@@ -45,7 +45,7 @@ def upsert_user(user):
                      user.profile_background,
                      user.is_admin))
     except Exception as e:
-        app.logger.error('Failed UPSERT_USER', exc_info=e, extra={'user': str(user.id)})
+        app.logger.error('Failed UPSERT_USER', exc_info=e, extra={'user': user.id})
 
 
 def upsert_bot(bot):
@@ -55,7 +55,7 @@ def upsert_bot(bot):
             with postgres_conn.cursor() as cur:
                 cur.execute(
                     UPSERT_BOT,
-                    (str(bot.id),
+                    (bot.id,
                      bot.access_token,
                      bot.refresh_token,
                      bot.expires_at))
@@ -70,7 +70,7 @@ def upsert_user_preferences(user):
             with postgres_conn.cursor() as cur:
                 cur.execute(
                     UPSERT_USER_PREFERENCES,
-                    (str(user.id),
+                    (user.id,
                      user.preferences.owner_all_users_submitted_notifications,
                      user.preferences.owner_all_users_voted_notifications,
                      user.preferences.owner_user_left_notifications,
@@ -82,7 +82,7 @@ def upsert_user_preferences(user):
                      user.preferences.user_submit_reminder_notifications,
                      user.preferences.user_vote_reminder_notifications))
     except Exception as e:
-        app.logger.error('Failed UPSERT_USER_PREFERENCES', exc_info=e, extra={'user': str(user.id)})
+        app.logger.error('Failed UPSERT_USER_PREFERENCES', exc_info=e, extra={'user': user.id})
 
 
 def update_league(league):
@@ -90,9 +90,9 @@ def update_league(league):
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(UPDATE_LEAGUE, (league.name, league.status, str(league.id)))
+                cur.execute(UPDATE_LEAGUE, (league.name, league.status, league.id))
     except Exception as e:
-        app.logger.error('Failed UPDATE_LEAGUE', exc_info=e, extra={'league': str(league.id)})
+        app.logger.error('Failed UPDATE_LEAGUE', exc_info=e, extra={'league': league.id})
 
 
 def upsert_league_preferences(league):
@@ -102,7 +102,7 @@ def upsert_league_preferences(league):
             with postgres_conn.cursor() as cur:
                 cur.execute(
                     UPSERT_LEAGUE_PREFERENCES,
-                    (str(league.id), league.preferences.track_count,
+                    (league.id, league.preferences.track_count,
                      league.preferences.point_bank_size,
                      league.preferences.max_points_per_song,
                      league.preferences.downvote_bank_size,
@@ -110,7 +110,7 @@ def upsert_league_preferences(league):
                      league.preferences.submission_reminder_time,
                      league.preferences.vote_reminder_time))
     except Exception as e:
-        app.logger.error('Failed UPSERT_LEAGUE_PREFERENCES', exc_info=e, extra={'league': str(league.id)})
+        app.logger.error('Failed UPSERT_LEAGUE_PREFERENCES', exc_info=e, extra={'league': league.id})
 
 
 def update_league_status(league_id, status):
@@ -118,7 +118,7 @@ def update_league_status(league_id, status):
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(UPDATE_LEAGUE_STATUS, (status, str(league_id)))
+                cur.execute(UPDATE_LEAGUE_STATUS, (status, league_id))
                 app.logger.warning('Updating league status',
                                    extra={'league': league_id, 'status': status, 'effected': cur.rowcount})
     except Exception as e:
@@ -131,10 +131,10 @@ def update_membership_rank(league, user, rank):
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(UPDATE_MEMBERSHIP_RANK, (rank, str(league.id), str(user.id)))
+                cur.execute(UPDATE_MEMBERSHIP_RANK, (rank, league.id, user.id))
     except Exception as e:
         app.logger.error('Failed UPDATE_MEMBERSHIP_RANK', exc_info=e,
-                         extra={'league': str(league.id), 'user': str(user.id), 'rank': rank})
+                         extra={'league': league.id, 'user': user.id, 'rank': rank})
 
 
 def update_round(round):
@@ -146,7 +146,7 @@ def update_round(round):
                     UPDATE_ROUND,
                     (round.description, round.name, round.status, round.submission_due_date, round.vote_due_date, round.id))
     except Exception as e:
-        app.logger.error('Failed UPDATE_ROUND', exc_info=e, extra={'round': str(round.id)})
+        app.logger.error('Failed UPDATE_ROUND', exc_info=e, extra={'round': round.id})
 
 
 def upsert_round(round):
@@ -158,15 +158,15 @@ def upsert_round(round):
                     league_id = round.league_id
                     status = round.status
                 else:
-                    league_id = str(round.league.id)
+                    league_id = round.league.id
                     status = RoundStatus.COMPLETE if round.is_complete else RoundStatus.CREATED
 
                 cur.execute(
                     UPSERT_ROUND,
-                    (str(round.id), round.created, round.description, league_id, round.name,
+                    (round.id, round.created, round.description, league_id, round.name,
                      round.playlist_url, status, round.submission_due_date, round.vote_due_date))
     except Exception as e:
-        app.logger.error('Failed UPSERT_ROUND', exc_info=e, extra={'round': str(round.id)})
+        app.logger.error('Failed UPSERT_ROUND', exc_info=e, extra={'round': round.id})
 
 
 def update_round_status(round, status):
@@ -174,9 +174,9 @@ def update_round_status(round, status):
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(UPDATE_ROUND_STATUS, (status, str(round.id)))
+                cur.execute(UPDATE_ROUND_STATUS, (status, round.id))
     except Exception as e:
-        app.logger.error('Failed UPDATE_ROUND_STATUS', exc_info=e, extra={'round': str(round.id), 'status': status})
+        app.logger.error('Failed UPDATE_ROUND_STATUS', exc_info=e, extra={'round': round.id, 'status': status})
 
 
 def update_submission_rank(round, spotify_uri, rank):
@@ -184,7 +184,7 @@ def update_submission_rank(round, spotify_uri, rank):
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(UPDATE_SUBMISSION_RANK, (rank, str(round.id), spotify_uri))
+                cur.execute(UPDATE_SUBMISSION_RANK, (rank, round.id, spotify_uri))
     except Exception as e:
         app.logger.error('Failed UPDATE_SUBMISSION_RANK', exc_info=e,
-                         extra={'round': str(round.id), 'uri': spotify_uri, 'rank': rank})
+                         extra={'round': round.id, 'uri': spotify_uri, 'rank': rank})

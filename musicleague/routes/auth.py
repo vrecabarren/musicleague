@@ -35,11 +35,6 @@ def before_request():
     g.user = None
     if current_user:
         g.user = select_user(current_user)
-        # Lazily migrate users from mongo to postgres
-        if not g.user:
-            g.user = get_user(current_user)
-            from musicleague.persistence.insert import insert_user
-            insert_user(g.user)
 
     access_token = session['access_token'] if 'access_token' in session else ''
     g.spotify = None
