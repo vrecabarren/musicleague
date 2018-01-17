@@ -119,6 +119,8 @@ def update_league_status(league_id, status):
         with postgres_conn:
             with postgres_conn.cursor() as cur:
                 cur.execute(UPDATE_LEAGUE_STATUS, (status, str(league_id)))
+                app.logger.warning('Updating league status',
+                                   extra={'league': league_id, 'status': status, 'effected': cur.rowcount})
     except Exception as e:
         app.logger.error('Failed UPDATE_LEAGUE_STATUS', exc_info=e,
                          extra={'league': league_id, 'status': status})
