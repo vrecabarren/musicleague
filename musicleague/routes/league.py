@@ -189,8 +189,6 @@ def post_manage_league(league_id):
     if league.scoreboard:
         league = calculate_league_scoreboard(league)
 
-    update_league(league)
-
     return redirect(url_for('view_league', league_id=league_id))
 
 
