@@ -21,8 +21,8 @@ from musicleague.persistence.statements import SELECT_LEAGUE
 from musicleague.persistence.statements import SELECT_LEAGUE_ID_FOR_ROUND
 from musicleague.persistence.statements import SELECT_LEAGUE_PREFERENCES
 from musicleague.persistence.statements import SELECT_LEAGUES_COUNT
+from musicleague.persistence.statements import SELECT_LEAGUES_FOR_USER
 from musicleague.persistence.statements import SELECT_MEMBERSHIPS_COUNT
-from musicleague.persistence.statements import SELECT_MEMBERSHIPS_FOR_USER
 from musicleague.persistence.statements import SELECT_MEMBERSHIPS_PLACED_FOR_USER
 from musicleague.persistence.statements import SELECT_ROUND
 from musicleague.persistence.statements import SELECT_ROUNDS_COUNT
@@ -35,6 +35,7 @@ from musicleague.persistence.statements import SELECT_USER
 from musicleague.persistence.statements import SELECT_USER_BY_EMAIL
 from musicleague.persistence.statements import SELECT_USER_PREFERENCES
 from musicleague.persistence.statements import SELECT_USERS_COUNT
+from musicleague.persistence.statements import SELECT_USERS_FOR_LEAGUE
 from musicleague.persistence.statements import SELECT_USERS_IN_LEAGUE
 from musicleague.persistence.statements import SELECT_VOTES
 from musicleague.persistence.statements import SELECT_VOTES_COUNT
@@ -274,11 +275,21 @@ def select_leagues_for_user(user_id, exclude_properties=None):
         postgres_conn = get_postgres_conn()
         with postgres_conn:
             with postgres_conn.cursor() as cur:
-                cur.execute(SELECT_MEMBERSHIPS_FOR_USER, (user_id,))
-                for membership_tup in cur.fetchall():
-                    league_id = membership_tup[0]
-                    league = select_league(league_id, exclude_properties=exclude_properties)
+                cur.execute(SELECT_LEAGUES_FOR_USER, (user_id,))
+                for league_tup in cur.fetchall():
+                    league_id, created, name, owner_id, status = league_tup
+                    league = League(id=league_id, created=created, name=name, owner_id=owner_id, status=status)
+
+                    cur.execute(SELECT_USERS_FOR_LEAGUE, (league_id,))
+                    for user_tup in cur.fetchall():
+                        user_id, email, image_url, is_admin, joined, name, profile_bg = user_tup
+                        user = User(user_id, email,image_url, is_admin, joined, name, profile_bg)
+                        league.users.append(user)
+                        if user_id == league.owner_id:
+                            league.owner = user
+
                     leagues.append(league)
+
     except Exception as e:
         app.logger.error('Failed SELECT_MEMBERSHIPS_FOR_USER', exc_info=e)
 

@@ -91,6 +91,10 @@ SELECT_USERS_COUNT = "SELECT COUNT(id) FROM users;"
 
 SELECT_USERS_IN_LEAGUE = "SELECT user_id FROM memberships WHERE league_id = %s ORDER BY created;"
 
+SELECT_USERS_FOR_LEAGUE = """SELECT users.id, users.email, users.image_url, users.is_admin, users.joined, users.name, users.profile_bg
+                                FROM users INNER JOIN memberships ON memberships.user_id = users.id
+                                WHERE memberships.league_id = %s;"""
+
 UPDATE_USER = "UPDATE users SET (email, image_url, name, profile_bg, is_admin) = (%s, %s, %s, %s, %s) WHERE id = %s;"
 
 UPSERT_USER = """INSERT INTO users (id, email, image_url, joined, name, profile_bg, is_admin)
@@ -190,6 +194,11 @@ INSERT_LEAGUE = "INSERT INTO leagues (id, created, name, owner_id, status) VALUE
 SELECT_LEAGUE = "SELECT created, name, owner_id, status FROM leagues WHERE id = %s;"
 
 SELECT_LEAGUES_COUNT = "SELECT COUNT(id) FROM leagues;"
+
+SELECT_LEAGUES_FOR_USER = """SELECT leagues.id, leagues.created, leagues.name, leagues.owner_id, leagues.status
+                                FROM leagues INNER JOIN memberships ON memberships.league_id = leagues.id
+                                WHERE memberships.user_id = %s
+                                ORDER BY leagues.status, memberships.created DESC;"""
 
 UPDATE_LEAGUE = "UPDATE leagues SET (name, status) = (%s, %s) WHERE id = %s;"
 
