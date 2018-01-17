@@ -89,7 +89,7 @@ def post_create_league():
             league, new_round['name'], new_round['description'],
             submission_due_date, vote_due_date)
 
-    app.logger.info('Creating league: %s', league.id)
+    app.logger.info('User created league', extra={'league': league.id, 'user': g.user.id})
 
     return redirect(url_for('view_league', league_id=league.id))
 
@@ -100,8 +100,8 @@ def post_create_league():
 def get_manage_league(league_id):
     league = select_league(league_id)
     if not league or not league.has_owner(g.user):
-        app.logger.warning('Unauthorized user attempted access')
-        flash_error('You must be owner of the league to access that page')
+        app.logger.warning('Unauthorized user attempted access',
+                           extra={'league': league.id, 'user': g.user.id})
         return redirect(url_for('view_league', league_id=league_id))
 
     return {'user': g.user,
@@ -120,7 +120,6 @@ def post_manage_league(league_id):
 
     user_ids = json.loads(request.form.get('added-members', []))
     added_members = [select_user(uid) for uid in user_ids]
-    app.logger.info("Adding users %s: %s", user_ids, added_members)
     emails = json.loads(request.form.get('invited-members', []))
     deleted_members = json.loads(request.form.get('deleted-members', []))
 
@@ -189,6 +188,8 @@ def post_manage_league(league_id):
     if league.scoreboard:
         league = calculate_league_scoreboard(league)
 
+    app.logger.info('User modified league', extra={'league': league.id, 'user': g.user.id})
+
     return redirect(url_for('view_league', league_id=league_id))
 
 
@@ -202,8 +203,11 @@ def join_league(league_id, **kwargs):
     invite_id = request.args.get('invitation')
     if invite_id:
         delete_invited_user(invite_id)
+        app.logger.debug(
+            'Deleted league invitation',
+            extra={'league': league_id, 'user': g.user.id, 'invitation': invite_id})
 
-    app.logger.info('User joined league: %s', league.id)
+    app.logger.debug('User joined league', extra={'league': league_id, 'user': g.user.id})
 
     return redirect(url_for('view_league', league_id=league_id))
 
@@ -213,8 +217,8 @@ def join_league(league_id, **kwargs):
 def get_remove_league(league_id, **kwargs):
     league = select_league(league_id)
     if league and league.has_owner(g.user):
-        app.logger.info('Removing league: %s', league.id)
         remove_league(league_id, league=league)
+        app.logger.debug('User deleted league', extra={'league': league.id, 'user': g.user.id})
 
     return redirect(url_for('profile'))
 
