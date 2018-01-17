@@ -4,10 +4,10 @@ from flask import request
 from musicleague import app
 from musicleague import scheduler
 from musicleague.league import get_league
-from musicleague.models import User
 from musicleague.persistence import get_postgres_conn
 from musicleague.persistence.insert import insert_league
 from musicleague.persistence.models import League
+from musicleague.persistence.models import User
 from musicleague.persistence.select import select_invited_users_count
 from musicleague.persistence.select import select_league
 from musicleague.persistence.select import select_leagues_count
@@ -117,12 +117,16 @@ def admin_tools():
 @login_required
 @admin_required
 def admin_users():
-    users = User.objects().all().order_by('name')
-
-    if request.args.get('pg_update') == '1':
-        from musicleague.persistence.insert import insert_user
-        for user in users:
-            insert_user(user)
+    stmt = "SELECT id, email, image_url, is_admin, joined, name, profile_bg FROM users ORDER BY name;"
+    postgres_conn = get_postgres_conn()
+    with postgres_conn:
+        with postgres_conn.cursor() as cur:
+            users = []
+            cur.execute(stmt)
+            for user_tup in cur.fetchall():
+                user_id, email, image_url, is_admin, joined, name, profile_bg = user_tup
+                users.append(
+                    User(user_id, email, image_url, is_admin, joined, name, profile_bg))
 
     return {
         'user': g.user,
