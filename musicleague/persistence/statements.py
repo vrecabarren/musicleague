@@ -91,7 +91,8 @@ SELECT_USERS_COUNT = "SELECT COUNT(id) FROM users;"
 
 SELECT_USERS_FOR_LEAGUE = """SELECT users.id, users.email, users.image_url, users.is_admin, users.joined, users.name, users.profile_bg
                                 FROM users INNER JOIN memberships ON memberships.user_id = users.id
-                                WHERE memberships.league_id = %s;"""
+                                WHERE memberships.league_id = %s
+                                ORDER BY memberships.created;"""
 
 UPDATE_USER = "UPDATE users SET (email, image_url, name, profile_bg, is_admin) = (%s, %s, %s, %s, %s) WHERE id = %s;"
 
