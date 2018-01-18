@@ -228,6 +228,9 @@ def get_remove_league(league_id, **kwargs):
 @login_required
 def view_league(league_id, **kwargs):
     league = select_league(league_id)
+    if not league:
+        app.logger.error('League not found', extra={'league': league_id, 'user': g.user.id})
+        return {'user': g.user, 'league': None}
 
     my_submission, my_vote = None, None
     if league.current_submission_period:
