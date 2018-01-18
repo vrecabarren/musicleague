@@ -25,7 +25,7 @@ from musicleague.persistence.statements import SELECT_MEMBERSHIPS_COUNT
 from musicleague.persistence.statements import SELECT_MEMBERSHIPS_PLACED_FOR_USER
 from musicleague.persistence.statements import SELECT_ROUND
 from musicleague.persistence.statements import SELECT_ROUNDS_COUNT
-from musicleague.persistence.statements import SELECT_ROUNDS_IN_LEAGUE
+from musicleague.persistence.statements import SELECT_ROUNDS_FOR_LEAGUE
 from musicleague.persistence.statements import SELECT_ROUNDS_IN_LEAGUE_WITH_STATUS
 from musicleague.persistence.statements import SELECT_SCOREBOARD
 from musicleague.persistence.statements import SELECT_SUBMISSIONS
@@ -152,10 +152,19 @@ def select_league(league_id, exclude_properties=None):
 
             round_uri_entry_idx = defaultdict(dict)
             if 'rounds' not in exclude_properties:
-                cur.execute(SELECT_ROUNDS_IN_LEAGUE, (league_id,))
+                cur.execute(SELECT_ROUNDS_FOR_LEAGUE, (league_id,))
                 for round_tup in cur.fetchall():
-                    round_id = round_tup[0]
-                    r = select_round(round_id)
+                    r = Round(
+                        id=round_tup[0],
+                        league_id=league_id,
+                        created=round_tup[1],
+                        description=round_tup[2],
+                        name=round_tup[3],
+                        playlist_url=round_tup[4],
+                        status=round_tup[5],
+                        submissions_due=utc.localize(round_tup[6]),
+                        votes_due=utc.localize(round_tup[7]),
+                    )
                     r.league = league
                     league.submission_periods.append(r)
 

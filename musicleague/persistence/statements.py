@@ -274,6 +274,9 @@ SELECT_ROUND = """SELECT league_id, created, description, name, playlist_url, st
 
 SELECT_ROUNDS_COUNT = "SELECT COUNT(id) FROM rounds;"
 
+SELECT_ROUNDS_FOR_LEAGUE = """SELECT id, created, description, name, playlist_url, status, submissions_due, votes_due
+                                FROM rounds WHERE league_id = %s ORDER BY submissions_due, votes_due;"""
+
 SELECT_ROUNDS_IN_LEAGUE = "SELECT id FROM rounds WHERE league_id = %s ORDER BY submissions_due, votes_due;"
 
 SELECT_ROUNDS_IN_LEAGUE_WITH_STATUS = """SELECT id FROM rounds
