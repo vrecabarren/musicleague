@@ -215,7 +215,7 @@ class RoundStatus:
 
 
 class Round:
-    def __init__(self, id, league_id, created, name, description, playlist_url, submissions_due, votes_due):
+    def __init__(self, id, league_id, created, name, description, playlist_url, status, submissions_due, votes_due):
         self.id = id
         self.created = created
         self.name = name
@@ -223,6 +223,7 @@ class Round:
         self.league_id = league_id
         self.playlist_url = playlist_url
         self.scoreboard = Scoreboard()
+        self.status = status
         self.submissions = []
         self.submission_due_date = submissions_due
         self.votes = []

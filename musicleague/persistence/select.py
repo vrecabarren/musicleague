@@ -299,8 +299,9 @@ def select_round(round_id):
                 description=round_tup[2],
                 name=round_tup[3],
                 playlist_url=round_tup[4],
-                submissions_due=utc.localize(round_tup[5]),
-                votes_due=utc.localize(round_tup[6]),
+                status=round_tup[5],
+                submissions_due=utc.localize(round_tup[6]),
+                votes_due=utc.localize(round_tup[7]),
             )
 
 

@@ -42,6 +42,7 @@ def create_submission_period(
         name=name,
         description=description,
         playlist_url='',
+        status=RoundStatus.CREATED,
         submissions_due=submission_due_date,
         votes_due=vote_due_date)
     new_submission_period.league = league

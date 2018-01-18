@@ -57,7 +57,7 @@ def insert_round(round):
     with get_postgres_conn() as conn:
         with conn.cursor() as cur:
             values = (round.id, round.created, round.description, round.league.id,
-                      round.name, RoundStatus.CREATED, round.submission_due_date,
+                      round.name, round.status, round.submission_due_date,
                       round.vote_due_date)
             cur.execute(INSERT_ROUND, values)
 

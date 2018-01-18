@@ -269,7 +269,7 @@ INSERT_ROUND = """INSERT INTO rounds (id, created, description, league_id, name,
 
 SELECT_LEAGUE_ID_FOR_ROUND = "SELECT league_id FROM rounds WHERE id = %s;"
 
-SELECT_ROUND = """SELECT league_id, created, description, name, playlist_url, submissions_due, votes_due
+SELECT_ROUND = """SELECT league_id, created, description, name, playlist_url, status, submissions_due, votes_due
                     FROM rounds WHERE id = %s;"""
 
 SELECT_ROUNDS_COUNT = "SELECT COUNT(id) FROM rounds;"
