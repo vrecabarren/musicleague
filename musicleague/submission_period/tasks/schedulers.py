@@ -36,7 +36,7 @@ def schedule_round_completion(submission_period):
     except (NoSuchJobError, ValueError):
         # If job has not been previously scheduled or is no longer in queue, enqueue
         job = scheduler.enqueue_at(
-            completion_time, complete_submission_period, str(submission_period.id),
+            completion_time, complete_submission_period, submission_period.id,
             job_id=job_id)
 
         logging.info('Round completion enqueued for %s as %s',
@@ -62,7 +62,7 @@ def schedule_playlist_creation(submission_period):
     except (NoSuchJobError, ValueError):
         # If job has not been previously scheduled or is no longer in queue, enqueue
         job = scheduler.enqueue_at(
-            creation_time, complete_submission_process, str(submission_period.id),
+            creation_time, complete_submission_process, submission_period.id,
             job_id=job_id)
 
         logging.info('Playlist creation enqueued for %s as %s.',
@@ -100,7 +100,7 @@ def schedule_submission_reminders(submission_period):
     except (NoSuchJobError, ValueError):
         # If job jas not been previously scheduled, enqueue
         job = scheduler.enqueue_at(
-            notify_time, send_submission_reminders, str(submission_period.id),
+            notify_time, send_submission_reminders, submission_period.id,
             job_id=job_id)
 
         logging.info('Submission reminder scheduled for %s as %s.',
@@ -138,7 +138,7 @@ def schedule_vote_reminders(submission_period):
     except (NoSuchJobError, ValueError):
         # If job has not been previously scheduled or is no longer in queue, enqueue
         job = scheduler.enqueue_at(
-            notify_time, send_vote_reminders, str(submission_period.id),
+            notify_time, send_vote_reminders, submission_period.id,
             job_id=job_id)
 
         logging.info('Vote reminder scheduled for %s as %s.',

@@ -73,7 +73,7 @@ def remove_submission_period(submission_period_id, submission_period=None):
         submission_period = select_round(submission_period_id)
 
     if (not submission_period or
-            str(submission_period.id) != str(submission_period_id)):
+            submission_period.id != submission_period_id):
         return
 
     # Cancel all scheduled tasks

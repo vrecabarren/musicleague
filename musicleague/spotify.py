@@ -43,8 +43,8 @@ def create_playlist(submission_period):
     from musicleague.bot import get_botify
     bot_id, botify = get_botify()
 
-    playlist_name = str(submission_period.name)
-    description = str(submission_period.description or '')
+    playlist_name = submission_period.name
+    description = submission_period.description or ''
     description = description.replace('\n', ' ').replace('\r', ' ')
     tracks = submission_period.all_tracks
     shuffle(tracks)
