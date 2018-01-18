@@ -1,4 +1,3 @@
-from musicleague import app
 from musicleague.persistence import get_postgres_conn
 from musicleague.persistence.statements import DELETE_INVITED_USER
 from musicleague.persistence.statements import DELETE_LEAGUE
@@ -30,6 +29,8 @@ def delete_league(league):
 def delete_round(round):
     with get_postgres_conn() as conn:
         with conn.cursor() as cur:
+            cur.execute(DELETE_VOTES_FOR_ROUND, (round.id,))
+            cur.execute(DELETE_SUBMISSIONS_FOR_ROUND, (round.id,))
             cur.execute(DELETE_ROUND, (round.id,))
 
 
