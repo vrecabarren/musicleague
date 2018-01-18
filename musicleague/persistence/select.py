@@ -1,7 +1,6 @@
 from collections import defaultdict
 from pytz import utc
 
-from musicleague import app
 from musicleague.persistence import get_postgres_conn
 from musicleague.persistence.models import Bot
 from musicleague.persistence.models import InvitedUser
@@ -41,218 +40,197 @@ from musicleague.persistence.statements import SELECT_VOTES_COUNT
 
 
 def select_bot(bot_id):
-    try:
-        with get_postgres_conn() as conn:
-            with conn.cursor() as cur:
-                values = (bot_id,)
-                cur.execute(SELECT_BOT, values)
-                if cur.rowcount < 1:
-                    return None
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            values = (bot_id,)
+            cur.execute(SELECT_BOT, values)
+            if cur.rowcount < 1:
+                return None
 
-                access_token, refresh_token, expires_at = cur.fetchone()
-                bot = Bot(id=bot_id, access_token=access_token, refresh_token=refresh_token, expires_at=expires_at)
-                return bot
-    except Exception as e:
-        app.logger.error('Failed SELECT_BOT', exc_info=e)
+            access_token, refresh_token, expires_at = cur.fetchone()
+            bot = Bot(id=bot_id, access_token=access_token, refresh_token=refresh_token, expires_at=expires_at)
+            return bot
 
 
 def select_user(user_id):
-    try:
-        with get_postgres_conn() as conn:
-            with conn.cursor() as cur:
-                cur.execute(SELECT_USER, (user_id,))
-                if cur.rowcount < 1:
-                    return None
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(SELECT_USER, (user_id,))
+            if cur.rowcount < 1:
+                return None
 
-                email, image_url, is_admin, joined, name, profile_bg = cur.fetchone()
-                u = User(user_id, email, image_url, is_admin, joined, name, profile_bg)
+            email, image_url, is_admin, joined, name, profile_bg = cur.fetchone()
+            u = User(user_id, email, image_url, is_admin, joined, name, profile_bg)
 
-                # TODO This could be done in one fetch with a join
-                cur.execute(SELECT_USER_PREFERENCES, (user_id,))
-                if cur.rowcount > 0:
-                    (u.preferences.owner_all_users_submitted_notifications,
-                     u.preferences.owner_all_users_voted_notifications,
-                     u.preferences.owner_user_left_notifications,
-                     u.preferences.owner_user_submitted_notifications,
-                     u.preferences.owner_user_voted_notifications,
-                     u.preferences.user_added_to_league_notifications,
-                     u.preferences.user_playlist_created_notifications,
-                     u.preferences.user_removed_from_league_notifications,
-                     u.preferences.user_submit_reminder_notifications,
-                     u.preferences.user_vote_reminder_notifications) = cur.fetchone()
+            # TODO This could be done in one fetch with a join
+            cur.execute(SELECT_USER_PREFERENCES, (user_id,))
+            if cur.rowcount > 0:
+                (u.preferences.owner_all_users_submitted_notifications,
+                 u.preferences.owner_all_users_voted_notifications,
+                 u.preferences.owner_user_left_notifications,
+                 u.preferences.owner_user_submitted_notifications,
+                 u.preferences.owner_user_voted_notifications,
+                 u.preferences.user_added_to_league_notifications,
+                 u.preferences.user_playlist_created_notifications,
+                 u.preferences.user_removed_from_league_notifications,
+                 u.preferences.user_submit_reminder_notifications,
+                 u.preferences.user_vote_reminder_notifications) = cur.fetchone()
 
-                return u
-    except Exception as e:
-        app.logger.error('Failed SELECT_USER', exc_info=e)
+            return u
 
 
 def select_user_by_email(user_email):
-    try:
-        with get_postgres_conn() as conn:
-            with conn.cursor() as cur:
-                cur.execute(SELECT_USER_BY_EMAIL, (user_email,))
-                if cur.rowcount < 1:
-                    return None
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(SELECT_USER_BY_EMAIL, (user_email,))
+            if cur.rowcount < 1:
+                return None
 
-                user_id, image_url, is_admin, joined, name, profile_bg = cur.fetchone()
-                u = User(user_id, user_email, image_url, is_admin, joined, name, profile_bg)
+            user_id, image_url, is_admin, joined, name, profile_bg = cur.fetchone()
+            u = User(user_id, user_email, image_url, is_admin, joined, name, profile_bg)
 
-                # TODO This could be done in one fetch with a join
-                cur.execute(SELECT_USER_PREFERENCES, (user_id,))
-                if cur.rowcount > 0:
-                    (u.preferences.owner_all_users_submitted_notifications,
-                     u.preferences.owner_all_users_voted_notifications,
-                     u.preferences.owner_user_left_notifications,
-                     u.preferences.owner_user_submitted_notifications,
-                     u.preferences.owner_user_voted_notifications,
-                     u.preferences.user_added_to_league_notifications,
-                     u.preferences.user_playlist_created_notifications,
-                     u.preferences.user_removed_from_league_notifications,
-                     u.preferences.user_submit_reminder_notifications,
-                     u.preferences.user_vote_reminder_notifications) = cur.fetchone()
+            # TODO This could be done in one fetch with a join
+            cur.execute(SELECT_USER_PREFERENCES, (user_id,))
+            if cur.rowcount > 0:
+                (u.preferences.owner_all_users_submitted_notifications,
+                 u.preferences.owner_all_users_voted_notifications,
+                 u.preferences.owner_user_left_notifications,
+                 u.preferences.owner_user_submitted_notifications,
+                 u.preferences.owner_user_voted_notifications,
+                 u.preferences.user_added_to_league_notifications,
+                 u.preferences.user_playlist_created_notifications,
+                 u.preferences.user_removed_from_league_notifications,
+                 u.preferences.user_submit_reminder_notifications,
+                 u.preferences.user_vote_reminder_notifications) = cur.fetchone()
 
-                return u
-    except Exception as e:
-        app.logger.error('Failed SELECT_USER_BY_EMAIL', exc_info=e)
+            return u
 
 
 def select_users_count():
-    try:
-        with get_postgres_conn() as conn:
-            with conn.cursor() as cur:
-                cur.execute(SELECT_USERS_COUNT)
-                return cur.fetchone()[0]
-    except Exception as e:
-        app.logger.error('Failed SELECT_USERS_COUNT', exc_info=e)
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(SELECT_USERS_COUNT)
+            return cur.fetchone()[0]
 
 
 def select_invited_users_count():
-    try:
-        with get_postgres_conn() as conn:
-            with conn.cursor() as cur:
-                cur.execute(SELECT_INVITED_USERS_COUNT)
-                return cur.fetchone()[0]
-    except Exception as e:
-        app.logger.error('Failed SELECT_INVITED_USERS_COUNT', exc_info=e)
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(SELECT_INVITED_USERS_COUNT)
+            return cur.fetchone()[0]
 
 
 def select_league(league_id, exclude_properties=None):
     if exclude_properties is None:
         exclude_properties = []
 
-    try:
-        with get_postgres_conn() as conn:
-            with conn.cursor() as cur:
-                cur.execute(SELECT_LEAGUE, (league_id,))
-                if cur.rowcount < 1:
-                    return None
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(SELECT_LEAGUE, (league_id,))
+            if cur.rowcount < 1:
+                return None
 
-                created, name, owner_id, status = cur.fetchone()
-                league = League(id=league_id, created=created, name=name, owner_id=owner_id, status=status)
-                league.preferences = select_league_preferences(league_id)
+            created, name, owner_id, status = cur.fetchone()
+            league = League(id=league_id, created=created, name=name, owner_id=owner_id, status=status)
+            league.preferences = select_league_preferences(league_id)
 
-                user_idx = {}
-                cur.execute(SELECT_USERS_FOR_LEAGUE, (league_id,))
+            user_idx = {}
+            cur.execute(SELECT_USERS_FOR_LEAGUE, (league_id,))
+            for user_tup in cur.fetchall():
+                user_id, email, image_url, is_admin, joined, name, profile_bg = user_tup
+                user = User(user_id, email,image_url, is_admin, joined, name, profile_bg)
+                league.users.append(user)
+                user_idx[user_id] = user
+                if user_id == league.owner_id:
+                    league.owner = user
+
+            if 'invited_users' not in exclude_properties:
+                cur.execute(SELECT_INVITED_USERS_IN_LEAGUE, (league_id,))
                 for user_tup in cur.fetchall():
-                    user_id, email, image_url, is_admin, joined, name, profile_bg = user_tup
-                    user = User(user_id, email,image_url, is_admin, joined, name, profile_bg)
-                    league.users.append(user)
-                    user_idx[user_id] = user
-                    if user_id == league.owner_id:
-                        league.owner = user
+                    invite_id, email = user_tup
+                    league.invited_users.append(InvitedUser(invite_id, email, league_id))
 
-                if 'invited_users' not in exclude_properties:
-                    cur.execute(SELECT_INVITED_USERS_IN_LEAGUE, (league_id,))
-                    for user_tup in cur.fetchall():
-                        invite_id, email = user_tup
-                        league.invited_users.append(InvitedUser(invite_id, email, league_id))
+            round_uri_entry_idx = defaultdict(dict)
+            if 'rounds' not in exclude_properties:
+                cur.execute(SELECT_ROUNDS_IN_LEAGUE, (league_id,))
+                for round_tup in cur.fetchall():
+                    round_id = round_tup[0]
+                    r = select_round(round_id)
+                    r.league = league
+                    league.submission_periods.append(r)
 
-                round_uri_entry_idx = defaultdict(dict)
-                if 'rounds' not in exclude_properties:
-                    cur.execute(SELECT_ROUNDS_IN_LEAGUE, (league_id,))
-                    for round_tup in cur.fetchall():
-                        round_id = round_tup[0]
-                        r = select_round(round_id)
-                        r.league = league
-                        league.submission_periods.append(r)
+            for round in league.submission_periods:
+                if 'submissions' not in exclude_properties:
+                    cur.execute(SELECT_SUBMISSIONS, (round.id,))
+                    for submission_tup in cur.fetchall():
+                        created, user_id, tracks = submission_tup
+                        submitter = user_idx.get(user_id, None)
+                        if submitter is None:
+                            continue
 
+                        s = Submission(user=submitter, tracks=tracks.keys(), created=created)
+                        s.league = league
+                        s.submission_period = round
+                        round.submissions.append(s)
+                        for uri, ranking in tracks.iteritems():
+                            entry = ScoreboardEntry(uri=uri, submission=s, place=ranking)
+                            round_uri_entry_idx[round.id][uri] = entry
+
+                if 'votes' not in exclude_properties:
+                    cur.execute(SELECT_VOTES, (round.id,))
+                    for vote_tup in cur.fetchall():
+                        created, user_id, votes = vote_tup
+                        voter = user_idx.get(user_id, None)
+                        if voter is None:
+                            continue
+
+                        v = Vote(user=voter, votes=votes, created=created)
+                        v.league = league
+                        v.submission_period = round
+                        round.votes.append(v)
+                        for uri, weight in votes.iteritems():
+                            # TODO Deal with case where submitter was removed from league
+                            if round.id not in round_uri_entry_idx:
+                                continue
+
+                            if uri not in round_uri_entry_idx[round.id]:
+                                continue
+
+                            round_uri_entry_idx[round.id][uri].votes.append(v)
+
+            if 'scoreboard' not in exclude_properties:
+                user_entry_idx = defaultdict(list)
                 for round in league.submission_periods:
-                    if 'submissions' not in exclude_properties:
-                        cur.execute(SELECT_SUBMISSIONS, (round.id,))
-                        for submission_tup in cur.fetchall():
-                            created, user_id, tracks = submission_tup
-                            submitter = user_idx.get(user_id, None)
-                            if submitter is None:
-                                continue
+                    entries_by_uri = round_uri_entry_idx[round.id]
+                    for entry in entries_by_uri.values():
+                        round.scoreboard.add_entry(entry, entry.place)
+                        if round.is_complete:
+                            user_entry_idx[entry.submission.user.id].append(entry)
 
-                            s = Submission(user=submitter, tracks=tracks.keys(), created=created)
-                            s.league = league
-                            s.submission_period = round
-                            round.submissions.append(s)
-                            for uri, ranking in tracks.iteritems():
-                                entry = ScoreboardEntry(uri=uri, submission=s, place=ranking)
-                                round_uri_entry_idx[round.id][uri] = entry
+                if len(user_entry_idx):
+                    cur.execute(SELECT_SCOREBOARD, (league_id,))
+                    for scoreboard_tup in cur.fetchall():
+                        user_id, rank = scoreboard_tup
+                        u = user_idx.get(user_id, None)
+                        le = RankingEntry(league=league, user=u, place=rank)
+                        le.entries = user_entry_idx[user_id]
+                        league.scoreboard.add_entry(le, rank)
 
-                    if 'votes' not in exclude_properties:
-                        cur.execute(SELECT_VOTES, (round.id,))
-                        for vote_tup in cur.fetchall():
-                            created, user_id, votes = vote_tup
-                            voter = user_idx.get(user_id, None)
-                            if voter is None:
-                                continue
-
-                            v = Vote(user=voter, votes=votes, created=created)
-                            v.league = league
-                            v.submission_period = round
-                            round.votes.append(v)
-                            for uri, weight in votes.iteritems():
-                                # TODO Deal with case where submitter was removed from league
-                                if round.id not in round_uri_entry_idx:
-                                    continue
-
-                                if uri not in round_uri_entry_idx[round.id]:
-                                    continue
-
-                                round_uri_entry_idx[round.id][uri].votes.append(v)
-
-                if 'scoreboard' not in exclude_properties:
-                    user_entry_idx = defaultdict(list)
-                    for round in league.submission_periods:
-                        entries_by_uri = round_uri_entry_idx[round.id]
-                        for entry in entries_by_uri.values():
-                            round.scoreboard.add_entry(entry, entry.place)
-                            if round.is_complete:
-                                user_entry_idx[entry.submission.user.id].append(entry)
-
-                    if len(user_entry_idx):
-                        cur.execute(SELECT_SCOREBOARD, (league_id,))
-                        for scoreboard_tup in cur.fetchall():
-                            user_id, rank = scoreboard_tup
-                            u = user_idx.get(user_id, None)
-                            le = RankingEntry(league=league, user=u, place=rank)
-                            le.entries = user_entry_idx[user_id]
-                            league.scoreboard.add_entry(le, rank)
-
-                return league
-    except Exception as e:
-        app.logger.error('Failed SELECT_LEAGUE', exc_info=e)
+            return league
 
 
 def select_league_preferences(league_id):
-    try:
-        with get_postgres_conn() as conn:
-            with conn.cursor() as cur:
-                cur.execute(SELECT_LEAGUE_PREFERENCES, (league_id,))
-                if cur.rowcount < 1:
-                    return None
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(SELECT_LEAGUE_PREFERENCES, (league_id,))
+            if cur.rowcount < 1:
+                return None
 
-                lp = LeaguePreferences()
-                (lp.track_count, lp.point_bank_size, lp.max_points_per_song,
-                 lp.downvote_bank_size, lp.max_downvotes_per_song,
-                 lp.submission_reminder_time, lp.vote_reminder_time) = cur.fetchone()
-                return lp
-    except Exception as e:
-        app.logger.error('Failed SELECT_LEAGUE_PREFERENCES', exc_info=e)
+            lp = LeaguePreferences()
+            (lp.track_count, lp.point_bank_size, lp.max_points_per_song,
+             lp.downvote_bank_size, lp.max_downvotes_per_song,
+             lp.submission_reminder_time, lp.vote_reminder_time) = cur.fetchone()
+            return lp
 
 
 def select_leagues_for_user(user_id, exclude_properties=None):
@@ -260,133 +238,102 @@ def select_leagues_for_user(user_id, exclude_properties=None):
         exclude_properties = []
 
     leagues = []
-    try:
-        with get_postgres_conn() as conn:
-            with conn.cursor() as cur:
-                cur.execute(SELECT_LEAGUES_FOR_USER, (user_id,))
-                for league_tup in cur.fetchall():
-                    league_id, created, name, owner_id, status = league_tup
-                    league = League(id=league_id, created=created, name=name, owner_id=owner_id, status=status)
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(SELECT_LEAGUES_FOR_USER, (user_id,))
+            for league_tup in cur.fetchall():
+                league_id, created, name, owner_id, status = league_tup
+                league = League(id=league_id, created=created, name=name, owner_id=owner_id, status=status)
 
-                    cur.execute(SELECT_USERS_FOR_LEAGUE, (league_id,))
-                    for user_tup in cur.fetchall():
-                        user_id, email, image_url, is_admin, joined, name, profile_bg = user_tup
-                        user = User(user_id, email,image_url, is_admin, joined, name, profile_bg)
-                        league.users.append(user)
-                        if user_id == league.owner_id:
-                            league.owner = user
+                cur.execute(SELECT_USERS_FOR_LEAGUE, (league_id,))
+                for user_tup in cur.fetchall():
+                    user_id, email, image_url, is_admin, joined, name, profile_bg = user_tup
+                    user = User(user_id, email,image_url, is_admin, joined, name, profile_bg)
+                    league.users.append(user)
+                    if user_id == league.owner_id:
+                        league.owner = user
 
-                    leagues.append(league)
-
-    except Exception as e:
-        app.logger.error('Failed SELECT_MEMBERSHIPS_FOR_USER', exc_info=e)
+                leagues.append(league)
 
     return leagues
 
 
 def select_leagues_count():
-    try:
-        with get_postgres_conn() as conn:
-            with conn.cursor() as cur:
-                cur.execute(SELECT_LEAGUES_COUNT)
-                return cur.fetchone()[0]
-    except Exception as e:
-        app.logger.error('Failed SELECT_LEAGUES_COUNT', exc_info=e)
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(SELECT_LEAGUES_COUNT)
+            return cur.fetchone()[0]
 
 
 def select_memberships_count(user_id):
-    try:
-        with get_postgres_conn() as conn:
-            with conn.cursor() as cur:
-                cur.execute(SELECT_MEMBERSHIPS_COUNT, (user_id,))
-                return cur.fetchone()[0]
-    except Exception as e:
-        app.logger.error('Failed SELECT_MEMBERSHIPS_COUNT', exc_info=e)
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(SELECT_MEMBERSHIPS_COUNT, (user_id,))
+            return cur.fetchone()[0]
 
 
 def select_memberships_placed(user_id):
     placed = defaultdict(int)
-    try:
-        with get_postgres_conn() as conn:
-            with conn.cursor() as cur:
-                cur.execute(SELECT_MEMBERSHIPS_PLACED_FOR_USER, (user_id,))
-                for placed_tup in cur.fetchall():
-                    rank, count = placed_tup
-                    placed[rank] = count
-    except Exception as e:
-        app.logger.error('Failed SELECT_MEMBERSHIPS_PLACED_FOR_USER', exc_info=e)
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(SELECT_MEMBERSHIPS_PLACED_FOR_USER, (user_id,))
+            for placed_tup in cur.fetchall():
+                rank, count = placed_tup
+                placed[rank] = count
 
     return placed
 
 
 def select_round(round_id):
-    try:
-        with get_postgres_conn() as conn:
-            with conn.cursor() as cur:
-                cur.execute(SELECT_ROUND, (round_id,))
-                round_tup = cur.fetchone()
-                r = Round(
-                    id=round_id,
-                    league_id=round_tup[0],
-                    created=round_tup[1],
-                    description=round_tup[2],
-                    name=round_tup[3],
-                    playlist_url=round_tup[4],
-                    submissions_due=utc.localize(round_tup[5]),
-                    votes_due=utc.localize(round_tup[6]),
-                )
-                return r
-    except Exception as e:
-        app.logger.error('Failed SELECT_ROUND', exc_info=e)
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(SELECT_ROUND, (round_id,))
+            if cur.rowcount < 1:
+                return None
+
+            round_tup = cur.fetchone()
+            return Round(
+                id=round_id,
+                league_id=round_tup[0],
+                created=round_tup[1],
+                description=round_tup[2],
+                name=round_tup[3],
+                playlist_url=round_tup[4],
+                submissions_due=utc.localize(round_tup[5]),
+                votes_due=utc.localize(round_tup[6]),
+            )
 
 
 def select_league_id_for_round(round_id):
-    try:
-        with get_postgres_conn() as conn:
-            with conn.cursor() as cur:
-                cur.execute(SELECT_LEAGUE_ID_FOR_ROUND, (round_id,))
-                return cur.fetchone()[0]
-    except Exception as e:
-        app.logger.error('Failed SELECT_LEAGUE_ID_FOR_ROUND', exc_info=e)
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(SELECT_LEAGUE_ID_FOR_ROUND, (round_id,))
+            return cur.fetchone()[0]
 
 
 def select_rounds_count():
-    try:
-        with get_postgres_conn() as conn:
-            with conn.cursor() as cur:
-                cur.execute(SELECT_ROUNDS_COUNT)
-                return cur.fetchone()[0]
-    except Exception as e:
-        app.logger.error('Failed SELECT_ROUNDS_COUNT', exc_info=e)
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(SELECT_ROUNDS_COUNT)
+            return cur.fetchone()[0]
 
 
 def select_rounds_incomplete_count(league_id):
-    try:
-        with get_postgres_conn() as conn:
-            with conn.cursor() as cur:
-                cur.execute(SELECT_ROUNDS_IN_LEAGUE_WITH_STATUS, (league_id, RoundStatus.CREATED))
-                return cur.rowcount
-    except Exception as e:
-        app.logger.error('Failed SELECT_ROUNDS_IN_LEAGUE_WITH_STATUS', exc_info=e)
-
-    return -1
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(SELECT_ROUNDS_IN_LEAGUE_WITH_STATUS, (league_id, RoundStatus.CREATED))
+            return cur.rowcount
 
 
 def select_submissions_count():
-    try:
-        with get_postgres_conn() as conn:
-            with conn.cursor() as cur:
-                cur.execute(SELECT_SUBMISSIONS_COUNT)
-                return cur.fetchone()[0]
-    except Exception as e:
-        app.logger.error('Failed SELECT_SUBMISSIONS_COUNT', exc_info=e)
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(SELECT_SUBMISSIONS_COUNT)
+            return cur.fetchone()[0]
 
 
 def select_votes_count():
-    try:
-        with get_postgres_conn() as conn:
-            with conn.cursor() as cur:
-                cur.execute(SELECT_VOTES_COUNT)
-                return cur.fetchone()[0]
-    except Exception as e:
-        app.logger.error('Failed SELECT_VOTES_COUNT', exc_info=e)
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(SELECT_VOTES_COUNT)
+            return cur.fetchone()[0]
