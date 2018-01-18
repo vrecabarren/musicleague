@@ -89,8 +89,6 @@ SELECT_USER_BY_EMAIL = "SELECT id, image_url, is_admin, joined, name, profile_bg
 
 SELECT_USERS_COUNT = "SELECT COUNT(id) FROM users;"
 
-SELECT_USERS_IN_LEAGUE = "SELECT user_id FROM memberships WHERE league_id = %s ORDER BY created;"
-
 SELECT_USERS_FOR_LEAGUE = """SELECT users.id, users.email, users.image_url, users.is_admin, users.joined, users.name, users.profile_bg
                                 FROM users INNER JOIN memberships ON memberships.user_id = users.id
                                 WHERE memberships.league_id = %s;"""
