@@ -140,6 +140,7 @@ def select_league(league_id, exclude_properties=None):
             for user_tup in cur.fetchall():
                 user_id, email, image_url, is_admin, joined, name, profile_bg = user_tup
                 user = User(user_id, email,image_url, is_admin, joined, name, profile_bg)
+                user.preferences = select_user_preferences(user_id)
                 league.users.append(user)
                 user_idx[user_id] = user
                 if user_id == league.owner_id:
