@@ -1,6 +1,5 @@
 from musicleague.persistence import get_postgres_conn
 from musicleague.persistence.models import LeagueStatus
-from musicleague.persistence.models import RoundStatus
 from musicleague.persistence.statements import DELETE_VOTES
 from musicleague.persistence.statements import DELETE_VOTES_FOR_URIS
 from musicleague.persistence.statements import INSERT_INVITED_USER

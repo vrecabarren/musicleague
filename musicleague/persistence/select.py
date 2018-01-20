@@ -12,6 +12,7 @@ from musicleague.persistence.models import RoundStatus
 from musicleague.persistence.models import ScoreboardEntry
 from musicleague.persistence.models import Submission
 from musicleague.persistence.models import User
+from musicleague.persistence.models import UserPreferences
 from musicleague.persistence.models import Vote
 from musicleague.persistence.statements import SELECT_BOT
 from musicleague.persistence.statements import SELECT_INVITED_USERS_COUNT
@@ -63,18 +64,7 @@ def select_user(user_id):
             u = User(user_id, email, image_url, is_admin, joined, name, profile_bg)
 
             # TODO This could be done in one fetch with a join
-            cur.execute(SELECT_USER_PREFERENCES, (user_id,))
-            if cur.rowcount > 0:
-                (u.preferences.owner_all_users_submitted_notifications,
-                 u.preferences.owner_all_users_voted_notifications,
-                 u.preferences.owner_user_left_notifications,
-                 u.preferences.owner_user_submitted_notifications,
-                 u.preferences.owner_user_voted_notifications,
-                 u.preferences.user_added_to_league_notifications,
-                 u.preferences.user_playlist_created_notifications,
-                 u.preferences.user_removed_from_league_notifications,
-                 u.preferences.user_submit_reminder_notifications,
-                 u.preferences.user_vote_reminder_notifications) = cur.fetchone()
+            u.preferences = user_id
 
             return u
 
@@ -90,20 +80,31 @@ def select_user_by_email(user_email):
             u = User(user_id, user_email, image_url, is_admin, joined, name, profile_bg)
 
             # TODO This could be done in one fetch with a join
-            cur.execute(SELECT_USER_PREFERENCES, (user_id,))
-            if cur.rowcount > 0:
-                (u.preferences.owner_all_users_submitted_notifications,
-                 u.preferences.owner_all_users_voted_notifications,
-                 u.preferences.owner_user_left_notifications,
-                 u.preferences.owner_user_submitted_notifications,
-                 u.preferences.owner_user_voted_notifications,
-                 u.preferences.user_added_to_league_notifications,
-                 u.preferences.user_playlist_created_notifications,
-                 u.preferences.user_removed_from_league_notifications,
-                 u.preferences.user_submit_reminder_notifications,
-                 u.preferences.user_vote_reminder_notifications) = cur.fetchone()
+            u.preferences = select_user_preferences(user_id)
 
             return u
+
+
+def select_user_preferences(user_id):
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(SELECT_USER_PREFERENCES, (user_id,))
+            up = UserPreferences()
+            if cur.rowcount < 1:
+                return up
+
+            (up.owner_all_users_submitted_notifications,
+             up.owner_all_users_voted_notifications,
+             up.owner_user_left_notifications,
+             up.owner_user_submitted_notifications,
+             up.owner_user_voted_notifications,
+             up.user_added_to_league_notifications,
+             up.user_playlist_created_notifications,
+             up.user_removed_from_league_notifications,
+             up.user_submit_reminder_notifications,
+             up.user_vote_reminder_notifications) = cur.fetchone()
+
+            return up
 
 
 def select_users_count():
