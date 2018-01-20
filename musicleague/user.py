@@ -33,14 +33,16 @@ def create_user_from_spotify_user(spotify_user):
     user_id = spotify_user.get('id')
     user_email = spotify_user.get('email')
     user_display_name = spotify_user.get('display_name')
+    if user_display_name is None:
+        user_display_name = user_id
+
     user_images = spotify_user.get('images')
     user_image_url = ''
     if user_images:
         user_image_url = user_images[0].get('url', user_image_url)
 
     return create_user(
-        id=user_id, email=user_email, name=(user_display_name or user_id),
-        image_url=user_image_url)
+        id=user_id, email=user_email, name=user_display_name, image_url=user_image_url)
 
 
 def update_user_from_spotify_user(user, spotify_user):

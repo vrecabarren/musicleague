@@ -83,7 +83,14 @@ def save_profile_settings():
 def sync_profile_settings():
     spotify_user = g.spotify.current_user()
     g.user.email = spotify_user.get('email')
-    g.user.name = spotify_user.get('display_name')
+
+    # Display name will be None if not linked to social media
+    display_name = spotify_user.get('display_name')
+    if display_name is None:
+        display_name = spotify_user.get('id')
+    g.user.name = display_name
+
+    # There will be no images if not linked to social media
     user_images = spotify_user.get('images')
     user_image_url = ''
     if user_images:
