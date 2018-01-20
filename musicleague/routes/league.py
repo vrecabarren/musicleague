@@ -1,26 +1,25 @@
 from datetime import datetime
 from datetime import timedelta
+import httplib
 import json
 from pytz import utc
 
 from flask import g
 from flask import redirect
+from flask import render_template
 from flask import request
 from flask import url_for
 
 from musicleague import app
 from musicleague.league import add_user
 from musicleague.league import create_league
-from musicleague.league import get_league
 from musicleague.league import remove_league
 from musicleague.league import remove_user
-from musicleague.notify.flash import flash_error
 from musicleague.persistence.delete import delete_invited_user
 from musicleague.persistence.insert import insert_membership
 from musicleague.persistence.select import select_league
 from musicleague.persistence.select import select_round
 from musicleague.persistence.select import select_user
-from musicleague.persistence.update import update_league
 from musicleague.persistence.update import upsert_league_preferences
 from musicleague.routes.decorators import admin_required
 from musicleague.routes.decorators import login_required
@@ -224,13 +223,12 @@ def get_remove_league(league_id, **kwargs):
 
 
 @app.route(VIEW_LEAGUE_URL, methods=['GET'])
-@templated('league/view/page.html')
 @login_required
-def view_league(league_id, **kwargs):
+def view_league(league_id):
     league = select_league(league_id)
     if not league:
         app.logger.error('League not found', extra={'league': league_id, 'user': g.user.id})
-        return {'user': g.user, 'league': None}
+        return 'League not found', httplib.NOT_FOUND
 
     my_submission, my_vote = None, None
     if league.current_submission_period:
@@ -247,14 +245,10 @@ def view_league(league_id, **kwargs):
         next_submission_due_date = datetime.utcnow() + timedelta(days=5)
         next_vote_due_date = datetime.utcnow() + timedelta(days=7)
 
-    return {
-        'user': g.user,
-        'league': league,
-        'my_submission': my_submission,
-        'my_vote': my_vote,
-        'next_submission_due_date': next_submission_due_date,
-        'next_vote_due_date': next_vote_due_date
-    }
+    return render_template(
+        'league/view/page.html',
+        user=g.user, league=league, my_submission=my_submission, my_vote=my_vote,
+        next_submission_due_date=next_submission_due_date, next_vote_due_date=next_vote_due_date)
 
 
 @app.route(VIEW_LEAGUE_URL + 'score/')
