@@ -18,7 +18,6 @@ from musicleague.routes.decorators import templated
 from musicleague.scoring.league import calculate_league_scoreboard
 from musicleague.scoring.round import calculate_round_scoreboard
 from musicleague.submission_period import create_submission_period
-from musicleague.submission_period import get_submission_period
 from musicleague.submission_period import remove_submission_period
 from musicleague.submission_period import update_submission_period
 
@@ -126,7 +125,10 @@ def view_submission_period(league_id, submission_period_id):
     tracks_by_uri = {track['uri']: track for track in tracks if track}
 
     # Make sure this round has an up-to-date scoreboard
+    ctx = {'user': g.user.id, 'league': league_id, 'round': submission_period_id}
+    app.logger.info('User viewing round', extra=ctx)
     if not submission_period.scoreboard or not submission_period.is_complete:
+        app.logger.info('Updating round scoreboard for user view', extra=ctx)
         submission_period = calculate_round_scoreboard(submission_period)
 
     return {
