@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 from pytz import utc
 
 from flask import g
@@ -148,4 +149,6 @@ def score_round(league_id, submission_period_id):
                               if sp.id == submission_period_id), None)
     submission_period = calculate_round_scoreboard(submission_period)
     calculate_league_scoreboard(league)
-    return 'Updated', 200
+    ret = {rank: [entry.submission.user.id for entry in entries]
+           for rank, entries in submission_period.scoreboard.rankings.iteritems()}
+    return json.dumps(ret), 200
