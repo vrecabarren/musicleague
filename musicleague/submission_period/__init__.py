@@ -1,5 +1,6 @@
 from datetime import datetime
 from datetime import timedelta
+from pytz import utc
 
 from bson import ObjectId
 
@@ -105,10 +106,8 @@ def update_submission_period(submission_period_id, name, description,
     submission_period.submission_due_date = submission_due_date
     submission_period.vote_due_date = vote_due_date
 
-    if submission_period.is_complete:
+    if vote_due_date < utc.localize(datetime.utcnow()):
         submission_period.status = RoundStatus.COMPLETE
-    else:
-        submission_period.status = RoundStatus.CREATED
 
     # Reschedule playlist creation and submission/vote reminders if needed
     schedule_playlist_creation(submission_period)
