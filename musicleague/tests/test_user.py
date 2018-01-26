@@ -2,8 +2,7 @@ from datetime import datetime
 from unittest import TestCase
 
 from musicleague.errors import UserExistsError
-from musicleague.models import User
-from musicleague.tests.utils.data import clean_data
+from musicleague.persistence.models import User
 from musicleague.user import create_or_update_user
 from musicleague.user import create_user
 from musicleague.user import get_user
@@ -18,12 +17,9 @@ class CreateUserTestCase(TestCase):
         self.email = 'test_user@test.com'
         self.image_url = 'http://test.com/test_img.jpg'
 
-    def tearDown(self):
-        clean_data()
-
     def test_create_user_existing_id(self):
         User(id=self.id, name=self.name, email=self.email,
-             image_url=self.image_url, joined=datetime.utcnow()).save()
+             image_url=self.image_url, joined=datetime.utcnow())
 
         self.assertRaises(
             UserExistsError,
@@ -52,9 +48,6 @@ class CreateOrUpdateUserTestCase(TestCase):
         self.email = 'test_user@test.com'
         self.image_url = 'http://test.com/test_img.jpg'
 
-    def tearDown(self):
-        clean_data()
-
     def test_none_existing(self):
         self.assertIsNone(get_user(self.id))
 
@@ -70,7 +63,7 @@ class CreateOrUpdateUserTestCase(TestCase):
 
     def test_existing(self):
         User(id=self.id, name=self.name, email=self.email,
-             image_url=self.image_url, joined=datetime.utcnow()).save()
+             image_url=self.image_url, joined=datetime.utcnow())
 
         updated = create_or_update_user(
             self.id, 'New Name', 'new_email@test.com', self.image_url)
@@ -98,13 +91,11 @@ class GetUserTestCase(TestCase):
         clean_data()
 
     def test_none_existing(self):
-        self.assertRaises(User.DoesNotExist, User.objects.get, id=self.id)
         self.assertIsNone(get_user(self.id))
 
     def test_existing(self):
         User(id=self.id, name=self.name, email=self.email,
-             image_url=self.image_url, joined=datetime.utcnow()).save()
-        self.assertIsNotNone(User.objects.get(id=self.id))
+             image_url=self.image_url, joined=datetime.utcnow())
 
         user = get_user(self.id)
         self.assertIsNotNone(user)
@@ -121,17 +112,12 @@ class GetUserByEmailTestCase(TestCase):
         self.email = 'test_user@test.com'
         self.image_url = 'http://test.com/test_img.jpg'
 
-    def tearDown(self):
-        clean_data()
-
     def test_none_existing(self):
-        self.assertRaises(User.DoesNotExist, User.objects.get, id=self.id)
         self.assertIsNone(get_user_by_email(self.email))
 
     def test_existing(self):
         User(id=self.id, name=self.name, email=self.email,
-             image_url=self.image_url, joined=datetime.utcnow()).save()
-        self.assertIsNotNone(User.objects.get(id=self.id))
+             image_url=self.image_url, joined=datetime.utcnow())
 
         user = get_user_by_email(self.email)
         self.assertIsNotNone(user)

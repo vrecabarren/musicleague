@@ -357,3 +357,11 @@ class Vote:
         self.league = None
         self.submission_period = None
         self.count = 1
+
+
+# NOTE Not persisted or used
+class MessengerContext:
+    def __init__(self, id, user, status=0):
+        self.id = id
+        self.user = user
+        self.status = status
