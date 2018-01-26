@@ -32,14 +32,6 @@ def create_vote(votes, submission_period, user, league):
     return new_vote
 
 
-def get_vote(vote_id):
-    try:
-        from musicleague.models import Vote as MVote
-        return MVote.objects(id=vote_id).get()
-    except MVote.DoesNotExist:
-        return None
-
-
 def get_my_vote(user, submission_period):
     return next(
         (v for v in submission_period.votes

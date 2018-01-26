@@ -36,15 +36,6 @@ def create_submission(tracks, submission_period, user, league, persist=True):
     return new_submission
 
 
-def get_submission(submission_id):
-    """ Return submission if submission_id found; otherwise, return None. """
-    try:
-        from musicleague.models import Submission as MSubmission
-        return MSubmission.objects(id=submission_id).get()
-    except MSubmission.DoesNotExist:
-        return None
-
-
 def get_my_submission(user, submission_period):
     return next(
         (s for s in submission_period.submissions

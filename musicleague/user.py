@@ -3,8 +3,7 @@ from random import choice
 
 from musicleague.errors import UserDoesNotExistError
 from musicleague.errors import UserExistsError
-from musicleague.models import User
-from musicleague.models import UserPreferences
+from musicleague.persistence.models import User
 from musicleague.persistence.select import select_user
 from musicleague.persistence.select import select_user_by_email
 from musicleague.persistence.update import upsert_user
@@ -65,9 +64,8 @@ def create_user(id, name, email, image_url):
     profile_background = choice(PROFILE_BACKGROUNDS)
 
     new_user = User(
-        id=id, name=name, email=email, joined=datetime.utcnow(),
-        image_url=image_url, profile_background=profile_background,
-        preferences=UserPreferences())
+        id=id, email=email, image_url=image_url, is_admin=False,
+        joined=datetime.utcnow(), name=name, profile_bg=profile_background)
 
     upsert_user(new_user)
 

@@ -15,8 +15,7 @@ submit, listen, and vote!
 ## Using this Repo
 Music League relies on multiple other open source projects:
 - [Flask](http://flask.pocoo.org/)
-- [HaikunatorPY](https://github.com/Atrox/haikunatorpy)
-- [Mongo](https://www.mongodb.org/) (via [MongoEngine](http://mongoengine.org/))
+- [PostgreSQL](https://www.postgresql.org) (via [Psycopg2](http://initd.org/psycopg/docs/))
 - [Spotipy](http://spotipy.readthedocs.io/en/latest/)
 
 I recommend using [virtualenv](http://www.virtualenv.org/en/latest/) along with
@@ -25,7 +24,7 @@ the smoothest experience.
 
 ### Prerequisites
 There are two prerequisites to install before running:
-- [MongoDB](https://docs.mongodb.com/manual/installation/)
+- [PostgreSQL](https://www.postgresql.org/docs/)
 - [Redis](https://redis.io/topics/quickstart)
 
 ### Make Utils

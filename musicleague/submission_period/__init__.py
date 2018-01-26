@@ -5,7 +5,6 @@ from pytz import utc
 from bson import ObjectId
 
 from musicleague import app
-from musicleague.models import SubmissionPeriod
 from musicleague.persistence.delete import delete_round
 from musicleague.persistence.insert import insert_round
 from musicleague.persistence.models import LeagueStatus
@@ -60,14 +59,6 @@ def create_submission_period(
     app.logger.info('Submission period created: %s', new_submission_period.id)
 
     return new_submission_period
-
-
-def get_submission_period(submission_period_id):
-    try:
-        return SubmissionPeriod.objects().get(id=submission_period_id)
-
-    except SubmissionPeriod.DoesNotExist:
-        return None
 
 
 def remove_submission_period(submission_period_id, submission_period=None):

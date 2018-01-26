@@ -83,25 +83,6 @@ def remove_league(league_id, league=None):
     return league
 
 
-def get_league(league_id):
-    from musicleague.models import League as MLeague
-    try:
-        league = MLeague.objects.get(id=league_id)
-        return league
-    except MLeague.DoesNotExist:
-        return None
-
-
-def get_leagues_for_user(user):
-    # TODO Page results for user profile page
-    try:
-        leagues = League.objects(users=user).all().order_by('-created')
-        leagues = sorted(leagues, key=LeagueSortKey)
-        return leagues
-    except League.DoesNotExist:
-        return []
-
-
 class LeagueSortKey(EntrySortKey):
 
     def _ordered_cmp(self, other):
