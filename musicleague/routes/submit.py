@@ -76,7 +76,7 @@ def submit(league_id, submission_period_id):
                                  request.form)
             return 'There was an error processing your submission', 500
 
-        if None in tracks:
+        if len(filter(None, tracks)) != len(tracks):
             return redirect(request.referrer)
 
         # Don't allow user to submit duplicate tracks
