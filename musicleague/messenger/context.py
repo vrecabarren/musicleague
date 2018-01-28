@@ -1,4 +1,4 @@
-from musicleague.models import MessengerContext
+from musicleague.persistence.models import MessengerContext
 
 
 STATUS_DEFAULT = 0
@@ -7,7 +7,7 @@ STATUS_LINK_ACCOUNT = 1
 
 def create_context(messenger_id, status=STATUS_DEFAULT, user=None):
     context = MessengerContext(id=messenger_id, status=status, user=user)
-    context.save()
+    # TODO Persist
     return context
 
 
@@ -18,12 +18,10 @@ def update_context_status(messenger_id, status, context=None):
             return
 
     context.status = status
-    context.save()
+    # TODO Persist
     return context
 
 
 def get_context(messenger_id):
-    try:
-        return MessengerContext.objects(id=messenger_id).get()
-    except MessengerContext.DoesNotExist:
-        return None
+    # TODO Persist
+    return None

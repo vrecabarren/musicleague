@@ -11,7 +11,7 @@ from spotipy import Spotify
 from musicleague import app
 from musicleague.bot import create_or_update_bot
 from musicleague.bot import is_bot
-from musicleague.notify.flash import flash_info
+from musicleague.persistence.select import select_user
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 from musicleague.spotify import get_spotify_oauth
@@ -28,20 +28,13 @@ USER_ID_URL = '/id/'
 
 @app.before_request
 def before_request():
+    if request.endpoint == 'logout':
+        return
+
     current_user = session['current_user'] if 'current_user' in session else ''
     g.user = None
     if current_user:
-        from musicleague.persistence.select import select_user
-        g.user = get_user(current_user)
-        p_user = select_user(current_user)
-        # Lazily migrate users from mongo to postgres
-        if not p_user:
-            from musicleague.persistence.insert import insert_user
-            insert_user(g.user)
-            p_user = select_user(current_user)
-
-        if request.args.get('pg') == '1':
-            g.user = p_user
+        g.user = select_user(current_user)
 
     access_token = session['access_token'] if 'access_token' in session else ''
     g.spotify = None
@@ -145,7 +138,6 @@ def add_bot():
 @login_required
 def logout():
     _clear_session()
-    flash_info("You have been logged out of Music League.")
     return redirect(url_for("hello"))
 
 

@@ -197,6 +197,10 @@ def _send_email(to, subject, text, html, additional_data=None):
     request_url = '{}/messages'.format(api_base_url)
     sender = get_setting(NOTIFICATION_SENDER)
 
+    if not (api_key and api_base_url and sender):
+        app.logger.warning('Missing email provider configuration, will not send')
+        return
+
     data = {
         "from": sender,
         "to": to,

@@ -1,8 +1,8 @@
 import json
 
 from musicleague import app
-from musicleague.league import get_leagues_for_user
-from musicleague.user import get_user
+from musicleague.persistence.select import select_leagues_for_user
+from musicleague.persistence.select import select_user
 
 
 USER_URL = "/api/v1/user/<user_id>/"
@@ -11,7 +11,7 @@ USER_URL = "/api/v1/user/<user_id>/"
 @app.route(USER_URL, methods=['GET'])
 def get_user(user_id):
     try:
-        user = get_user(user_id)
+        user = select_user(user_id)
         if not user:
             return json.dumps(None)
 
@@ -26,7 +26,7 @@ def get_user(user_id):
             'id': user.id,
             'name': user.name,
         } for user in league.users]
-    } for league in get_leagues_for_user(user)]
+    } for league in select_leagues_for_user(user)]
 
     return json.dumps({
         'id': user.id,

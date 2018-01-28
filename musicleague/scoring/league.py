@@ -2,8 +2,8 @@ from collections import Counter
 
 from itertools import groupby
 
-from musicleague.models import RankingEntry
-from musicleague.models import Scoreboard
+from musicleague.persistence.models import RankingEntry
+from musicleague.persistence.models import Scoreboard
 from musicleague.scoring import EntrySortKey
 from musicleague.scoring.round import calculate_round_scoreboard
 
@@ -27,8 +27,7 @@ def calculate_league_scoreboard(league):
             continue
 
         # Ensure each round has had its scoreboard calculated
-        if not round.scoreboard:
-            round = calculate_round_scoreboard(round)
+        round = calculate_round_scoreboard(round)
 
         for entry_list in round.scoreboard.rankings.values():
             for entry in entry_list:
@@ -46,11 +45,10 @@ def calculate_league_scoreboard(league):
     from musicleague.persistence.update import update_membership_rank
     rankings = rank_entries(entries.values())
     for rank, entries in rankings.iteritems():
-        league.scoreboard._rankings[str(rank)] = entries
+        league.scoreboard._rankings[rank] = entries
         for entry in entries:
             update_membership_rank(entry.league, entry.user, rank)
 
-    league.save()
     return league
 
 

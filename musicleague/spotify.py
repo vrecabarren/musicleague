@@ -12,11 +12,15 @@ from musicleague.environment.variables import SPOTIFY_CLIENT_ID
 from musicleague.environment.variables import SPOTIFY_CLIENT_SECRET
 from musicleague.environment.variables import SPOTIFY_REDIRECT_URI
 from musicleague.notify import user_playlist_created_notification
+from musicleague.persistence.update import upsert_round
 
 
 OAUTH_SCOPES = 'user-read-email playlist-modify-public'
 BOT_SCOPES = 'playlist-modify-public playlist-modify-private'
 
+URI_REGEX = 'spotify:user:.+:playlist:(?P<id>[A-Za-z0-9]{22})'
+URL_REGEX = ('(?:http|https):\/\/(?:open|play)\.spotify\.com\/user\/.+\/playlist\/'
+                 '(?P<id>[A-Za-z0-9]{22})')
 
 def get_spotify_oauth(bot=False):
     client_id = get_setting(SPOTIFY_CLIENT_ID)
@@ -39,8 +43,8 @@ def create_playlist(submission_period):
     from musicleague.bot import get_botify
     bot_id, botify = get_botify()
 
-    playlist_name = str(submission_period.name)
-    description = str(submission_period.description or '')
+    playlist_name = submission_period.name
+    description = submission_period.description or ''
     description = description.replace('\n', ' ').replace('\r', ' ')
     tracks = submission_period.all_tracks
     shuffle(tracks)
@@ -63,18 +67,11 @@ def create_playlist(submission_period):
         app.logger.error("Error while adding tracks: %s", json.dumps(tracks))
         raise
 
-    external_urls = playlist.get('external_urls')
-    submission_period.playlist_id = playlist.get('id')
-    submission_period.playlist_url = external_urls.get('spotify')
-    submission_period.save()
-
-    user_playlist_created_notification(submission_period)
-
     return playlist
 
 
 def update_playlist(submission_period):
-    if not submission_period or not submission_period.playlist_id:
+    if not submission_period or not submission_period.playlist_url:
         return
 
     if not is_deployed():
@@ -90,9 +87,9 @@ def update_playlist(submission_period):
     # TODO Reference submission period's url so we don't have to return this
     try:
         app.logger.info("Replacing existing tracks with: %s", tracks)
-        playlist = botify.user_playlist(bot_id, submission_period.playlist_id)
-        botify.user_playlist_replace_tracks(
-            bot_id, submission_period.playlist_id, tracks)
+        playlist_id = to_playlist_id(submission_period.playlist_url)
+        playlist = botify.user_playlist(bot_id, playlist_id)
+        botify.user_playlist_replace_tracks(bot_id, playlist_id, tracks)
     except Exception as e:
         app.logger.error("Error updating tracks: %s", json.dumps(tracks))
         raise
@@ -108,26 +105,47 @@ def create_or_update_playlist(submission_period):
         # Create new playlist and link to this submission period
         app.logger.info("Creating playlist for round: %s", submission_period.id)
         playlist = create_playlist(submission_period)
+        if not playlist:
+            app.logger.error('There was a problem creating the playlist with tracks: %s', submission_period.all_tracks)
+            return
+
+        playlist_url = playlist['external_urls']['spotify']
+        submission_period.playlist_url = playlist_url
+        upsert_round(submission_period)
+        user_playlist_created_notification(submission_period)
 
     else:
         # Update existing playlist for this submission period
         app.logger.info("Updating playlist for round: %s", submission_period.id)
         playlist = update_playlist(submission_period)
+        # TODO user_playlist_updated_notification(submission_period)
 
     return playlist
 
 
-def to_uri(url_or_uri):
-    uri_regex = 'spotify:track:[A-Za-z0-9]{22}'
-    url_regex = ('(?:http|https):\/\/(?:open|play)\.spotify\.com\/track\/'
-                 '(?P<id>[A-Za-z0-9]{22})')
-
+def to_playlist_uri(url_or_uri):
     # If valid URI, no need to modify
-    if re.match(uri_regex, url_or_uri):
+    if is_playlist_uri(url_or_uri):
         return url_or_uri
 
     # Has to be a valid track URL to mutate. If not, return None.
-    if not re.match(url_regex, url_or_uri):
+    if not is_playlist_url(url_or_uri):
         return None
 
-    return 'spotify:track:%s' % re.match(url_regex, url_or_uri).group('id')
+    return 'spotify:track:%s' % to_playlist_id(url_or_uri)
+
+
+def to_playlist_id(url_or_uri):
+    if is_playlist_url(url_or_uri):
+        return re.match(URL_REGEX, url_or_uri).group('id')
+    elif is_playlist_uri(url_or_uri):
+        return re.match(URI_REGEX, url_or_uri).group('id')
+    return None
+
+
+def is_playlist_uri(url_or_uri):
+    return re.match(URI_REGEX, url_or_uri)
+
+
+def is_playlist_url(url_or_uri):
+    return re.match(URL_REGEX, url_or_uri)

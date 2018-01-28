@@ -1,9 +1,34 @@
 from collections import defaultdict
 from collections import OrderedDict
 from datetime import datetime
+from pytz import utc
 from random import choice
 from time import time
 import urlparse
+
+
+class UserPreferences:
+    def __init__(self):
+        self.owner_all_users_submitted_notifications = True
+        self.owner_all_users_voted_notifications = True
+        self.owner_user_left_notifications = True
+        self.owner_user_submitted_notifications = True
+        self.owner_user_voted_notifications = True
+
+        self.user_added_to_league_notifications = True
+        self.user_playlist_created_notifications = True
+        self.user_removed_from_league_notifications = True
+        self.user_submit_reminder_notifications = True
+        self.user_vote_reminder_notifications = True
+
+    def settings_keys(self):
+        return self.owner_keys() + self.user_keys()
+
+    def user_keys(self):
+        return sorted([k for k in self.__dict__.keys() if k.startswith('user_')])
+
+    def owner_keys(self):
+        return sorted([k for k in self.__dict__.keys() if k.startswith('owner_')])
 
 
 class User:
@@ -14,7 +39,12 @@ class User:
         self.is_admin = is_admin
         self.joined = joined
         self.name = name
+        self.preferences = UserPreferences()
         self.profile_background = profile_bg
+
+    @property
+    def first_name(self):
+        return self.name.split(' ')[0]
 
     @property
     def guaranteed_image_url(self):
@@ -32,10 +62,25 @@ class User:
         return self.image_url
 
 
+class InvitedUser:
+    def __init__(self, id, email, league_id):
+        self.id = id
+        self.email = email
+        self.league_id = league_id
+
+
+class Bot:
+    def __init__(self, id, access_token, refresh_token, expires_at):
+        self.id = id
+        self.access_token = access_token
+        self.refresh_token = refresh_token
+        self.expires_at = expires_at
+
+
 class ScoreboardEntry:
-    def __init__(self, submission, rank, uri):
+    def __init__(self, uri, submission, **kwargs):
         self.submission = submission
-        self.place = rank
+        self.place = kwargs.get('place', -1)
         self.uri = uri
         self.votes = []
 
@@ -45,9 +90,10 @@ class ScoreboardEntry:
 
 
 class RankingEntry:
-    def __init__(self, user, rank):
+    def __init__(self, league, user, **kwargs):
         self.user = user
-        self.place = rank
+        self.place = kwargs.get('place', -1)
+        self.league = league
         self.entries = []
 
     @property
@@ -91,15 +137,38 @@ class Scoreboard:
         return top
 
 
+class LeaguePreferences:
+    # TODO Not persisted/modifiable
+    def __init__(self):
+        self.track_count = 2
+        self.point_bank_size = 6
+        self.max_points_per_song = 0
+        self.downvote_bank_size = 0
+        self.max_downvotes_per_song = 0
+
+        # TODO Make reminder times configurable
+        self.submission_reminder_time = 2
+        self.vote_reminder_time = 2
+
+
+class LeagueStatus:
+    CREATED = 0
+    IN_PROGRESS = 10
+    COMPLETE = 20
+
+
 class League:
-    def __init__(self, id, created, name, owner_id):
+    def __init__(self, id, created, name, owner_id, status):
         self.id = id
         self.created = created
+        self.invited_users = []
         self.is_public = True
         self.name = name
         self.owner = None
         self.owner_id = owner_id
+        self.preferences = LeaguePreferences()
         self.scoreboard = Scoreboard()
+        self.status = status
         self.submission_periods = []
         self.users = []
 
@@ -113,33 +182,60 @@ class League:
         return not (self.is_inactive or self.is_complete)
 
     @property
+    def is_active_v2(self):
+        return not (self.is_inactive_v2 or self.is_complete_v2)
+
+    @property
     def is_inactive(self):
         return len(self.submission_periods) == 0
+
+    @property
+    def is_inactive_v2(self):
+        return self.status == LeagueStatus.CREATED
 
     @property
     def is_complete(self):
         return (not self.is_inactive and
                 all((sp.is_complete for sp in self.submission_periods)))
 
+    @property
+    def is_complete_v2(self):
+        return self.status == LeagueStatus.COMPLETE
+
     def has_owner(self, user):
         return self.owner and self.owner.id == user.id
 
     def has_user(self, user):
-        return self.users and user in self.users
+        return any((u for u in self.users if u.id == user.id))
+
+
+class RoundStatus:
+    CREATED = 0
+    COMPLETE = 20
 
 
 class Round:
-    def __init__(self, id, created, name, description, playlist_url, submissions_due, votes_due):
+    def __init__(self, id, league_id, created, name, description, playlist_url, status, submissions_due, votes_due):
         self.id = id
         self.created = created
         self.name = name
         self.description = description
+        self.league_id = league_id
         self.playlist_url = playlist_url
+        self.scoreboard = Scoreboard()
+        self.status = status
         self.submissions = []
         self.submission_due_date = submissions_due
         self.votes = []
         self.vote_due_date = votes_due
+
+        # TODO Remove this
+        # By populating the league_id attribute above, we can fetch league when needed
         self.league = None
+
+        # TODO Remove this
+        # This shouldn't need to be loaded/persisted every time the round is
+        self.pending_tasks = {}
 
     @property
     def playlist_created(self):
@@ -150,10 +246,12 @@ class Round:
         """ Return True if the league owner chose to accept late
         submissions and the vote due date for this round has not
         yet passed. Return False if all users have already submitted.
+
+        NOTE: Currently hardcoded to return False
         """
-        return (self.league.preferences.late_submissions and
+        return (False and
                 self.have_not_submitted and
-                (self.vote_due_date > datetime.utcnow()))
+                (self.vote_due_date > utc.localize(datetime.utcnow())))
 
     @property
     def accepting_submissions(self):
@@ -161,7 +259,7 @@ class Round:
         for this round and not all submissions have been received.
         """
         return (self.have_not_submitted and
-                (self.submission_due_date > datetime.utcnow()))
+                (self.submission_due_date > utc.localize(datetime.utcnow())))
 
     @property
     def accepting_votes(self):
@@ -171,7 +269,7 @@ class Round:
         """
         return ((not self.accepting_submissions) and
                 self.have_not_voted and
-                (self.vote_due_date > datetime.utcnow()))
+                (self.vote_due_date > utc.localize(datetime.utcnow())))
 
     @property
     def all_tracks(self):
@@ -186,7 +284,11 @@ class Round:
     @property
     def have_not_submitted(self):
         """ Return the list of users who have not submitted yet. """
-        return list(set(self.league.users) - set(self.have_submitted))
+        u_idx = {u.id: u for u in self.league.users + self.have_submitted}
+        league_member_ids = set([u.id for u in self.league.users])
+        have_submitted_ids = set([u.id for u in self.have_submitted])
+        have_not_submitted_ids = league_member_ids - have_submitted_ids
+        return [u_idx.get(u_id) for u_id in have_not_submitted_ids]
 
     @property
     def have_not_voted(self):
@@ -194,7 +296,11 @@ class Round:
         The potential list of users only includes those who
         submitted for this round.
         """
-        return list(set(self.have_submitted) - set(self.have_voted))
+        u_idx = {u.id: u for u in self.have_submitted + self.have_voted}
+        have_submitted_ids = set([u.id for u in self.have_submitted])
+        have_voted_ids = set([u.id for u in self.have_voted])
+        have_not_voted_ids = have_submitted_ids - have_voted_ids
+        return [u_idx.get(u_id) for u_id in have_not_voted_ids]
 
     @property
     def have_submitted(self):
@@ -214,7 +320,7 @@ class Round:
         """ Return True if voting due date for this round has
         passed or all submissions/votes are in.
         """
-        if self.vote_due_date < datetime.utcnow():
+        if self.vote_due_date < utc.localize(datetime.utcnow()):
             return True
         return not (self.accepting_submissions or self.accepting_votes)
 
@@ -238,6 +344,9 @@ class Submission:
         self.user = user
         self.tracks = tracks
         self.created = created
+        self.league = None
+        self.submission_period = None
+        self.count = 1
 
 
 class Vote:
@@ -245,3 +354,14 @@ class Vote:
         self.user = user
         self.votes = votes
         self.created = created
+        self.league = None
+        self.submission_period = None
+        self.count = 1
+
+
+# NOTE Not persisted or used
+class MessengerContext:
+    def __init__(self, id, user, status=0):
+        self.id = id
+        self.user = user
+        self.status = status

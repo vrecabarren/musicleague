@@ -1,9 +1,7 @@
 import os
-import re
 
 from musicleague.environment.variables import DEBUG
 from musicleague.environment.variables import DEPLOYED
-from musicleague.environment.variables import MONGODB_URI
 from musicleague.environment.variables import PORT
 from musicleague.environment.variables import PRODUCTION
 from musicleague.environment.variables import REDISCLOUD_URL
@@ -68,20 +66,3 @@ def get_secret_key():
 
 def get_server_name():
     return get_setting(SERVER_NAME)
-
-
-def parse_mongolab_uri():
-    if not is_deployed():
-        return
-
-    r = (r'^mongodb\:\/\/(?P<username>[_\w]+):(?P<password>[\w]+)@(?P<host>'
-         r'[\.\w]+):(?P<port>\d+)/(?P<database>[_\w]+)$')
-    regex = re.compile(r)
-    mongolab_url = os.environ.get(MONGODB_URI.key)
-    match = regex.search(mongolab_url)
-    if not match:
-        return
-
-    data = match.groupdict()
-    return (data['host'], int(data['port']), data['username'],
-            data['password'], data['database'])

@@ -1,8 +1,7 @@
 import json
 
 from musicleague import app
-from musicleague.league import get_league
-
+from musicleague.persistence.select import select_league
 
 LEAGUE_URL = "/api/v1/league/<league_id>/"
 
@@ -10,7 +9,7 @@ LEAGUE_URL = "/api/v1/league/<league_id>/"
 @app.route(LEAGUE_URL, methods=['GET'])
 def league_get(league_id):
     try:
-        league = get_league(league_id)
+        league = select_league(league_id)
         if not league:
             return json.dumps(None)
 

@@ -14,8 +14,6 @@ from musicleague.routes.admin.leagues import admin_remove_league
 from musicleague.routes.admin.rounds import admin_generate_playlist
 from musicleague.routes.admin.rounds import admin_remove_round
 from musicleague.routes.admin.rounds import admin_reschedule_tasks
-from musicleague.routes.admin.tools import clean_submission_periods
-from musicleague.routes.admin.tools import clean_submissions
 from musicleague.routes.admin.users import admin_make_user_admin
 from musicleague.routes.auth import before_request
 from musicleague.routes.auth import login

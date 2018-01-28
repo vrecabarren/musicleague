@@ -7,7 +7,7 @@ from musicleague import app
 from musicleague.environment import get_setting
 from musicleague.environment.variables import MESSENGER_VERIFY_TOKEN
 from musicleague.messenger import process_data
-from musicleague.models import MessengerContext
+from musicleague.persistence.models import MessengerContext
 
 
 MESSENGER_HOOK_URL = '/messenger/'
@@ -18,10 +18,10 @@ def add_messenger(messenger_id):
     user = g.user
 
     context = MessengerContext(id=messenger_id, user=user)
-    context.save()
+    # TODO Persist context
 
     user.messenger = context
-    user.save()
+    # TODO Persist user
 
     return "Messenger context added for {}".format(messenger_id), httplib.OK
 

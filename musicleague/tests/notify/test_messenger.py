@@ -4,7 +4,7 @@ from mock import call
 from mock import patch
 
 from musicleague.league import create_league
-from musicleague.models import MessengerContext
+from musicleague.persistence.models import MessengerContext
 from musicleague.submission import create_submission
 from musicleague.submission_period import create_submission_period
 from musicleague.user import create_user

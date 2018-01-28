@@ -5,10 +5,8 @@ from musicleague.environment import get_port
 from musicleague.environment import get_secret_key
 from musicleague.environment import is_debug
 from musicleague.environment import is_deployed
-from musicleague.environment import parse_mongolab_uri
 
 from musicleague.environment.variables import DEBUG
-from musicleague.environment.variables import MONGODB_URI
 from musicleague.environment.variables import PORT
 from musicleague.environment.variables import SECRET_KEY
 
@@ -75,29 +73,3 @@ class IsDeployedTestCase(TestCase):
     @dec.env_local
     def test_not_deployed(self):
         self.assertFalse(is_deployed())
-
-
-class ParseMongoLabURITestCase(TestCase):
-    def setUp(self):
-        self.host = 'db_host'
-        self.port = '1111'
-        self.username = 'db_username'
-        self.password = 'db_password'
-        self.db = 'db_name'
-        self.uri = 'mongodb://{username}:{password}@{host}:{port}/{db}'
-        self.uri = self.uri.format(
-            username=self.username, password=self.password, host=self.host,
-            port=self.port, db=self.db)
-
-    @dec.env_local
-    def test_env_local(self):
-        set_environment_state(MONGODB_URI.key, self.uri)
-        self.assertIsNone(parse_mongolab_uri())
-
-    @dec.env_deployed
-    def test_happy_path(self):
-        set_environment_state(MONGODB_URI.key, self.uri)
-
-        self.assertEqual(
-            (self.host, int(self.port), self.username, self.password, self.db),
-            parse_mongolab_uri())

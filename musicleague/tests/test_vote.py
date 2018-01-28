@@ -1,10 +1,6 @@
 from unittest import TestCase
 
-from mock import patch
-
 from musicleague.league import create_league
-from musicleague.models import SubmissionPeriod
-from musicleague.models import Vote
 from musicleague.submission import create_submission
 from musicleague.submission_period import create_submission_period
 from musicleague.user import create_user
@@ -28,8 +24,6 @@ class CreateOrUpdateVoteTestCase(TestCase):
         self.league.delete()
         self.submission_period.delete()
 
-    @patch.object(SubmissionPeriod, 'save')
-    @patch.object(Vote, 'save')
     def test_no_user_submission(self, vote_save, period_save):
         self.submission_period.votes = []
 
@@ -53,8 +47,6 @@ class CreateOrUpdateVoteTestCase(TestCase):
 
         self.assertTrue(vote in self.submission_period.votes)
 
-    @patch.object(SubmissionPeriod, 'save')
-    @patch.object(Vote, 'save')
     def test_existing_submission(self, vote_save, period_save):
         self.submission_period.votes = [
             create_vote(

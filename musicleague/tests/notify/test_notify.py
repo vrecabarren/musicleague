@@ -3,7 +3,6 @@ import unittest
 from mock import patch
 
 from musicleague.league import create_league
-from musicleague.models import InvitedUser
 from musicleague.notify import owner_user_submitted_notification
 from musicleague.notify import owner_user_voted_notification
 from musicleague.notify import user_added_to_league_notification
@@ -13,6 +12,7 @@ from musicleague.notify import user_last_to_vote_notification
 from musicleague.notify import user_playlist_created_notification
 from musicleague.notify import user_submit_reminder_notification
 from musicleague.notify import user_vote_reminder_notification
+from musicleague.persistence.models import InvitedUser
 from musicleague.submission import create_submission
 from musicleague.submission_period import create_submission_period
 from musicleague.user import create_user

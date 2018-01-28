@@ -9,7 +9,6 @@ from flask import session
 from flask import url_for
 
 from musicleague.environment import is_deployed
-from musicleague.league import get_league
 from musicleague.notify.flash import flash_error
 from musicleague.notify.flash import flash_warning
 
@@ -35,19 +34,6 @@ def admin_required(func):
         if not g.user.is_admin and is_deployed():
             flash_error('You must be an admin to access that page')
             return redirect(url_for('hello'))
-        return func(*args, **kwargs)
-    return wrapper
-
-
-def league_required(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        if 'league_id' not in kwargs:
-            return redirect(url_for('hello'))
-        league = get_league(kwargs.get('league_id'))
-        if not league:
-            return redirect(url_for('hello'))
-        kwargs['league'] = league
         return func(*args, **kwargs)
     return wrapper
 

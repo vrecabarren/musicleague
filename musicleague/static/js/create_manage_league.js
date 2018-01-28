@@ -16,7 +16,13 @@ $('.dtp').datetimepicker({
 
 // Initialize league round add datetime pickers
 function initializeDatePicker(elementId) {
+    var d = moment(new Date()).add(1, 'days').hours(12).minutes(0);
+    if (elementId == '#voting-due-date') {
+        d.add(1, 'days');
+    }
+    $(elementId + '-utc').val(d.utc().format('MM/DD/YY hA'));
     return $(elementId).datetimepicker({
+        defaultDate: d,
         sideBySide: true,
         format: 'MM/DD/YY hA',
         useStrict: true,

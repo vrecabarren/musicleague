@@ -1,11 +1,8 @@
 from unittest import TestCase
 
-from mock import patch
-
-from musicleague.models import League
-from musicleague.models import Submission
-from musicleague.models import SubmissionPeriod
-from musicleague.models import User
+from musicleague.persistence.models import League
+from musicleague.persistence.models import Round
+from musicleague.persistence.models import User
 from musicleague.submission import create_or_update_submission
 from musicleague.submission import create_submission
 
@@ -13,7 +10,7 @@ from musicleague.submission import create_submission
 class CreateOrUpdateSubmissionTestCase(TestCase):
 
     def setUp(self):
-        self.submission_period = SubmissionPeriod()
+        self.submission_period = Round()
 
         self.user = User()
         self.user.name = 'Old Gregg'
@@ -28,8 +25,6 @@ class CreateOrUpdateSubmissionTestCase(TestCase):
         self.tracks = ['spotify:track:6Fha6tXHkL3r9m9nNqQG8p',
                        'spotify:track:6K4t31amVTZDgR3sKmwUJJ']
 
-    @patch.object(SubmissionPeriod, 'save')
-    @patch.object(Submission, 'save')
     def test_no_user_submission(self, submission_save, period_save):
         self.submission_period.submissions = []
 
@@ -52,8 +47,6 @@ class CreateOrUpdateSubmissionTestCase(TestCase):
         self.submission_period.save.assert_called_once()
         self.assertTrue(submission in self.submission_period.submissions)
 
-    @patch.object(SubmissionPeriod, 'save')
-    @patch.object(Submission, 'save')
     def test_existing_submission(self, submission_save, period_save):
         create_submission(self.tracks, self.submission_period, self.user, self.league)
 

@@ -1,9 +1,8 @@
 import logging
+import logmatic
 
 from flask import Flask
 from flask_moment import Moment
-
-from mongoengine import connect
 
 from redis import Redis
 
@@ -14,11 +13,6 @@ from musicleague.environment import get_redis_url
 from musicleague.environment import get_secret_key
 from musicleague.environment import get_server_name
 from musicleague.environment import is_deployed
-from musicleague.environment import parse_mongolab_uri
-from musicleague.environment.variables import MONGODB_URI
-from musicleague.persistence import get_postgres_conn
-
-from settings import MONGO_DB_NAME
 
 
 # Initialize Flask app
@@ -26,29 +20,17 @@ app = Flask(__name__)
 moment = Moment(app)
 app.secret_key = get_secret_key()
 
-streamHandler = logging.StreamHandler()
-streamHandler.setLevel(logging.INFO)
+handler = logging.StreamHandler()
+handler.setFormatter(logmatic.JsonFormatter())
 
-log = app.logger
-log.setLevel(logging.DEBUG)
-log.addHandler(streamHandler)
+del app.logger.handlers[:]
+app.logger.addHandler(handler)
+app.logger.setLevel(logging.INFO)
 
 if is_deployed():
     server_name = get_server_name()
     if server_name:
         app.config['SERVER_NAME'] = server_name
-
-    host, port, username, password, db = parse_mongolab_uri()
-    db = connect(db, host=host, port=port, username=username,
-                 password=password)
-else:
-    db = connect(MONGO_DB_NAME, host=MONGODB_URI.default)
-
-try:
-    postgres_conn = get_postgres_conn()
-except Exception as e:
-    app.logger.warning('Failed to connect to Postgres: %s', str(e))
-    pass
 
 redis_conn = Redis.from_url(get_redis_url())
 queue = Queue(connection=redis_conn)

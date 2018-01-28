@@ -1,14 +1,18 @@
 from datetime import datetime
 
+from bson.objectid import ObjectId
 from haikunator import Haikunator
 
-from musicleague import app
-from musicleague.models import InvitedUser
-from musicleague.models import League
-from musicleague.models import LeaguePreferences
 from musicleague.notify import user_added_to_league_notification
 from musicleague.notify import user_invited_to_league_notification
-from musicleague.persistence.statements import DELETE_LEAGUE
+from musicleague.persistence.delete import delete_league
+from musicleague.persistence.delete import delete_membership
+from musicleague.persistence.insert import insert_league, insert_invited_user
+from musicleague.persistence.insert import insert_membership
+from musicleague.persistence.models import InvitedUser
+from musicleague.persistence.models import League
+from musicleague.persistence.models import LeagueStatus
+from musicleague.persistence.select import select_league
 from musicleague.scoring import EntrySortKey
 from musicleague.submission_period import remove_submission_period
 from musicleague.user import get_user_by_email
@@ -18,19 +22,15 @@ def add_user(league, user_email, notify=True):
     user = get_user_by_email(user_email)
     if user and user not in league.users:
         league.users.append(user)
-        league.save()
-
-        from musicleague.persistence.insert import insert_membership
         insert_membership(league, user)
 
         if notify:
             user_added_to_league_notification(user, league)
 
     elif user is None:
-        invited_user = InvitedUser(email=user_email)
-        invited_user.save()
+        invited_user = InvitedUser(id=str(ObjectId()), email=user_email, league_id=league.id)
+        insert_invited_user(invited_user, str(league.id))
         league.invited_users.append(invited_user)
-        league.save()
 
         if notify:
             user_invited_to_league_notification(invited_user, league)
@@ -38,14 +38,12 @@ def add_user(league, user_email, notify=True):
 
 def remove_user(league, user_id):
     remaining_users = []
-    removed_user = None
     for user in league.users:
-        if str(user.id) == user_id:
-            removed_user = user
-        else:
+        if str(user.id) != user_id:
             remaining_users.append(user)
+        else:
+            delete_membership(league, user)
     league.users = remaining_users
-    league.save()
 
 
 def create_league(user, name=None, users=None):
@@ -53,23 +51,25 @@ def create_league(user, name=None, users=None):
         haikunator = Haikunator()
         name = haikunator.haikunate(token_length=0)
 
+    new_league = League(id=str(ObjectId()), created=datetime.utcnow(), name=name,
+                        owner_id=user.id, status=LeagueStatus.CREATED)
+    new_league.owner = user
+
+    insert_league(new_league)
+
     members = [user]
     if users is not None:
         members = list(set(members + users))
 
-    new_league = League(owner=user, users=members, created=datetime.utcnow())
-    new_league.preferences = LeaguePreferences(name=name)
-    new_league.save()
-
-    from musicleague.persistence.insert import insert_league
-    insert_league(new_league)
+    for member in members:
+        insert_membership(new_league, member)
 
     return new_league
 
 
 def remove_league(league_id, league=None):
     if league is None:
-        league = get_league(league_id)
+        league = select_league(league_id)
 
     if not league or str(league.id) != str(league_id):
         return
@@ -78,30 +78,9 @@ def remove_league(league_id, league=None):
         remove_submission_period(submission_period.id,
                                  submission_period=submission_period)
 
-    league.delete()
-
-    from musicleague.persistence.delete import delete_league
     delete_league(league)
 
     return league
-
-
-def get_league(league_id):
-    try:
-        league = League.objects.get(id=league_id)
-        return league
-    except League.DoesNotExist:
-        return None
-
-
-def get_leagues_for_user(user):
-    # TODO Page results for user profile page
-    try:
-        leagues = League.objects(users=user).all().order_by('-created')
-        leagues = sorted(leagues, key=LeagueSortKey)
-        return leagues
-    except League.DoesNotExist:
-        return []
 
 
 class LeagueSortKey(EntrySortKey):

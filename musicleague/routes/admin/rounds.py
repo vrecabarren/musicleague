@@ -2,10 +2,12 @@ from flask import redirect
 from flask import request
 
 from musicleague import app
+from musicleague.persistence.select import select_league
+from musicleague.persistence.select import select_league_id_for_round
+from musicleague.persistence.select import select_round
 from musicleague.routes.decorators import admin_required
 from musicleague.routes.decorators import login_required
 from musicleague.spotify import create_or_update_playlist
-from musicleague.submission_period import get_submission_period
 from musicleague.submission_period import remove_submission_period
 from musicleague.submission_period.tasks.schedulers import schedule_playlist_creation  # noqa
 from musicleague.submission_period.tasks.schedulers import schedule_round_completion  # noqa
@@ -25,7 +27,11 @@ def admin_generate_playlist(submission_period_id):
     if not submission_period_id:
         return
 
-    submission_period = get_submission_period(submission_period_id)
+    league_id = select_league_id_for_round(submission_period_id)
+    league = select_league(league_id, exclude_properties=['votes', 'scoreboard', 'invited_users'])
+    submission_period = next((r for r in league.submission_periods
+                              if r.id == submission_period_id), None)
+
     if not submission_period:
         return
 
@@ -53,7 +59,7 @@ def admin_reschedule_tasks(submission_period_id):
     if not submission_period_id:
         return
 
-    submission_period = get_submission_period(submission_period_id)
+    submission_period = select_round(submission_period_id)
     if not submission_period:
         return
 
@@ -61,6 +67,5 @@ def admin_reschedule_tasks(submission_period_id):
     schedule_round_completion(submission_period)
     schedule_submission_reminders(submission_period)
     schedule_vote_reminders(submission_period)
-    submission_period.save()
 
     return redirect(request.referrer)

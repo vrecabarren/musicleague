@@ -1,25 +1,27 @@
 from datetime import datetime
 from datetime import timedelta
+import httplib
 import json
 from pytz import utc
 
 from flask import g
 from flask import redirect
+from flask import render_template
 from flask import request
 from flask import url_for
 
 from musicleague import app
 from musicleague.league import add_user
 from musicleague.league import create_league
-from musicleague.league import get_league
 from musicleague.league import remove_league
 from musicleague.league import remove_user
-from musicleague.notify.flash import flash_error
-from musicleague.persistence.statements import DELETE_LEAGUE
-from musicleague.persistence.statements import INSERT_LEAGUE
-from musicleague.persistence.statements import UPDATE_LEAGUE
+from musicleague.persistence.delete import delete_invited_user
+from musicleague.persistence.insert import insert_membership
+from musicleague.persistence.select import select_league
+from musicleague.persistence.select import select_round
+from musicleague.persistence.select import select_user
+from musicleague.persistence.update import upsert_league_preferences
 from musicleague.routes.decorators import admin_required
-from musicleague.routes.decorators import league_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 from musicleague.scoring.league import calculate_league_scoreboard
@@ -66,9 +68,9 @@ def post_create_league():
     league.preferences.track_count = int(num_tracks)
     league.preferences.point_bank_size = int(upvote_size)
     league.preferences.max_points_per_song = int(max_up_per_song or 0)
-    league.preferences.downvote_bank_size = int(downvote_size)
+    league.preferences.downvote_bank_size = int(downvote_size or 0)
     league.preferences.max_downvotes_per_song = int(max_down_per_song or 0)
-    league.save()
+    upsert_league_preferences(league)
 
     for email in emails:
         add_user(league, email, notify=True)
@@ -86,9 +88,7 @@ def post_create_league():
             league, new_round['name'], new_round['description'],
             submission_due_date, vote_due_date)
 
-    league.save()
-
-    app.logger.info('Creating league: %s', league.id)
+    app.logger.info('User created league', extra={'league': league.id, 'user': g.user.id})
 
     return redirect(url_for('view_league', league_id=league.id))
 
@@ -97,10 +97,10 @@ def post_create_league():
 @templated('league/manage/page.html')
 @login_required
 def get_manage_league(league_id):
-    league = get_league(league_id)
+    league = select_league(league_id)
     if not league or not league.has_owner(g.user):
-        app.logger.warning('Unauthorized user attempted access')
-        flash_error('You must be owner of the league to access that page')
+        app.logger.warning('Unauthorized user attempted access',
+                           extra={'league': league.id, 'user': g.user.id})
         return redirect(url_for('view_league', league_id=league_id))
 
     return {'user': g.user,
@@ -118,8 +118,7 @@ def post_manage_league(league_id):
     max_down_per_song = request.form.get('max-downvotes-per-song')
 
     user_ids = json.loads(request.form.get('added-members', []))
-    added_members = [get_user(uid) for uid in user_ids]
-    app.logger.info("Adding users %s: %s", user_ids, added_members)
+    added_members = [select_user(uid) for uid in user_ids]
     emails = json.loads(request.form.get('invited-members', []))
     deleted_members = json.loads(request.form.get('deleted-members', []))
 
@@ -127,15 +126,17 @@ def post_manage_league(league_id):
     edited_rounds = json.loads(request.form.get('edited-rounds', []))
     deleted_rounds = json.loads(request.form.get('deleted-rounds', []))
 
-    league = get_league(league_id)
-    league.preferences.name = name
+    league = select_league(league_id)
+    league.name = name
     league.preferences.track_count = int(num_tracks)
     league.preferences.point_bank_size = int(upvote_size)
     league.preferences.max_points_per_song = int(max_up_per_song or 0)
     league.preferences.downvote_bank_size = int(downvote_size)
     league.preferences.max_downvotes_per_song = int(max_down_per_song or 0)
-    league.users.extend(added_members)
-    league.save()
+    upsert_league_preferences(league)
+
+    for added_member in added_members:
+        insert_membership(league, added_member)
 
     for email in emails:
         add_user(league, email, notify=True)
@@ -165,9 +166,16 @@ def post_manage_league(league_id):
         vote_due_date = utc.localize(
             datetime.strptime(vote_due_date_str, '%m/%d/%y %I%p'))
 
+        round = select_round(edited_round['id'])
+        if not round:
+            continue
+
+        round.league = league
+
         update_submission_period(
             edited_round['id'], edited_round['name'],
-            edited_round['description'], submission_due_date, vote_due_date)
+            edited_round['description'], submission_due_date, vote_due_date,
+            submission_period=round)
 
     for deleted_round in deleted_rounds:
         try:
@@ -176,64 +184,51 @@ def post_manage_league(league_id):
             app.logger.warning('Error while attempting to delete round %s: %s',
                                deleted_round, str(e))
 
-    league.reload('submission_periods')
     if league.scoreboard:
         league = calculate_league_scoreboard(league)
 
-    league.save()
-
-    from musicleague.persistence.update import update_league
-    update_league(league)
+    app.logger.info('User modified league', extra={'league': league.id, 'user': g.user.id})
 
     return redirect(url_for('view_league', league_id=league_id))
 
 
 @app.route(JOIN_LEAGUE_URL, methods=['GET'])
 @login_required
-@league_required
 def join_league(league_id, **kwargs):
-    league = kwargs.get('league')
+    league = select_league(league_id)
     add_user(league, g.user.email, notify=False)
 
     # If this URL is from an invitation email, delete the placeholder
-    invite_id = request.args.get('invite_id')
+    invite_id = request.args.get('invitation')
     if invite_id:
-        invited_user = next((iu for iu in league.invited_users
-                             if str(iu.id) == invite_id), None)
-        if invited_user:
-            invited_user.delete()
+        delete_invited_user(invite_id)
+        app.logger.debug(
+            'Deleted league invitation',
+            extra={'league': league_id, 'user': g.user.id, 'invitation': invite_id})
 
-    app.logger.info('User joined league: %s', league.id)
+    app.logger.debug('User joined league', extra={'league': league_id, 'user': g.user.id})
 
     return redirect(url_for('view_league', league_id=league_id))
 
 
 @app.route(REMOVE_LEAGUE_URL)
 @login_required
-@league_required
 def get_remove_league(league_id, **kwargs):
-    league = kwargs.get('league')
+    league = select_league(league_id)
     if league and league.has_owner(g.user):
-        app.logger.info('Removing league: %s', league.id)
-        league = remove_league(league_id, league=league)
+        remove_league(league_id, league=league)
+        app.logger.debug('User deleted league', extra={'league': league.id, 'user': g.user.id})
 
     return redirect(url_for('profile'))
 
 
 @app.route(VIEW_LEAGUE_URL, methods=['GET'])
-@templated('league/view/page.html')
 @login_required
-def view_league(league_id, **kwargs):
-
-    if request.args.get('pg') == '1':
-        from musicleague.persistence.select import select_league
-        league = select_league(league_id)
-    else:
-        league = get_league(league_id)
-
-    if request.args.get('pg_update') == '1':
-        from musicleague.persistence.insert import insert_league
-        insert_league(league)
+def view_league(league_id):
+    league = select_league(league_id)
+    if not league:
+        app.logger.error('League not found', extra={'league': league_id, 'user': g.user.id})
+        return 'League not found', httplib.NOT_FOUND
 
     my_submission, my_vote = None, None
     if league.current_submission_period:
@@ -250,22 +245,17 @@ def view_league(league_id, **kwargs):
         next_submission_due_date = datetime.utcnow() + timedelta(days=5)
         next_vote_due_date = datetime.utcnow() + timedelta(days=7)
 
-    return {
-        'user': g.user,
-        'league': league,
-        'my_submission': my_submission,
-        'my_vote': my_vote,
-        'next_submission_due_date': next_submission_due_date,
-        'next_vote_due_date': next_vote_due_date
-    }
+    return render_template(
+        'league/view/page.html',
+        user=g.user, league=league, my_submission=my_submission, my_vote=my_vote,
+        next_submission_due_date=next_submission_due_date, next_vote_due_date=next_vote_due_date)
 
 
 @app.route(VIEW_LEAGUE_URL + 'score/')
 @login_required
 @admin_required
-@league_required
 def score_league(league_id, **kwargs):
-    league = kwargs.get('league')
+    league = select_league(league_id)
     league = calculate_league_scoreboard(league)
     ret = {rank: [entry.user.id for entry in entries]
            for rank, entries in league.scoreboard.rankings.iteritems()}
@@ -275,7 +265,6 @@ def score_league(league_id, **kwargs):
 @app.route(LEADERBOARD_URL)
 @templated('leaderboard/page.html')
 @login_required
-@league_required
 def view_leaderboard(league_id, **kwargs):
-    league = kwargs.get('league')
+    league = select_league(league_id)
     return {'user': g.user, 'league': league}

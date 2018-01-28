@@ -1,116 +1,101 @@
-from musicleague import app
-from musicleague.persistence.statements import DELETE_SUBMISSIONS
+from musicleague.persistence import get_postgres_conn
+from musicleague.persistence.models import LeagueStatus
 from musicleague.persistence.statements import DELETE_VOTES
+from musicleague.persistence.statements import DELETE_VOTES_FOR_URIS
+from musicleague.persistence.statements import INSERT_INVITED_USER
 from musicleague.persistence.statements import INSERT_LEAGUE
 from musicleague.persistence.statements import INSERT_MEMBERSHIP
 from musicleague.persistence.statements import INSERT_ROUND
 from musicleague.persistence.statements import INSERT_SUBMISSION
 from musicleague.persistence.statements import INSERT_USER
 from musicleague.persistence.statements import INSERT_VOTE
+from musicleague.persistence.statements import DELETE_SUBMISSIONS
+from musicleague.persistence.statements import SELECT_SUBMISSIONS_FROM_USER
+from musicleague.persistence.update import upsert_league_preferences
 
 
 def insert_user(user):
-    try:
-        from musicleague import postgres_conn
-        with postgres_conn:
-            with postgres_conn.cursor() as cur:
-                cur.execute(
-                    INSERT_USER,
-                    (str(user.id), user.email, user.image_url, user.joined, user.name, user.profile_background))
-    except Exception as e:
-        app.logger.warning('Failed INSERT_USER: %s', str(e), exc_info=e)
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            values = (user.id, user.email, user.image_url, user.joined,
+                      user.name, user.profile_background)
+            cur.execute(INSERT_USER, values)
+
+
+def insert_invited_user(user, league_id):
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            values = (user.id, user.email, league_id)
+            cur.execute(INSERT_INVITED_USER, values)
 
 
 def insert_league(league):
-    try:
-        for u in league.users:
-            insert_user(u)
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            values = (league.id, league.created, league.name,
+                      league.owner.id, LeagueStatus.CREATED)
+            cur.execute(INSERT_LEAGUE, values)
 
-        from musicleague import postgres_conn
-        with postgres_conn:
-            with postgres_conn.cursor() as cur:
-                cur.execute(
-                    INSERT_LEAGUE,
-                    (str(league.id), league.created, league.name,
-                     str(league.owner.id)))
+    upsert_league_preferences(league)
 
-                for user in league.users:
-                    insert_membership(league, user)
+    for user in league.users:
+        insert_membership(league, user)
 
-                for round in league.submission_periods:
-                    insert_round(round, insert_deps=False)
-
-    except Exception as e:
-        app.logger.warning('Failed INSERT_LEAGUE: %s', str(e), exc_info=e)
+    for u in league.invited_users:
+        insert_invited_user(u, league.id)
 
 
 def insert_membership(league, user):
-    try:
-        from musicleague import postgres_conn
-        with postgres_conn:
-            with postgres_conn.cursor() as cur:
-                cur.execute(INSERT_MEMBERSHIP, (str(league.id), str(user.id)))
-    except Exception as e:
-        app.logger.warning('Failed INSERT_MEMBERSHIP: %s', str(e), exc_info=e)
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            values = (league.id, user.id)
+            cur.execute(INSERT_MEMBERSHIP, values)
 
 
-def insert_round(round, insert_deps=True):
-    try:
-        if insert_deps:
-            insert_league(round.league)
-
-        from musicleague import postgres_conn
-        with postgres_conn:
-            with postgres_conn.cursor() as cur:
-                cur.execute(
-                    INSERT_ROUND,
-                    (str(round.id), round.created, round.description, str(round.league.id),
-                     round.name, round.submission_due_date,
-                     round.vote_due_date))
-                for submission in round.submissions:
-                    insert_submission(submission, insert_deps=False)
-                for vote in round.votes:
-                    insert_vote(vote, insert_deps=False)
-    except Exception as e:
-        app.logger.warning('Failed INSERT_ROUND: %s', str(e), exc_info=e)
+def insert_round(round):
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            values = (round.id, round.created, round.description, round.league.id,
+                      round.name, round.status, round.submission_due_date,
+                      round.vote_due_date)
+            cur.execute(INSERT_ROUND, values)
 
 
-def insert_submission(submission, insert_deps=True):
-    try:
-        if insert_deps:
-            insert_round(submission.submission_period)
-            insert_user(submission.user)
+def insert_submission(submission):
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            # Determine if user previously submitted
+            values = (submission.submission_period.id, submission.user.id)
+            cur.execute(SELECT_SUBMISSIONS_FROM_USER, values)
 
-        from musicleague import postgres_conn
-        with postgres_conn:
-            with postgres_conn.cursor() as cur:
-                for track in submission.tracks:
-                    cur.execute(
-                        INSERT_SUBMISSION,
-                        ((submission.updated or submission.created),
-                         str(submission.submission_period.id),
-                         track, str(submission.user.id)))
-    except Exception as e:
-        app.logger.warning('Failed INSERT_SUBMISSION: %s', str(e), exc_info=e)
+            # If user has previous submissions, remove them
+            if cur.rowcount > 0:
+                ranked_tracks = cur.fetchone()[1]
+
+                # Remove votes for previously submitted tracks
+                values = (submission.submission_period.id, ranked_tracks.keys())
+                cur.execute(DELETE_VOTES_FOR_URIS, values)
+
+                # Remove previously submitted tracks
+                values = (submission.submission_period.id, submission.user.id)
+                cur.execute(DELETE_SUBMISSIONS, values)
+
+            # Insert tracks for new submission
+            for uri in submission.tracks:
+                values = (submission.created, submission.submission_period.id,
+                          uri, submission.user.id)
+                cur.execute(INSERT_SUBMISSION, values)
 
 
-def insert_vote(vote, insert_deps=True):
-    try:
-        if insert_deps:
-            insert_round(vote.submission_period)
-            insert_user(vote.user)
-            for submission in vote.submission_period.submissions:
-                insert_submission(submission)
+def insert_vote(vote):
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            # Remove previously submitted votes
+            values = (vote.submission_period.id, vote.user.id)
+            cur.execute(DELETE_VOTES, values)
 
-        from musicleague import postgres_conn
-        with postgres_conn:
-            with postgres_conn.cursor() as cur:
-                for spotify_uri, weight in vote.votes.iteritems():
-                    cur.execute(
-                        INSERT_VOTE,
-                        ((vote.updated or vote.created),
-                         str(vote.submission_period.id),
-                         spotify_uri, str(vote.user.id),
-                         weight))
-    except Exception as e:
-        app.logger.warning('Failed INSERT_VOTE: %s', str(e), exc_info=e)
+            # Insert new votes
+            for spotify_uri, weight in vote.votes.iteritems():
+                values = (vote.created, vote.submission_period.id,
+                          spotify_uri, vote.user.id, weight)
+                cur.execute(INSERT_VOTE, values)

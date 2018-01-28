@@ -33,7 +33,7 @@ def owner_user_submitted_notification(submission):
         return
 
     owner_user_submitted_email(owner, submission)
-    owner_user_submitted_messenger(owner, submission)
+    # owner_user_submitted_messenger(owner, submission)
     return True
 
 
@@ -49,7 +49,7 @@ def owner_user_voted_notification(vote):
         return
 
     owner_user_voted_email(owner, vote)
-    owner_user_voted_messenger(owner, vote)
+    # owner_user_voted_messenger(owner, vote)
     return True
 
 
@@ -61,7 +61,7 @@ def user_added_to_league_notification(user, league):
         return
 
     user_added_to_league_email(user, league)
-    user_added_to_league_messenger(user, league)
+    # user_added_to_league_messenger(user, league)
     return True
 
 
@@ -87,7 +87,7 @@ def user_last_to_submit_notification(user, submission_period):
         return
 
     user_last_to_submit_email(user, submission_period)
-    user_last_to_submit_messenger(user, submission_period)
+    # user_last_to_submit_messenger(user, submission_period)
     return True
 
 
@@ -96,7 +96,7 @@ def user_last_to_vote_notification(user, submission_period):
         return
 
     user_last_to_vote_email(user, submission_period)
-    user_last_to_vote_messenger(user, submission_period)
+    # user_last_to_vote_messenger(user, submission_period)
     return True
 
 
@@ -117,7 +117,7 @@ def user_playlist_created_notification(submission_period):
     # NOTE: Preference is checked within the calls below
 
     user_playlist_created_email(submission_period)
-    user_playlist_created_messenger(submission_period)
+    # user_playlist_created_messenger(submission_period)
     return True
 
 
@@ -129,7 +129,7 @@ def user_submit_reminder_notification(user, submission_period):
         return
 
     user_submit_reminder_email(user, submission_period)
-    user_submit_reminder_messenger(user, submission_period)
+    # user_submit_reminder_messenger(user, submission_period)
     return True
 
 
@@ -141,5 +141,5 @@ def user_vote_reminder_notification(user, submission_period):
         return
 
     user_vote_reminder_email(user, submission_period)
-    user_vote_reminder_messenger(user, submission_period)
+    # user_vote_reminder_messenger(user, submission_period)
     return True

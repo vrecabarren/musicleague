@@ -3,10 +3,10 @@ from random import choice
 
 from musicleague.errors import UserDoesNotExistError
 from musicleague.errors import UserExistsError
-from musicleague.models import User
-from musicleague.models import UserPreferences
-from musicleague.persistence.statements import INSERT_USER
-from musicleague.persistence.statements import UPDATE_USER
+from musicleague.persistence.models import User
+from musicleague.persistence.select import select_user
+from musicleague.persistence.select import select_user_by_email
+from musicleague.persistence.update import upsert_user
 
 
 DEFAULT_AVATARS = [
@@ -32,14 +32,16 @@ def create_user_from_spotify_user(spotify_user):
     user_id = spotify_user.get('id')
     user_email = spotify_user.get('email')
     user_display_name = spotify_user.get('display_name')
+    if user_display_name is None:
+        user_display_name = user_id
+
     user_images = spotify_user.get('images')
     user_image_url = ''
     if user_images:
         user_image_url = user_images[0].get('url', user_image_url)
 
     return create_user(
-        id=user_id, email=user_email, name=(user_display_name or user_id),
-        image_url=user_image_url)
+        id=user_id, email=user_email, name=user_display_name, image_url=user_image_url)
 
 
 def update_user_from_spotify_user(user, spotify_user):
@@ -47,7 +49,7 @@ def update_user_from_spotify_user(user, spotify_user):
     user_image_url = ''
     if user_images:
         user.image_url = user_images[0].get('url', user_image_url)
-        user.save()
+        upsert_user(user)
 
     return user
 
@@ -62,13 +64,10 @@ def create_user(id, name, email, image_url):
     profile_background = choice(PROFILE_BACKGROUNDS)
 
     new_user = User(
-        id=id, name=name, email=email, joined=datetime.utcnow(),
-        image_url=image_url, profile_background=profile_background,
-        preferences=UserPreferences())
-    new_user.save()
+        id=id, email=email, image_url=image_url, is_admin=False,
+        joined=datetime.utcnow(), name=name, profile_bg=profile_background)
 
-    from musicleague.persistence.insert import insert_user
-    insert_user(new_user)
+    upsert_user(new_user)
 
     return new_user
 
@@ -83,10 +82,8 @@ def update_user(id, name, email, image_url):
     user.name = name if name else user.name
     user.email = email if email else user.email
     user.image_url = image_url if image_url else user.image_url
-    user.save()
 
-    from musicleague.persistence.update import update_user
-    update_user(user)
+    upsert_user(user)
 
     return user
 
@@ -103,30 +100,26 @@ def create_or_update_user(id, name, email, image_url):
 
 
 def get_user(id):
-    try:
-        user = User.objects.get(id=id)
-        updated = False
-
-        if not user.image_url:
-            user.image_url = choice(DEFAULT_AVATARS)
-            updated = True
-
-        if not user.profile_background:
-            user.profile_background = choice(PROFILE_BACKGROUNDS)
-            updated = True
-
-        if updated:
-            user.save()
-
-        return user
-
-    except User.DoesNotExist:
+    user = select_user(id)
+    if user is None:
         return None
+
+    updated = False
+
+    if not user.image_url:
+        user.image_url = choice(DEFAULT_AVATARS)
+        updated = True
+
+    if not user.profile_background:
+        user.profile_background = choice(PROFILE_BACKGROUNDS)
+        updated = True
+
+    if updated:
+        upsert_user(user)
+
+    return user
 
 
 def get_user_by_email(email):
-    try:
-        user = User.objects(email=email).get()
-        return user
-    except User.DoesNotExist:
-        return None
+    # TODO No need for this function
+    return select_user_by_email(email)

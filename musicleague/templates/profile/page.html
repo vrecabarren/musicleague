@@ -72,10 +72,10 @@
                 <div class="league-item">
                     <div class="league-tile linked" data-href="{{ url_for('view_league', league_id=league.id) }}">
                         <div class="league-tile-inner">
-                            {% if league.is_inactive %}
+                            {% if league.is_inactive_v2 %}
                             <img class="league-icon inactive" src="https://s3.amazonaws.com/musicleague-static-assets/icons/clock_gray.svg" alt="">
                             <div class="league-title inactive">{{ league.name }}</div>
-                            {% elif league.is_complete %}
+                            {% elif league.is_complete_v2 %}
                             <img class="league-icon complete" src="https://s3.amazonaws.com/musicleague-static-assets/icons/completed_league_icon.svg" alt="">
                             <div class="league-title complete">{{ league.name }}</div>
                             {% else %}

@@ -4,7 +4,8 @@ from musicleague.messenger.context import create_context
 from musicleague.messenger.context import STATUS_DEFAULT
 from musicleague.messenger.context import STATUS_LINK_ACCOUNT
 from musicleague.messenger.send import send_message
-from musicleague.user import get_user
+from musicleague.persistence.select import select_user
+from musicleague.persistence.update import upsert_user
 
 
 def process_new_user(messenger_id):
@@ -18,7 +19,7 @@ def process_new_user(messenger_id):
 
 
 def process_link_user(context, message_text):
-    user = get_user(message_text)
+    user = select_user(message_text)
     if not user:
         send_message(context.id,
                      "I'm sorry. I didn't find a user with that ID.")
@@ -29,7 +30,7 @@ def process_link_user(context, message_text):
     context.save()
 
     user.messenger = context
-    user.save()
+    upsert_user(user)
 
     send_message(context.id,
                  "I've linked your Facebook and Music League accounts!\n"
