@@ -79,8 +79,9 @@ class Bot:
 
 class ScoreboardEntry:
     def __init__(self, uri, submission, **kwargs):
-        self.submission = submission
+        self.is_valid = True
         self.place = kwargs.get('place', -1)
+        self.submission = submission
         self.uri = uri
         self.votes = []
 

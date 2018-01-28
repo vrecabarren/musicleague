@@ -212,8 +212,13 @@ def select_league(league_id, exclude_properties=None):
             if 'scoreboard' not in exclude_properties:
                 user_entry_idx = defaultdict(list)
                 for round in league.submission_periods:
+                    voters = {v.user.id for v in round.votes}
+
                     entries_by_uri = round_uri_entry_idx[round.id]
                     for entry in entries_by_uri.values():
+                        # Invalidate entries for submitters who didn't vote
+                        entry.is_valid = entry.submission.user.id in voters
+
                         round.scoreboard.add_entry(entry, entry.place)
                         if round.is_complete:
                             user_entry_idx[entry.submission.user.id].append(entry)
