@@ -50,7 +50,7 @@
             <div class="row-fluid">
                 <div id="{{ song['id'] }}" class="collapse">
                     <div class="col-xs-12">
-                        <div class="vote-breakdown">
+                        <div class="vote-breakdown{% if not entry.is_valid %} invalid{% endif %}">
                             <div class="row">
                                 <div class="row-height">
                                     <div class="col-xs-12 col-sm-4">
