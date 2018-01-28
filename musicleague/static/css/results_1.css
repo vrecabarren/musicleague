@@ -244,6 +244,10 @@ div, span {
     font-size: 70px;
     line-height: 70px;
 }
+.song .vote-breakdown.invalid .total-points-banner .total-points {
+    color: #a7a7a7;
+    text-decoration: line-through;
+}
 
 .song .vote-breakdown .total-points-banner .total-points-divider-wrapper {
     display: block;
@@ -280,6 +284,7 @@ div, span {
     vertical-align: middle;
     width: 100%;
 }
+.song .vote-breakdown.invalid .vote .vote-count-wrapper { background: #a7a7a7; }
 
 .song .vote-breakdown .vote .vote-count-wrapper .vote-count {
     color: #F8C62C;
@@ -287,12 +292,17 @@ div, span {
     line-height: 24px;
     vertical-align: middle;
 }
+.song .vote-breakdown.invalid .vote .vote-count-wrapper .vote-count { text-decoration: line-through; }
 
 .song .vote-breakdown .vote .voter {
     font-size: 18px;
     line-height: 18px;
     padding-left: 0px;
     vertical-align: middle;
+}
+.song .vote-breakdown.invalid .vote .voter {
+    color: #a7a7a7;
+    text-decoration: line-through;
 }
 
 .row-height {
