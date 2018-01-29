@@ -9,6 +9,9 @@ from flask import url_for
 from spotipy import Spotify
 
 from musicleague import app
+from musicleague.analytics import track_new_user
+from musicleague.analytics import track_user_login
+from musicleague.analytics import track_user_logout
 from musicleague.bot import create_or_update_bot
 from musicleague.bot import is_bot
 from musicleague.persistence.select import select_user
@@ -77,11 +80,14 @@ def login():
             # If user logging in w/ Spotify does not yet exist, create it
             if not user:
                 user = create_user_from_spotify_user(spotify_user)
+                track_new_user(user.id)
+            else:
+                track_user_login(user_id)
 
-            # If user's image is from Facebook, token may have expired.
-            # TODO: This needs to be smarter
-            elif 'fbcdn.net' in user.image_url:
-                user = update_user_from_spotify_user(user, spotify_user)
+                # If user's image is from Facebook, token may have expired.
+                # TODO: This needs to be smarter
+                if 'fbcdn.net' in user.image_url:
+                    user = update_user_from_spotify_user(user, spotify_user)
 
             _update_session(user_id, access_token, refresh_token, expires_at)
             session.permanent = True
@@ -137,6 +143,7 @@ def add_bot():
 @app.route(LOGOUT_URL)
 @login_required
 def logout():
+    track_user_logout(g.user.id)
     _clear_session()
     return redirect(url_for("hello"))
 
