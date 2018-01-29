@@ -21,6 +21,7 @@ class TYPES:
     """ Keys used to store ETA in entity for tasks below. Must be unique. """
     COMPLETE_SUBMISSION_PERIOD = 'csp'
     CREATE_PLAYLIST = 'cp'
+    NOTIFY_SUBMISSION_PERIOD = 'nsp'
     SEND_SUBMISSION_REMINDERS = 'ssr'
     SEND_VOTE_REMINDERS = 'svr'
 
@@ -78,12 +79,33 @@ def complete_submission_period(submission_period_id):
         if league.is_complete:
             update_league_status(league.id, LeagueStatus.COMPLETE)
         else:
-            user_new_round_notification(league.current_submission_period)
+            from musicleague.submission_period.tasks.schedulers import schedule_new_round_notification
+            schedule_new_round_notification(league.current_submission_period)
 
     except Exception as e:
         app.logger.exception(
             'Error occurred while completing submission period!', exc_info=e,
             extra={'round': submission_period_id})
+
+
+@job('default', connection=redis_conn)
+def notify_new_round(submission_period_id):
+    if not submission_period_id:
+        app.logger.error('No submission period id for new round notification!')
+        return
+
+    try:
+        with app.app_context():
+            league_id = select_league_id_for_round(submission_period_id)
+            league = select_league(
+                league_id, exclude_properties=['submissions', 'votes', 'scoreboard', 'invited_users'])
+            submission_period = next((r for r in league.submission_periods if r.id == submission_period_id), None)
+
+            user_new_round_notification(submission_period)
+
+    except Exception as e:
+        app.logger.exception('Error occurred while notifying new round!', exc_info=e,
+                             extra={'round': submission_period_id})
 
 
 @job('default', connection=redis_conn)
