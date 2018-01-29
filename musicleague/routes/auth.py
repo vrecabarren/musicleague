@@ -143,7 +143,8 @@ def add_bot():
 @app.route(LOGOUT_URL)
 @login_required
 def logout():
-    track_user_logout(g.user.id)
+    if 'current_user' in session:
+        track_user_logout(session['current_user'])
     _clear_session()
     return redirect(url_for("hello"))
 
