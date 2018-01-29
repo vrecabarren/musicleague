@@ -2,6 +2,7 @@ import os
 
 from musicleague.environment.variables import DEBUG
 from musicleague.environment.variables import DEPLOYED
+from musicleague.environment.variables import MIXPANEL_TOKEN
 from musicleague.environment.variables import PORT
 from musicleague.environment.variables import PRODUCTION
 from musicleague.environment.variables import REDISCLOUD_URL
@@ -54,6 +55,10 @@ def is_production():
 
 def get_port():
     return get_setting(PORT)
+
+
+def get_mixpanel_token():
+    return get_setting(MIXPANEL_TOKEN)
 
 
 def get_redis_url():
