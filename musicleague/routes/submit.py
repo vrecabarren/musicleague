@@ -1,6 +1,5 @@
 import httplib
 import json
-from timeit import default_timer as timer
 
 from flask import g
 from flask import redirect
@@ -10,10 +9,10 @@ from flask import session
 from flask import url_for
 
 from musicleague import app
+from musicleague.analytics import track_user_submitted
 from musicleague.notify import owner_user_submitted_notification
 from musicleague.notify import user_last_to_submit_notification
 from musicleague.persistence.select import select_league
-from musicleague.persistence.select import select_round
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 from musicleague.submission import create_or_update_submission
@@ -129,6 +128,8 @@ def submit(league_id, submission_period_id):
         elif submission.count < 2 and len(remaining) == 1:
             last_user = remaining[0]
             user_last_to_submit_notification(last_user, submission_period)
+
+        track_user_submitted(g.user.id, submission_period)
 
         return redirect(url_for('view_league', league_id=league_id))
 
