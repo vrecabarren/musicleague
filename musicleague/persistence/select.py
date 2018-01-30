@@ -64,7 +64,7 @@ def select_user(user_id):
             u = User(user_id, email, image_url, is_admin, joined, name, profile_bg)
 
             # TODO This could be done in one fetch with a join
-            u.preferences = user_id
+            u.preferences = select_user_preferences(user_id)
 
             return u
 
