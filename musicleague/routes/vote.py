@@ -1,6 +1,5 @@
 import httplib
 import json
-from timeit import default_timer as timer
 
 from flask import g
 from flask import redirect
@@ -19,6 +18,7 @@ from musicleague.submission import get_my_submission
 from musicleague.submission_period.tasks import complete_submission_period
 from musicleague.vote import create_or_update_vote
 from musicleague.vote import get_my_vote
+
 
 VOTE_URL = '/l/<league_id>/<submission_period_id>/vote/'
 
