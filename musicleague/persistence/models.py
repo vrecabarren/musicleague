@@ -89,6 +89,10 @@ class ScoreboardEntry:
     def points(self):
         if not self.is_valid:
             return 0
+        return self.potential_points
+
+    @property
+    def potential_points(self):
         return sum([vote.votes.get(self.uri, 0) for vote in self.votes])
 
 
