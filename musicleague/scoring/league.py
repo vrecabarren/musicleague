@@ -149,9 +149,9 @@ class RankingEntrySortKey(EntrySortKey):
         other_counter.subtract(Counter(self_rankings))
         other_asym = sorted(list(other_counter.elements()), reverse=True)
 
-        if next(iter(self_asym), 0) > next(iter(other_asym), 0):
+        if next(iter(self_asym), 0) < next(iter(other_asym), 0):
             return 1
-        elif next(iter(self_asym), 0) < next(iter(other_asym), 0):
+        elif next(iter(self_asym), 0) > next(iter(other_asym), 0):
             return -1
 
         return 0
