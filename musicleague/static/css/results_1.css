@@ -214,6 +214,7 @@ div, span {
 }
 .song.invalid .stats-wrapper .points-wrapper .point-count.invalid {
     color: #a7a7a7;
+    font-size: 50px;
     text-decoration: line-through;
 }
 .song .stats-wrapper .points-wrapper .collapse-toggle {
