@@ -16,7 +16,7 @@ from musicleague.spotify import create_or_update_playlist
 from musicleague.spotify import create_playlist
 from musicleague.spotify import get_spotify_oauth
 from musicleague.spotify import OAUTH_SCOPES
-from musicleague.spotify import to_uri
+from musicleague.spotify import to_playlist_user_id
 from musicleague.spotify import update_playlist
 from musicleague.submission import create_submission
 from musicleague.submission_period import create_submission_period
@@ -227,21 +227,16 @@ class CreateOrUpdatePlaylistTestCase(unittest.TestCase):
             self.bot_id, self.playlist_id, self.submission_period.all_tracks)
 
 
-class ToUriTestCase(unittest.TestCase):
+class ToPlaylistUserIDTestCase(unittest.TestCase):
 
-    def test_non_track_uri(self):
-        album_uri = 'spotify:album:0QA8bVnLCxOpCYMhIdT6rz'
-        self.assertIsNone(to_uri(album_uri))
+    def test_invalid(self):
+        track_uri = 'spotify:track:413CBplTN03RNZD8H34B6q'
+        self.assertIsNone(to_playlist_user_id(track_uri))
 
-    def test_non_track_url(self):
-        album_url = 'https://open.spotify.com/album/0QA8bVnLCxOpCYMhIdT6rz'
-        self.assertIsNone(to_uri(album_url))
+    def test_playlist_uri(self):
+        uri = 'spotify:user:music-league:playlist:7BWQRYlu8MQU5LmuJOhnQs'
+        self.assertEqual('music-league', to_playlist_user_id(uri))
 
-    def test_track_uri(self):
-        track_uri = 'spotify:track:0YhEJmOYZoRdKNPbCvHs8R'
-        self.assertEqual(track_uri, to_uri(track_uri))
-
-    def test_track_url(self):
-        track_uri = 'spotify:track:0YhEJmOYZoRdKNPbCvHs8R'
-        track_url = 'https://open.spotify.com/track/0YhEJmOYZoRdKNPbCvHs8R'
-        self.assertEqual(track_uri, to_uri(track_url))
+    def test_playlist_url(self):
+        url = 'https://open.spotify.com/user/music-league/playlist/7BWQRYlu8MQU5LmuJOhnQs?si=4-ZlJRRtTYOeLcTvPkDKoQ'
+        self.assertEqual('music-league', to_playlist_user_id(url))

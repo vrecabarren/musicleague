@@ -18,9 +18,10 @@ from musicleague.persistence.update import upsert_round
 OAUTH_SCOPES = 'user-read-email playlist-modify-public'
 BOT_SCOPES = 'playlist-modify-public playlist-modify-private'
 
-URI_REGEX = 'spotify:user:.+:playlist:(?P<id>[A-Za-z0-9]{22})'
-URL_REGEX = ('(?:http|https):\/\/(?:open|play)\.spotify\.com\/user\/.+\/playlist\/'
+URI_REGEX = 'spotify:user:(?P<user_id>.+):playlist:(?P<id>[A-Za-z0-9]{22})'
+URL_REGEX = ('(?:http|https):\/\/(?:open|play)\.spotify\.com\/user\/(?P<user_id>.+)\/playlist\/'
                  '(?P<id>[A-Za-z0-9]{22})')
+
 
 def get_spotify_oauth(bot=False):
     client_id = get_setting(SPOTIFY_CLIENT_ID)
@@ -140,6 +141,14 @@ def to_playlist_id(url_or_uri):
         return re.match(URL_REGEX, url_or_uri).group('id')
     elif is_playlist_uri(url_or_uri):
         return re.match(URI_REGEX, url_or_uri).group('id')
+    return None
+
+
+def to_playlist_user_id(url_or_uri):
+    if is_playlist_url(url_or_uri):
+        return re.match(URL_REGEX, url_or_uri).group('user_id')
+    elif is_playlist_uri(url_or_uri):
+        return re.match(URI_REGEX, url_or_uri).group('user_id')
     return None
 
 
