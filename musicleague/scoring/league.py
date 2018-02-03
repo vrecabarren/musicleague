@@ -108,10 +108,14 @@ class RankingEntrySortKey(EntrySortKey):
         users who voted for each.
         """
         self_voters = set(
-            [v.user.id for entry in self.obj.entries for v in entry.votes])
+            [v.user.id
+             for entry in self.obj.entries if entry.is_valid
+             for v in entry.votes])
 
         other_voters = set(
-            [v.user.id for entry in other.entries for v in entry.votes])
+            [v.user.id
+             for entry in other.entries if entry.is_valid
+             for v in entry.votes])
 
         if len(self_voters) > len(other_voters):
             return 1
