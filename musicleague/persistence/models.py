@@ -79,11 +79,26 @@ class Bot:
 
 class ScoreboardEntry:
     def __init__(self, uri, submission, **kwargs):
-        self.is_valid = True
         self.place = kwargs.get('place', -1)
         self.submission = submission
         self.uri = uri
         self.votes = []
+
+    @property
+    def round(self):
+        return self.submission.submission_period
+
+    @property
+    def is_valid(self):
+        if not self.round.is_complete:
+            return True
+
+        # If submitter voted, then this entry is valid
+        from musicleague.vote import get_my_vote
+        if get_my_vote(self.submission.user, self.round) is None:
+            return False
+
+        return True
 
     @property
     def points(self):
