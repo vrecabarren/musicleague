@@ -1,4 +1,4 @@
-<div class="song{% if not entry.is_valid and entry.potential_points > 0 %} invalid{% endif %}" data-uri="{{ uri }}">
+<div class="song{% if not entry.is_valid %} invalid{% endif %}" data-uri="{{ uri }}">
     <div class="container">
         <div class="row">
             <div class="hidden-xs">
@@ -30,7 +30,7 @@
                     <span class="voter-count">{{ entry.votes|length }} {% if entry.votes|length == 1 %}Person{% else %}People{% endif %} Voted On This</span>
                 </div>
                 <div class="points-wrapper">
-                    {% if not entry.is_valid and entry.potential_points > 0 %}
+                    {% if not entry.is_valid %}
                     <span class="point-count invalid" data-toggle="popover" data-trigger="hover" data-content="Points were not applied to songs whose submitters did not vote before the deadline.">{{ "%02d" % entry.potential_points }}</span>
                     {% endif %}
                     <span class="point-count">{{ "%02d" % entry.points }}</span>
@@ -44,7 +44,7 @@
                     <span class="voter-count">{{ entry.votes|length }} {% if entry.votes|length == 1 %}Person{% else %}People{% endif %} Voted On This</span>
                 </div>
                 <div class="points-wrapper">
-                    {% if not entry.is_valid and entry.potential_points > 0 %}
+                    {% if not entry.is_valid %}
                     <span class="point-count invalid" data-toggle="popover" data-trigger="hover" data-content="Points were not applied to songs whose submitters did not vote before the deadline.">{{ "%02d" % entry.potential_points }}</span>
                     {% endif %}
                     <span class="point-count">{{ "%02d" % entry.points }}</span>
