@@ -209,11 +209,8 @@ div, span {
     line-height: 50px;
     vertical-align: middle;
 }
-.song.invalid .stats-wrapper .points-wrapper .point-count {
-    color: #F8C62C;
-}
 .song.invalid .stats-wrapper .points-wrapper .point-count.invalid {
-    color: #a7a7a7;
+    color: #FF2300;
     font-size: 50px;
     text-decoration: line-through;
 }
