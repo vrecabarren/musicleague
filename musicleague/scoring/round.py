@@ -122,6 +122,9 @@ class ScoreboardEntrySortKey(EntrySortKey):
         """ Compare two ScoreboardEntry objects based on the highest
         individual asymmetric vote received.
         """
+        if not self.obj.submission.submission_period.is_complete:
+            return 0
+
         self_votes = [v.votes[self.obj.uri] for v in self.obj.votes]
         other_votes = [v.votes[other.uri] for v in other.votes]
 
