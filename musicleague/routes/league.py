@@ -217,9 +217,9 @@ def join_league(league_id, **kwargs):
     return redirect(url_for('view_league', league_id=league_id))
 
 
-@app.route(REMOVE_LEAGUE_URL)
+@app.route(REMOVE_LEAGUE_URL, methods=['POST'])
 @login_required
-def get_remove_league(league_id, **kwargs):
+def post_remove_league(league_id, **kwargs):
     league = select_league(league_id)
     if league and league.has_owner(g.user):
         remove_league(league_id, league=league)

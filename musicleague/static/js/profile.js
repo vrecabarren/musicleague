@@ -38,7 +38,7 @@ $('.control[data-remove-url]').on("click", function(e){
     var url = $(this).data('remove-url');
     var modal = $('#delete-league-modal');
     modal.find('#league-name').html(name);
-    modal.find('#delete-league-btn').attr('href', url);
+    modal.find('#delete-league-form').attr('action', url);
     modal.modal('show');
 });
 

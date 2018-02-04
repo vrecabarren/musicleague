@@ -109,7 +109,7 @@
                         <a class="admin-toggle collapsed" title="Admin Controls" data-toggle="collapse" data-target="#{{ league.id }}-controls"></a>
                         <span id="{{ league.id }}-controls" class="admin-controls collapse width">
                             <a href="{{ url_for('get_manage_league', league_id=league.id) }}" title="Manage League" class="control"><span class="manage"></span></a>
-                            <a href="#" data-name="{{ league.name }}" data-remove-url="{{ url_for('get_remove_league', league_id=league.id) }}" title="Remove League" class="control"><span class="remove"></span></a>
+                            <a href="#" data-name="{{ league.name }}" data-remove-url="{{ url_for('post_remove_league', league_id=league.id) }}" title="Remove League" class="control"><span class="remove"></span></a>
                         </span>
                     </div>
                     {% endif %}
@@ -131,8 +131,10 @@
         <span>Are you sure you want to delete <strong id="league-name">League Name</strong>?</span>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-lg btn-default" id="cancel-delete-league-btn" data-dismiss="modal">Cancel</button>
-        <a href="#" class="btn btn-lg btn-danger" id="delete-league-btn">Delete</a>
+        <form id="delete-league-form" method="post">
+            <button type="button" class="btn btn-lg btn-default" id="cancel-delete-league-btn" data-dismiss="modal">Cancel</button>
+            <button  type="submit" class="btn btn-lg btn-danger" id="delete-league-btn">Delete</a>
+        </form>
     </div>
 </div>
 
