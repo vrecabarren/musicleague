@@ -189,7 +189,8 @@ def post_manage_league(league_id):
                                deleted_round, str(e))
 
     if league.scoreboard:
-        league = calculate_league_scoreboard(league)
+        league = select_league(league_id)
+        calculate_league_scoreboard(league)
 
     app.logger.info('User modified league', extra={'league': league.id, 'user': g.user.id})
 
