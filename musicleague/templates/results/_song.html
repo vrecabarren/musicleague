@@ -32,8 +32,10 @@
                 <div class="points-wrapper">
                     {% if display_invalid %}
                     <span class="point-count invalid" data-toggle="popover" data-trigger="hover" data-html="true" data-content="<span style='color: #01627E'>Points were not applied to this song because {{ entry.submission.user.name }} did not vote before the deadline.</span>">{{ "%02d" % entry.potential_points }}</span>
-                    {% endif %}
                     <span class="point-count">{{ "%02d" % entry.points }}</span>
+                    {% else %}
+                        <span class="point-count">{{ "%02d" % entry.potential_points }}</span>
+                    {% endif %}
                     <span class="collapse-toggle collapsed" data-toggle="collapse" data-target="#{{ song['id'] }}" data-trigger="click"></span>
                 </div>
             </div>
@@ -46,8 +48,10 @@
                 <div class="points-wrapper">
                     {% if display_invalid %}
                     <span class="point-count invalid" data-toggle="popover" data-trigger="hover" data-html="true" data-content="<span style='color: #01627E'>Points were not applied to this song because {{ entry.submission.user.name }} did not vote before the deadline.</span>">{{ "%02d" % entry.potential_points }}</span>
-                    {% endif %}
                     <span class="point-count">{{ "%02d" % entry.points }}</span>
+                    {% else %}
+                        <span class="point-count">{{ "%02d" % entry.potential_points }}</span>
+                    {% endif %}
                     <span class="collapse-toggle collapsed" data-toggle="collapse" data-target="#{{ song['id'] }}" data-trigger="click"></span>
                 </div>
             </div>
