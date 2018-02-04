@@ -51,11 +51,7 @@
 <script type="text/javascript" src="/static/js/jquery.sticky-kit.min.js"></script>
 <script>
     $(document).ready(function(){
-        $('.point-count.invalid').popover({
-            trigger: 'hover',
-            html: true,
-            content: '<span style="color: #a7a7a7">Points were not applied to songs whose submitters did not vote before the deadline.</span>'
-        });
+        $('[data-toggle="popover"]').popover();
     });
 </script>
 {% endblock %}
