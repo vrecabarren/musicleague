@@ -108,10 +108,14 @@ class RankingEntrySortKey(EntrySortKey):
         users who voted for each.
         """
         self_voters = set(
-            [v.user.id for entry in self.obj.entries for v in entry.votes])
+            [v.user.id
+             for entry in self.obj.entries if entry.is_valid
+             for v in entry.votes])
 
         other_voters = set(
-            [v.user.id for entry in other.entries for v in entry.votes])
+            [v.user.id
+             for entry in other.entries if entry.is_valid
+             for v in entry.votes])
 
         if len(self_voters) > len(other_voters):
             return 1
@@ -145,9 +149,9 @@ class RankingEntrySortKey(EntrySortKey):
         other_counter.subtract(Counter(self_rankings))
         other_asym = sorted(list(other_counter.elements()), reverse=True)
 
-        if next(iter(self_asym), 0) > next(iter(other_asym), 0):
+        if next(iter(self_asym), 0) < next(iter(other_asym), 0):
             return 1
-        elif next(iter(self_asym), 0) < next(iter(other_asym), 0):
+        elif next(iter(self_asym), 0) > next(iter(other_asym), 0):
             return -1
 
         return 0

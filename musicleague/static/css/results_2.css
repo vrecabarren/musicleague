@@ -209,6 +209,11 @@ div, span {
     line-height: 50px;
     vertical-align: middle;
 }
+.song.invalid .stats-wrapper .points-wrapper .point-count.invalid {
+    color: #FF2300;
+    font-size: 50px;
+    text-decoration: line-through;
+}
 .song .stats-wrapper .points-wrapper .collapse-toggle {
     background: url('https://s3.amazonaws.com/musicleague-static-assets/icons/collapse_icon_blue.svg');
     cursor: pointer;
@@ -243,6 +248,10 @@ div, span {
     display: block;
     font-size: 70px;
     line-height: 70px;
+}
+.song.invalid .vote-breakdown .total-points-banner .total-points {
+    color: #a7a7a7;
+    text-decoration: line-through;
 }
 
 .song .vote-breakdown .total-points-banner .total-points-divider-wrapper {
@@ -280,6 +289,7 @@ div, span {
     vertical-align: middle;
     width: 100%;
 }
+.song.invalid .vote-breakdown .vote .vote-count-wrapper { background: #a7a7a7; }
 
 .song .vote-breakdown .vote .vote-count-wrapper .vote-count {
     color: #F8C62C;
@@ -287,12 +297,17 @@ div, span {
     line-height: 24px;
     vertical-align: middle;
 }
+.song.invalid .vote-breakdown .vote .vote-count-wrapper .vote-count { text-decoration: line-through; }
 
 .song .vote-breakdown .vote .voter {
     font-size: 18px;
     line-height: 18px;
     padding-left: 0px;
     vertical-align: middle;
+}
+.song.invalid .vote-breakdown .vote .voter {
+    color: #a7a7a7;
+    text-decoration: line-through;
 }
 
 .row-height {

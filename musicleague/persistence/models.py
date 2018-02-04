@@ -79,13 +79,20 @@ class Bot:
 
 class ScoreboardEntry:
     def __init__(self, uri, submission, **kwargs):
-        self.submission = submission
+        self.is_valid = True
         self.place = kwargs.get('place', -1)
+        self.submission = submission
         self.uri = uri
         self.votes = []
 
     @property
     def points(self):
+        if not self.is_valid:
+            return 0
+        return self.potential_points
+
+    @property
+    def potential_points(self):
         return sum([vote.votes.get(self.uri, 0) for vote in self.votes])
 
 
