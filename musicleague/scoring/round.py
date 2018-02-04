@@ -22,13 +22,16 @@ def calculate_round_scoreboard(round):
                for uri in submission.tracks}
 
     # Get Votes for each entry
+    voters = set()
     for vote in round.votes:
+        voters.add(vote.user.id)
         for uri, points in vote.votes.iteritems():
             if points != 0:
                 entries[uri].votes.append(vote)
 
     # Sort votes on each entry by number of points awarded
     for entry in entries.values():
+        entry.is_valid = entry.submission.user.id in voters
         entry.votes = sorted(entry.votes,
                              key=lambda x: x.votes[entry.uri],
                              reverse=True)
@@ -73,6 +76,7 @@ class ScoreboardEntrySortKey(EntrySortKey):
 
     def _ordered_cmp(self, other):
         _cmp_order = [
+            self._cmp_entry_is_valid,
             self._cmp_entry_points,
             self._cmp_entry_num_voters,
             self._cmp_entry_highest_vote
@@ -84,6 +88,15 @@ class ScoreboardEntrySortKey(EntrySortKey):
                 return diff
 
         return 0
+
+    def _cmp_entry_is_valid(self, other):
+        """ Compare two ScoreboardEntry objects based on their validity. """
+        if self.obj.is_valid and not other.is_valid:
+            return 1
+        elif not self.obj.is_valid and other.is_valid:
+            return -1
+        return 0
+
 
     def _cmp_entry_points(self, other):
         """ Compare two ScoreboardEntry objects based on the raw number of

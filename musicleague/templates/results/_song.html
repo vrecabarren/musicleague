@@ -1,4 +1,4 @@
-<div class="song" data-uri="{{ uri }}">
+<div class="song{% if not entry.is_valid and entry.potential_points > 0 %} invalid{% endif %}" data-uri="{{ uri }}">
     <div class="container">
         <div class="row">
             <div class="hidden-xs">
@@ -27,25 +27,31 @@
             </div>
             <div class="stats-wrapper with-trophy col-xs-7 col-sm-3">
                 <div class="voters-wrapper">
-                    <span class="voter-count">{{ entry.votes|length }} {% if entry.votes|length == 1 %}Person{% else %}People{% endif %} Voted for This</span>
+                    <span class="voter-count">{{ entry.votes|length }} {% if entry.votes|length == 1 %}Person{% else %}People{% endif %} Voted On This</span>
                 </div>
                 <div class="points-wrapper">
+                    {% if not entry.is_valid and entry.potential_points > 0 %}
+                    <span class="point-count invalid" data-toggle="popover" data-trigger="hover" data-html="true" data-content="<span style='color: #01627E'>Points were not applied to this song because {{ entry.submission.user.name }} did not vote before the deadline.</span>">{{ "%02d" % entry.potential_points }}</span>
+                    {% endif %}
                     <span class="point-count">{{ "%02d" % entry.points }}</span>
                     <span class="collapse-toggle collapsed" data-toggle="collapse" data-target="#{{ song['id'] }}" data-trigger="click"></span>
                 </div>
             </div>
             <div class="col-xs-1 col-sm-0"></div>
             {% else %}
-            <div class="stats-wrapper col-xs-6 col-xs-offset-3 col-sm-3 col-sm-offset-2">
+            <div class="stats-wrapper col-xs-8 col-xs-offset-2 col-sm-3 col-sm-offset-2">
                 <div class="voters-wrapper">
-                    <span class="voter-count">{{ entry.votes|length }} {% if entry.votes|length == 1 %}Person{% else %}People{% endif %} Voted for This</span>
+                    <span class="voter-count">{{ entry.votes|length }} {% if entry.votes|length == 1 %}Person{% else %}People{% endif %} Voted On This</span>
                 </div>
                 <div class="points-wrapper">
+                    {% if not entry.is_valid and entry.potential_points > 0 %}
+                    <span class="point-count invalid" data-toggle="popover" data-trigger="hover" data-html="true" data-content="<span style='color: #01627E'>Points were not applied to this song because {{ entry.submission.user.name }} did not vote before the deadline.</span>">{{ "%02d" % entry.potential_points }}</span>
+                    {% endif %}
                     <span class="point-count">{{ "%02d" % entry.points }}</span>
                     <span class="collapse-toggle collapsed" data-toggle="collapse" data-target="#{{ song['id'] }}" data-trigger="click"></span>
                 </div>
             </div>
-            <div class="col-xs-3 col-sm-0"></div>
+            <div class="col-xs-2 col-sm-0"></div>
             {% endif %}
             <div class="row-fluid">
                 <div id="{{ song['id'] }}" class="collapse">
