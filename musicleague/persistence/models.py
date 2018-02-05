@@ -90,6 +90,10 @@ class ScoreboardEntry:
 
     @property
     def is_valid(self):
+        is_valid_began = utc.localize(datetime(2018, 2, 5))
+        if self.round.vote_due_date < is_valid_began:
+            return True
+
         if not self.round.is_complete:
             return True
 
