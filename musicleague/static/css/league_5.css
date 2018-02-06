@@ -91,19 +91,15 @@
 }
 #title-bar .members {
     font-size: 18px;
-    margin-right: 25px;
+    line-height: 50px;
 }
 #title-bar .visible-xs .members {
-    line-height: 50px;
     margin-bottom: 20px;
 }
 #title-bar .members img {
     height: 40px;
-    margin-right: -25px;
     width: 40px;
 }
-
-#title-bar .members img:last-of-type { margin-right: 0px !important; }
 
 #title-bar .members #member-count {
     display: inline-block;
