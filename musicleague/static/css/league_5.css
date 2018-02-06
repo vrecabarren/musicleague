@@ -91,7 +91,7 @@
 }
 #title-bar .members {
     font-size: 18px;
-    line-height: 50px;
+    line-height: 40px;
 }
 #title-bar .visible-xs .members {
     margin-bottom: 20px;
@@ -101,12 +101,12 @@
     width: 40px;
 }
 
-#title-bar .members #member-count {
+#title-bar .members .members-toggle {
+    cursor: pointer;
     display: inline-block;
-    margin: 0 0 0 10px;
+    margin-left: 10px;
     vertical-align: middle;
 }
-#title-bar .members #member-count .members-toggle { cursor: pointer; margin-left: 10px; }
 
 #title-bar .members #members-collapse #members-container {
     background-color: rgba(0, 37, 154, 0.85);
