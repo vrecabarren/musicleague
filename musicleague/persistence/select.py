@@ -213,7 +213,7 @@ def select_league(league_id, exclude_properties=None):
                 user_entry_idx = defaultdict(list)
                 for round in league.submission_periods:
                     entries_by_uri = round_uri_entry_idx[round.id]
-                    for entry in entries_by_uri.values():
+                    for entry in sorted(entries_by_uri.values(), key=lambda x: x.points, reverse=True):
                         round.scoreboard.add_entry(entry, entry.place)
                         if round.is_complete:
                             user_entry_idx[entry.submission.user.id].append(entry)
