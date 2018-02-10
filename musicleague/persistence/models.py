@@ -328,6 +328,12 @@ class Round:
         have_not_voted_ids = have_submitted_ids - have_voted_ids
         return [u_idx.get(u_id) for u_id in have_not_voted_ids]
 
+    def user_submission(self, user):
+        return next((s for s in self.submissions if s.user.id == user.id), None)
+
+    def user_vote(self, user):
+        return next((v for v in self.votes if v.user.id == user.id), None)
+
     @property
     def have_submitted(self):
         """ Return the list of users who have submitted. """

@@ -69,12 +69,12 @@
             -->{% if not round.is_future %}<div class="col-xs-6 col-sm-2 col-sm-offset-1 text-center vcenter">
                 {% if round.is_current_v2 %}
                     {% if round.accepting_submissions and league.has_user(user) %}
-                        {% if my_submission %}
+                        {% if round.user_submission(user) %}
                         <span class="action-required">You <span class="emphasize">Have</span> Submitted</span>
                         {% else %}
                         <span class="action-required">You Have <span class="emphasize">Not</span> Submitted</span>
                         {% endif %}
-                    {% elif round.accepting_votes and league.has_user(user) and my_submission %}
+                    {% elif round.accepting_votes and league.has_user(user) and round.user_submission(user) %}
                     <a href="{{ round.playlist_url }}" target="_blank" class="action-link" title="Listen to Playlist">
                         <span alt="" class="action-button playlist current"></span>
                         <span class="action-text current">Listen to Playlist</span>
@@ -96,7 +96,7 @@
                 {% elif round.is_current_v2 %}
                     {% if round.accepting_submissions and league.has_user(user) %}
                         <a href="{{ url_for('view_submit', league_id=league.id, submission_period_id=round.id) }}" class="action-link" title="Submit or Change Submission">
-                            {% if my_submission %}
+                            {% if round.user_submission(user) %}
                             <span alt="" class="action-button change"></span>
                             <span class="action-text current">Change Submissions!</span>
                             {% else %}
@@ -104,16 +104,18 @@
                             <span class="action-text current">Let's Do This!</span>
                             {% endif %}
                         </a>
-                    {% elif round.accepting_votes and league.has_user(user) and my_submission %}
-                        <a href="{{ url_for('view_vote', league_id=league.id, submission_period_id=round.id) }}" class="action-link" title="Vote or Change Votes">
-                            {% if my_vote %}
-                            <span alt="" class="action-button change"></span>
-                            <span class="action-text current">Change Votes!</span>
+                    {% elif round.accepting_votes and league.has_user(user) and round.user_submission(user) %}
+                            {% if round.user_vote(user) %}
+                            <a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=round.id) }}" class="action-link" title="Round Results">
+                                <span alt="" class="action-button results"></span>
+                                <span class="action-text complete">Round Results</span>
+                            </a>
                             {% else %}
-                            <span alt="" class="action-button vote"></span>
-                            <span class="action-text current">Submit Votes!</span>
+                            <a href="{{ url_for('view_vote', league_id=league.id, submission_period_id=round.id) }}" class="action-link" title="Submit Votes">
+                                <span alt="" class="action-button vote"></span>
+                                <span class="action-text current">Submit Votes!</span>
+                            </a>
                             {% endif %}
-                        </a>
                     {% elif round.accepting_votes %}
                         <a href="{{ round.playlist_url }}" target="_blank" class="action-link" title="Listen to Playlist">
                             <span alt="" class="action-button playlist current"></span>
