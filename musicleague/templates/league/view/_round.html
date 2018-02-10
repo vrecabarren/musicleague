@@ -107,8 +107,8 @@
                     {% elif round.accepting_votes and league.has_user(user) and round.user_submission(user) %}
                             {% if round.user_vote(user) %}
                             <a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=round.id) }}" class="action-link" title="Round Results">
-                                <span alt="" class="action-button results"></span>
-                                <span class="action-text complete">Round Results</span>
+                                <span alt="" class="action-button results current"></span>
+                                <span class="action-text current">Round Results</span>
                             </a>
                             {% else %}
                             <a href="{{ url_for('view_vote', league_id=league.id, submission_period_id=round.id) }}" class="action-link" title="Submit Votes">
