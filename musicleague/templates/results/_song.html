@@ -40,7 +40,9 @@
                     {% else %}
                         <span class="point-count">{{ "%02d" % entry.potential_points }}</span>
                     {% endif %}
+                    {% if round.is_complete %}
                     <span class="collapse-toggle collapsed" data-toggle="collapse" data-target="#{{ song['id'] }}" data-trigger="click"></span>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-xs-1 col-sm-0"></div>
@@ -56,7 +58,9 @@
                     {% else %}
                         <span class="point-count">{{ "%02d" % entry.potential_points }}</span>
                     {% endif %}
+                    {% if round.is_complete %}
                     <span class="collapse-toggle collapsed" data-toggle="collapse" data-target="#{{ song['id'] }}" data-trigger="click"></span>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-xs-2 col-sm-0"></div>
