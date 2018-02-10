@@ -7,7 +7,9 @@
                     <div class="text-info">
                         <a class="vcenter name" href="{{ song['external_urls']['spotify'] }}" target="_blank">{{ song['name'] }}</a>
                         <span class="vcenter artist">By {{ song['artists'][0]['name'] }}</span>
+                        {% if round.is_complete %}
                         <span class="vcenter submitter">Submitted by {{ entry.submission.user.name }}</span>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -17,7 +19,9 @@
                     <div class="text-info">
                         <a class="vcenter name" href="{{ song['external_urls']['spotify'] }}" target="_blank">{{ song['name'] }}</a>
                         <span class="vcenter artist">By {{ song['artists'][0]['name'] }}</span>
+                        {% if round.is_complete %}
                         <span class="vcenter submitter">Submitted by {{ entry.submission.user.name }}</span>
+                        {% endif %}
                     </div>
                 </div>
             </div>
