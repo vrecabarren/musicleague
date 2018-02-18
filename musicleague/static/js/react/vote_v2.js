@@ -791,7 +791,7 @@ var SongList = function (_React$Component6) {
                 null,
                 React.createElement(
                     "form",
-                    { method: "post", onSubmit: this.handleFormSubmission.bind(this) },
+                    { id: "vote-form", method: "post", onSubmit: this.handleFormSubmission.bind(this) },
                     listHeader,
                     mobileListHeader,
                     React.createElement("div", { style: { padding: "15px 0" } }),

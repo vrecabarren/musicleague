@@ -445,7 +445,7 @@ class SongList extends React.Component {
 
         return (
             <div>
-                <form method="post" onSubmit={this.handleFormSubmission.bind(this)}>
+                <form id="vote-form" method="post" onSubmit={this.handleFormSubmission.bind(this)}>
                     {listHeader}
                     {mobileListHeader}
                     <div style={{padding: "15px 0"}}></div>
