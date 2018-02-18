@@ -363,6 +363,11 @@ var SongListHeader = function (_React$Component4) {
     }
 
     _createClass(SongListHeader, [{
+        key: "showModal",
+        value: function showModal() {
+            $('#final-votes-modal').modal('show');
+        }
+    }, {
         key: "render",
         value: function render() {
             return React.createElement(
@@ -422,7 +427,7 @@ var SongListHeader = function (_React$Component4) {
                                     { className: this.props.enabled ? 'col-xs-6 col-sm-4 col-md-4 vcenter text-center' : 'col-xs-6 col-sm-4 col-md-4 vcenter text-center disabled', id: "submitVotesButtonWrapper" },
                                     React.createElement(
                                         "button",
-                                        { type: "submit", id: "submitVotesButton", className: this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled', disabled: !this.props.enabled },
+                                        { type: "button", onClick: this.showModal.bind(this), id: "submitVotesButton", className: this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled', disabled: !this.props.enabled },
                                         "Submit",
                                         React.createElement(
                                             "span",
