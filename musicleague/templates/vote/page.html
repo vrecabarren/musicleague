@@ -345,7 +345,10 @@
         $(".songListHeader").stick_in_parent();
         $('#final-votes-btn').click(function(e) {
             e.preventDefault();
-            $('#vote-form').submit();
+            var tempSubmit = $("<input type='submit' id='btn_tmpSubmit'/>");
+            tempSubmit.css('display','none');
+            tempSubmit.appendTo('#vote-form');
+            tempSubmit.click();
         });
     });
 </script>
