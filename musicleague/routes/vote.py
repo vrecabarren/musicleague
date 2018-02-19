@@ -113,7 +113,8 @@ def vote(league_id, submission_period_id):
 
         track_user_voted(g.user.id, submission_period)
 
-        return redirect(url_for('view_league', league_id=league_id))
+        return redirect(url_for('view_submission_period', league_id=league_id,
+                                submission_period_id=submission_period_id))
 
     except Exception:
         app.logger.exception(
