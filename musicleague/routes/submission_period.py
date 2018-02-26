@@ -112,9 +112,9 @@ def view_submission_period(league_id, submission_period_id):
         flash_error('Round not found')
         return redirect(url_for('view_league', league_id=league.id))
 
-    is_owner = league.has_owner(g.user)
+    has_voted = submission_period.user_vote(g.user) is not None
     is_admin = g.user.is_admin
-    can_view = submission_period.is_complete or is_owner or is_admin
+    can_view = submission_period.is_complete or is_admin or has_voted
     if not can_view:
         flash_warning('You do not have access to this page right now')
         return redirect(url_for('view_league', league_id=league.id))

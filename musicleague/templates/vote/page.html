@@ -3,6 +3,8 @@
 {% block title %}Music League | {{ league.name }}{% endblock %}
 
 {% block css %}
+<link href="//jschr.github.io/bootstrap-modal/css/bootstrap-modal-bs3patch.css" rel="stylesheet" />
+<link href="//jschr.github.io/bootstrap-modal/css/bootstrap-modal.css" rel="stylesheet" />
 <link rel="stylesheet" href="/static/css/vote_1.css">
 <style>
 .songListHeader {
@@ -300,6 +302,19 @@
 {% endblock %}
 
 {% block page_content %}
+    <div id="final-votes-modal" class="modal" role="dialog">
+        <div class="modal-header text-left" style="border: none">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3 class="modal-title" style="color: #333">Submit Votes</h3>
+        </div>
+        <div class="modal-body text-left">
+            <span style="color: #333">Are you sure you’re ready to vote?  Your votes cannot be changed.</span>
+        </div>
+        <div class="modal-footer" style="border: none">
+            <button type="button" class="btn btn-default" id="cancel-final-votes-btn" data-dismiss="modal">Cancel</button>
+            <button  type="submit" class="btn" id="final-votes-btn" style="background-color: #63CA40; border: none; color: #fff;">Vote and View Results</a>
+        </div>
+    </div>
     <div id="mountVote"></div>
 {% endblock %}
 
@@ -311,7 +326,9 @@
 <script type="text/javascript">
     var accessToken = "{{ access_token }}";
 </script>
-<script type="text/javascript" src="/static/js/react/vote_v2.js"></script>
+<script src="//jschr.github.io/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
+<script src="//jschr.github.io/bootstrap-modal/js/bootstrap-modal.js"></script>
+<script type="text/javascript" src="/static/js/react/vote_v4.js"></script>
 <script type="text/javascript">
     // Pass template data to React component
     ReactDOM.render(
@@ -328,6 +345,13 @@
 
     $(document).ready(function() {
         $(".songListHeader").stick_in_parent();
+        $('#final-votes-btn').click(function(e) {
+            e.preventDefault();
+            var tempSubmit = $("<input type='submit' id='btn_tmpSubmit'/>");
+            tempSubmit.css('display','none');
+            tempSubmit.appendTo('#vote-form');
+            tempSubmit.click();
+        });
     });
 </script>
 {% endblock %}
