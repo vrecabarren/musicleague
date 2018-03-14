@@ -107,8 +107,12 @@ class ScoreboardEntry:
     @property
     def points(self):
         if not self.is_valid:
-            return 0
+            return self.downvote_points
         return self.potential_points
+
+    @property
+    def downvote_points(self):
+        return sum([min(0, vote.votes.get(self.uri, 0)) for vote in self.votes])
 
     @property
     def potential_points(self):
@@ -327,6 +331,12 @@ class Round:
         have_voted_ids = set([u.id for u in self.have_voted])
         have_not_voted_ids = have_submitted_ids - have_voted_ids
         return [u_idx.get(u_id) for u_id in have_not_voted_ids]
+
+    def user_submission(self, user):
+        return next((s for s in self.submissions if s.user.id == user.id), None)
+
+    def user_vote(self, user):
+        return next((v for v in self.votes if v.user.id == user.id), None)
 
     @property
     def have_submitted(self):

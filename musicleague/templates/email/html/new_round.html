@@ -17,7 +17,7 @@
                     </div>
                     <div style="background-color: #02B8EF; border-radius: 8px; margin-bottom: 50px; padding: 50px 20px;">
                         <div style="padding-bottom: 35px;">
-                            <span style="color: #FFFFFF; font-size: 24px;">Another round is here. <strong>{{ submission_period.name }} is now accepting submissions</strong>!</span>
+                            <span style="color: #FFFFFF; font-size: 24px;">Another round is here. <strong>{{ submission_period.name }}</strong> is now accepting submissions!</span>
                         </div>
                         <a href="{{ url_for('view_submit', league_id=submission_period.league.id, submission_period_id=submission_period.id, _external=True) }}" style="background-color: none; border: 3px solid #FFFFFF; border-radius: 8px; color: #FFFFFF; display: inline-block; font-size: 22px; font-weight: bold; padding: 20px; text-decoration: none; width: 200px;">Submit</a>
                     </div>

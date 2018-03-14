@@ -121,7 +121,9 @@ def submit(league_id, submission_period_id):
 
         remaining = submission_period.have_not_submitted
         if not remaining:
-            complete_submission_process.delay(submission_period.id)
+            # This makes the request a little heavy for the final submitter,
+            # but asyncing means the submitter gets a playlist button but no playlist.
+            complete_submission_process(submission_period.id)
 
         # Don't send submission reminder if this user is resubmitting. In this
         # case, the last user to submit will have already gotten a notification.

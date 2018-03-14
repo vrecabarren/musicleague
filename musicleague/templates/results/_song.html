@@ -7,7 +7,9 @@
                     <div class="text-info">
                         <a class="vcenter name" href="{{ song['external_urls']['spotify'] }}" target="_blank">{{ song['name'] }}</a>
                         <span class="vcenter artist">By {{ song['artists'][0]['name'] }}</span>
+                        {% if round.is_complete %}
                         <span class="vcenter submitter">Submitted by {{ entry.submission.user.name }}</span>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -17,7 +19,9 @@
                     <div class="text-info">
                         <a class="vcenter name" href="{{ song['external_urls']['spotify'] }}" target="_blank">{{ song['name'] }}</a>
                         <span class="vcenter artist">By {{ song['artists'][0]['name'] }}</span>
+                        {% if round.is_complete %}
                         <span class="vcenter submitter">Submitted by {{ entry.submission.user.name }}</span>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -36,7 +40,9 @@
                     {% else %}
                         <span class="point-count">{{ "%02d" % entry.potential_points }}</span>
                     {% endif %}
+                    {% if round.is_complete %}
                     <span class="collapse-toggle collapsed" data-toggle="collapse" data-target="#{{ song['id'] }}" data-trigger="click"></span>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-xs-1 col-sm-0"></div>
@@ -52,11 +58,14 @@
                     {% else %}
                         <span class="point-count">{{ "%02d" % entry.potential_points }}</span>
                     {% endif %}
+                    {% if round.is_complete %}
                     <span class="collapse-toggle collapsed" data-toggle="collapse" data-target="#{{ song['id'] }}" data-trigger="click"></span>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-xs-2 col-sm-0"></div>
             {% endif %}
+            {% if round.is_complete %}
             <div class="row-fluid">
                 <div id="{{ song['id'] }}" class="collapse">
                     <div class="col-xs-12">
@@ -111,7 +120,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
-
     </div>
 </div>

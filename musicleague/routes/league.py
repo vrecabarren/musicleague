@@ -199,7 +199,7 @@ def post_manage_league(league_id):
 
 @app.route(JOIN_LEAGUE_URL, methods=['GET'])
 @login_required
-def join_league(league_id, **kwargs):
+def join_league(league_id):
     league = select_league(league_id)
     add_user(league, g.user.email, notify=False)
 
@@ -219,7 +219,7 @@ def join_league(league_id, **kwargs):
 
 @app.route(REMOVE_LEAGUE_URL, methods=['POST'])
 @login_required
-def post_remove_league(league_id, **kwargs):
+def post_remove_league(league_id):
     league = select_league(league_id)
     if league and league.has_owner(g.user):
         remove_league(league_id, league=league)
@@ -237,13 +237,6 @@ def view_league(league_id):
         app.logger.error('League not found', extra={'league': league_id, 'user': g.user.id})
         return 'League not found', httplib.NOT_FOUND
 
-    my_submission, my_vote = None, None
-    if league.current_submission_period:
-        my_submission = get_my_submission(
-            g.user, league.current_submission_period)
-
-        my_vote = get_my_vote(g.user, league.current_submission_period)
-
     if league.submission_periods:
         lsp = league.submission_periods[-1]
         next_submission_due_date = lsp.submission_due_date + timedelta(weeks=1)
@@ -254,8 +247,9 @@ def view_league(league_id):
 
     return render_template(
         'league/view/page.html',
-        user=g.user, league=league, my_submission=my_submission, my_vote=my_vote,
-        next_submission_due_date=next_submission_due_date, next_vote_due_date=next_vote_due_date)
+        user=g.user, league=league,
+        next_submission_due_date=next_submission_due_date,
+        next_vote_due_date=next_vote_due_date)
 
 
 @app.route(VIEW_LEAGUE_URL + 'score/')

@@ -264,6 +264,10 @@ class Song extends React.Component {
 }
 
 class SongListHeader extends React.Component {
+    showModal() {
+        $('#final-votes-modal').modal('show');
+    }
+
     render() {
         return (
             <div className="songListHeader">
@@ -285,7 +289,7 @@ class SongListHeader extends React.Component {
                                     </div>
                                 </div>
                                 <div className={this.props.enabled ? 'col-xs-6 col-sm-4 col-md-4 vcenter text-center' : 'col-xs-6 col-sm-4 col-md-4 vcenter text-center disabled'} id="submitVotesButtonWrapper">
-                                    <button type="submit" id="submitVotesButton" className={this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled'} disabled={!this.props.enabled}>Submit<span className="hidden-xs"> Votes</span>!</button>
+                                    <button type="button" onClick={this.showModal.bind(this)} id="submitVotesButton" className={this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled'} disabled={!this.props.enabled}>Submit<span className="hidden-xs"> Votes</span>!</button>
                                 </div>
                             </div>
                         </div>
@@ -315,7 +319,7 @@ class SongListHeaderMobile extends SongListHeader {
                                     </div>
                                 </div>
                                 <div className={this.props.enabled ? 'col-xs-6 vcenter text-center' : 'col-xs-6 vcenter text-center disabled'} id="submitVotesButtonWrapper">
-                                    <button type="submit" id="submitVotesButton" className={this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled'} disabled={!this.props.enabled}>Submit<span className="hidden-xs"> Votes</span>!</button>
+                                    <button type="button" onClick={this.showModal.bind(this)} id="submitVotesButton" className={this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled'} disabled={!this.props.enabled}>Submit<span className="hidden-xs"> Votes</span>!</button>
                                 </div>
                             </div>
                         </div>
@@ -327,6 +331,10 @@ class SongListHeaderMobile extends SongListHeader {
 }
 
 class SongListHeaderWithDownVotes extends React.Component {
+    showModal() {
+        $('#final-votes-modal').modal('show');
+    }
+
     render() {
         return (
             <div className="songListHeader">
@@ -355,7 +363,7 @@ class SongListHeaderWithDownVotes extends React.Component {
                                     </div>
                                 </div>
                                 <div className={this.props.enabled ? 'col-sm-4 col-md-4 vcenter text-center' : 'col-sm-4 col-md-4 vcenter text-center disabled'} id="submitVotesButtonWrapper">
-                                    <button type="submit" id="submitVotesButton" className={this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled'} disabled={!this.props.enabled}>Submit<span className="hidden-xs"> Votes</span>!</button>
+                                    <button type="button" onClick={this.showModal.bind(this)} id="submitVotesButton" className={this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled'} disabled={!this.props.enabled}>Submit<span className="hidden-xs"> Votes</span>!</button>
                                 </div>
                             </div>
                             </div>
@@ -394,7 +402,7 @@ class SongListHeaderWithDownVotesMobile extends SongListHeaderWithDownVotes {
                                     </div>
                                 </div>
                                 <div className={this.props.enabled ? 'col-xs-6 col-height vcenter text-center' : 'col-xs-6 col-height vcenter text-center disabled'} id="submitVotesButtonWrapper">
-                                    <button type="submit" id="submitVotesButton" className={this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled'} disabled={!this.props.enabled}>Submit<span className="hidden-xs"> Votes</span>!</button>
+                                    <button type="button" onClick={this.showModal.bind(this)} id="submitVotesButton" className={this.props.enabled ? 'btn btn-lg' : 'btn btn-lg disabled'} disabled={!this.props.enabled}>Submit<span className="hidden-xs"> Votes</span>!</button>
                                 </div>
                             </div>
                             </div>
@@ -441,7 +449,7 @@ class SongList extends React.Component {
 
         return (
             <div>
-                <form method="post" onSubmit={this.handleFormSubmission.bind(this)}>
+                <form id="vote-form" method="post" onSubmit={this.handleFormSubmission.bind(this)}>
                     {listHeader}
                     {mobileListHeader}
                     <div style={{padding: "15px 0"}}></div>

@@ -108,6 +108,10 @@ def update_submission_period(submission_period_id, name, description,
 
     update_round(submission_period)
 
+    num_incomplete = select_rounds_incomplete_count(submission_period.league_id)
+    if num_incomplete == 0:
+        update_league_status(submission_period.league_id, LeagueStatus.COMPLETE)
+
     app.logger.info('Submission period updated: %s', submission_period_id)
 
     return submission_period
