@@ -151,7 +151,7 @@ div, span {
 }
 .song .visible-xs .song-info .text-info .name {
     flex: none;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 
 .song .trophy-wrapper {
