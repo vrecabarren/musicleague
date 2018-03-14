@@ -89,28 +89,23 @@
     font-size: 20px;
     line-height: 24px;
 }
-#title-bar .members {
-    font-size: 18px;
-    margin-right: 25px;
-}
-#title-bar .visible-xs .members {
-    line-height: 50px;
-    margin-bottom: 20px;
-}
+#title-bar .members { font-size: 18px; }
+#title-bar .visible-xs .members { margin-bottom: 35px; }
 #title-bar .members img {
     height: 40px;
-    margin-right: -25px;
     width: 40px;
 }
 
-#title-bar .members img:last-of-type { margin-right: 0px !important; }
-
-#title-bar .members #member-count {
+#title-bar .members .members-toggle {
+    background: url('https://s3.amazonaws.com/musicleague-static-assets/icons/expand_icon.svg');
+    background-repeat: no-repeat;
+    cursor: pointer;
     display: inline-block;
-    margin: 0 0 0 10px;
+    height: 40px;
+    margin-left: 10px;
     vertical-align: middle;
+    width: 40px;
 }
-#title-bar .members #member-count .members-toggle { cursor: pointer; margin-left: 10px; }
 
 #title-bar .members #members-collapse #members-container {
     background-color: rgba(0, 37, 154, 0.85);
