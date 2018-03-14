@@ -135,6 +135,7 @@ div, span {
 .song .visible-xs .song-info .text-info {
     display: block;
     min-height: inherit;
+    padding-bottom: 20px;
 }
 .song .song-info .text-info .name,
 .song .song-info .text-info .artist,
@@ -152,8 +153,6 @@ div, span {
     flex: none;
     margin-bottom: 20px;
 }
-
-.song .visible-xs .song-info .text-info .submitter { margin-bottom: 20px; }
 
 .song .trophy-wrapper {
     height: 100px;
