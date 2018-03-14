@@ -128,11 +128,7 @@
                        </div>
                     </div>
                     {% endif %}
-                    <!-- <span id="member-count">{{ league.users|length }} Members -->
-                        <span class="members-toggle">
-                            <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/expand_icon.svg" alt="" class="account-icon">
-                        </span>
-                    <!-- </span> -->
+                    <span class="members-toggle"></span>
                 </div>
                 {% if league.is_public and league.has_user(user) %}
                 <button class="btn share-league-btn" data-clipboard-text="{{ request.url }}">
@@ -172,11 +168,7 @@
                                </div>
                             </div>
                             {% endif %}
-                            <!-- <span id="member-count">{{ league.users|length }} Members -->
-                                <span class="members-toggle">
-                                    <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/expand_icon.svg" alt="" class="account-icon">
-                                </span>
-                            <!-- </span> -->
+                            <span class="members-toggle"></span>
                         </div>
                     </div>
                     <div style="display: table-cell; padding: 30px 0 30px 20px; border-left: 3px solid #fff; vertical-align: middle;">
