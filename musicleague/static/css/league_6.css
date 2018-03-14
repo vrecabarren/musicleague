@@ -89,13 +89,8 @@
     font-size: 20px;
     line-height: 24px;
 }
-#title-bar .members {
-    font-size: 18px;
-    line-height: 40px;
-}
-#title-bar .visible-xs .members {
-    margin-bottom: 20px;
-}
+#title-bar .members { font-size: 18px; }
+#title-bar .visible-xs .members { margin-bottom: 20px; }
 #title-bar .members img {
     height: 40px;
     width: 40px;
