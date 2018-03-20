@@ -116,6 +116,8 @@ CREATE_TABLE_INVITED_USERS = """CREATE TABLE IF NOT EXISTS invited_users (
 
 DELETE_INVITED_USER = "DELETE FROM invited_users WHERE id = %s;"
 
+DELETE_INVITED_USERS = "DELETE FROM invited_users WHERE league_id = %s;"
+
 INSERT_INVITED_USER = "INSERT INTO invited_users (id, email, league_id) VALUES (%s, %s, %s) ON CONFLICT (email, league_id) DO NOTHING;"
 
 SELECT_INVITED_USERS_COUNT = "SELECT COUNT(id) FROM invited_users;"
