@@ -33,10 +33,17 @@
                 </a>
             </div>
             <div class="add-league-wrapper">
+                {% if request.endpoint == 'view_league' and league.has_owner(user) %}
+                <span class="edit-league-text hidden-xs">Edit League</span>
+                <a href="{{ url_for('get_manage_league', league_id=league.id) }}">
+                    <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/gear_icon.svg" alt="" class="edit-league-icon">
+                </a>
+                {% else %}
                 <span class="add-league-text hidden-xs">Create League</span>
                 <a href="{{ url_for('get_create_league') }}">
                     <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/add_icon.svg" alt="" class="add-league-icon">
                 </a>
+                {% endif %}
             </div>
             <svg class="account-divider" width="7" height="120" viewBox="0 0 3 120" version="1.1" xmlns="http://www.w3.org/2000/svg">
                 <line stroke-linecap="round" x1="1" y1="0" x2="1" y2="90" stroke="white" stroke-width="3"/>
