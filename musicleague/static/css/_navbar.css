@@ -28,9 +28,11 @@
         vertical-align: top;
     }
 
-        #nav-bar .add-league-wrapper .add-league-text { margin-right: 10px; }
+        #nav-bar .add-league-wrapper .add-league-text,
+        #nav-bar .add-league-wrapper .edit-league-text { margin-right: 10px; }
 
-        #nav-bar .add-league-wrapper .add-league-icon {
+        #nav-bar .add-league-wrapper .add-league-icon,
+        #nav-bar .add-league-wrapper .edit-league-icon {
             height: 32px;
             width: 32px;
         }
