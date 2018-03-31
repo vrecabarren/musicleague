@@ -209,6 +209,11 @@ def select_league(league_id, exclude_properties=None):
 
                             round_uri_entry_idx[round.id][uri].votes.append(v)
 
+                    # For each submission, sort votes by points descending
+                    for round_id, entries in round_uri_entry_idx.iteritems():
+                        for uri, entry in entries.iteritems():
+                            entry.votes.sort(key=lambda x:x.votes[uri], reverse=True)
+
             if 'scoreboard' not in exclude_properties:
                 user_entry_idx = defaultdict(list)
                 for round in league.submission_periods:
