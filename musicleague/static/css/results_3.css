@@ -248,10 +248,6 @@ div, span {
     font-size: 70px;
     line-height: 70px;
 }
-.song.invalid .vote-breakdown .total-points-banner .total-points {
-    color: #a7a7a7;
-    text-decoration: line-through;
-}
 
 .song .vote-breakdown .total-points-banner .total-points-divider-wrapper {
     display: block;
