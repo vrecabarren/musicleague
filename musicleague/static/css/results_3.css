@@ -288,7 +288,7 @@ div, span {
     vertical-align: middle;
     width: 100%;
 }
-.song.invalid .vote-breakdown .vote .vote-count-wrapper { background: #a7a7a7; }
+.song.invalid .vote-breakdown .vote.upvote .vote-count-wrapper { background: #a7a7a7; }
 
 .song .vote-breakdown .vote .vote-count-wrapper .vote-count {
     color: #F8C62C;
@@ -296,7 +296,7 @@ div, span {
     line-height: 24px;
     vertical-align: middle;
 }
-.song.invalid .vote-breakdown .vote .vote-count-wrapper .vote-count { text-decoration: line-through; }
+.song.invalid .vote-breakdown .vote.upvote .vote-count-wrapper .vote-count { text-decoration: line-through; }
 
 .song .vote-breakdown .vote .voter {
     font-size: 18px;
@@ -304,7 +304,7 @@ div, span {
     padding-left: 0px;
     vertical-align: middle;
 }
-.song.invalid .vote-breakdown .vote .voter {
+.song.invalid .vote-breakdown .vote.upvote .voter {
     color: #a7a7a7;
     text-decoration: line-through;
 }
