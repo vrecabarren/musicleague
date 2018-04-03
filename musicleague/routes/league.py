@@ -23,6 +23,7 @@ from musicleague.persistence.insert import insert_membership
 from musicleague.persistence.select import select_league
 from musicleague.persistence.select import select_round
 from musicleague.persistence.select import select_user
+from musicleague.persistence.update import update_league
 from musicleague.persistence.update import upsert_league_preferences
 from musicleague.routes.decorators import admin_required
 from musicleague.routes.decorators import login_required
@@ -131,7 +132,11 @@ def post_manage_league(league_id):
     deleted_rounds = json.loads(request.form.get('deleted-rounds', []))
 
     league = select_league(league_id)
-    league.name = name
+
+    if name != league.name:
+        league.name = name
+        update_league(league)
+
     league.preferences.track_count = int(num_tracks)
     league.preferences.point_bank_size = int(upvote_size)
     league.preferences.max_points_per_song = int(max_up_per_song or 0)
