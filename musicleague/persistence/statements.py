@@ -303,18 +303,22 @@ UPSERT_ROUND = """INSERT INTO rounds (id, created, description, league_id, name,
 # SUBMISSIONS
 # ===========
 
+# FUTURE: Storing multiple revisions instead of doing an upsert will violate
+# the UNIQUE constraint unless revision is added to it.
 CREATE_TABLE_SUBMISSIONS = """CREATE TABLE IF NOT EXISTS submissions (
                                     created TIMESTAMP NOT NULL DEFAULT NOW(),
                                     rank SMALLINT NOT NULL DEFAULT -1,
                                     round_id VARCHAR(255) NOT NULL REFERENCES rounds(id),
                                     spotify_uri VARCHAR(255) NOT NULL,
                                     submitter_id VARCHAR(255) NOT NULL REFERENCES users(id),
+                                    revision SMALLINT NOT NULL DEFAULT 1,
                                     UNIQUE (round_id, spotify_uri));"""
 
-INSERT_SUBMISSION = """INSERT INTO submissions (created, round_id, spotify_uri, submitter_id)
-                            VALUES (%s, %s, %s, %s)
+INSERT_SUBMISSION = """INSERT INTO submissions (created, round_id, spotify_uri, submitter_id, revision)
+                            VALUES (%s, %s, %s, %s, %s)
                             ON CONFLICT (round_id, spotify_uri) DO UPDATE
-                            SET created = EXCLUDED.created
+                            SET (created, revision)
+                            = (EXCLUDED.created, EXCLUDED.revision)
                             WHERE submissions.round_id = EXCLUDED.round_id
                             AND submissions.spotify_uri = EXCLUDED.spotify_uri;"""
 
@@ -322,15 +326,15 @@ DELETE_SUBMISSIONS = "DELETE FROM submissions WHERE round_id = %s AND submitter_
 
 DELETE_SUBMISSIONS_FOR_ROUND = "DELETE FROM submissions WHERE round_id = %s;"
 
-SELECT_SUBMISSIONS = """SELECT created, submitter_id, json_object_agg(spotify_uri, rank)
+SELECT_SUBMISSIONS = """SELECT created, submitter_id, revision, json_object_agg(spotify_uri, rank)
                             FROM submissions WHERE round_id = %s
-                            GROUP BY submitter_id, created;"""
+                            GROUP BY submitter_id, created, revision;"""
 
 SELECT_SUBMISSIONS_COUNT = "SELECT COUNT(submitter_id) FROM submissions;"
 
-SELECT_SUBMISSIONS_FROM_USER = """SELECT created, json_object_agg(spotify_uri, rank)
+SELECT_SUBMISSIONS_FROM_USER = """SELECT created, revision, json_object_agg(spotify_uri, rank)
                                     FROM submissions WHERE round_id = %s AND submitter_id = %s
-                                    GROUP BY created
+                                    GROUP BY created, revision
                                     ORDER BY created DESC
                                     LIMIT 1;"""
 

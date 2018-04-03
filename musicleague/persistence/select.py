@@ -174,12 +174,13 @@ def select_league(league_id, exclude_properties=None):
                 if 'submissions' not in exclude_properties:
                     cur.execute(SELECT_SUBMISSIONS, (round.id,))
                     for submission_tup in cur.fetchall():
-                        created, user_id, tracks = submission_tup
+                        created, user_id, revision, tracks = submission_tup
                         submitter = user_idx.get(user_id, None)
                         if submitter is None:
                             continue
 
                         s = Submission(user=submitter, tracks=tracks.keys(), created=created)
+                        s.count = revision
                         s.league = league
                         s.submission_period = round
                         round.submissions.append(s)

@@ -70,7 +70,7 @@ def insert_submission(submission):
 
             # If user has previous submissions, remove them
             if cur.rowcount > 0:
-                ranked_tracks = cur.fetchone()[1]
+                ranked_tracks = cur.fetchone()[2]
 
                 # Remove votes for previously submitted tracks
                 values = (submission.submission_period.id, ranked_tracks.keys())
@@ -83,7 +83,7 @@ def insert_submission(submission):
             # Insert tracks for new submission
             for uri in submission.tracks:
                 values = (submission.created, submission.submission_period.id,
-                          uri, submission.user.id)
+                          uri, submission.user.id, submission.count)
                 cur.execute(INSERT_SUBMISSION, values)
 
 
