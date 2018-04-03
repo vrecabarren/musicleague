@@ -42,7 +42,12 @@ def view_vote(league_id, submission_period_id):
     if not my_submission:
         return redirect(url_for('view_league', league_id=league.id))
 
-    my_vote = get_my_vote(g.user, submission_period)
+    # If this user already voted for this round, don't allow them to vote
+    if get_my_vote(g.user, submission_period):
+        return redirect(url_for('view_league', league_id=league.id))
+
+    # my_vote = get_my_vote(g.user, submission_period)
+    my_vote = None
 
     tracks = []
     if submission_period.all_tracks:
@@ -80,6 +85,10 @@ def vote(league_id, submission_period_id):
 
         # If this user didn't submit for this round, don't allow them to vote
         if not get_my_submission(g.user, submission_period):
+            return redirect(url_for('view_league', league_id=league_id))
+
+        # If this user already voted for this round, don't allow them to vote
+        if get_my_vote(g.user, submission_period):
             return redirect(url_for('view_league', league_id=league_id))
 
         # If this round is no longer accepting votes, redirect
