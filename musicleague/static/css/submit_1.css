@@ -121,9 +121,18 @@
 }
 
 /* State: One of: song not found, incorrect format, previously submitted */
-.song.error { background-color: #F8C62C; }
+.song.warning { background-color: #F8C62C; }
+.song.warning .song-header { color: #01249A; }
+.song.warning .find-song-inp { border: 3px solid #F8C62C; }
+.song.warning .song-info {
+    color: #01249A;
+    display: block;
+}
+.song.warning .song-info .text-info { color: #01249A; }
+
+.song.error { background-color: #FF2300; }
 .song.error .song-header { color: #01249A; }
-.song.error .find-song-inp { border: 3px solid #F8C62C; }
+.song.error .find-song-inp { border: 3px solid #FF2300; }
 .song.error .song-info {
     color: #01249A;
     display: block;

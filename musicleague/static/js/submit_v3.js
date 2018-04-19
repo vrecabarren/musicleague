@@ -40,7 +40,7 @@ function setSongStateDuplicateArtist(song) {
     song.find('.song-info .artist').html("");
     song.find('.song-info .album').html("");
     song.find('.find-song-inp').val("");
-    song.removeClass('found').addClass('error').addClass('duplicate-artist');
+    song.removeClass('found').addClass('warning').addClass('duplicate-artist');
 }
 
 function setSongStateDuplicateAlbum(song) {
@@ -52,7 +52,7 @@ function setSongStateDuplicateAlbum(song) {
     song.find('.song-info .artist').html("");
     song.find('.song-info .album').html("");
     song.find('.find-song-inp').val("");
-    song.removeClass('found').addClass('error').addClass('duplicate-album');
+    song.removeClass('found').addClass('warning').addClass('duplicate-album');
 }
 
 function setSongStateDuplicateSong(song) {
