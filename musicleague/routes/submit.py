@@ -10,6 +10,9 @@ from flask import url_for
 
 from musicleague import app
 from musicleague.analytics import track_user_submitted
+from musicleague.analytics import track_user_submitted_duplicate_album
+from musicleague.analytics import track_user_submitted_duplicate_artist
+from musicleague.analytics import track_user_submitted_duplicate_song
 from musicleague.notify import owner_user_submitted_notification
 from musicleague.notify import user_last_to_submit_notification
 from musicleague.persistence.select import select_league
@@ -102,6 +105,14 @@ def submit(league_id, submission_period_id):
             duplicate_albums = check_duplicate_albums(my_tracks, their_tracks)
             duplicate_artists = check_duplicate_artists(my_tracks, their_tracks)
             if duplicate_tracks or duplicate_albums or duplicate_artists:
+
+                if duplicate_tracks:
+                    track_user_submitted_duplicate_song(g.user.id, submission_period, duplicate_tracks)
+                elif duplicate_albums:
+                    track_user_submitted_duplicate_album(g.user.id, submission_period, duplicate_albums)
+                elif duplicate_artists:
+                    track_user_submitted_duplicate_artist(g.user.id, submission_period, duplicate_artists)
+
                 return render_template(
                     'submit/page.html',
                     user=g.user, league=league, round=submission_period,
