@@ -184,7 +184,7 @@ function setSelectedSongCount() {
 }
 
 function setSubmitButtonState() {
-    var numSelected = $('.song.found').length;
+    var numSelected = $('.song.found').length + $('.song.warning').length;
     var numTotal = $('.song').length;
 
     // If not all songs selected, disable submit button. Otherwise, enable.
