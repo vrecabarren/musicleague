@@ -28,7 +28,7 @@ function setSongStateNotFound(song) {
     song.find('.song-info .artist').html("");
     song.find('.song-info .album').html("");
     song.find('.find-song-inp').val("");
-    song.removeClass('found').addClass('error').addClass('not-found');
+    song.removeClass('found').removeClass('warning').addClass('error').addClass('not-found');
 }
 
 function setSongStateDuplicateArtist(song) {
@@ -40,7 +40,7 @@ function setSongStateDuplicateArtist(song) {
     song.find('.song-info .artist').html("");
     song.find('.song-info .album').html("");
     song.find('.find-song-inp').val("");
-    song.removeClass('found').addClass('warning').addClass('duplicate-artist');
+    song.removeClass('found').removeClass('error').addClass('warning').addClass('duplicate-artist');
 }
 
 function setSongStateDuplicateAlbum(song) {
@@ -52,7 +52,7 @@ function setSongStateDuplicateAlbum(song) {
     song.find('.song-info .artist').html("");
     song.find('.song-info .album').html("");
     song.find('.find-song-inp').val("");
-    song.removeClass('found').addClass('warning').addClass('duplicate-album');
+    song.removeClass('found').removeClass('error').addClass('warning').addClass('duplicate-album');
 }
 
 function setSongStateDuplicateSong(song) {
@@ -64,7 +64,7 @@ function setSongStateDuplicateSong(song) {
     song.find('.song-info .artist').html("");
     song.find('.song-info .album').html("");
     song.find('.find-song-inp').val("");
-    song.removeClass('found').addClass('error').addClass('duplicate-song');
+    song.removeClass('found').removeClass('warning').addClass('error').addClass('duplicate-song');
 }
 
 function setSongStateDuplicateSubmission(song) {
@@ -76,7 +76,7 @@ function setSongStateDuplicateSubmission(song) {
     song.find('.song-info .artist').html("");
     song.find('.song-info .album').html("");
     song.find('.find-song-inp').val("");
-    song.removeClass('found').addClass('error').addClass('duplicate-submission');
+    song.removeClass('found').removeClass('warning').addClass('error').addClass('duplicate-submission');
 }
 
 $.fn.filterByData = function(prop, val) {
