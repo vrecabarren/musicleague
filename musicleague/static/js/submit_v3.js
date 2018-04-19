@@ -152,8 +152,8 @@ function processFormSubmission() {
 }
 
 function setPreviousSubmissionState() {
-    $('.song.error.duplicate-artist').each(function(){setSongStateDuplicateArtist($(this));});
-    $('.song.error.duplicate-album').each(function(){setSongStateDuplicateAlbum($(this));});
+    $('.song.warning.duplicate-artist').each(function(){setSongStateDuplicateArtist($(this));});
+    $('.song.warning.duplicate-album').each(function(){setSongStateDuplicateAlbum($(this));});
     $('.song.error.duplicate-song').each(function(){setSongStateDuplicateSong($(this))});
     $('.song.found').each(function(){
         var song = $(this);
