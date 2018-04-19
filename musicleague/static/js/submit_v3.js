@@ -16,7 +16,7 @@ function setSongStateFound(song, track) {
     song.find('.song-info .artist').html("By " + artist);
     song.find('.song-info .album').html(album);
     song.find('.find-song-inp').val("");
-    song.removeClass('error').addClass('found');
+    song.removeClass('warning').removeClass('error').addClass('found');
 }
 
 function setSongStateNotFound(song) {
