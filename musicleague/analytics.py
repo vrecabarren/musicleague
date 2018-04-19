@@ -57,6 +57,45 @@ def track_user_submitted(user_id, round):
     get_mixpanel().track(user_id, 'Submitted', round_data)
 
 
+def track_user_submitted_duplicate_album(user_id, round, uris):
+    data = {'Round Name': round.name,
+            'Round ID': round.id,
+            'URIs': uris}
+
+    if round.league:
+        data.update({
+            'League Name': round.league.name,
+            'League ID': round.league.id})
+
+    get_mixpanel().track(user_id, 'Submitted Duplicate Album', data)
+
+
+def track_user_submitted_duplicate_artist(user_id, round, uris):
+    data = {'Round Name': round.name,
+            'Round ID': round.id,
+            'URIs': uris}
+
+    if round.league:
+        data.update({
+            'League Name': round.league.name,
+            'League ID': round.league.id})
+
+    get_mixpanel().track(user_id, 'Submitted Duplicate Artist', data)
+
+
+def track_user_submitted_duplicate_song(user_id, round, uris):
+    data = {'Round Name': round.name,
+            'Round ID': round.id,
+            'URIs': uris}
+
+    if round.league:
+        data.update({
+            'League Name': round.league.name,
+            'League ID': round.league.id})
+
+    get_mixpanel().track(user_id, 'Submitted Duplicate Song', data)
+
+
 def track_user_voted(user_id, round):
     round_data = {'Round Name': round.name}
     get_mixpanel().track(user_id, 'Voted', round_data)
