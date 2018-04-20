@@ -73,6 +73,8 @@ def submit(league_id, submission_period_id):
 
         try:
             tracks = json.loads(request.form.get('songs'))
+            warned_artists = json.loads(request.form.get('duplicate-artists') or '[]')
+            warned_albums = json.loads(request.form.get('duplicate-albums') or '[]')
         except Exception:
             app.logger.exception("Failed to load JSON from form with submit: %s",
                                  request.form)
@@ -104,6 +106,10 @@ def submit(league_id, submission_period_id):
             duplicate_tracks = check_duplicate_tracks(my_tracks, their_tracks)
             duplicate_albums = check_duplicate_albums(my_tracks, their_tracks)
             duplicate_artists = check_duplicate_artists(my_tracks, their_tracks)
+
+            duplicate_albums = list(set(duplicate_albums) - set(warned_albums))
+            duplicate_artists = list(set(duplicate_artists) - set(warned_artists))
+
             if duplicate_tracks or duplicate_albums or duplicate_artists:
 
                 if duplicate_tracks:

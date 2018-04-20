@@ -35,9 +35,9 @@
         {% if previous_tracks %}
             {% set tracks = previous_tracks %}
             <input id="previous-submission" type="hidden" value="{{ tracks }}">
-            <input id="duplicate-artists" type="hidden" value="{{ duplicate_artists|tojson|safe }}">
-            <input id="duplicate-albums" type="hidden" value="{{ duplicate_albums|tojson|safe }}">
-            <input id="duplicate-songs" type="hidden" value="{{ duplicate_songs|tojson|safe }}">
+            <input id="duplicate-artists" name="duplicate-artists" type="hidden" value="{{ duplicate_artists|tojson|forceescape }}">
+            <input id="duplicate-albums" name="duplicate-albums" type="hidden" value="{{ duplicate_albums|tojson|forceescape }}">
+            <input id="duplicate-songs" type="hidden" value="{{ duplicate_songs|tojson|forceescape }}">
         {% elif my_submission %}
             {% set tracks = my_submission.tracks %}
         {% else %}
