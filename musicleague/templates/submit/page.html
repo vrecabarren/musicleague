@@ -51,9 +51,9 @@
         {% elif submitted_uri and submitted_uri in duplicate_songs %}
         <div class="song row error duplicate-song">
         {% elif submitted_uri and submitted_uri in duplicate_albums %}
-        <div class="song row warning duplicate-album">
+        <div class="song row warning duplicate-album" {% if submitted_uri %}data-uri="{{ submitted_uri }}"{% endif %}>
         {% elif submitted_uri and submitted_uri in duplicate_artists %}
-        <div class="song row warning duplicate-artist">
+        <div class="song row warning duplicate-artist" {% if submitted_uri %}data-uri="{{ submitted_uri }}"{% endif %}>
         {% else %}
         <div class="song row">
         {% endif %}

@@ -31,26 +31,42 @@ function setSongStateNotFound(song) {
     song.removeClass('found').removeClass('warning').addClass('error').addClass('not-found');
 }
 
-function setSongStateDuplicateArtist(song) {
-    song.data('id', "");
-    song.data('uri', "");
+function setSongStateDuplicateArtist(song, track) {
+    var id = track.id;
+    var uri = track.uri;
+    var url = track.external_urls.spotify;
+    var img_src = track.album.images[1].url;
+    var name = track.name;
+    var artist = track.artists[0].name;
+    var album = track.album.name;
+
+    song.data('id', id);
+    song.data('uri', uri);
     song.find('.you-selected').html('Great Minds Think Alike:');
-    song.find('.song-info img').attr('src', 'https://s3.amazonaws.com/musicleague-static-assets/icons/attentionicon.svg');
-    song.find('.song-info .name').html("Artist<br>Already<br>Submitted.");
-    song.find('.song-info .artist').html("");
-    song.find('.song-info .album').html("");
+    song.find('.song-info img').attr('src', img_src);
+    song.find('.song-info .name').html('<a href="' + url + '" target="_blank">' + name + '</a>');
+    song.find('.song-info .artist').html("By " + artist);
+    song.find('.song-info .album').html(album);
     song.find('.find-song-inp').val("");
     song.removeClass('found').removeClass('error').addClass('warning').addClass('duplicate-artist');
 }
 
-function setSongStateDuplicateAlbum(song) {
-    song.data('id', "");
-    song.data('uri', "");
+function setSongStateDuplicateAlbum(song, track) {
+    var id = track.id;
+    var uri = track.uri;
+    var url = track.external_urls.spotify;
+    var img_src = track.album.images[1].url;
+    var name = track.name;
+    var artist = track.artists[0].name;
+    var album = track.album.name;
+
+    song.data('id', id);
+    song.data('uri', uri);
     song.find('.you-selected').html('Great Minds Think Alike:');
-    song.find('.song-info img').attr('src', 'https://s3.amazonaws.com/musicleague-static-assets/icons/attentionicon.svg');
-    song.find('.song-info .name').html("Album<br>Already<br>Submitted.");
-    song.find('.song-info .artist').html("");
-    song.find('.song-info .album').html("");
+    song.find('.song-info img').attr('src', img_src);
+    song.find('.song-info .name').html('<a href="' + url + '" target="_blank">' + name + '</a>');
+    song.find('.song-info .artist').html("By " + artist);
+    song.find('.song-info .album').html(album);
     song.find('.find-song-inp').val("");
     song.removeClass('found').removeClass('error').addClass('warning').addClass('duplicate-album');
 }
@@ -152,10 +168,8 @@ function processFormSubmission() {
 }
 
 function setPreviousSubmissionState() {
-    $('.song.warning.duplicate-artist').each(function(){setSongStateDuplicateArtist($(this));});
-    $('.song.warning.duplicate-album').each(function(){setSongStateDuplicateAlbum($(this));});
     $('.song.error.duplicate-song').each(function(){setSongStateDuplicateSong($(this))});
-    $('.song.found').each(function(){
+    $('.song.found, .song.warning.duplicate-artist, .song.warning.duplicate-album').each(function(){
         var song = $(this);
         var uri = song.data('uri');
         var uri_regex = /spotify\:track\:([a-zA-Z0-9]{22})/;
@@ -167,7 +181,13 @@ function setPreviousSubmissionState() {
             }
         }).success(
             function(response){
-                setSongStateFound(song, response);
+                if (song.is('.song.found')) {
+                    setSongStateFound(song, response);
+                } else if (song.is('.song.warning.duplicate-artist')) {
+                    setSongStateDuplicateArtist(song, response);
+                } else if (song.is('.song.warning.duplicate-album')) {
+                    setSongStateDuplicateAlbum(song, response);
+                }
             }
         );
     });

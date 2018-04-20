@@ -129,6 +129,7 @@
     display: block;
 }
 .song.warning .song-info .text-info { color: #01249A; }
+.song.warning .song-info .text-info .name a {color: #01249A;}
 
 .song.error { background-color: #FF2300; }
 .song.error .song-header { color: #01249A; }
