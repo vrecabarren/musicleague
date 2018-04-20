@@ -33,7 +33,7 @@
                 </a>
             </div>
             <div class="add-league-wrapper">
-                {% if request.endpoint == 'view_league' and league.has_owner(user) %}
+                {% if (request.endpoint == 'view_league' or request.endpoint == 'view_submit' or request.endpoint == 'view_vote' or request.endpoint == 'view_submission_period') and league.has_owner(user) %}
                 <span class="edit-league-text hidden-xs">Edit League</span>
                 <a href="{{ url_for('get_manage_league', league_id=league.id) }}">
                     <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/gear_icon.svg" alt="" class="edit-league-icon">
