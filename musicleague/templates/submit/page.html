@@ -3,7 +3,7 @@
 {% block title %}Music League | {{ league.name }}{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="/static/css/submit_1.css">
+<link rel="stylesheet" href="/static/css/submit_2.css">
 {% endblock %}
 
 {% block title_bar_content %}
@@ -35,9 +35,9 @@
         {% if previous_tracks %}
             {% set tracks = previous_tracks %}
             <input id="previous-submission" type="hidden" value="{{ tracks }}">
-            <input id="duplicate-artists" type="hidden" value="{{ duplicate_artists }}">
-            <input id="duplicate-albums" type="hidden" value="{{ duplicate_albums }}">
-            <input id="duplicate-songs" type="hidden" value="{{ duplicate_songs }}">
+            <input id="duplicate-artists" name="duplicate-artists" type="hidden" value="{{ duplicate_artists|tojson|forceescape }}">
+            <input id="duplicate-albums" name="duplicate-albums" type="hidden" value="{{ duplicate_albums|tojson|forceescape }}">
+            <input id="duplicate-songs" type="hidden" value="{{ duplicate_songs|tojson|forceescape }}">
         {% elif my_submission %}
             {% set tracks = my_submission.tracks %}
         {% else %}
@@ -47,13 +47,13 @@
         {% for song_num in range(league.preferences.track_count) %}
         {% set submitted_uri  = tracks[song_num] %}
         {% if submitted_uri and submitted_uri not in duplicate_tracks and submitted_uri not in duplicate_albums and submitted_uri not in duplicate_artists %}
-        <div class="song row{% if submitted_uri %} found{% endif %}" {% if submitted_uri %}data-uri="{{ submitted_uri }}"{% endif %}>
+        <div class="song row found" data-uri="{{ submitted_uri }}">
         {% elif submitted_uri and submitted_uri in duplicate_songs %}
-        <div class="song row error duplicate-song">
+        <div class="song row error duplicate-song" data-uri="{{ submitted_uri }}">
         {% elif submitted_uri and submitted_uri in duplicate_albums %}
-        <div class="song row error duplicate-album">
+        <div class="song row warning duplicate-album" data-uri="{{ submitted_uri }}">
         {% elif submitted_uri and submitted_uri in duplicate_artists %}
-        <div class="song row error duplicate-artist">
+        <div class="song row warning duplicate-artist" data-uri="{{ submitted_uri }}">
         {% else %}
         <div class="song row">
         {% endif %}
@@ -66,6 +66,7 @@
             <div class="song-info">
                 <div class="col-xs-12">
                     <span class="you-selected">You Selected:</span>
+                    <span class="message"></span>
                 </div>
                 <div class="col-xs-12">
                     <img src="" alt="" class="img">
@@ -88,5 +89,5 @@
     var accessToken = "{{ access_token }}";
 </script>
 <script type="text/javascript" src="/static/js/jquery.sticky-kit.min.js"></script>
-<script type="text/javascript" src="/static/js/submit_v3.js"></script>
+<script type="text/javascript" src="/static/js/submit_v4.js"></script>
 {% endblock %}
