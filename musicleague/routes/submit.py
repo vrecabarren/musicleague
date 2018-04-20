@@ -74,7 +74,6 @@ def submit(league_id, submission_period_id):
         try:
             tracks = json.loads(request.form.get('songs'))
             warned_artists = json.loads(request.form.get('duplicate-artists') or '[]')
-            warned_albums = json.loads(request.form.get('duplicate-albums') or '[]')
         except Exception:
             app.logger.exception("Failed to load JSON from form with submit: %s",
                                  request.form)
@@ -104,18 +103,16 @@ def submit(league_id, submission_period_id):
 
             # Don't allow user to submit already submitted track, album or artist
             duplicate_tracks = check_duplicate_tracks(my_tracks, their_tracks)
-            duplicate_albums = check_duplicate_albums(my_tracks, their_tracks)
             duplicate_artists = check_duplicate_artists(my_tracks, their_tracks)
 
-            duplicate_albums = list(set(duplicate_albums) - set(warned_albums))
             duplicate_artists = list(set(duplicate_artists) - set(warned_artists))
 
-            if duplicate_tracks or duplicate_albums or duplicate_artists:
+            if duplicate_tracks or duplicate_artists:
 
                 if duplicate_tracks:
                     track_user_submitted_duplicate_song(g.user.id, submission_period, duplicate_tracks)
-                elif duplicate_albums:
-                    track_user_submitted_duplicate_album(g.user.id, submission_period, duplicate_albums)
+                # elif duplicate_albums:
+                #     track_user_submitted_duplicate_album(g.user.id, submission_period, duplicate_albums)
                 elif duplicate_artists:
                     track_user_submitted_duplicate_artist(g.user.id, submission_period, duplicate_artists)
 
@@ -124,7 +121,7 @@ def submit(league_id, submission_period_id):
                     user=g.user, league=league, round=submission_period,
                     previous_tracks=tracks,
                     duplicate_songs=duplicate_tracks,
-                    duplicate_albums=duplicate_albums,
+                    duplicate_albums=[],
                     duplicate_artists=duplicate_artists,
                     access_token=session['access_token'])
 
