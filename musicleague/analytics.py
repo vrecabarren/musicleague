@@ -83,6 +83,19 @@ def track_user_submitted_duplicate_artist(user_id, round, uris):
     get_mixpanel().track(user_id, 'Submitted Duplicate Artist', data)
 
 
+def track_user_proceeded_duplicate_artist(user_id, round, uris):
+    data = {'Round Name': round.name,
+            'Round ID': round.id,
+            'URIs': uris}
+
+    if round.league:
+        data.update({
+            'League Name': round.league.name,
+            'League ID': round.league.id})
+
+    get_mixpanel().track(user_id, 'Proceeded with Duplicate Artist', data)
+
+
 def track_user_submitted_duplicate_song(user_id, round, uris):
     data = {'Round Name': round.name,
             'Round ID': round.id,
