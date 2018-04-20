@@ -136,13 +136,14 @@
     display: block;
 }
 .song.warning .song-info .text-info { color: #01249A; }
-.song.warning .song-info .text-info .name a {color: #01249A;}
+.song.warning .song-info .text-info .name a { color: #01249A; }
 
 .song.error { background-color: #FF2300; }
-.song.error .song-header { color: #01249A; }
+.song.error .song-header { color: #FFFFFF; }
 .song.error .find-song-inp { border: 3px solid #FF2300; }
 .song.error .song-info {
-    color: #01249A;
+    color: #FFFFFF;
     display: block;
 }
-.song.error .song-info .text-info { color: #01249A; }
+.song.error .song-info .text-info { color: #FFFFFF; }
+.song.error .song-info .text-info .name a {color: #FFFFFF; }

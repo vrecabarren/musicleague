@@ -49,7 +49,7 @@
         {% if submitted_uri and submitted_uri not in duplicate_tracks and submitted_uri not in duplicate_albums and submitted_uri not in duplicate_artists %}
         <div class="song row found" data-uri="{{ submitted_uri }}">
         {% elif submitted_uri and submitted_uri in duplicate_songs %}
-        <div class="song row error duplicate-song">
+        <div class="song row error duplicate-song" data-uri="{{ submitted_uri }}">
         {% elif submitted_uri and submitted_uri in duplicate_albums %}
         <div class="song row warning duplicate-album" data-uri="{{ submitted_uri }}">
         {% elif submitted_uri and submitted_uri in duplicate_artists %}
