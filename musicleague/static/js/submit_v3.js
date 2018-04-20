@@ -43,6 +43,7 @@ function setSongStateDuplicateArtist(song, track) {
     song.data('id', id);
     song.data('uri', uri);
     song.find('.you-selected').html('Great Minds Think Alike:');
+    song.find('.message').html('Someone else has already submitted a song from this artist. You may still submit this song, and we will warn the previous submitter(s) without revealing your name.');
     song.find('.song-info img').attr('src', img_src);
     song.find('.song-info .name').html('<a href="' + url + '" target="_blank">' + name + '</a>');
     song.find('.song-info .artist').html("By " + artist);
@@ -63,6 +64,7 @@ function setSongStateDuplicateAlbum(song, track) {
     song.data('id', id);
     song.data('uri', uri);
     song.find('.you-selected').html('Great Minds Think Alike:');
+    song.find('.message').html('Someone else has already submitted a song from this album. You may still submit this song, and we will warn the previous submitter(s) without revealing your name.');
     song.find('.song-info img').attr('src', img_src);
     song.find('.song-info .name').html('<a href="' + url + '" target="_blank">' + name + '</a>');
     song.find('.song-info .artist').html("By " + artist);

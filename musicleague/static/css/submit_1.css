@@ -81,7 +81,14 @@
     font-family: 'Cubano', sans-serif;
     font-size: 22px;
     line-height: 24px;
-    margin: 20px 0px 20px 0px;
+    margin: 20px 0px 10px 0px;
+    vertical-align: middle;
+}
+.song .song-info .message {
+    display: block;
+    font-size: 18px;
+    line-height: 22px;
+    margin: 0px 0px 20px 0px;
     vertical-align: middle;
 }
 .song .song-info img {
