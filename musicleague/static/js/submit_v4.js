@@ -102,11 +102,13 @@ function setSongStateRepeatSubmission(song, track) {
     var name = track.name;
     var artist = track.artists[0].name;
     var album = track.album.name;
+    var lastSubmittedDate = repeatSubmissions[uri][0];
+    var lastSubmittedLeague = repeatSubmissions[uri][1];
 
     song.data('id', id);
     song.data('uri', uri);
     song.find('.you-selected').html('Great Minds Think Alike:');
-    song.find('.message').html('Did you know you’ve submitted this song before? You last submitted it on <strong>{date}</strong> in the <strong>{league title}</strong> league.');
+    song.find('.message').html('Did you know you’ve submitted this song before? You last submitted it on <strong>'+lastSubmittedDate+'</strong> in the <strong>'+lastSubmittedLeague+'</strong> league.');
     song.find('.song-info img').attr('src', img_src);
     song.find('.song-info .name').html('<a href="' + url + '" target="_blank">' + name + '</a>');
     song.find('.song-info .artist').html("By " + artist);
