@@ -102,7 +102,7 @@ function setSongStateRepeatSubmission(song, track) {
     var name = track.name;
     var artist = track.artists[0].name;
     var album = track.album.name;
-    var lastSubmittedDate = repeatSubmissions[uri][0];
+    var lastSubmittedDate = moment(repeatSubmissions[uri][0]).format('MMMM DD, YYYY');
     var lastSubmittedLeague = repeatSubmissions[uri][1];
 
     song.data('id', id);
