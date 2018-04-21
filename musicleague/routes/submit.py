@@ -109,7 +109,7 @@ def submit(league_id, submission_period_id):
         # Don't allow user to submit already submitted track, album or artist
         duplicate_tracks = check_duplicate_tracks(my_tracks, their_tracks)
         duplicate_artists = check_duplicate_artists(my_tracks, their_tracks)
-        repeat_submissions = check_repeat_submissions(g.user.id, tracks)
+        repeat_submissions = check_repeat_submissions(g.user.id, tracks, league_id)
 
         proceeding_dups = set(warned_artists).intersection(set(duplicate_artists))
         if proceeding_dups:

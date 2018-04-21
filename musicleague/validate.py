@@ -67,11 +67,11 @@ def check_duplicate_tracks(my_tracks, their_tracks):
     return duplicate_tracks
 
 
-def check_repeat_submissions(user_id, tracks):
+def check_repeat_submissions(user_id, tracks, exclude_league_id):
     repeat_submissions = {}
 
     for track in tracks:
-        created, league_name = select_previous_submission(user_id, track)
+        created, league_name = select_previous_submission(user_id, track, exclude_league_id)
         if created and league_name:
             repeat_submissions[track] = (created,league_name)
 

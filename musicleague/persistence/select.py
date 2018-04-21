@@ -344,11 +344,11 @@ def select_rounds_incomplete_count(league_id):
             return cur.rowcount
 
 
-def select_previous_submission(user_id, spotify_uri):
+def select_previous_submission(user_id, spotify_uri, exclude_league_id):
     created, league = None, None
     with get_postgres_conn() as conn:
         with conn.cursor() as cur:
-            cur.execute(SELECT_PREVIOUS_SUBMISSION, (user_id, spotify_uri))
+            cur.execute(SELECT_PREVIOUS_SUBMISSION, (user_id, spotify_uri, exclude_league_id))
             if cur.rowcount > 0:
                 created, league = cur.fetchone()
     return created, league

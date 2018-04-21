@@ -336,6 +336,7 @@ SELECT_PREVIOUS_SUBMISSION = """SELECT
                                     WHERE
                                         submissions.submitter_id = %s
                                         AND submissions.spotify_uri = %s
+                                        AND leagues.id != %s
                                     ORDER BY
                                         submissions.created
                                     LIMIT 1"""
