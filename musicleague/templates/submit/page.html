@@ -35,7 +35,7 @@
         {% if previous_tracks %}
             {% set tracks = previous_tracks %}
             <input id="previous-submission" type="hidden" value="{{ tracks }}">
-            <input id="previous-submissions" type="hidden" value="{{ previous_submissions|tojson|forceescape }}">
+            <input id="repeat-submissions" name="repeat-submissions" type="hidden" value="{{ repeat_submissions|tojson|forceescape }}">
             <input id="duplicate-artists" name="duplicate-artists" type="hidden" value="{{ duplicate_artists|tojson|forceescape }}">
             <input id="duplicate-albums" name="duplicate-albums" type="hidden" value="{{ duplicate_albums|tojson|forceescape }}">
             <input id="duplicate-songs" type="hidden" value="{{ duplicate_songs|tojson|forceescape }}">
@@ -88,6 +88,7 @@
 {% block js %}
 <script type="text/javascript">
     var accessToken = "{{ access_token }}";
+    var repeatSubmissions = {{ repeat_submissions|tojson|safe }}
 </script>
 <script type="text/javascript" src="/static/js/jquery.sticky-kit.min.js"></script>
 <script type="text/javascript" src="/static/js/submit_v4.js"></script>

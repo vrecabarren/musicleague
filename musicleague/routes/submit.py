@@ -130,7 +130,7 @@ def submit(league_id, submission_period_id):
                 duplicate_songs=duplicate_tracks,
                 duplicate_albums=[],
                 duplicate_artists=duplicate_artists,
-                previous_submissions=previous_submissions,
+                repeat_submissions=previous_submissions,
                 access_token=session['access_token'])
 
         # Create a new submission on the round as current user
