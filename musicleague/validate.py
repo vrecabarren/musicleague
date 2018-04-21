@@ -68,6 +68,7 @@ def check_duplicate_tracks(my_tracks, their_tracks):
 
 
 def check_repeat_submissions(user_id, tracks, exclude_league_id):
+    # TODO Batch into one network call for query
     repeat_submissions = {}
 
     for track in tracks:
