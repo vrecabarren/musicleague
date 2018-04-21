@@ -61,12 +61,16 @@ def check_duplicate_tracks(my_tracks, their_tracks):
     return duplicate_tracks
 
 
-def check_previous_submission(user, tracks):
+def check_previous_submissions(user, tracks):
     duplicate_submissions = dict()
+    from musicleague import app
 
     for track in tracks:
         created, league_name = select_previous_submission(user.id, track)
         if created and league_name:
             duplicate_submissions[track] = (created,league_name)
+
+        app.logger.info('Checking for previous submissions of %s by %s got (%s, %s)',
+                        track, user.id, created, league_name)
 
     return duplicate_submissions
