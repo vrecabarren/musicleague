@@ -10,9 +10,11 @@ from flask import url_for
 
 from musicleague import app
 from musicleague.analytics import track_user_proceeded_duplicate_artist
+from musicleague.analytics import track_user_proceeded_repeat_submission
 from musicleague.analytics import track_user_submitted
 from musicleague.analytics import track_user_submitted_duplicate_artist
 from musicleague.analytics import track_user_submitted_duplicate_song
+from musicleague.analytics import track_user_submitted_repeat_submission
 from musicleague.notify import owner_user_submitted_notification
 from musicleague.notify import user_last_to_submit_notification
 from musicleague.persistence.select import select_league
@@ -74,6 +76,7 @@ def submit(league_id, submission_period_id):
         try:
             tracks = json.loads(request.form.get('songs'))
             warned_artists = json.loads(request.form.get('duplicate-artists') or '[]')
+            warned_repeats = json.loads(request.form.get('repeat-submissions') or '[]')
         except Exception:
             app.logger.exception("Failed to load JSON from form with submit: %s",
                                  request.form)
@@ -113,6 +116,11 @@ def submit(league_id, submission_period_id):
             duplicate_artists = list(set(duplicate_artists) - set(warned_artists))
             track_user_proceeded_duplicate_artist(g.user.id, submission_period, list(proceeding_dups))
 
+        proceeding_repeats = set(warned_repeats).intersection(set(repeat_submissions))
+        if proceeding_repeats:
+            repeat_submissions = list(set(repeat_submissions) - set(warned_repeats))
+            track_user_proceeded_repeat_submission(g.user.id, submission_period, list(proceeding_repeats))
+
         if duplicate_tracks or duplicate_artists or repeat_submissions:
 
             if duplicate_tracks:
@@ -121,6 +129,8 @@ def submit(league_id, submission_period_id):
             #     track_user_submitted_duplicate_album(g.user.id, submission_period, duplicate_albums)
             elif duplicate_artists:
                 track_user_submitted_duplicate_artist(g.user.id, submission_period, duplicate_artists)
+            elif repeat_submissions:
+                track_user_submitted_repeat_submission(g.user.id, submission_period, repeat_submissions)
 
             return render_template(
                 'submit/page.html',
