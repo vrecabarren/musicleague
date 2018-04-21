@@ -67,7 +67,7 @@ def check_duplicate_tracks(my_tracks, their_tracks):
     return duplicate_tracks
 
 
-def check_previous_submissions(user, tracks):
+def check_repeat_submissions(user, tracks):
     duplicate_submissions = dict()
 
     for track in tracks:
