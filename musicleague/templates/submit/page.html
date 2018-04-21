@@ -47,16 +47,16 @@
 
         {% for song_num in range(league.preferences.track_count) %}
         {% set submitted_uri  = tracks[song_num] %}
-        {% if submitted_uri and submitted_uri not in duplicate_tracks and submitted_uri not in duplicate_albums and submitted_uri not in duplicate_artists %}
-        <div class="song row found" data-uri="{{ submitted_uri }}">
-        {% elif submitted_uri and submitted_uri in duplicate_songs %}
+        {% if submitted_uri and submitted_uri in duplicate_songs %}
         <div class="song row error duplicate-song" data-uri="{{ submitted_uri }}">
         {% elif submitted_uri and submitted_uri in duplicate_albums %}
         <div class="song row warning duplicate-album" data-uri="{{ submitted_uri }}">
         {% elif submitted_uri and submitted_uri in duplicate_artists %}
         <div class="song row warning duplicate-artist" data-uri="{{ submitted_uri }}">
+        {% elif submitted_uri and submitted_uri in repeat_submissions %}
+        <div class="song row warning repeat-submission" data-uri="{{ submitted_uri }}">
         {% else %}
-        <div class="song row">
+        <div class="song row found" data-uri="{{ submitted_uri }}">
         {% endif %}
             <div class="col-xs-12">
                 <span class="song-header">Song {{ "%02d" % (song_num + 1) }}</span>

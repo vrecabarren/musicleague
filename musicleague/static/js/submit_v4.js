@@ -94,6 +94,27 @@ function setSongStateDuplicateSong(song, track) {
     song.removeClass('found').removeClass('warning').addClass('error').addClass('duplicate-song');
 }
 
+function setSongStateRepeatSubmission(song, track) {
+    var id = track.id;
+    var uri = track.uri;
+    var url = track.external_urls.spotify;
+    var img_src = track.album.images[1].url;
+    var name = track.name;
+    var artist = track.artists[0].name;
+    var album = track.album.name;
+
+    song.data('id', id);
+    song.data('uri', uri);
+    song.find('.you-selected').html('Great Minds Think Alike:');
+    song.find('.message').html('Did you know you’ve submitted this song before? You last submitted it on <strong>{date}</strong> in the <strong>{league title}</strong> league.');
+    song.find('.song-info img').attr('src', img_src);
+    song.find('.song-info .name').html('<a href="' + url + '" target="_blank">' + name + '</a>');
+    song.find('.song-info .artist').html("By " + artist);
+    song.find('.song-info .album').html(album);
+    song.find('.find-song-inp').val("");
+    song.removeClass('found').removeClass('error').addClass('warning').addClass('repeat-submission');
+}
+
 function setSongStateDuplicateSubmission(song) {
     song.data('id', "");
     song.data('uri', "");
@@ -179,7 +200,7 @@ function processFormSubmission() {
 }
 
 function setPreviousSubmissionState() {
-    $('.song.found, .song.warning.duplicate-artist, .song.warning.duplicate-album, .song.error.duplicate-song').each(function(){
+    $('.song.found, .song.warning.duplicate-artist, .song.warning.duplicate-album, .song.error.duplicate-song, .song.warning.repeat-submission').each(function(){
         var song = $(this);
         var uri = song.data('uri');
         var uri_regex = /spotify\:track\:([a-zA-Z0-9]{22})/;
@@ -199,6 +220,8 @@ function setPreviousSubmissionState() {
                     setSongStateDuplicateAlbum(song, response);
                 } else if (song.is('.song.error.duplicate-song')) {
                     setSongStateDuplicateSong(song, response);
+                } else if (song.is('.song.warning.repeat-submission')) {
+                    setSongStateRepeatSubmission(song, response);
                 }
             }
         );
