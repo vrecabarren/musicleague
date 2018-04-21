@@ -1,3 +1,6 @@
+from musicleague.persistence.select import select_previous_submission
+
+
 def check_duplicate_albums(my_tracks, their_tracks):
     """ Collect the album ID for each track already submitted. Compare
     the album ID for each track currently being submitted and add any
@@ -5,6 +8,8 @@ def check_duplicate_albums(my_tracks, their_tracks):
     been submitted.
     """
     duplicate_tracks = []
+    if not their_tracks:
+        return duplicate_tracks
 
     their_ids = [track['album']['id'] for track in their_tracks if track]
 
@@ -23,6 +28,8 @@ def check_duplicate_artists(my_tracks, their_tracks):
     already been submitted.
     """
     duplicate_tracks = []
+    if not their_tracks:
+        return duplicate_tracks
 
     primary_ids = set([track['artists'][0]['id']
                        for track in filter(None, their_tracks)])
@@ -46,6 +53,8 @@ def check_duplicate_tracks(my_tracks, their_tracks):
     track ID or title has already been submitted.
     """
     duplicate_tracks = []
+    if not their_tracks:
+        return duplicate_tracks
 
     their_ids = [track['id'] for track in their_tracks if track]
     # their_names = [track['name'] for track in their_tracks if track]
@@ -56,3 +65,15 @@ def check_duplicate_tracks(my_tracks, their_tracks):
             duplicate_tracks.append(my_track['uri'])
 
     return duplicate_tracks
+
+
+def check_repeat_submissions(user_id, tracks, exclude_league_id):
+    # TODO Batch into one network call for query
+    repeat_submissions = {}
+
+    for track in tracks:
+        created, league_name = select_previous_submission(user_id, track, exclude_league_id)
+        if created and league_name:
+            repeat_submissions[track] = (created,league_name)
+
+    return repeat_submissions

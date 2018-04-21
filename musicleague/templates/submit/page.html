@@ -35,6 +35,7 @@
         {% if previous_tracks %}
             {% set tracks = previous_tracks %}
             <input id="previous-submission" type="hidden" value="{{ tracks }}">
+            <input id="repeat-submissions" name="repeat-submissions" type="hidden" value="{{ repeat_submissions|tojson|forceescape }}">
             <input id="duplicate-artists" name="duplicate-artists" type="hidden" value="{{ duplicate_artists|tojson|forceescape }}">
             <input id="duplicate-albums" name="duplicate-albums" type="hidden" value="{{ duplicate_albums|tojson|forceescape }}">
             <input id="duplicate-songs" type="hidden" value="{{ duplicate_songs|tojson|forceescape }}">
@@ -46,14 +47,16 @@
 
         {% for song_num in range(league.preferences.track_count) %}
         {% set submitted_uri  = tracks[song_num] %}
-        {% if submitted_uri and submitted_uri not in duplicate_tracks and submitted_uri not in duplicate_albums and submitted_uri not in duplicate_artists %}
-        <div class="song row found" data-uri="{{ submitted_uri }}">
-        {% elif submitted_uri and submitted_uri in duplicate_songs %}
+        {% if submitted_uri and submitted_uri in duplicate_songs %}
         <div class="song row error duplicate-song" data-uri="{{ submitted_uri }}">
         {% elif submitted_uri and submitted_uri in duplicate_albums %}
         <div class="song row warning duplicate-album" data-uri="{{ submitted_uri }}">
         {% elif submitted_uri and submitted_uri in duplicate_artists %}
         <div class="song row warning duplicate-artist" data-uri="{{ submitted_uri }}">
+        {% elif submitted_uri and submitted_uri in repeat_submissions %}
+        <div class="song row warning repeat-submission" data-uri="{{ submitted_uri }}">
+        {% elif submitted_uri %}
+        <div class="song row found" data-uri="{{ submitted_uri }}">
         {% else %}
         <div class="song row">
         {% endif %}
@@ -87,7 +90,10 @@
 {% block js %}
 <script type="text/javascript">
     var accessToken = "{{ access_token }}";
+    {% if repeat_submissions is defined %}
+    var repeatSubmissions = {{ repeat_submissions|tojson|safe }};
+    {% endif %}
 </script>
 <script type="text/javascript" src="/static/js/jquery.sticky-kit.min.js"></script>
-<script type="text/javascript" src="/static/js/submit_v4.js"></script>
+<script type="text/javascript" src="/static/js/submit_v5.js"></script>
 {% endblock %}
