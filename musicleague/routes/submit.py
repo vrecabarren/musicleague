@@ -95,40 +95,43 @@ def submit(league_id, submission_period_id):
                 their_tracks.difference_update(set(my_submission.tracks))
             their_tracks = list(their_tracks)
 
+        # if their_tracks:
+        s_tracks = tracks + their_tracks
+        s_tracks = g.spotify.tracks(s_tracks).get('tracks')
+
+        my_tracks, their_tracks = s_tracks, []
         if their_tracks:
-            s_tracks = tracks + their_tracks
-            s_tracks = g.spotify.tracks(s_tracks).get('tracks')
             my_tracks = s_tracks[:len(tracks)]
             their_tracks = s_tracks[len(tracks):]
 
-            # Don't allow user to submit already submitted track, album or artist
-            duplicate_tracks = check_duplicate_tracks(my_tracks, their_tracks)
-            duplicate_artists = check_duplicate_artists(my_tracks, their_tracks)
-            previous_submissions = check_previous_submissions(g.user, tracks)
+        # Don't allow user to submit already submitted track, album or artist
+        duplicate_tracks = check_duplicate_tracks(my_tracks, their_tracks)
+        duplicate_artists = check_duplicate_artists(my_tracks, their_tracks)
+        previous_submissions = check_previous_submissions(g.user, tracks)
 
-            proceeding_dups = set(warned_artists).intersection(set(duplicate_artists))
-            if proceeding_dups:
-                duplicate_artists = list(set(duplicate_artists) - set(warned_artists))
-                track_user_proceeded_duplicate_artist(g.user.id, submission_period, list(proceeding_dups))
+        proceeding_dups = set(warned_artists).intersection(set(duplicate_artists))
+        if proceeding_dups:
+            duplicate_artists = list(set(duplicate_artists) - set(warned_artists))
+            track_user_proceeded_duplicate_artist(g.user.id, submission_period, list(proceeding_dups))
 
-            if duplicate_tracks or duplicate_artists or previous_submissions:
+        if duplicate_tracks or duplicate_artists or previous_submissions:
 
-                if duplicate_tracks:
-                    track_user_submitted_duplicate_song(g.user.id, submission_period, duplicate_tracks)
-                # elif duplicate_albums:
-                #     track_user_submitted_duplicate_album(g.user.id, submission_period, duplicate_albums)
-                elif duplicate_artists:
-                    track_user_submitted_duplicate_artist(g.user.id, submission_period, duplicate_artists)
+            if duplicate_tracks:
+                track_user_submitted_duplicate_song(g.user.id, submission_period, duplicate_tracks)
+            # elif duplicate_albums:
+            #     track_user_submitted_duplicate_album(g.user.id, submission_period, duplicate_albums)
+            elif duplicate_artists:
+                track_user_submitted_duplicate_artist(g.user.id, submission_period, duplicate_artists)
 
-                return render_template(
-                    'submit/page.html',
-                    user=g.user, league=league, round=submission_period,
-                    previous_tracks=tracks,
-                    duplicate_songs=duplicate_tracks,
-                    duplicate_albums=[],
-                    duplicate_artists=duplicate_artists,
-                    previous_submissions=previous_submissions,
-                    access_token=session['access_token'])
+            return render_template(
+                'submit/page.html',
+                user=g.user, league=league, round=submission_period,
+                previous_tracks=tracks,
+                duplicate_songs=duplicate_tracks,
+                duplicate_albums=[],
+                duplicate_artists=duplicate_artists,
+                previous_submissions=previous_submissions,
+                access_token=session['access_token'])
 
         # Create a new submission on the round as current user
         submission = create_or_update_submission(
