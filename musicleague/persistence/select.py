@@ -24,6 +24,7 @@ from musicleague.persistence.statements import SELECT_LEAGUES_COUNT
 from musicleague.persistence.statements import SELECT_LEAGUES_FOR_USER
 from musicleague.persistence.statements import SELECT_MEMBERSHIPS_COUNT
 from musicleague.persistence.statements import SELECT_MEMBERSHIPS_PLACED_FOR_USER
+from musicleague.persistence.statements import SELECT_PREVIOUS_SUBMISSION
 from musicleague.persistence.statements import SELECT_ROUND
 from musicleague.persistence.statements import SELECT_ROUNDS_COUNT
 from musicleague.persistence.statements import SELECT_ROUNDS_FOR_LEAGUE
@@ -343,15 +344,31 @@ def select_rounds_incomplete_count(league_id):
             return cur.rowcount
 
 
+def select_previous_submission(user_id, spotify_uri):
+    created, league = None, None
+    with get_postgres_conn() as conn:
+        with conn.cursor() as cur:
+            cur.execute(SELECT_PREVIOUS_SUBMISSION, (user_id, spotify_uri))
+            if cur.rowcount > 0:
+                created, league = cur.fetchone()
+    return created, league
+
+
 def select_submissions_count():
+    submissions_count = -1
     with get_postgres_conn() as conn:
         with conn.cursor() as cur:
             cur.execute(SELECT_SUBMISSIONS_COUNT)
-            return cur.fetchone()[0]
+            if cur.rowcount > 0:
+                submissions_count = cur.fetchone()[0]
+    return submissions_count
 
 
 def select_votes_count():
+    votes_count = -1
     with get_postgres_conn() as conn:
         with conn.cursor() as cur:
             cur.execute(SELECT_VOTES_COUNT)
-            return cur.fetchone()[0]
+            if cur.rowcount > 0:
+                votes_count = cur.fetchone()[0]
+    return votes_count

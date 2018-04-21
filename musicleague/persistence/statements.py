@@ -326,6 +326,20 @@ DELETE_SUBMISSIONS = "DELETE FROM submissions WHERE round_id = %s AND submitter_
 
 DELETE_SUBMISSIONS_FOR_ROUND = "DELETE FROM submissions WHERE round_id = %s;"
 
+SELECT_PREVIOUS_SUBMISSION = """SELECT
+                                    submissions.created,
+                                    leagues.name
+                                FROM
+                                    submissions
+                                    INNER JOIN rounds ON rounds.id = submissions.round_id
+                                    INNER JOIN leagues ON leagues.id = rounds.league_id
+                                    WHERE
+                                        submissions.submitter_id = %s
+                                        AND submissions.spotify_uri = %s
+                                    ORDER BY
+                                        submissions.created
+                                    LIMIT 1"""
+
 SELECT_SUBMISSIONS = """SELECT created, submitter_id, revision, json_object_agg(spotify_uri, rank)
                             FROM submissions WHERE round_id = %s
                             GROUP BY submitter_id, created, revision;"""

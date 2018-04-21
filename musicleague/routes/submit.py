@@ -23,6 +23,7 @@ from musicleague.submission import get_my_submission
 from musicleague.submission_period.tasks import complete_submission_process
 from musicleague.validate import check_duplicate_artists
 from musicleague.validate import check_duplicate_tracks
+from musicleague.validate import check_previous_submission
 
 
 SUBMIT_URL = '/l/<league_id>/<submission_period_id>/submit/'
@@ -103,13 +104,14 @@ def submit(league_id, submission_period_id):
             # Don't allow user to submit already submitted track, album or artist
             duplicate_tracks = check_duplicate_tracks(my_tracks, their_tracks)
             duplicate_artists = check_duplicate_artists(my_tracks, their_tracks)
+            previous_submissions = check_previous_submission(g.user, tracks)
 
             proceeding_dups = set(warned_artists).intersection(set(duplicate_artists))
             if proceeding_dups:
                 duplicate_artists = list(set(duplicate_artists) - set(warned_artists))
                 track_user_proceeded_duplicate_artist(g.user.id, submission_period, list(proceeding_dups))
 
-            if duplicate_tracks or duplicate_artists:
+            if duplicate_tracks or duplicate_artists or previous_submissions:
 
                 if duplicate_tracks:
                     track_user_submitted_duplicate_song(g.user.id, submission_period, duplicate_tracks)
@@ -125,6 +127,7 @@ def submit(league_id, submission_period_id):
                     duplicate_songs=duplicate_tracks,
                     duplicate_albums=[],
                     duplicate_artists=duplicate_artists,
+                    previous_submissions=previous_submissions,
                     access_token=session['access_token'])
 
         # Create a new submission on the round as current user

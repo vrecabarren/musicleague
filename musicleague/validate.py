@@ -1,3 +1,6 @@
+from musicleague.persistence.select import select_previous_submission
+
+
 def check_duplicate_albums(my_tracks, their_tracks):
     """ Collect the album ID for each track already submitted. Compare
     the album ID for each track currently being submitted and add any
@@ -56,3 +59,14 @@ def check_duplicate_tracks(my_tracks, their_tracks):
             duplicate_tracks.append(my_track['uri'])
 
     return duplicate_tracks
+
+
+def check_previous_submission(user, tracks):
+    duplicate_submissions = dict()
+
+    for track in tracks:
+        created, league_name = select_previous_submission(user.id, track)
+        if created and league_name:
+            duplicate_submissions[track] = (created,league_name)
+
+    return duplicate_submissions
