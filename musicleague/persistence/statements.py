@@ -338,7 +338,7 @@ SELECT_PREVIOUS_SUBMISSION = """SELECT
                                         AND submissions.spotify_uri = %s
                                         AND leagues.id != %s
                                     ORDER BY
-                                        submissions.created
+                                        submissions.created DESC
                                     LIMIT 1"""
 
 SELECT_SUBMISSIONS = """SELECT created, submitter_id, revision, json_object_agg(spotify_uri, rank)
