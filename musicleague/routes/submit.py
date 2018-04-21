@@ -95,7 +95,6 @@ def submit(league_id, submission_period_id):
                 their_tracks.difference_update(set(my_submission.tracks))
             their_tracks = list(their_tracks)
 
-        # if their_tracks:
         s_tracks = tracks + their_tracks
         s_tracks = g.spotify.tracks(s_tracks).get('tracks')
 
@@ -107,7 +106,7 @@ def submit(league_id, submission_period_id):
         # Don't allow user to submit already submitted track, album or artist
         duplicate_tracks = check_duplicate_tracks(my_tracks, their_tracks)
         duplicate_artists = check_duplicate_artists(my_tracks, their_tracks)
-        repeat_submissions = check_repeat_submissions(g.user, tracks)
+        repeat_submissions = check_repeat_submissions(g.user.id, tracks)
 
         proceeding_dups = set(warned_artists).intersection(set(duplicate_artists))
         if proceeding_dups:

@@ -88,7 +88,7 @@
 {% block js %}
 <script type="text/javascript">
     var accessToken = "{{ access_token }}";
-    var repeatSubmissions = {{ repeat_submissions|tojson|safe }}
+    var repeatSubmissions = {{ repeat_submissions|tojson|safe }};
 </script>
 <script type="text/javascript" src="/static/js/jquery.sticky-kit.min.js"></script>
 <script type="text/javascript" src="/static/js/submit_v4.js"></script>
