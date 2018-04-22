@@ -1,0 +1,28 @@
+{% extends "frame.html" %}
+
+{% block title %}Music League | User ID{% endblock %}
+
+{% block css %}
+<style>
+    #title-bar { padding: 0; }
+</style>
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <form action="" method="post">
+                    {% if needs_phone %}
+                    <label for="phone_number">Cell Phone:</label>
+                    <input type="text" class="form-control" name="phone_number" placeholder="(XXX) XXX-XXXX">
+                    {% endif %}
+
+                    <button type="submit" class="btn btn-info">Save Info</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

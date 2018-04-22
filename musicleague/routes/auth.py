@@ -99,6 +99,9 @@ def login():
                 session.pop('next_url')
                 return redirect(next_url)
 
+            if user.is_beta:
+                return redirect(url_for('request_info'))
+
     return redirect(url_for('profile'))
 
 

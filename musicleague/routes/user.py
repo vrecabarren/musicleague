@@ -17,6 +17,7 @@ from musicleague.user import get_user
 
 AUTOCOMPLETE = '/autocomplete/'
 PROFILE_URL = '/profile/'
+REQUEST_INFO_URL = '/info/'
 SETTINGS_URL = '/settings/'
 NOTIFICATIONS_SETTINGS_URL = '/settings/notifications/'
 PROFILE_SETTINGS_URL = '/settings/profile/'
@@ -58,6 +59,16 @@ def profile():
         'contributor_leagues': len(leagues),
         'placed_leagues': placed_leagues
         }
+
+
+@app.route(REQUEST_INFO_URL)
+@templated('request_info.html')
+@login_required
+def request_info():
+    return {
+        'user': g.user,
+        'needs_phone': g.user.is_beta,
+    }
 
 
 @app.route(SETTINGS_URL, methods=['GET'])
