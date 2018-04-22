@@ -1,3 +1,2 @@
 web: gunicorn musicleague:app
-worker: python worker.py
-scheduler: python scheduler.py
+worker: python worker.py & python scheduler.py & wait -n
