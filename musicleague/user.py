@@ -12,9 +12,15 @@ from musicleague.persistence.update import upsert_user
 DEFAULT_AVATARS = [
     'https://s3.amazonaws.com/musicleague-static-assets/avatars/bowie_avatar.svg',
     'https://s3.amazonaws.com/musicleague-static-assets/avatars/daft_avatar.svg',
+    'https://s3.amazonaws.com/musicleague-static-assets/avatars/dmc_avatar.svg',
     'https://s3.amazonaws.com/musicleague-static-assets/avatars/elvis_avatar.svg',
+    'https://s3.amazonaws.com/musicleague-static-assets/avatars/hendrix_avatar.svg',
+    'https://s3.amazonaws.com/musicleague-static-assets/avatars/madonna_avatar.svg',
+    'https://s3.amazonaws.com/musicleague-static-assets/avatars/marley_avatar.svg',
+    'https://s3.amazonaws.com/musicleague-static-assets/avatars/morrison_avatar.svg',
     'https://s3.amazonaws.com/musicleague-static-assets/avatars/prince_avatar.svg',
     'https://s3.amazonaws.com/musicleague-static-assets/avatars/punk_avatar.svg',
+    'https://s3.amazonaws.com/musicleague-static-assets/avatars/siouxie_avatar.svg',
     'https://s3.amazonaws.com/musicleague-static-assets/avatars/supremes_avatar.svg'
 ]
 
