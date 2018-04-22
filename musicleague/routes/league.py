@@ -269,7 +269,7 @@ def score_league(league_id, **kwargs):
 
 
 @app.route(LEADERBOARD_URL)
-@templated('leaderboard/page.html')
+@templated('league/leaderboard/page.html')
 @login_required
 def view_leaderboard(league_id, **kwargs):
     league = select_league(league_id)

@@ -102,7 +102,7 @@ def save_submission_period_settings(league_id, submission_period_id,
 
 
 @app.route(VIEW_SUBMISSION_PERIOD_URL)
-@templated('results/page.html')
+@templated('league/round/results/page.html')
 @login_required
 def view_submission_period(league_id, submission_period_id):
     league = select_league(league_id)

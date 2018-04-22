@@ -32,7 +32,7 @@ SUBMIT_URL = '/l/<league_id>/<submission_period_id>/submit/'
 
 
 @app.route(SUBMIT_URL, methods=['GET'])
-@templated('submit/page.html')
+@templated('league/round/submit/page.html')
 @login_required
 def view_submit(league_id, submission_period_id):
     league = select_league(league_id)

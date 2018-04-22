@@ -24,7 +24,7 @@ VOTE_URL = '/l/<league_id>/<submission_period_id>/vote/'
 
 
 @app.route(VOTE_URL, methods=['GET'])
-@templated('vote/page.html')
+@templated('league/round/vote/page.html')
 @login_required
 def view_vote(league_id, submission_period_id):
     league = select_league(league_id)
