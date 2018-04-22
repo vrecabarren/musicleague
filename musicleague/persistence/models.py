@@ -32,11 +32,12 @@ class UserPreferences:
 
 
 class User:
-    def __init__(self, id, email, image_url, is_admin, joined, name, profile_bg):
+    def __init__(self, id, email, image_url, is_admin, is_beta, joined, name, profile_bg):
         self.id = id
         self.email = email
         self.image_url = image_url
         self.is_admin = is_admin
+        self.is_beta = is_beta
         self.joined = joined
         self.name = name
         self.preferences = UserPreferences()

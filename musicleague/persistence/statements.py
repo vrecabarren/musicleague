@@ -84,13 +84,13 @@ DELETE_USER = "DELETE FROM users WHERE id = %s;"
 INSERT_USER = """INSERT INTO users (id, email, image_url, joined, name, profile_bg)
                     VALUES (%s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING;"""
 
-SELECT_USER = "SELECT email, image_url, is_admin, joined, name, profile_bg FROM users WHERE id = %s;"
+SELECT_USER = "SELECT email, image_url, is_admin, is_beta, joined, name, profile_bg FROM users WHERE id = %s;"
 
-SELECT_USER_BY_EMAIL = "SELECT id, image_url, is_admin, joined, name, profile_bg FROM users WHERE email = %s;"
+SELECT_USER_BY_EMAIL = "SELECT id, image_url, is_admin, is_beta, joined, name, profile_bg FROM users WHERE email = %s;"
 
 SELECT_USERS_COUNT = "SELECT COUNT(id) FROM users;"
 
-SELECT_USERS_FOR_LEAGUE = """SELECT users.id, users.email, users.image_url, users.is_admin, users.joined, users.name, users.profile_bg
+SELECT_USERS_FOR_LEAGUE = """SELECT users.id, users.email, users.image_url, users.is_admin, users.is_beta, users.joined, users.name, users.profile_bg
                                 FROM users INNER JOIN memberships ON memberships.user_id = users.id
                                 WHERE memberships.league_id = %s
                                 ORDER BY memberships.created;"""

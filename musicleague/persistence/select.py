@@ -61,8 +61,8 @@ def select_user(user_id):
             if cur.rowcount < 1:
                 return None
 
-            email, image_url, is_admin, joined, name, profile_bg = cur.fetchone()
-            u = User(user_id, email, image_url, is_admin, joined, name, profile_bg)
+            email, image_url, is_admin, is_beta, joined, name, profile_bg = cur.fetchone()
+            u = User(user_id, email, image_url, is_admin, is_beta, joined, name, profile_bg)
 
             # TODO This could be done in one fetch with a join
             u.preferences = select_user_preferences(user_id)
@@ -77,8 +77,8 @@ def select_user_by_email(user_email):
             if cur.rowcount < 1:
                 return None
 
-            user_id, image_url, is_admin, joined, name, profile_bg = cur.fetchone()
-            u = User(user_id, user_email, image_url, is_admin, joined, name, profile_bg)
+            user_id, image_url, is_admin, is_beta, joined, name, profile_bg = cur.fetchone()
+            u = User(user_id, user_email, image_url, is_admin, is_beta, joined, name, profile_bg)
 
             # TODO This could be done in one fetch with a join
             u.preferences = select_user_preferences(user_id)
@@ -139,8 +139,8 @@ def select_league(league_id, exclude_properties=None):
             user_idx = {}
             cur.execute(SELECT_USERS_FOR_LEAGUE, (league_id,))
             for user_tup in cur.fetchall():
-                user_id, email, image_url, is_admin, joined, name, profile_bg = user_tup
-                user = User(user_id, email,image_url, is_admin, joined, name, profile_bg)
+                user_id, email, image_url, is_admin, is_beta, joined, name, profile_bg = user_tup
+                user = User(user_id, email,image_url, is_admin, is_beta, joined, name, profile_bg)
                 user.preferences = select_user_preferences(user_id)
                 league.users.append(user)
                 user_idx[user_id] = user
@@ -265,8 +265,8 @@ def select_leagues_for_user(user_id, exclude_properties=None):
 
                 cur.execute(SELECT_USERS_FOR_LEAGUE, (league_id,))
                 for user_tup in cur.fetchall():
-                    user_id, email, image_url, is_admin, joined, name, profile_bg = user_tup
-                    user = User(user_id, email,image_url, is_admin, joined, name, profile_bg)
+                    user_id, email, image_url, is_admin, is_beta, joined, name, profile_bg = user_tup
+                    user = User(user_id, email,image_url, is_admin, is_beta, joined, name, profile_bg)
                     league.users.append(user)
                     if user_id == league.owner_id:
                         league.owner = user
