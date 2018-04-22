@@ -30,6 +30,7 @@ from musicleague.routes.submission_period import save_submission_period_settings
 from musicleague.routes.submission_period import view_submission_period
 from musicleague.routes.submit import submit
 from musicleague.routes.user import profile
+from musicleague.routes.user import request_info
 from musicleague.routes.user import view_user
 from musicleague.routes.vote import vote
 

@@ -99,6 +99,7 @@ def login():
                 session.pop('next_url')
                 return redirect(next_url)
 
+            app.logger.info('User beta?: %s', user.is_beta)
             if user.is_beta:
                 return redirect(url_for('request_info'))
 
