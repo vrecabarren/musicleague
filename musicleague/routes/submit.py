@@ -102,7 +102,7 @@ def submit(league_id, submission_period_id):
         s_tracks = g.spotify.tracks(s_tracks).get('tracks')
 
         my_tracks, their_tracks = s_tracks, []
-        if their_tracks:
+        if len(s_tracks) > len(tracks):
             my_tracks = s_tracks[:len(tracks)]
             their_tracks = s_tracks[len(tracks):]
 

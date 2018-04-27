@@ -57,11 +57,13 @@ def check_duplicate_tracks(my_tracks, their_tracks):
         return duplicate_tracks
 
     their_ids = [track['id'] for track in their_tracks if track]
-    # their_names = [track['name'] for track in their_tracks if track]
+    their_names = [track['name'] for track in their_tracks if track]
 
     for my_track in my_tracks:
-        # if my_track['id'] in their_ids or my_track['name'] in their_names:
         if my_track['id'] in their_ids:
+            duplicate_tracks.append(my_track['uri'])
+
+        if my_track['name'] in their_names and check_duplicate_artists([my_track], their_tracks):
             duplicate_tracks.append(my_track['uri'])
 
     return duplicate_tracks
