@@ -321,7 +321,7 @@ INSERT_SUBMISSION = """INSERT INTO submissions (created, round_id, spotify_uri, 
                             = (EXCLUDED.created, EXCLUDED.revision)
                             WHERE submissions.round_id = EXCLUDED.round_id
                             AND submissions.spotify_uri = EXCLUDED.spotify_uri
-                            AND submitter_id = EXCLUDED.submitter_id;"""
+                            AND submissions.submitter_id = EXCLUDED.submitter_id;"""
 
 DELETE_SUBMISSIONS = "DELETE FROM submissions WHERE round_id = %s AND submitter_id = %s;"
 
