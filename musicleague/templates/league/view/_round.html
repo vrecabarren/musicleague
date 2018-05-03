@@ -24,12 +24,12 @@
                     </div><!--
                     --><div class="text-center-xs">
                         {% if round.is_complete %}
-                            <span class="status-text complete">{{ moment(round.vote_due_date).format('[Completed on] MM.DD.YY') }}</span>
+                            <span class="status-text complete">{{ moment(round.vote_due_date)._render("calendar(null, {sameDay: '[Completed today at] hA', sameElse: '[Completed on] MM.DD.YY'})") }}</span>
                         {% elif round.is_current_v2 %}
                             {% if round.accepting_submissions %}
-                            <span class="status-text current">{{ moment(round.submission_due_date).format('[Submissions due on] MM.DD.YY [at] hA') }}</span>
+                            <span class="status-text current">{{ moment(round.submission_due_date)._render("calendar(null, {sameDay: '[Submissions due today at] hA', nextDay: '[Submissions due tomorrow at] hA', sameElse: '[Submissions due on] MM.DD.YY [at] hA'})") }}</span>
                             {% elif round.accepting_votes %}
-                            <span class="status-text current">{{ moment(round.vote_due_date).format('[Votes due on] MM.DD.YY [at] hA') }}</span>
+                            <span class="status-text current">{{ moment(round.vote_due_date)._render("calendar(null, {sameDay: '[Votes due today at] hA', nextDay: '[Votes due tomorrow at] hA', sameElse: '[Votes due on] MM.DD.YY [at] hA'})") }}</span>
                             {% endif %}
                         {% else %}
                             <span class="status-text">{{ moment(prev_round.vote_due_date).format('[Live on] MM.DD.YY [at] hA') }}</span>
