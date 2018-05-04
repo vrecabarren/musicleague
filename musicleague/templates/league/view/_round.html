@@ -32,7 +32,7 @@
                             <span class="status-text current">{{ moment(round.vote_due_date)._render("calendar(null, {sameDay: '[Votes due today at] hA', nextDay: '[Votes due tomorrow at] hA', nextWeek: '[Votes due on] dddd [at] hA', sameElse: '[Votes due on] MM.DD.YY [at] hA'})") }}</span>
                             {% endif %}
                         {% else %}
-                            <span class="status-text">{{ moment(prev_round.vote_due_date).format('[Live on] MM.DD.YY [at] hA') }}</span>
+                            <span class="status-text">{{ moment(prev_round.vote_due_date)._render("calendar(null, {sameDay: '[Live today at] hA', nextDay: '[Live tomorrow at] hA', nextWeek: '[Live on] dddd [at] hA', sameElse: '[Live on] MM.DD.YY [at] hA'})") }}</span>
                         {% endif %}
                         <div class="visible-xs" style="padding: 10px 0"></div>
                     </div><!--
