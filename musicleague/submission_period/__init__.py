@@ -97,7 +97,11 @@ def update_submission_period(submission_period_id, name, description,
     submission_period.submission_due_date = submission_due_date
     submission_period.vote_due_date = vote_due_date
 
-    if vote_due_date < utc.localize(datetime.utcnow()):
+    if submission_due_date > utc.localize(datetime.utcnow()):
+        submission_period.status = RoundStatus.CREATED
+    elif vote_due_date > utc.localize(datetime.utcnow()):
+        submission_period.status = RoundStatus.ACCEPTING_VOTES
+    else:
         submission_period.status = RoundStatus.COMPLETE
 
     # Reschedule playlist creation and submission/vote reminders if needed
