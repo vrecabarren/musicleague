@@ -354,7 +354,7 @@ class Round:
         return False
 
     @property
-    def is_current_v2(self):
+    def is_current(self):
         """ Return True if this round is the one currently accepting
         submissions or votes.
         """
