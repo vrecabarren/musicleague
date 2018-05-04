@@ -150,9 +150,12 @@ def submit(league_id, submission_period_id):
 
         remaining = submission_period.have_not_submitted
         if not remaining:
-            # This makes the request a little heavy for the final submitter,
-            # but asyncing means the submitter gets a playlist button but no playlist.
-            complete_submission_process(submission_period.id)
+            # If this is not the first round, roll forward
+            if len(league.submission_periods) > 1:
+                if league.submission_periods[0].id != submission_period_id:
+                    # This makes the request a little heavy for the final submitter,
+                    # but asyncing means the submitter gets a playlist button but no playlist.
+                    complete_submission_process(submission_period.id)
 
         # Don't send submission reminder if this user is resubmitting. In this
         # case, the last user to submit will have already gotten a notification.
