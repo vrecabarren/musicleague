@@ -233,7 +233,7 @@ class League:
         return self.status == LeagueStatus.COMPLETE
 
     def has_owner(self, user):
-        return self.owner and self.owner.id == user.id
+        return self.owner_id and self.owner_id == user.id
 
     def has_user(self, user):
         return any((u for u in self.users if u.id == user.id))
