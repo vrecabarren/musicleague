@@ -241,6 +241,7 @@ class League:
 
 class RoundStatus:
     CREATED = 0
+    ACCEPTING_VOTES = 10
     COMPLETE = 20
 
 
@@ -276,9 +277,7 @@ class Round:
         """ Return True if the submission due date has not yet passed
         for this round and not all submissions have been received.
         """
-        if self.status == RoundStatus.COMPLETE:
-            return False
-        return self.submission_due_date > utc.localize(datetime.utcnow())
+        return self.status == RoundStatus.CREATED
 
     @property
     def accepting_votes(self):
@@ -286,11 +285,7 @@ class Round:
         submissions have been received and the vote due date has not
         yet passed.
         """
-        if self.status == RoundStatus.COMPLETE:
-            return False
-        if self.accepting_submissions:
-            return False
-        return self.vote_due_date > utc.localize(datetime.utcnow())
+        return self.status == RoundStatus.ACCEPTING_VOTES
 
     @property
     def all_tracks(self):
@@ -347,11 +342,7 @@ class Round:
         """ Return True if voting due date for this round has
         passed or all submissions/votes are in.
         """
-        if self.status == RoundStatus.COMPLETE:
-            return True
-        if self.vote_due_date < utc.localize(datetime.utcnow()):
-            return True
-        return False
+        return self.status == RoundStatus.COMPLETE
 
     @property
     def is_current(self):
