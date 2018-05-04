@@ -147,6 +147,9 @@ def select_league(league_id, exclude_properties=None):
                 if user_id == league.owner_id:
                     league.owner = user
 
+            # If owner is not participating in league, retrieve
+            league.owner = league.owner or select_user(owner_id)
+
             if 'invited_users' not in exclude_properties:
                 cur.execute(SELECT_INVITED_USERS_IN_LEAGUE, (league_id,))
                 for user_tup in cur.fetchall():
@@ -270,6 +273,9 @@ def select_leagues_for_user(user_id, exclude_properties=None):
                     league.users.append(user)
                     if user_id == league.owner_id:
                         league.owner = user
+
+                # If owner is not participating in league, retrieve
+                league.owner = league.owner or select_user(owner_id)
 
                 leagues.append(league)
 
