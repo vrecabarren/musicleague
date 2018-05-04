@@ -145,7 +145,7 @@ def submit(league_id, submission_period_id):
             tracks, submission_period, league, g.user)
 
         # If someone besides owner is submitting, notify the owner
-        if g.user.id != league.owner.id:
+        if not league.has_owner(g.user):
             owner_user_submitted_notification(submission)
 
         remaining = submission_period.have_not_submitted
