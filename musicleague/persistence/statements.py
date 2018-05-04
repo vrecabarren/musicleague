@@ -199,6 +199,7 @@ SELECT_LEAGUES_COUNT = "SELECT COUNT(id) FROM leagues;"
 SELECT_LEAGUES_FOR_USER = """SELECT leagues.id, leagues.created, leagues.name, leagues.owner_id, leagues.status
                                 FROM leagues INNER JOIN memberships ON memberships.league_id = leagues.id
                                 WHERE memberships.user_id = %s
+                                OR leagues.owner_id = %s
                                 ORDER BY leagues.status, memberships.created DESC;"""
 
 UPDATE_LEAGUE = "UPDATE leagues SET (name, status) = (%s, %s) WHERE id = %s;"
