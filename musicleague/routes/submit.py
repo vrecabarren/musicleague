@@ -41,8 +41,7 @@ def view_submit(league_id, submission_period_id):
     if not league.has_user(g.user):
         return redirect(url_for('view_league', league_id=league.id))
 
-    if not (submission_period.accepting_submissions or
-            submission_period.accepting_late_submissions):
+    if not submission_period.accepting_submissions:
         return redirect(url_for('view_league', league_id=league.id))
 
     my_submission = get_my_submission(g.user, submission_period)
@@ -69,8 +68,7 @@ def submit(league_id, submission_period_id):
         if not league.has_user(g.user):
             return "Not a member of this league", httplib.UNAUTHORIZED
 
-        if (not submission_period.accepting_submissions and
-                not submission_period.accepting_late_submissions):
+        if not submission_period.accepting_submissions:
             return redirect(request.referrer)
 
         try:

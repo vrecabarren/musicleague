@@ -272,18 +272,6 @@ class Round:
         return self.playlist_url != ''
 
     @property
-    def accepting_late_submissions(self):
-        """ Return True if the league owner chose to accept late
-        submissions and the vote due date for this round has not
-        yet passed. Return False if all users have already submitted.
-
-        NOTE: Currently hardcoded to return False
-        """
-        return (False and
-                self.have_not_submitted and
-                (self.vote_due_date > utc.localize(datetime.utcnow())))
-
-    @property
     def accepting_submissions(self):
         """ Return True if the submission due date has not yet passed
         for this round and not all submissions have been received.
