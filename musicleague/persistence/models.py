@@ -264,10 +264,6 @@ class Round:
         # By populating the league_id attribute above, we can fetch league when needed
         self.league = None
 
-        # TODO Remove this
-        # This shouldn't need to be loaded/persisted every time the round is
-        self.pending_tasks = {}
-
     @property
     def playlist_created(self):
         return self.playlist_url != ''
