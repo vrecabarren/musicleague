@@ -276,8 +276,9 @@ class Round:
         """ Return True if the submission due date has not yet passed
         for this round and not all submissions have been received.
         """
-        return (self.have_not_submitted and
-                (self.submission_due_date > utc.localize(datetime.utcnow())))
+        if self.status == RoundStatus.COMPLETE:
+            return False
+        return self.submission_due_date > utc.localize(datetime.utcnow())
 
     @property
     def accepting_votes(self):
@@ -285,9 +286,11 @@ class Round:
         submissions have been received and the vote due date has not
         yet passed.
         """
-        return ((not self.accepting_submissions) and
-                self.have_not_voted and
-                (self.vote_due_date > utc.localize(datetime.utcnow())))
+        if self.status == RoundStatus.COMPLETE:
+            return False
+        if self.accepting_submissions:
+            return False
+        return self.vote_due_date > utc.localize(datetime.utcnow())
 
     @property
     def all_tracks(self):
@@ -344,9 +347,11 @@ class Round:
         """ Return True if voting due date for this round has
         passed or all submissions/votes are in.
         """
+        if self.status == RoundStatus.COMPLETE:
+            return True
         if self.vote_due_date < utc.localize(datetime.utcnow()):
             return True
-        return not (self.accepting_submissions or self.accepting_votes)
+        return False
 
     @property
     def is_current_v2(self):
