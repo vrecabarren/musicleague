@@ -365,7 +365,7 @@ class Round:
         """ Return True if this round is not complete and is not
         currently accepting submissions or votes.
         """
-        return not (self.is_complete or self.is_current_v2)
+        return not (self.is_complete or self.is_current)
 
 
 class Submission:

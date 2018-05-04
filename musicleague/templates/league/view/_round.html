@@ -1,4 +1,4 @@
-<div class="round-bar {%if round.is_complete %}complete{% elif round.is_current_v2 %}current{% endif %}">
+<div class="round-bar {%if round.is_complete %}complete{% elif round.is_current %}current{% endif %}">
     <div class="container">
         <div class="row"><!--
             {% if round.is_complete or league.has_owner(user) %}
@@ -6,26 +6,26 @@
             {% else %}
         --><div class="col-xs-12 col-sm-2 text-center vcenter">
             {% endif %}
-                <span alt="" class="round-status-icon{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}"></span>
+                <span alt="" class="round-status-icon{% if round.is_complete %} complete{% elif  round.is_current %} current{% endif %}"></span>
                 <div class="visible-xs" style="padding: 10px 0"></div>
             </div><!--
         --><div class="col-xs-12 col-sm-5 vcenter">
                 <div class="row">
                     <div class="text-center-xs">
                         {% if round.is_complete or league.has_owner(user) or user.is_admin %}
-                        <a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=round.id) }}" class="round-title{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ round.name }}</a>
+                        <a href="{{ url_for('view_submission_period', league_id=league.id, submission_period_id=round.id) }}" class="round-title{% if round.is_complete %} complete{% elif  round.is_current %} current{% endif %}">{{ round.name }}</a>
                         {% else %}
-                        <span class="round-title{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ round.name }}</span>
+                        <span class="round-title{% if round.is_complete %} complete{% elif  round.is_current %} current{% endif %}">{{ round.name }}</span>
                         {% endif %}
                         <div class="visible-xs" style="padding: 5px 0"></div>
                         {% if round.description %}
-                        <span class="status-text{% if round.is_complete %} complete{% elif  round.is_current_v2 %} current{% endif %}">{{ round.description }}</span>
+                        <span class="status-text{% if round.is_complete %} complete{% elif  round.is_current %} current{% endif %}">{{ round.description }}</span>
                         {% endif %}
                     </div><!--
                     --><div class="text-center-xs">
                         {% if round.is_complete %}
                             <span class="status-text complete">{{ moment(round.vote_due_date)._render("calendar(null, {sameDay: '[Completed today at] hA', lastDay: '[Completed yesterday at] hA', lastWeek: '[Completed on] dddd [at] hA', sameElse: '[Completed on] MM.DD.YY'})") }}</span>
-                        {% elif round.is_current_v2 %}
+                        {% elif round.is_current %}
                             {% if round.accepting_submissions %}
                             <span class="status-text current">{{ moment(round.submission_due_date)._render("calendar(null, {sameDay: '[Submissions due today at] hA', nextDay: '[Submissions due tomorrow at] hA', nextWeek: '[Submissions due on] dddd [at] hA', sameElse: '[Submissions due on] MM.DD.YY [at] hA'})") }}</span>
                             {% elif round.accepting_votes %}
@@ -67,7 +67,7 @@
                 </div>
             </div><!--
             -->{% if not round.is_future %}<div class="col-xs-6 col-sm-2 col-sm-offset-1 text-center vcenter">
-                {% if round.is_current_v2 %}
+                {% if round.is_current %}
                     {% if round.accepting_submissions and league.has_user(user) %}
                         {% if round.user_submission(user) %}
                         <span class="action-required">You <span class="emphasize">Have</span> Submitted</span>
@@ -93,7 +93,7 @@
                         <span alt="" class="action-button results"></span>
                         <span class="action-text complete">Round Results</span>
                     </a>
-                {% elif round.is_current_v2 %}
+                {% elif round.is_current %}
                     {% if round.accepting_submissions and league.has_user(user) %}
                         <a href="{{ url_for('view_submit', league_id=league.id, submission_period_id=round.id) }}" class="action-link" title="Submit or Change Submission">
                             {% if round.user_submission(user) %}
