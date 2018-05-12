@@ -217,7 +217,7 @@ def join_league(league_id):
             extra={'league': league_id, 'user': g.user.id, 'invitation': invite_id})
 
     track_user_joined_league(g.user.id, league)
-    app.logger.debug('User joined league', extra={'league': league_id, 'user': g.user.id})
+    app.logger.info('User joined league', extra={'league': league_id, 'user': g.user.id, 'invitation': invite_id})
 
     return redirect(url_for('view_league', league_id=league_id))
 
