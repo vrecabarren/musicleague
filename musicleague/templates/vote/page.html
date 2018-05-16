@@ -298,7 +298,9 @@
 {% block title_bar_content %}
 <span class="round-title">{{ round.name }}:&nbsp;</span>
 <span class="round-action">Voting</span>
-<span class="league-title">{{ league.name }}</span>
+<span class="league-title">
+    <a href="{{ url_for('view_league', league_id=league.id) }}">{{ league.name }}</a>
+</span>
 {% endblock %}
 
 {% block page_content %}

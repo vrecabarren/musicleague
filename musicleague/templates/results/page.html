@@ -9,7 +9,9 @@
 {% block title_bar_content %}
 <span class="round-title">{{ round.name }}:&nbsp;</span>
 <span class="round-action">Results{% if not round.is_complete %} &#40;In Progress&#41;{% endif %}</span>
-<span class="league-title"><a href="{{ url_for('view_league', league_id=league.id) }}">{{ league.name }}</a></span>
+<span class="league-title">
+    <a href="{{ url_for('view_league', league_id=league.id) }}">{{ league.name }}</a>
+</span>
 {% endblock %}
 
 {% block status_bar_content %}

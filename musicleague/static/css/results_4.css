@@ -59,9 +59,7 @@ div, span {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-#title-bar .league-title a {
-    color: #ffffff;
-}
+#title-bar .league-title a { color: #ffffff; }
 
 /* Status Bar */
 #status-bar {
