@@ -95,7 +95,9 @@ def login():
             # If user was going to a particular destination before logging in,
             # send them there after login.
             if 'next_url' in session:
+                app.logger.info('Found next_url in session: %s', session['next_url'])
                 next_url = session['next_url'].decode('base64', 'strict')
+                app.logger.info('Decoded next_url in session, redirecting: %s', next_url)
                 session.pop('next_url')
                 return redirect(next_url)
 

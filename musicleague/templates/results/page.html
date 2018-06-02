@@ -3,13 +3,15 @@
 {% block title %}Music League | {{ league.name }}{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="/static/css/results_4.css">
+<link rel="stylesheet" href="/static/css/results_5.css">
 {% endblock %}
 
 {% block title_bar_content %}
 <span class="round-title">{{ round.name }}:&nbsp;</span>
 <span class="round-action">Results{% if not round.is_complete %} &#40;In Progress&#41;{% endif %}</span>
-<span class="league-title">{{ league.name }}</span>
+<span class="league-title">
+    <a href="{{ url_for('view_league', league_id=league.id) }}">{{ league.name }}</a>
+</span>
 {% endblock %}
 
 {% block status_bar_content %}

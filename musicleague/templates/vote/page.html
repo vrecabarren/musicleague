@@ -5,7 +5,7 @@
 {% block css %}
 <link href="//jschr.github.io/bootstrap-modal/css/bootstrap-modal-bs3patch.css" rel="stylesheet" />
 <link href="//jschr.github.io/bootstrap-modal/css/bootstrap-modal.css" rel="stylesheet" />
-<link rel="stylesheet" href="/static/css/vote_1.css">
+<link rel="stylesheet" href="/static/css/vote_2.css">
 <style>
 .songListHeader {
     background-color: #02B8EF;
@@ -298,7 +298,9 @@
 {% block title_bar_content %}
 <span class="round-title">{{ round.name }}:&nbsp;</span>
 <span class="round-action">Voting</span>
-<span class="league-title">{{ league.name }}</span>
+<span class="league-title">
+    <a href="{{ url_for('view_league', league_id=league.id) }}">{{ league.name }}</a>
+</span>
 {% endblock %}
 
 {% block page_content %}
