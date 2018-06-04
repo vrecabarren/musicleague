@@ -41,6 +41,7 @@ body {background-color: #f3f3f3; }
         <div id="{{ league.id }}-submission-periods">
             <div class="row league-options">
                 <a href="{{ url_for('admin_remove_league', league_id=league.id) }}" class="btn btn-sm btn-danger">Delete</a>
+                <a href="{{ url_for('admin_league_state', league_id=league.id) }}" class="btn btn-sm btn-info">Update State</a>
             </div>
             <div class="row">
                 <div class="col-md-11 col-md-offset-1">

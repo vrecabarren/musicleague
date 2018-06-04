@@ -109,7 +109,7 @@ def vote(league_id, submission_period_id):
         vote = create_or_update_vote(votes, submission_period, league, g.user)
 
         # If someone besides owner is voting, notify the owner
-        if g.user.id != league.owner.id:
+        if not league.has_owner(g.user):
             owner_user_voted_notification(vote)
 
         remaining = submission_period.have_not_voted

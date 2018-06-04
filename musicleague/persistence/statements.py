@@ -196,10 +196,11 @@ SELECT_LEAGUE = "SELECT created, name, owner_id, status FROM leagues WHERE id = 
 
 SELECT_LEAGUES_COUNT = "SELECT COUNT(id) FROM leagues;"
 
-SELECT_LEAGUES_FOR_USER = """SELECT leagues.id, leagues.created, leagues.name, leagues.owner_id, leagues.status
-                                FROM leagues INNER JOIN memberships ON memberships.league_id = leagues.id
+SELECT_LEAGUES_FOR_USER = """SELECT DISTINCT leagues.id, leagues.created, leagues.name, leagues.owner_id, leagues.status
+                                FROM leagues LEFT JOIN memberships ON memberships.league_id = leagues.id
                                 WHERE memberships.user_id = %s
-                                ORDER BY leagues.status, memberships.created DESC;"""
+                                OR leagues.owner_id = %s
+                                ORDER BY leagues.status, leagues.created DESC;"""
 
 UPDATE_LEAGUE = "UPDATE leagues SET (name, status) = (%s, %s) WHERE id = %s;"
 

@@ -86,7 +86,6 @@ class RemoveSubmissionPeriodTestCase(TestCase):
         sp2 = create_submission_period(self.league)
         remove_submission_period(sp2.id)
 
-        self.assertEqual(len(sp2.pending_tasks), cancel_task.call_count)
         self.assertIsNone(select_round(sp2.id))
 
 

@@ -41,8 +41,7 @@ def view_submit(league_id, submission_period_id):
     if not league.has_user(g.user):
         return redirect(url_for('view_league', league_id=league.id))
 
-    if not (submission_period.accepting_submissions or
-            submission_period.accepting_late_submissions):
+    if not submission_period.accepting_submissions:
         return redirect(url_for('view_league', league_id=league.id))
 
     my_submission = get_my_submission(g.user, submission_period)
@@ -69,8 +68,7 @@ def submit(league_id, submission_period_id):
         if not league.has_user(g.user):
             return "Not a member of this league", httplib.UNAUTHORIZED
 
-        if (not submission_period.accepting_submissions and
-                not submission_period.accepting_late_submissions):
+        if not submission_period.accepting_submissions:
             return redirect(request.referrer)
 
         try:
@@ -147,14 +145,17 @@ def submit(league_id, submission_period_id):
             tracks, submission_period, league, g.user)
 
         # If someone besides owner is submitting, notify the owner
-        if g.user.id != league.owner.id:
+        if not league.has_owner(g.user):
             owner_user_submitted_notification(submission)
 
         remaining = submission_period.have_not_submitted
         if not remaining:
-            # This makes the request a little heavy for the final submitter,
-            # but asyncing means the submitter gets a playlist button but no playlist.
-            complete_submission_process(submission_period.id)
+            # If this is not the first round, roll forward
+            if len(league.submission_periods) > 1:
+                if league.submission_periods[0].id != submission_period_id:
+                    # This makes the request a little heavy for the final submitter,
+                    # but asyncing means the submitter gets a playlist button but no playlist.
+                    complete_submission_process(submission_period.id)
 
         # Don't send submission reminder if this user is resubmitting. In this
         # case, the last user to submit will have already gotten a notification.

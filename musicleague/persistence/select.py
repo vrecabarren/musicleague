@@ -147,6 +147,9 @@ def select_league(league_id, exclude_properties=None):
                 if user_id == league.owner_id:
                     league.owner = user
 
+            # If owner is not participating in league, retrieve
+            league.owner = league.owner or select_user(owner_id)
+
             if 'invited_users' not in exclude_properties:
                 cur.execute(SELECT_INVITED_USERS_IN_LEAGUE, (league_id,))
                 for user_tup in cur.fetchall():
@@ -258,7 +261,7 @@ def select_leagues_for_user(user_id, exclude_properties=None):
     leagues = []
     with get_postgres_conn() as conn:
         with conn.cursor() as cur:
-            cur.execute(SELECT_LEAGUES_FOR_USER, (user_id,))
+            cur.execute(SELECT_LEAGUES_FOR_USER, (user_id, user_id))
             for league_tup in cur.fetchall():
                 league_id, created, name, owner_id, status = league_tup
                 league = League(id=league_id, created=created, name=name, owner_id=owner_id, status=status)
@@ -270,6 +273,9 @@ def select_leagues_for_user(user_id, exclude_properties=None):
                     league.users.append(user)
                     if user_id == league.owner_id:
                         league.owner = user
+
+                # If owner is not participating in league, retrieve
+                league.owner = league.owner or select_user(owner_id)
 
                 leagues.append(league)
 

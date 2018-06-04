@@ -233,7 +233,7 @@ class League:
         return self.status == LeagueStatus.COMPLETE
 
     def has_owner(self, user):
-        return self.owner and self.owner.id == user.id
+        return self.owner_id and self.owner_id == user.id
 
     def has_user(self, user):
         return any((u for u in self.users if u.id == user.id))
@@ -241,6 +241,7 @@ class League:
 
 class RoundStatus:
     CREATED = 0
+    ACCEPTING_VOTES = 10
     COMPLETE = 20
 
 
@@ -263,33 +264,16 @@ class Round:
         # By populating the league_id attribute above, we can fetch league when needed
         self.league = None
 
-        # TODO Remove this
-        # This shouldn't need to be loaded/persisted every time the round is
-        self.pending_tasks = {}
-
     @property
     def playlist_created(self):
         return self.playlist_url != ''
-
-    @property
-    def accepting_late_submissions(self):
-        """ Return True if the league owner chose to accept late
-        submissions and the vote due date for this round has not
-        yet passed. Return False if all users have already submitted.
-
-        NOTE: Currently hardcoded to return False
-        """
-        return (False and
-                self.have_not_submitted and
-                (self.vote_due_date > utc.localize(datetime.utcnow())))
 
     @property
     def accepting_submissions(self):
         """ Return True if the submission due date has not yet passed
         for this round and not all submissions have been received.
         """
-        return (self.have_not_submitted and
-                (self.submission_due_date > utc.localize(datetime.utcnow())))
+        return self.status == RoundStatus.CREATED
 
     @property
     def accepting_votes(self):
@@ -297,9 +281,7 @@ class Round:
         submissions have been received and the vote due date has not
         yet passed.
         """
-        return ((not self.accepting_submissions) and
-                self.have_not_voted and
-                (self.vote_due_date > utc.localize(datetime.utcnow())))
+        return self.status == RoundStatus.ACCEPTING_VOTES
 
     @property
     def all_tracks(self):
@@ -356,12 +338,10 @@ class Round:
         """ Return True if voting due date for this round has
         passed or all submissions/votes are in.
         """
-        if self.vote_due_date < utc.localize(datetime.utcnow()):
-            return True
-        return not (self.accepting_submissions or self.accepting_votes)
+        return self.status == RoundStatus.COMPLETE
 
     @property
-    def is_current_v2(self):
+    def is_current(self):
         """ Return True if this round is the one currently accepting
         submissions or votes.
         """
@@ -372,7 +352,7 @@ class Round:
         """ Return True if this round is not complete and is not
         currently accepting submissions or votes.
         """
-        return not (self.is_complete or self.is_current_v2)
+        return not (self.is_complete or self.is_current)
 
 
 class Submission:

@@ -41,6 +41,8 @@ def complete_submission_process(submission_period_id):
         submission_period = next((r for r in league.submission_periods
                                   if r.id == submission_period_id), None)
 
+        update_round_status(submission_period, RoundStatus.ACCEPTING_VOTES)
+
         create_or_update_playlist(submission_period)
         cancel_playlist_creation(submission_period)
         cancel_submission_reminders(submission_period)
