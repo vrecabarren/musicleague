@@ -3,10 +3,11 @@ from flask import request
 
 from musicleague import app
 from musicleague.league import remove_league
+from musicleague.persistence.models import RoundStatus
 from musicleague.persistence.select import select_league
+from musicleague.persistence.update import update_round_status
 from musicleague.routes.decorators import admin_required
 from musicleague.routes.decorators import login_required
-from musicleague.submission_period import update_submission_period
 
 
 REMOVE_LEAGUE_URL = '/admin/leagues/<league_id>/remove/'
@@ -34,6 +35,7 @@ def admin_league_state(league_id):
 
     league = select_league(league_id)
     for r in league.submission_periods:
-        update_submission_period(r.id, r.name, r.description, r.submission_due_date, r.vote_due_date, submission_period=r)
+        if r.accepting_submissions and not r.have_not_submitted:
+            update_round_status(r, RoundStatus.ACCEPTING_VOTES)
 
     return redirect(request.referrer)
