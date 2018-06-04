@@ -1,3 +1,6 @@
+from datetime import datetime
+from pytz import utc
+
 from flask import redirect
 from flask import request
 
@@ -36,6 +39,9 @@ def admin_league_state(league_id):
     league = select_league(league_id)
     for r in league.submission_periods:
         if r.accepting_submissions and not r.have_not_submitted:
+            update_round_status(r, RoundStatus.ACCEPTING_VOTES)
+        elif (r.accepting_submissions and
+              (r.submission_due_date < utc.localize(datetime.utcnow()))):
             update_round_status(r, RoundStatus.ACCEPTING_VOTES)
 
     return redirect(request.referrer)
