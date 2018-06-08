@@ -58,16 +58,20 @@ def user_all_voted_email(submission_period):
         return
 
     to = submission_period.league.owner.email
+    additional_data = {}
+
     bcc_list = ','.join(
         [u.email for u in submission_period.league.users
          if u.email and not submission_period.league.has_owner(u)])
+    if bcc_list:
+        additional_data['bcc'] = bcc_list
 
     _send_email.delay(
         to,
         'Music League - The Votes Are In',
         _txt_email('all_voted.txt', submission_period=submission_period),
         _html_email('all_voted.html', submission_period=submission_period),
-        additional_data={'bcc': bcc_list}
+        additional_data=additional_data
     )
 
 
@@ -117,17 +121,21 @@ def user_new_round_email(submission_period):
         return
 
     to = submission_period.league.owner.email
+    additional_data = {}
+
     bcc_list = ','.join(
         [u.email for u in submission_period.league.users
          if u.email and not submission_period.league.has_owner(u)
          and u.preferences.user_playlist_created_notifications])
+    if bcc_list:
+        additional_data['bcc'] = bcc_list
 
     _send_email.delay(
         to,
         'Music League - Round Starting',
         _txt_email('new_round.txt', submission_period=submission_period),
         _html_email('new_round.html', submission_period=submission_period),
-        additional_data={'bcc': bcc_list}
+        additional_data=additional_data
     )
 
 
@@ -141,17 +149,21 @@ def user_playlist_created_email(submission_period):
         return
 
     to = submission_period.league.owner.email
+    additional_data = {}
+
     bcc_list = ','.join(
         [u.email for u in submission_period.league.users
          if u.email and not submission_period.league.has_owner(u)
          and u.preferences.user_playlist_created_notifications])
+    if bcc_list:
+        additional_data['bcc'] = bcc_list
 
     _send_email.delay(
         to,
         'Music League - New Playlist',
         _txt_email('playlist.txt', submission_period=submission_period),
         _html_email('playlist.html', submission_period=submission_period),
-        additional_data={'bcc': bcc_list}
+        additional_data=additional_data
     )
 
 
