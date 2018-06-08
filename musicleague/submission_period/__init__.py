@@ -46,6 +46,14 @@ def create_submission_period(
         submissions_due=submission_due_date,
         votes_due=vote_due_date)
     new_submission_period.league = league
+
+    if vote_due_date < utc.localize(datetime.utcnow()):
+        new_submission_period.status = RoundStatus.COMPLETE
+    elif submission_due_date < utc.localize(datetime.utcnow()):
+        new_submission_period.status = RoundStatus.ACCEPTING_VOTES
+    else:
+        new_submission_period.status = RoundStatus.CREATED
+
     league.submission_periods.append(new_submission_period)
 
     schedule_playlist_creation(new_submission_period)
