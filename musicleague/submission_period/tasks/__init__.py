@@ -43,6 +43,9 @@ def complete_submission_process(submission_period_id):
 
         update_round_status(submission_period, RoundStatus.ACCEPTING_VOTES)
 
+        # Set new status so old status isn't persisted with playlist URL 
+        submission_period.status = RoundStatus.ACCEPTING_VOTES
+
         create_or_update_playlist(submission_period)
         cancel_playlist_creation(submission_period)
         cancel_submission_reminders(submission_period)
