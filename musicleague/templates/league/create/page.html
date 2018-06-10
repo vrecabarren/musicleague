@@ -75,17 +75,17 @@
                     <h4 class="label" style="padding: 0px">Would you like to allow your contestants to "downvote" songs?</h4>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="allow-downvotes" id="allow-downvotes-yes" value="yes"> Yes, and each contestant has <input type="text" class="form-control" id="downvote-bank-size" name="downvote-bank-size" value="1" style="width: 75px"> downvote(s) to spend each round
+                            <input type="radio" name="allow-downvotes" id="allow-downvotes-yes" value="yes" data-toggle="collapse" data-target="#limit-downvotes:not(.in)"> Yes, and each contestant has <input type="text" class="form-control" id="downvote-bank-size" name="downvote-bank-size" value="1" style="width: 75px"> downvote(s) to spend each round
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="allow-downvotes" id="allow-downvotes-no" value="no" checked> No
+                            <input type="radio" name="allow-downvotes" id="allow-downvotes-no" value="no" data-toggle="collapse" data-target="#limit-downvotes.in" checked> No
                         </label>
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row collapse" id="limit-downvotes">
                 <div class="col-sm-10 col-sm-offset-1">
                     <h4 class="label" style="padding: 0px">Would you like to limit the number of downvotes a contestant can spend on one song?</h4>
                     <div class="radio">
