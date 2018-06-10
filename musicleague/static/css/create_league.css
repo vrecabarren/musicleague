@@ -77,6 +77,9 @@ body { font-family: 'Nunito', sans-serif; }
             text-transform: none;
             margin-bottom: none;
         }
+        .section .radio label input {
+            display: inline;
+        }
 
         .section .form-group input[type="text"],
         .section .form-group input[type="email"],
