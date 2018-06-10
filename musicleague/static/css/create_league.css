@@ -62,13 +62,17 @@ body { font-family: 'Nunito', sans-serif; }
     .section .form-group { margin-bottom: 25px; }
 
         .section .form-group label,
-        .section .checkbox label {
+        .section .checkbox label,
+        .section .radio label {
             color: #00259A;
             font-family: 'Cubano', sans-serif;
             font-size: 18px;
             line-height: 24px;
             margin-bottom: 10px;
             text-transform: uppercase;
+        }
+        .section .radio label {
+            font-family: 'Nunito', sans-serif;
         }
 
         .section .form-group input[type="text"],
