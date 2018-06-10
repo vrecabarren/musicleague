@@ -75,7 +75,7 @@ body { font-family: 'Nunito', sans-serif; }
         .section .radio label {
             font-family: 'Nunito', sans-serif;
             text-transform: none;
-            margin-bottom: none;
+            margin-bottom: 0px;
         }
         .section .radio label input {
             display: inline;
