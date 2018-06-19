@@ -57,8 +57,11 @@ def post_create_league():
     name = request.form.get('league-name')
     num_tracks = request.form.get('tracks-submitted')
     upvote_size = request.form.get('point-bank-size')
+    limit_upvotes = request.form.get('limit-upvotes')
     max_up_per_song = request.form.get('max-points-per-song')
+    allow_downvotes = request.form.get('allow-downvotes')
     downvote_size = request.form.get('downvote-bank-size')
+    limit_downvotes = request.form.get('limit-downvotes')
     max_down_per_song = request.form.get('max-downvotes-per-song')
 
     user_ids = json.loads(request.form.get('added-members', []))
@@ -71,9 +74,17 @@ def post_create_league():
     league = create_league(g.user, name=name, users=members)
     league.preferences.track_count = int(num_tracks)
     league.preferences.point_bank_size = int(upvote_size)
-    league.preferences.max_points_per_song = int(max_up_per_song or 0)
-    league.preferences.downvote_bank_size = int(downvote_size or 0)
-    league.preferences.max_downvotes_per_song = int(max_down_per_song or 0)
+
+    league.preferences.max_points_per_song = 0
+    if limit_upvotes == 'yes':
+        league.preferences.max_points_per_song = int(max_up_per_song or 0)
+    
+    league.preferences.downvote_bank_size = 0
+    league.preferences.max_downvotes_per_song = 0
+    if allow_downvotes == 'yes':
+        league.preferences.downvote_bank_size = int(downvote_size or 0)
+        if limit_downvotes == 'yes':
+            league.preferences.max_downvotes_per_song = int(max_down_per_song or 0)
     upsert_league_preferences(league)
 
     for email in emails:
