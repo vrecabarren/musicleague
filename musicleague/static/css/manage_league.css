@@ -81,7 +81,7 @@ body { font-family: 'Nunito', sans-serif; }
 
 .section { padding: 15px 0px; }
 
-.section .collapse { margin: 35px 0px; }
+.section > .collapse { margin: 35px 0px; }
 
     .section .form-group { margin-bottom: 25px; }
 
