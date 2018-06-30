@@ -92,6 +92,13 @@ body { font-family: 'Nunito', sans-serif; }
             resize: none;
         }
 
+        #the-basics .form-group input[type="number"] {
+            background: #fff;
+            border: 1px solid #02B8EF;
+            border-radius: 8px;
+            resize: none;
+        }
+
         .section .form-group input[type="text"],
         .section .form-group input[type="email"] {
              height: 50px;
