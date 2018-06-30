@@ -45,7 +45,7 @@
                     <div class="col-sm-10 col-sm-offset-1">
                         <div class="form-group">
                             <label for="tracks-submitted">How many songs will your contestants submit in each round?</label>
-                            <input type="text" class="form-control" id="tracks-submitted" name="tracks-submitted" data-ov="{{ league.preferences.track_count }}" value="{{ league.preferences.track_count }}" style="width: 100px">
+                            <input type="number" min="1" inputmode="numeric" pattern="[0-9]*" class="form-control" id="tracks-submitted" name="tracks-submitted" data-ov="{{ league.preferences.track_count }}" value="{{ league.preferences.track_count }}" style="width: 100px">
                         </div>
                     </div>
                 </div>
@@ -53,18 +53,18 @@
                     <div class="col-sm-10 col-sm-offset-1">
                         <div class="form-group">
                             <label for="point-bank-size">How many points can your contestants spend each round?</label>
-                            <input type="text" class="form-control" id="point-bank-size" name="point-bank-size" data-ov="{{ league.preferences.point_bank_size }}" value="{{ league.preferences.point_bank_size }}" style="width: 100px">
+                            <input type="number" min="1" inputmode="numeric" pattern="[0-9]*" class="form-control" id="point-bank-size" name="point-bank-size" data-ov="{{ league.preferences.point_bank_size }}" value="{{ league.preferences.point_bank_size }}" style="width: 100px">
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-10 col-sm-offset-1">
                         <div class="form-group">
-                            <h4 class="label" style="padding: 0px">Would you like to limit the number of points a contestant can spend on one song?</h4>
+                            <h4 class="prompt" style="padding: 0px">Would you like to limit the number of points a contestant can spend on one song?</h4>
                             <div class="radio">
                                 <label>
                                     <input type="radio" name="limit-upvotes" id="limit-upvotes-yes" value="yes"{% if league.preferences.max_points_per_song > 0 %} checked{% endif %}> Yes, and each contestant can spend
-                                    <input type="text" class="form-control" id="max-points-per-song" name="max-points-per-song" data-ov="{{ league.preferences.max_points_per_song }}" value="{{ league.preferences.max_points_per_song or '' }}" style="width: 75px"> on a single song
+                                    <input type="number" min="1" inputmode="numeric" pattern="[0-9]*" class="form-control" id="max-points-per-song" name="max-points-per-song" value="10" style="width: 75px"> on a single song
                                 </label>
                             </div>
                             <div class="radio">
@@ -78,11 +78,11 @@
                 <div class="row">
                     <div class="col-sm-10 col-sm-offset-1">
                         <div class="form-group">
-                            <h4 class="label" style="padding: 0px">Would you like to allow your contestants to "downvote" songs?</h4>
+                            <h4 class="prompt" style="padding: 0px">Would you like to allow your contestants to "downvote" songs?</h4>
                             <div class="radio">
                                 <label>
                                     <input type="radio" name="allow-downvotes" id="allow-downvotes-yes" value="yes" data-toggle="collapse" data-target="#limit-downvotes:not(.in)"{% if league.preferences.downvote_bank_size > 0 %} checked{% endif %}> Yes, and each contestant has
-                                    <input type="text" class="form-control" id="downvote-bank-size" name="downvote-bank-size" data-ov="{{ league.preferences.downvote_bank_size }}" value="{{ league.preferences.downvote_bank_size }}" style="width: 75px"> downvote(s) to spend each round
+                                    <input type="number" min="1" inputmode="numeric" pattern="[0-9]*" class="form-control" id="downvote-bank-size" name="downvote-bank-size" data-ov="{{ league.preferences.downvote_bank_size }}" value="{{ league.preferences.downvote_bank_size }}" style="width: 75px"> downvote(s) to spend each round
                                 </label>
                             </div>
                             <div class="radio">
@@ -96,11 +96,11 @@
                 <div class="row collapse{% if league.preferences.downvote_bank_size > 0 %} in{% endif %}" id="limit-downvotes">
                     <div class="col-sm-10 col-sm-offset-1">
                         <div class="form-group">
-                            <h4 class="label" style="padding: 0px">Would you like to limit the number of downvotes a contestant can spend on one song?</h4>
+                            <h4 class="prompt" style="padding: 0px">Would you like to limit the number of downvotes a contestant can spend on one song?</h4>
                             <div class="radio">
                                 <label>
                                     <input type="radio" name="limit-downvotes" id="limit-downvotes-yes" value="yes"{% if league.preferences.max_downvotes_per_song > 0 %} checked{% endif %}> Yes, and each contestant can spend
-                                    <input type="text" class="form-control" id="max-downvotes-per-song" name="max-downvotes-per-song" data-ov="{{ league.preferences.max_downvotes_per_song }}" value="{{ league.preferences.max_downvotes_per_song }}" style="width: 75px"> on a single song
+                                    <input type="number" min="1" inputmode="numeric" pattern="[0-9]*" class="form-control" id="max-downvotes-per-song" name="max-downvotes-per-song" data-ov="{{ league.preferences.max_downvotes_per_song }}" value="{{ league.preferences.max_downvotes_per_song }}" style="width: 75px"> on a single song
                                 </label>
                             </div>
                             <div class="radio">
