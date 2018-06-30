@@ -64,7 +64,7 @@ body { font-family: 'Nunito', sans-serif; }
         .section .form-group label,
         .section .checkbox label,
         .section .radio label,
-        .section h4.label {
+        .section h4.prompt {
             color: #00259A;
             font-family: 'Cubano', sans-serif;
             font-size: 18px;
