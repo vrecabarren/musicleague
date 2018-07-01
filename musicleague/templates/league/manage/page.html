@@ -82,7 +82,7 @@
                             <div class="radio">
                                 <label>
                                     <input type="radio" name="allow-downvotes" id="allow-downvotes-yes" value="yes" data-toggle="collapse" data-target="#limit-downvotes:not(.in)"{% if league.preferences.downvote_bank_size > 0 %} checked{% endif %}> Yes, and each contestant has
-                                    <input type="number" min="1" inputmode="numeric" pattern="[0-9]*" class="form-control" id="downvote-bank-size" name="downvote-bank-size" data-ov="{{ league.preferences.downvote_bank_size }}" value="{{ league.preferences.downvote_bank_size }}" style="width: 75px"> downvote(s) to spend each round
+                                    <input type="number" min="1" inputmode="numeric" pattern="[0-9]*" class="form-control" id="downvote-bank-size" name="downvote-bank-size" data-ov="{{ league.preferences.downvote_bank_size or 1 }}" value="{{ league.preferences.downvote_bank_size or 1 }}" style="width: 75px"> downvote(s) to spend each round
                                 </label>
                             </div>
                             <div class="radio">
@@ -100,7 +100,7 @@
                             <div class="radio">
                                 <label>
                                     <input type="radio" name="limit-downvotes" id="limit-downvotes-yes" value="yes"{% if league.preferences.max_downvotes_per_song > 0 %} checked{% endif %}> Yes, and each contestant can spend
-                                    <input type="number" min="1" inputmode="numeric" pattern="[0-9]*" class="form-control" id="max-downvotes-per-song" name="max-downvotes-per-song" data-ov="{{ league.preferences.max_downvotes_per_song }}" value="{{ league.preferences.max_downvotes_per_song }}" style="width: 75px"> on a single song
+                                    <input type="number" min="1" inputmode="numeric" pattern="[0-9]*" class="form-control" id="max-downvotes-per-song" name="max-downvotes-per-song" data-ov="{{ league.preferences.max_downvotes_per_song or 1 }}" value="{{ league.preferences.max_downvotes_per_song or 1 }}" style="width: 75px"> on a single song
                                 </label>
                             </div>
                             <div class="radio">
