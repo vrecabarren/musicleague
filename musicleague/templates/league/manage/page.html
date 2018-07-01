@@ -64,7 +64,7 @@
                             <div class="radio">
                                 <label>
                                     <input type="radio" name="limit-upvotes" id="limit-upvotes-yes" value="yes"{% if league.preferences.max_points_per_song > 0 %} checked{% endif %}> Yes, and each contestant can spend
-                                    <input type="number" min="1" inputmode="numeric" pattern="[0-9]*" class="form-control" id="max-points-per-song" name="max-points-per-song" data-ov="{{ league.preferences.max_points_per_song }}" value="{{ league.preferences.max_points_per_song }}" style="width: 75px"> on a single song
+                                    <input type="number" min="1" inputmode="numeric" pattern="[0-9]*" class="form-control" id="max-points-per-song" name="max-points-per-song" data-ov="{{ league.preferences.max_points_per_song or 1 }}" value="{{ league.preferences.max_points_per_song or 1 }}" style="width: 75px"> on a single song
                                 </label>
                             </div>
                             <div class="radio">
