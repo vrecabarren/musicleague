@@ -81,18 +81,30 @@ body { font-family: 'Nunito', sans-serif; }
 
 .section { padding: 15px 0px; }
 
-.section .collapse { margin: 35px 0px; }
+.section > .collapse { margin: 35px 0px; }
 
     .section .form-group { margin-bottom: 25px; }
 
         .section .form-group label,
-        .section .checkbox label {
+        .section .checkbox label,
+        .section .radio label,
+        .section h4.prompt {
             color: #00259A;
             font-family: 'Cubano', sans-serif;
             font-size: 18px;
             line-height: 24px;
             margin-bottom: 10px;
             text-transform: uppercase;
+            width: 100%;
+        }
+
+        .section .radio label {
+            font-family: 'Nunito', sans-serif;
+            text-transform: none;
+            margin-bottom: 0px;
+        }
+        .section .radio label input {
+            display: inline;
         }
 
         .section .form-group input[type="text"],
@@ -103,6 +115,13 @@ body { font-family: 'Nunito', sans-serif; }
             border-radius: 8px;
             font-size: 18px;
             line-height: 24px;
+            resize: none;
+        }
+
+        #the-basics .form-group input[type="number"] {
+            background: #fff;
+            border: 1px solid #02B8EF;
+            border-radius: 8px;
             resize: none;
         }
 
