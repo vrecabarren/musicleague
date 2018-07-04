@@ -19,6 +19,9 @@ from musicleague.user import get_user_by_email
 
 
 def add_user(league, user_email, notify=True):
+    if not user_email:
+        return
+
     user = get_user_by_email(user_email)
     if user and user not in league.users:
         league.users.append(user)
