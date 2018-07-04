@@ -229,7 +229,8 @@ def post_manage_league(league_id):
 @login_required
 def join_league(league_id):
     league = select_league(league_id)
-    add_user(league, g.user.email, notify=False)
+    league.users.append(g.user)
+    insert_membership(league, g.user)
 
     # If this URL is from an invitation email, delete the placeholder
     invite_id = request.args.get('invitation')
