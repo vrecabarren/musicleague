@@ -253,10 +253,15 @@ class SongInfo extends React.Component {
 class Song extends React.Component {
     render() {
         return (
-            <div className="song row">
-                <div className="row-height">
-                    <SongInfo uri={this.props.uri}/>
-                    <VoteControl previousVote={this.props.previousVote} maxUpVotes={this.props.maxUpVotes} maxDownVotes={this.props.maxDownVotes} uri={this.props.uri} onUpVote={this.props.onUpVote} onDownVote={this.props.onDownVote}/>
+            <div className="song">
+                <div className="row">
+                        <div className="row-height">
+                        <SongInfo uri={this.props.uri}/>
+                        <VoteControl previousVote={this.props.previousVote} maxUpVotes={this.props.maxUpVotes} maxDownVotes={this.props.maxDownVotes} uri={this.props.uri} onUpVote={this.props.onUpVote} onDownVote={this.props.onDownVote}/>
+                    </div>
+                </div>
+                <div className="comment-inp row">
+                    <input type="text" placeholder="Leave a comment on this song (optional)"/>
                 </div>
             </div>
          );

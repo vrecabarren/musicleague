@@ -339,12 +339,21 @@ var Song = function (_React$Component3) {
         value: function render() {
             return React.createElement(
                 "div",
-                { className: "song row" },
+                { className: "song" },
                 React.createElement(
                     "div",
-                    { className: "row-height" },
-                    React.createElement(SongInfo, { uri: this.props.uri }),
-                    React.createElement(VoteControl, { previousVote: this.props.previousVote, maxUpVotes: this.props.maxUpVotes, maxDownVotes: this.props.maxDownVotes, uri: this.props.uri, onUpVote: this.props.onUpVote, onDownVote: this.props.onDownVote })
+                    { className: "row" },
+                    React.createElement(
+                        "div",
+                        { className: "row-height" },
+                        React.createElement(SongInfo, { uri: this.props.uri }),
+                        React.createElement(VoteControl, { previousVote: this.props.previousVote, maxUpVotes: this.props.maxUpVotes, maxDownVotes: this.props.maxDownVotes, uri: this.props.uri, onUpVote: this.props.onUpVote, onDownVote: this.props.onDownVote })
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    { className: "comment-inp row" },
+                    React.createElement("input", { type: "text", placeholder: "Leave a comment on this song (optional)" })
                 )
             );
         }
