@@ -245,7 +245,7 @@ div, span {
 
 .song .vote-breakdown .comments-banner .comment {
     color: #777;
-    text-align: left;
+    text-align: justify;
 }
 
 .song .vote-breakdown .comments-banner .comment .commenter {
