@@ -262,7 +262,7 @@ class Song extends React.Component {
                 </div>
                 <div className="comment-inp row">
                     <div className="col-xs-12 col-sm-8">
-                        <input type="text" placeholder="Leave a comment on the song above (optional)" uri={this.props.uri} value={this.props.previousComment} onChange={this.onComment.bind(this)}/>
+                        <input type="text" placeholder="Leave a comment on the song above (optional)" uri={this.props.uri} maxLength="255" value={this.props.previousComment} onChange={this.onComment.bind(this)}/>
                     </div>
                 </div>
             </div>
