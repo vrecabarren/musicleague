@@ -97,5 +97,6 @@ def insert_vote(vote):
             # Insert new votes
             for spotify_uri, weight in vote.votes.iteritems():
                 values = (vote.created, vote.submission_period.id,
-                          spotify_uri, vote.user.id, weight)
+                          spotify_uri, vote.user.id, weight,
+                          vote.comments.get(spotify_uri, ''))
                 cur.execute(INSERT_VOTE, values)

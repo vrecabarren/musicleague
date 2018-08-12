@@ -371,11 +371,11 @@ CREATE_TABLE_VOTES = """CREATE TABLE IF NOT EXISTS votes (
                             FOREIGN KEY (round_id, spotify_uri) REFERENCES submissions(round_id, spotify_uri),
                             UNIQUE (created, round_id, spotify_uri, voter_id, weight));"""
 
-INSERT_VOTE = """INSERT INTO votes (created, round_id, spotify_uri, voter_id, weight)
-                    VALUES (%s, %s, %s, %s, %s)
+INSERT_VOTE = """INSERT INTO votes (created, round_id, spotify_uri, voter_id, weight, comment)
+                    VALUES (%s, %s, %s, %s, %s, %s)
                     ON CONFLICT (created, round_id, spotify_uri, voter_id, weight) DO UPDATE
-                    SET (created, weight)
-                    = (EXCLUDED.created, EXCLUDED.weight)
+                    SET (created, weight, comment)
+                    = (EXCLUDED.created, EXCLUDED.weight, EXCLUDED.comment)
                     WHERE votes.round_id = EXCLUDED.round_id
                     AND votes.spotify_uri = EXCLUDED.spotify_uri
                     AND votes.voter_id = EXCLUDED.voter_id;"""
