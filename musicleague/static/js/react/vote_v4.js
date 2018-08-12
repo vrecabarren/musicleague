@@ -353,7 +353,7 @@ var Song = function (_React$Component3) {
                 React.createElement(
                     "div",
                     { className: "comment-inp row" },
-                    React.createElement("input", { type: "text", placeholder: "Leave a comment on this song (optional)", uri: this.props.uri, value: this.props.previousComment })
+                    React.createElement("input", { type: "text", placeholder: "Leave a comment on this song (optional)", uri: this.props.uri, value: this.props.previousComment, onKeyDown: this.props.onComment })
                 )
             );
         }
@@ -822,7 +822,7 @@ var SongList = function (_React$Component6) {
                                 return React.createElement(
                                     "div",
                                     null,
-                                    React.createElement(Song, { uri: uri, previousVote: uri in this.props.previousVotes ? this.props.previousVotes[uri] : 0, previousComment: uri in this.props.previousComments ? this.props.previousComments[uri] : '', maxUpVotes: this.props.maxUpVotesPerSong, maxDownVotes: this.props.maxDownVotesPerSong, onUpVote: this.onUpVote.bind(this), onDownVote: this.onDownVote.bind(this) })
+                                    React.createElement(Song, { uri: uri, previousVote: uri in this.props.previousVotes ? this.props.previousVotes[uri] : 0, previousComment: uri in this.props.previousComments ? this.props.previousComments[uri] : '', maxUpVotes: this.props.maxUpVotesPerSong, maxDownVotes: this.props.maxDownVotesPerSong, onUpVote: this.onUpVote.bind(this), onDownVote: this.onDownVote.bind(this), onComment: this.onComment.bind(this) })
                                 );
                             }.bind(this))
                         )
@@ -836,6 +836,17 @@ var SongList = function (_React$Component6) {
         value: function handleFormSubmission() {
             var votesJson = JSON.stringify(this.state.votes);
             document.getElementById('votes').value = votesJson;
+            return true;
+        }
+    }, {
+        key: "onComment",
+        value: function onComment(uri, newCommentValue) {
+            var newCommentsState = this.state.comments;
+            var oldCommentValue = this.state.comments[uri];
+            console.log("Song comment change recorded. Old: '" + oldCommentValue + "', New: '" + newCommentValue + "'");
+            newCommentsState[uri] = newCommentValue;
+            this.setState({ comments: newCommentsState });
+
             return true;
         }
     }, {

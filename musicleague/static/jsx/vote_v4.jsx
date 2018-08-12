@@ -261,7 +261,7 @@ class Song extends React.Component {
                     </div>
                 </div>
                 <div className="comment-inp row">
-                    <input type="text" placeholder="Leave a comment on this song (optional)" uri={this.props.uri} value={this.props.previousComment} />
+                    <input type="text" placeholder="Leave a comment on this song (optional)" uri={this.props.uri} value={this.props.previousComment} onKeyDown={this.props.onComment}/>
                 </div>
             </div>
          );
@@ -466,7 +466,7 @@ class SongList extends React.Component {
                                 this.props.uris.map(function(uri) {
                                     return (
                                         <div>
-                                            <Song uri={uri} previousVote={uri in this.props.previousVotes ? this.props.previousVotes[uri] : 0} previousComment={uri in this.props.previousComments ? this.props.previousComments[uri] : ''} maxUpVotes={this.props.maxUpVotesPerSong} maxDownVotes={this.props.maxDownVotesPerSong} onUpVote={this.onUpVote.bind(this)} onDownVote={this.onDownVote.bind(this)}/>
+                                            <Song uri={uri} previousVote={uri in this.props.previousVotes ? this.props.previousVotes[uri] : 0} previousComment={uri in this.props.previousComments ? this.props.previousComments[uri] : ''} maxUpVotes={this.props.maxUpVotesPerSong} maxDownVotes={this.props.maxDownVotesPerSong} onUpVote={this.onUpVote.bind(this)} onDownVote={this.onDownVote.bind(this)} onComment={this.onComment.bind(this)}/>
                                         </div>
                                     );
                                 }.bind(this))
@@ -482,6 +482,16 @@ class SongList extends React.Component {
     handleFormSubmission() {
         var votesJson = JSON.stringify(this.state.votes);
         document.getElementById('votes').value = votesJson;
+        return true;
+    }
+
+    onComment(uri, newCommentValue) {
+        var newCommentsState = this.state.comments;
+        var oldCommentValue = this.state.comments[uri];
+        console.log("Song comment change recorded. Old: '" + oldCommentValue + "', New: '" + newCommentValue + "'");
+        newCommentsState[uri] = newCommentValue;
+        this.setState({comments: newCommentsState});
+
         return true;
     }
 
