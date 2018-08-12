@@ -94,9 +94,15 @@ def insert_vote(vote):
             values = (vote.submission_period.id, vote.user.id)
             cur.execute(DELETE_VOTES, values)
 
+            to_persist = set(vote.votes.keys() + vote.comments.keys())
+
             # Insert new votes
-            for spotify_uri, weight in vote.votes.iteritems():
+            for spotify_uri in to_persist:
+                weight = vote.votes.get(spotify_uri, 0)
+                comment = vote.comments.get(spotify_uri, '')
+                if not (weight or comment):
+                    continue
+
                 values = (vote.created, vote.submission_period.id,
-                          spotify_uri, vote.user.id, weight,
-                          vote.comments.get(spotify_uri, ''))
+                          spotify_uri, vote.user.id, weight, comment)
                 cur.execute(INSERT_VOTE, values)

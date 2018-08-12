@@ -85,9 +85,9 @@
                                     </div>
                                     <div class="hidden-xs col-sm-7" style="padding: 0px inherit">
                                         {% for vote in entry.votes %}
-                                        {% if vote.votes[entry.uri] >= 0 %}
+                                        {% if vote.votes[entry.uri] > 0 %}
                                             {% set vote_class = "upvote" %}
-                                        {% else %}
+                                        {% elif vote.votes[entry.uri] < 0 %}
                                             {% set vote_class = "downvote" %}
                                         {% endif %}
                                         <div class="vote {{ vote_class }} col-xs-12 col-sm-6">
@@ -109,9 +109,9 @@
                             <div class="visible-xs">
                                 <div style="padding: 10px 0px"></div>
                                 {% for vote in entry.votes %}
-                                    {% if vote.votes[entry.uri] >= 0 %}
+                                    {% if vote.votes[entry.uri] > 0 %}
                                         {% set vote_class = "upvote" %}
-                                    {% else %}
+                                    {% elif vote.votes[entry.uri] < 0 %}
                                         {% set vote_class = "downvote" %}
                                     {% endif %}
                                 <div class="vote {{ vote_class }}">
