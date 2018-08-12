@@ -356,7 +356,7 @@ var Song = function (_React$Component3) {
                     React.createElement(
                         "div",
                         { className: "col-xs-12 col-sm-8" },
-                        React.createElement("input", { type: "text", placeholder: "Leave a comment on the song above (optional)", uri: this.props.uri, maxLength: "255", value: this.props.previousComment, onChange: this.onComment.bind(this) })
+                        React.createElement("input", { type: "text", className: "commentInput", placeholder: "Leave a comment on the song above (optional)", uri: this.props.uri, maxLength: "255", value: this.props.previousComment, onChange: this.onComment.bind(this) })
                     )
                 )
             );
