@@ -74,11 +74,13 @@
                                 <div class="row-height">
                                     <div class="col-xs-12 col-sm-5">
                                         {% for vote in entry.votes %}
+                                        {% if vote.comments[entry.uri]|length > 0 %}
                                         <div class="comments-banner">
                                             {% set comment = vote.comments[entry.uri] %}
                                             {% set commenter = vote.user.name %}
                                             <p class="comment">{{ comment }}<b class="commenter">- {{ commenter }}</b></p>
                                         </div>
+                                        {% endif %}
                                         {% endfor %}
                                     </div>
                                     <div class="hidden-xs col-sm-7" style="padding: 0px inherit">
