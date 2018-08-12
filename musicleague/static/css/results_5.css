@@ -236,35 +236,22 @@ div, span {
     padding: 20px
 }
 
-.song .vote-breakdown .total-points-banner {
+.song .vote-breakdown .comments-banner {
     background: #fff;
     border-radius: 8px;
     padding: 20px;
-    text-align: center;
+    text-align: left;
 }
 
-.song .vote-breakdown .total-points-banner .total-points {
-    color: #F8C62C;
-    display: block;
-    font-size: 70px;
-    line-height: 70px;
+.song .vote-breakdown .comments-banner .comment {
+    color: #777;
+    text-align: left;
 }
 
-.song .vote-breakdown .total-points-banner .total-points-divider-wrapper {
-    display: block;
-    margin: 10px 0px;
-}
-.song .vote-breakdown .total-points-banner .total-points-divider-wrapper .total-points-divider {
-    background: url('https://s3.amazonaws.com/musicleague-static-assets/icons/star_blue.svg');
-    display: inline-block;
-    height: 20px;
-    width: 126px;
-}
-
-.song .vote-breakdown .total-points-banner .total-points-label {
+.song .vote-breakdown .comments-banner .comment .commenter {
     color: #02B8EF;
-    font-size: 20px;
-    line-height: 20px;
+    display: block;
+    text-align: right;
 }
 
 .song .vote-breakdown .vote {

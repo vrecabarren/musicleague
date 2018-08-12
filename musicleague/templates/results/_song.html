@@ -72,16 +72,16 @@
                         <div class="vote-breakdown">
                             <div class="row">
                                 <div class="row-height">
-                                    <div class="col-xs-12 col-sm-4">
+                                    <div class="col-xs-12 col-sm-5">
                                         {% for vote in entry.votes %}
-                                        <div class="col-xs-12 comment">
-                                        {% set comment = vote.comments[entry.uri] %}
-                                        {% set commenter = vote.user.name %}
-                                        <p>{{ comment }}<b>- {{ commenter }}</b></p>
+                                        <div class="comments-banner">
+                                            {% set comment = vote.comments[entry.uri] %}
+                                            {% set commenter = vote.user.name %}
+                                            <p class="comment">{{ comment }}<b class="commenter">- {{ commenter }}</b></p>
                                         </div>
                                         {% endfor %}
                                     </div>
-                                    <div class="hidden-xs col-sm-8" style="padding: 0px inherit">
+                                    <div class="hidden-xs col-sm-7" style="padding: 0px inherit">
                                         {% for vote in entry.votes %}
                                         {% if vote.votes[entry.uri] >= 0 %}
                                             {% set vote_class = "upvote" %}
