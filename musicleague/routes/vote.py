@@ -97,6 +97,7 @@ def vote(league_id, submission_period_id):
 
         try:
             votes = json.loads(request.form.get('votes'))
+            comments = json.loads(request.form.get('comments'))
         except Exception:
             app.logger.exception("Failed to load JSON from form with votes: %s",
                                  request.form)
@@ -104,9 +105,10 @@ def vote(league_id, submission_period_id):
 
         # Remove all unnecessary zero-values
         votes = {k: v for k, v in votes.iteritems() if v}
+        comments = {k: v for k, v in comments.iteritems() if v}
 
         # Process votes
-        vote = create_or_update_vote(votes, submission_period, league, g.user)
+        vote = create_or_update_vote(votes, comments, submission_period, league, g.user)
 
         # If someone besides owner is voting, notify the owner
         if not league.has_owner(g.user):

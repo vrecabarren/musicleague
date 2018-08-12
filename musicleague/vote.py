@@ -4,24 +4,25 @@ from musicleague.persistence.models import Vote
 from musicleague.persistence.insert import insert_vote
 
 
-def create_or_update_vote(votes, submission_period, league, user):
+def create_or_update_vote(votes, comments, submission_period, league, user):
     v = get_my_vote(user, submission_period)
 
     if v:
         v.created = datetime.utcnow()
         v.updated = datetime.utcnow()
         v.votes = votes
+        v.comments = comments
         v.count += 1
 
         insert_vote(v)
     else:
-        v = create_vote(votes, submission_period, user, league)
+        v = create_vote(votes, comments, submission_period, user, league)
 
     return v
 
 
-def create_vote(votes, submission_period, user, league):
-    new_vote = Vote(user=user, votes=votes, created=datetime.utcnow())
+def create_vote(votes, comments, submission_period, user, league):
+    new_vote = Vote(user=user, votes=votes, comments=comments, created=datetime.utcnow())
     new_vote.league = league
     new_vote.submission_period = submission_period
 

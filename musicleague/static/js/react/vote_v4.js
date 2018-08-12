@@ -356,7 +356,7 @@ var Song = function (_React$Component3) {
                     React.createElement(
                         "div",
                         { className: "col-xs-12 col-sm-8" },
-                        React.createElement("input", { type: "text", placeholder: "Leave a comment on this song (optional)", uri: this.props.uri, value: this.props.previousComment, onChange: this.onComment.bind(this) })
+                        React.createElement("input", { type: "text", placeholder: "Leave a comment on the song above (optional)", uri: this.props.uri, value: this.props.previousComment, onChange: this.onComment.bind(this) })
                     )
                 )
             );
@@ -836,7 +836,8 @@ var SongList = function (_React$Component6) {
                             }.bind(this))
                         )
                     ),
-                    React.createElement("input", { type: "hidden", name: "votes", id: "votes" })
+                    React.createElement("input", { type: "hidden", name: "votes", id: "votes" }),
+                    React.createElement("input", { type: "hidden", name: "comments", id: "comments" })
                 )
             );
         }
@@ -845,6 +846,10 @@ var SongList = function (_React$Component6) {
         value: function handleFormSubmission() {
             var votesJson = JSON.stringify(this.state.votes);
             document.getElementById('votes').value = votesJson;
+
+            var commentsJson = JSON.stringify(this.state.comments);
+            document.getElementById('comments').value = commentsJson;
+
             return true;
         }
     }, {

@@ -262,7 +262,7 @@ class Song extends React.Component {
                 </div>
                 <div className="comment-inp row">
                     <div className="col-xs-12 col-sm-8">
-                        <input type="text" placeholder="Leave a comment on this song (optional)" uri={this.props.uri} value={this.props.previousComment} onChange={this.onComment.bind(this)}/>
+                        <input type="text" placeholder="Leave a comment on the song above (optional)" uri={this.props.uri} value={this.props.previousComment} onChange={this.onComment.bind(this)}/>
                     </div>
                 </div>
             </div>
@@ -480,6 +480,7 @@ class SongList extends React.Component {
                         </div>
                     </div>
                     <input type="hidden" name="votes" id="votes"/>
+                    <input type="hidden" name="comments" id="comments"/>
                 </form>
             </div>
         );
@@ -488,6 +489,10 @@ class SongList extends React.Component {
     handleFormSubmission() {
         var votesJson = JSON.stringify(this.state.votes);
         document.getElementById('votes').value = votesJson;
+
+        var commentsJson = JSON.stringify(this.state.comments);
+        document.getElementById('comments').value = commentsJson;
+
         return true;
     }
 
