@@ -195,12 +195,12 @@ def select_league(league_id, exclude_properties=None):
                 if 'votes' not in exclude_properties:
                     cur.execute(SELECT_VOTES, (round.id,))
                     for vote_tup in cur.fetchall():
-                        created, user_id, votes = vote_tup
+                        created, user_id, votes, comments = vote_tup
                         voter = user_idx.get(user_id, None)
                         if voter is None:
                             continue
 
-                        v = Vote(user=voter, votes=votes, created=created)
+                        v = Vote(user=voter, votes=votes, comments=comments, created=created)
                         v.league = league
                         v.submission_period = round
                         round.votes.append(v)

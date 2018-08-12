@@ -366,9 +366,10 @@ class Submission:
 
 
 class Vote:
-    def __init__(self, user, votes, created):
+    def __init__(self, user, votes, comments, created):
         self.user = user
         self.votes = votes
+        self.comments = comments
         self.created = created
         self.league = None
         self.submission_period = None

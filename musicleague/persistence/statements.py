@@ -367,6 +367,7 @@ CREATE_TABLE_VOTES = """CREATE TABLE IF NOT EXISTS votes (
                             spotify_uri VARCHAR(255) NOT NULL,
                             voter_id VARCHAR(255) NOT NULL REFERENCES users(id),
                             weight SMALLINT NOT NULL,
+                            comment TEXT DEFAULT '',
                             FOREIGN KEY (round_id, spotify_uri) REFERENCES submissions(round_id, spotify_uri),
                             UNIQUE (created, round_id, spotify_uri, voter_id, weight));"""
 
@@ -385,7 +386,7 @@ DELETE_VOTES_FOR_ROUND = "DELETE FROM votes WHERE round_id = %s;"
 
 DELETE_VOTES_FOR_URIS = "DELETE FROM votes WHERE round_id = %s AND spotify_uri = ANY(%s);"
 
-SELECT_VOTES = """SELECT created, voter_id, json_object_agg(spotify_uri, weight)
+SELECT_VOTES = """SELECT created, voter_id, json_object_agg(spotify_uri, weight), json_object_agg(spotify_uri, comment)
                     FROM votes WHERE round_id = %s
                     GROUP BY voter_id, created;"""
 

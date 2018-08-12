@@ -128,6 +128,13 @@
                             </div>
                         </div>
                     </div>
+                    {% for vote in entry.votes %}
+                    <div class="col-xs-12 comment">
+                        {% set comment = vote.comments[entry.uri] %}
+                        {% set commenter = vote.user.name %}
+                        <p>{{ comment }} - {{ commenter }}</p>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
             {% endif %}
