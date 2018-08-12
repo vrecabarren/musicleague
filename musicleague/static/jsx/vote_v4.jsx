@@ -261,7 +261,7 @@ class Song extends React.Component {
                     </div>
                 </div>
                 <div className="comment-inp row">
-                    <input type="text" placeholder="Leave a comment on this song (optional)"/>
+                    <input type="text" placeholder="Leave a comment on this song (optional)" uri={this.props.uri} value={this.props.previousComment} />
                 </div>
             </div>
          );
@@ -424,7 +424,8 @@ class SongList extends React.Component {
         this.state = {
             upVotes: 0,
             downVotes: 0,
-            votes: props.previousVotes
+            votes: props.previousVotes,
+            comments: props.previousComments
         };
 
         // Set number of up and down votes for previous
@@ -465,7 +466,7 @@ class SongList extends React.Component {
                                 this.props.uris.map(function(uri) {
                                     return (
                                         <div>
-                                            <Song uri={uri} previousVote={uri in this.props.previousVotes ? this.props.previousVotes[uri] : 0} maxUpVotes={this.props.maxUpVotesPerSong} maxDownVotes={this.props.maxDownVotesPerSong} onUpVote={this.onUpVote.bind(this)} onDownVote={this.onDownVote.bind(this)}/>
+                                            <Song uri={uri} previousVote={uri in this.props.previousVotes ? this.props.previousVotes[uri] : 0} previousComment={uri in this.props.previousComments ? this.props.previousComments[uri] : ''} maxUpVotes={this.props.maxUpVotesPerSong} maxDownVotes={this.props.maxDownVotesPerSong} onUpVote={this.onUpVote.bind(this)} onDownVote={this.onDownVote.bind(this)}/>
                                         </div>
                                     );
                                 }.bind(this))

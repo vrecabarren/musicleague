@@ -340,7 +340,8 @@
             maxDownVotesPerSong: {{ league.preferences.max_downvotes_per_song|tojson|safe }},
             maxUpVotes: {{ league.preferences.point_bank_size|tojson|safe }},
             maxUpVotesPerSong: {{ league.preferences.max_points_per_song|tojson|safe }},
-            previousVotes: {{ my_vote.votes|tojson|safe if my_vote else {}|tojson|safe }}
+            previousVotes: {{ my_vote.votes|tojson|safe if my_vote else {}|tojson|safe }},
+            previousComments: {{ my_vote.comments|tojson|safe if my_vote else {}|tojson|safe }}
         }),
         document.getElementById('mountVote')
     );

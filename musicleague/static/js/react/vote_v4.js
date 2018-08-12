@@ -353,7 +353,7 @@ var Song = function (_React$Component3) {
                 React.createElement(
                     "div",
                     { className: "comment-inp row" },
-                    React.createElement("input", { type: "text", placeholder: "Leave a comment on this song (optional)" })
+                    React.createElement("input", { type: "text", placeholder: "Leave a comment on this song (optional)", uri: this.props.uri, value: this.props.previousComment })
                 )
             );
         }
@@ -769,7 +769,8 @@ var SongList = function (_React$Component6) {
         _this10.state = {
             upVotes: 0,
             downVotes: 0,
-            votes: props.previousVotes
+            votes: props.previousVotes,
+            comments: props.previousComments
         };
 
         // Set number of up and down votes for previous
@@ -821,7 +822,7 @@ var SongList = function (_React$Component6) {
                                 return React.createElement(
                                     "div",
                                     null,
-                                    React.createElement(Song, { uri: uri, previousVote: uri in this.props.previousVotes ? this.props.previousVotes[uri] : 0, maxUpVotes: this.props.maxUpVotesPerSong, maxDownVotes: this.props.maxDownVotesPerSong, onUpVote: this.onUpVote.bind(this), onDownVote: this.onDownVote.bind(this) })
+                                    React.createElement(Song, { uri: uri, previousVote: uri in this.props.previousVotes ? this.props.previousVotes[uri] : 0, previousComment: uri in this.props.previousComments ? this.props.previousComments[uri] : '', maxUpVotes: this.props.maxUpVotesPerSong, maxDownVotes: this.props.maxDownVotesPerSong, onUpVote: this.onUpVote.bind(this), onDownVote: this.onDownVote.bind(this) })
                                 );
                             }.bind(this))
                         )
