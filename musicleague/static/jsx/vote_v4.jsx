@@ -261,10 +261,14 @@ class Song extends React.Component {
                     </div>
                 </div>
                 <div className="comment-inp row">
-                    <input type="text" placeholder="Leave a comment on this song (optional)" uri={this.props.uri} value={this.props.previousComment} onKeyDown={this.props.onComment}/>
+                    <input type="text" placeholder="Leave a comment on this song (optional)" uri={this.props.uri} value={this.props.previousComment} onKeyDown={this.onComment.bind(this)}/>
                 </div>
             </div>
          );
+    }
+
+    onComment(e) {
+        this.props.onComment(this.props.uri, e.target.value);
     }
 }
 
@@ -488,7 +492,7 @@ class SongList extends React.Component {
     onComment(uri, newCommentValue) {
         var newCommentsState = this.state.comments;
         var oldCommentValue = this.state.comments[uri];
-        console.log("Song comment change recorded. Old: '" + oldCommentValue + "', New: '" + newCommentValue + "'");
+        console.log("Song comment change recorded for '" + uri + "'. Old: '" + oldCommentValue + "', New: '" + newCommentValue + "'");
         newCommentsState[uri] = newCommentValue;
         this.setState({comments: newCommentsState});
 
