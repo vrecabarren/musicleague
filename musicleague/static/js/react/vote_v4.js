@@ -353,7 +353,7 @@ var Song = function (_React$Component3) {
                 React.createElement(
                     "div",
                     { className: "comment-inp row" },
-                    React.createElement("input", { type: "text", placeholder: "Leave a comment on this song (optional)", uri: this.props.uri, value: this.props.previousComment, onKeyDown: this.onComment.bind(this) })
+                    React.createElement("input", { type: "text", placeholder: "Leave a comment on this song (optional)", uri: this.props.uri, value: this.props.previousComment, onChange: this.onComment.bind(this) })
                 )
             );
         }
