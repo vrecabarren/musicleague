@@ -249,6 +249,11 @@ div, span {
     text-align: justify;
 }
 
+.song .vote-breakdown .comments-banner .no-comment {
+    color: #a7a7a7;
+    text-align: justify;
+}
+
 .song .vote-breakdown .comments-banner .comment .commenter {
     color: #02B8EF;
     display: block;
