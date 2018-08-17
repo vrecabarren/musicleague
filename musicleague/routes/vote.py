@@ -9,6 +9,7 @@ from flask import url_for
 
 from musicleague import app
 from musicleague.analytics import track_user_voted
+from musicleague.analytics import track_user_voted_with_comments
 from musicleague.notify import owner_user_voted_notification
 from musicleague.notify import user_last_to_vote_notification
 from musicleague.persistence.select import select_league
@@ -123,6 +124,8 @@ def vote(league_id, submission_period_id):
             user_last_to_vote_notification(last_user, submission_period)
 
         track_user_voted(g.user.id, submission_period)
+        if comments:
+            track_user_voted_with_comments(g.user.id, submission_period, len(comments))
 
         return redirect(url_for('view_submission_period', league_id=league_id,
                                 submission_period_id=submission_period_id))

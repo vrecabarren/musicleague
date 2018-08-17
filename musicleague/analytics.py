@@ -139,6 +139,11 @@ def track_user_voted(user_id, round):
     round_data = {'Round Name': round.name}
     get_mixpanel().track(user_id, 'Voted', round_data)
 
+def track_user_voted_with_comments(user_id, round, num_comments):
+    data = {'Round Name': round.name,
+            'Number of Comments': num_comments}
+    get_mixpanel().track(user_id, 'Commented While Voting', data)
+
 
 class NoopMixpanel:
 
