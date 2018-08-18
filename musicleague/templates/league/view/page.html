@@ -172,7 +172,7 @@
                         </div>
                     </div>
                     <div style="display: table-cell; padding: 30px 0 30px 20px; border-left: 3px solid #fff; vertical-align: middle;">
-                        {% if league.is_public and league.has_user(user) %}
+                        {% if league.is_public and (league.has_user(user) or league.has_owner(user)) %}
                         <button class="btn share-league-btn" data-clipboard-text="{{ request.url }}">
                             <span class="gold-star">
                                 <img src="https://s3.amazonaws.com/musicleague-static-assets/icons/star_gold.svg" alt="" height="18" width="18">
