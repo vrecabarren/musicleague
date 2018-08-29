@@ -181,7 +181,10 @@ def select_league(league_id, exclude_properties=None):
                         created, user_id, revision, tracks = submission_tup
                         submitter = user_idx.get(user_id, None)
                         if submitter is None:
-                            continue
+                            submitter = select_user(user_id)
+                            if submitter is None:
+                                continue
+                            user_idx[user_id] = submitter
 
                         s = Submission(user=submitter, tracks=tracks.keys(), created=created)
                         s.count = revision
@@ -198,7 +201,10 @@ def select_league(league_id, exclude_properties=None):
                         created, user_id, votes, comments = vote_tup
                         voter = user_idx.get(user_id, None)
                         if voter is None:
-                            continue
+                            voter = select_user(user_id)
+                            if voter is None:
+                                continue
+                            user_idx[user_id] = voter
 
                         v = Vote(user=voter, votes=votes, comments=comments, created=created)
                         v.league = league
