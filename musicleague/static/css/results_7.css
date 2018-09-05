@@ -43,8 +43,7 @@ div, span {
     padding: 50px 0px;
     text-align: center;
 }
-#title-bar .league-title,
-#title-bar .round-action {
+#title-bar .league-title {
     display: inline-block;
     font-family: 'Cubano', sans-serif;
     font-size: 20px;

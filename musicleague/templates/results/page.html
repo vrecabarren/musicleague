@@ -3,14 +3,14 @@
 {% block title %}Music League | {{ league.name }}{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="/static/css/results_6.css">
+<link rel="stylesheet" href="/static/css/results_7.css">
 {% endblock %}
 
 {% block title_bar_content %}
 <span class="league-title">
     <a href="{{ url_for('view_league', league_id=league.id) }}">{{ league.name }}</a>
 </span>
-<span class="round-title">{{ round.name }}:&nbsp;</span>
+<span class="round-title">{{ round.name }}</span>
 {% endblock %}
 
 {% block status_bar_content %}
