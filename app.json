@@ -1,4 +1,14 @@
 {
     "name": "Music League",
-    "stack": "heroku-16"
+    "stack": "heroku-16",
+    "formation": {
+        "web": {
+            "quantity": 1,
+            "size": "free"
+        },
+        "worker": {
+            "quantity": 1,
+            "size": "free"
+        }
+    }
 }
