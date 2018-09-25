@@ -47,7 +47,11 @@
                         </div>
                         <div class="hidden-xs">
                             {% if round.accepting_submissions %}
-                                {% set progress_perc = (round.submissions|length / league.users|length * 100)|int %}
+                                {% if league.users|length > 0 %}
+                                    {% set progress_perc = (round.submissions|length / league.users|length * 100)|int %}
+                                {% else %}
+                                    {% set progress_perc = 0 %}
+                                {% endif %}
                                 {% set content = "<strong>Submitted:</strong><br>" + round.have_submitted|map(attribute='name')|join('<br>') + "<hr><strong>Waiting for:</strong><br>" + round.have_not_submitted|map(attribute='name')|join('<br>') %}
                             {% else %}
                                 {% if round.have_submitted|length > 0 %}
