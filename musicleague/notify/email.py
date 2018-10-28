@@ -234,7 +234,7 @@ def _send_email(to, subject, text, html, additional_data=None):
     if response.status_code != httplib.OK:
         app.logger.warning(
             u'Mail send failed. Status: {}, Response: {}'.format(
-                response.status_code, response.text))
+                response.status_code, response.__dict__))
         return
 
 
