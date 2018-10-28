@@ -222,13 +222,18 @@ def _send_email(to, subject, text, html, bcc_list=None, additional_data=None):
             bcc_personalization.add_bcc(Email(bcc))
         mail.add_personalization(bcc_personalization)
 
-    sg = sendgrid.SendGridAPIClient(apikey=api_key)
-    response = sg.client.mail.send.post(request_body=mail.get())
+    try:
+        sg = sendgrid.SendGridAPIClient(apikey=api_key)
+        response = sg.client.mail.send.post(request_body=mail.get())
 
-    if response.status_code not in (httplib.OK, httplib.ACCEPTED):
-        app.logger.error(
-            u'Mail send failed. Status: {}, Response: {}'.format(
-                response.status_code, response.__dict__))
+        if response.status_code not in (httplib.OK, httplib.ACCEPTED):
+            app.logger.error(
+                u'Mail send failed w/ status: {}, Response: {}'.format(
+                    response.status_code, response.__dict__))
+            return
+
+    except Exception as e:
+        app.logger.exception(u'Mail send failed w/ exception: %s', str(e))
         return
 
 
