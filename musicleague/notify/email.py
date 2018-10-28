@@ -1,8 +1,13 @@
+import httplib
 import requests
 
+import sendgrid
 from flask import render_template
-
 from rq.decorators import job
+from sendgrid.helpers.mail import Content
+from sendgrid.helpers.mail import Email
+from sendgrid.helpers.mail import Mail
+from sendgrid.helpers.mail import Personalization
 
 from musicleague import app
 from musicleague import redis_conn
@@ -11,6 +16,7 @@ from musicleague.environment import get_setting
 from musicleague.environment.variables import MAILGUN_API_BASE_URL
 from musicleague.environment.variables import MAILGUN_API_KEY
 from musicleague.environment.variables import NOTIFICATION_SENDER
+from musicleague.environment.variables import SENDGRID_API_KEY
 
 
 HTML_PATH = 'email/html/%s'
@@ -200,6 +206,40 @@ def user_vote_reminder_email(user, submission_period):
 
 @job('default', connection=redis_conn)
 def _send_email(to, subject, text, html, additional_data=None):
+    if not is_deployed():
+        app.logger.info(text)
+        return
+    
+    api_key = get_setting(SENDGRID_API_KEY)
+    
+    from_email = Email(get_setting(NOTIFICATION_SENDER))
+    to_email = Email(to)
+    mail = Mail(from_email, subject, to_email)
+    mail.add_content(Content("text/plain", text))
+    mail.add_content(Content("text/html", html))
+
+    if additional_data is None:
+        additional_data = {}
+
+    if 'bcc' in additional_data:
+        bcc_list = additional_data.get('bcc', '')
+        for bcc in bcc_list.split(','):
+            bcc_personalization = Personalization()
+            bcc_personalization.add_bcc(Email(bcc))
+            mail.add_personalization(Personalization())
+
+    sg = sendgrid.SendGridAPIClient(apikey=api_key)
+    response = sg.client.mail.send.post(request_body=mail.get())
+
+    if response.status_code != httplib.OK:
+        app.logger.warning(
+            u'Mail send failed. Status: {}, Response: {}'.format(
+                response.status_code, response.text))
+        return
+
+
+@job('default', connection=redis_conn)
+def _send_email_old(to, subject, text, html, additional_data=None):
     if not is_deployed():
         app.logger.info(text)
         return
