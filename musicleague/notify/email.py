@@ -228,41 +228,6 @@ def _send_email(to, subject, text, html, bcc_list=None):
         return
 
 
-@job('default', connection=redis_conn)
-def _send_email_old(to, subject, text, html, additional_data=None):
-    if not is_deployed():
-        app.logger.info(text)
-        return
-
-    api_key = get_setting(MAILGUN_API_KEY)
-    api_base_url = get_setting(MAILGUN_API_BASE_URL)
-    request_url = '{}/messages'.format(api_base_url)
-    sender = get_setting(NOTIFICATION_SENDER)
-
-    if not (api_key and api_base_url and sender):
-        app.logger.warning('Missing email provider configuration, will not send')
-        return
-
-    data = {
-        "from": sender,
-        "to": to,
-        "subject": subject,
-        "text": text,
-        "html": html
-    }
-
-    if isinstance(additional_data, dict):
-        data.update(additional_data)
-
-    request = requests.post(request_url, auth=("api", api_key), data=data)
-
-    if request.status_code != 200:
-        app.logger.warning(
-            u'Mail send failed. Status: {}, Response: {}'.format(
-                request.status_code, request.text))
-        return
-
-
 def _txt_email(template, **kwargs):
     with app.app_context():
         return render_template(TXT_PATH % template, **kwargs)
