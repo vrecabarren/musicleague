@@ -225,8 +225,8 @@ def _send_email(to, subject, text, html, bcc_list=None, additional_data=None):
     sg = sendgrid.SendGridAPIClient(apikey=api_key)
     response = sg.client.mail.send.post(request_body=mail.get())
 
-    if response.status_code != httplib.OK:
-        app.logger.warning(
+    if response.status_code not in (httplib.OK, httplib.ACCEPTED):
+        app.logger.error(
             u'Mail send failed. Status: {}, Response: {}'.format(
                 response.status_code, response.__dict__))
         return
