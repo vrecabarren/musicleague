@@ -13,8 +13,6 @@ from musicleague import app
 from musicleague import redis_conn
 from musicleague.environment import is_deployed
 from musicleague.environment import get_setting
-from musicleague.environment.variables import MAILGUN_API_BASE_URL
-from musicleague.environment.variables import MAILGUN_API_KEY
 from musicleague.environment.variables import NOTIFICATION_SENDER
 from musicleague.environment.variables import SENDGRID_API_KEY
 

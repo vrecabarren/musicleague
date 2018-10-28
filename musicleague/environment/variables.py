@@ -10,8 +10,6 @@ DEBUG = EnvironmentVariable(key='DEBUG', default=False)
 DEPLOYED = EnvironmentVariable(key='ON_HEROKU', default=False)
 EVENTSTORE_HOST = EnvironmentVariable(key='EVENTSTORE_HOST', default='')
 LOGENTRIES_TOKEN = EnvironmentVariable(key='LOGENTRIES_TOKEN', default='')
-MAILGUN_API_BASE_URL = EnvironmentVariable(key='MAILGUN_API_BASE_URL', default='')  # noqa
-MAILGUN_API_KEY = EnvironmentVariable(key='MAILGUN_API_KEY', default='')
 MESSENGER_PAGE_ACCESS_TOKEN = EnvironmentVariable(key='MESSENGER_PAGE_ACCESS_TOKEN', default='')  # noqa
 MESSENGER_VERIFY_TOKEN = EnvironmentVariable(key='MESSENGER_VERIFY_TOKEN', default='')  # noqa
 MIXPANEL_TOKEN = EnvironmentVariable(key='MIXPANEL_TOKEN', default='')
