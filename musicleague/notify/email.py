@@ -215,6 +215,7 @@ def _send_email(to, subject, text, html, bcc_list=None, additional_data=None):
         for bcc in bcc_list:
             bcc_personalization.add_bcc(Email(bcc))
         mail.add_personalization(bcc_personalization)
+    # TODO Remove once all outstanding tasks have completed
     elif additional_data is not None and 'bcc' in additional_data:
         bcc_personalization = Personalization()
         bcc_list = additional_data.get('bcc', '').split(',')
