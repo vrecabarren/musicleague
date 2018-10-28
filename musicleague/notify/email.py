@@ -197,7 +197,7 @@ def user_vote_reminder_email(user, submission_period):
 
 
 @job('default', connection=redis_conn)
-def _send_email(to, subject, text, html, bcc_list=None):
+def _send_email(to, subject, text, html, bcc_list=None, additional_data=None):
     if not is_deployed():
         app.logger.info(text)
         return
@@ -212,6 +212,12 @@ def _send_email(to, subject, text, html, bcc_list=None):
 
     if bcc_list is not None:
         bcc_personalization = Personalization()
+        for bcc in bcc_list:
+            bcc_personalization.add_bcc(Email(bcc))
+        mail.add_personalization(bcc_personalization)
+    elif additional_data is not None and 'bcc' in additional_data:
+        bcc_personalization = Personalization()
+        bcc_list = additional_data.get('bcc', '').split(',')
         for bcc in bcc_list:
             bcc_personalization.add_bcc(Email(bcc))
         mail.add_personalization(bcc_personalization)
