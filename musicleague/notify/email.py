@@ -205,23 +205,24 @@ def _send_email(to, subject, text, html, bcc_list=None, additional_data=None):
     api_key = get_setting(SENDGRID_API_KEY)
     
     from_email = Email(get_setting(NOTIFICATION_SENDER))
-    to_email = Email(to)
-    mail = Mail(from_email, subject, to_email)
+
+    mail = Mail(from_email=from_email, subject=subject)
     mail.add_content(Content("text/plain", text))
     mail.add_content(Content("text/html", html))
 
+    personalization = Personalization()
+    personalization.add_to(Email(to))
+
     if bcc_list is not None:
-        bcc_personalization = Personalization()
         for bcc in bcc_list:
-            bcc_personalization.add_bcc(Email(bcc))
-        mail.add_personalization(bcc_personalization)
+            personalization.add_bcc(Email(bcc))
     # TODO Remove once all outstanding tasks have completed
     elif additional_data is not None and 'bcc' in additional_data:
-        bcc_personalization = Personalization()
         bcc_list = additional_data.get('bcc', '').split(',')
         for bcc in bcc_list:
-            bcc_personalization.add_bcc(Email(bcc))
-        mail.add_personalization(bcc_personalization)
+            personalization.add_bcc(Email(bcc))
+
+    mail.add_personalization(personalization)
 
     try:
         sg = sendgrid.SendGridAPIClient(apikey=api_key)
