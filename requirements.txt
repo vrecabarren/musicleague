@@ -14,5 +14,6 @@ requests==2.18.4
 git+git://github.com/nvie/rq.git@master
 # rq-scheduler==0.7.0
 git+git://github.com/ui/rq-scheduler.git@master
+sendgrid==5.6.0
 # spotipy
 git+git://github.com/plamere/spotipy.git@master
