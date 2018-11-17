@@ -21,12 +21,14 @@ from musicleague.scoring.round import calculate_round_scoreboard
 from musicleague.submission_period import create_submission_period
 from musicleague.submission_period import remove_submission_period
 from musicleague.submission_period import update_submission_period
+from musicleague.breakdown.charts import build_voting_chart_datasets
 
 
 CREATE_SUBMISSION_PERIOD_URL = '/l/<league_id>/submission_period/create/'
 MODIFY_SUBMISSION_PERIOD_URL = '/l/<league_id>/<submission_period_id>/modify/'
 REMOVE_SUBMISSION_PERIOD_URL = '/l/<league_id>/<submission_period_id>/remove/'
 SETTINGS_URL = '/l/<league_id>/<submission_period_id>/settings/'
+BREAKDOWN_URL = '/l/<league_id>/<submission_period_id>/breakdown/'
 VIEW_SUBMISSION_PERIOD_URL = '/l/<league_id>/<submission_period_id>/'
 
 
@@ -152,3 +154,38 @@ def score_round(league_id, submission_period_id):
     ret = {rank: [entry.submission.user.id for entry in entries]
            for rank, entries in submission_period.scoreboard.rankings.iteritems()}
     return json.dumps(ret), 200
+
+@app.route(BREAKDOWN_URL)
+@templated('breakdown/page.html')
+@login_required
+def view_round_breakdown(league_id, submission_period_id):
+    league = select_league(league_id)
+    submission_period = next((sp for sp in league.submission_periods
+                              if sp.id == submission_period_id), None)
+    if not league or not submission_period:
+        flash_error('Round not found')
+        return redirect(url_for('view_league', league_id=league.id))
+
+    has_voted = submission_period.user_vote(g.user) is not None
+    is_admin = g.user.is_admin
+    can_view = submission_period.is_complete or is_admin or has_voted
+    if not can_view:
+        flash_warning('You do not have access to this page right now')
+        return redirect(url_for('view_league', league_id=league.id))
+
+    # Get Spotify track objects
+    datasets = build_voting_chart_datasets(submission_period)
+
+    # Make sure this round has an up-to-date scoreboard
+    ctx = {'user': g.user.id, 'league': league_id, 'round': submission_period_id}
+    app.logger.info('User viewing round', extra=ctx)
+    if not submission_period.scoreboard or not submission_period.is_complete:
+        app.logger.info('Updating round scoreboard for user view', extra=ctx)
+        submission_period = calculate_round_scoreboard(submission_period)
+
+    return {
+        'user': g.user,
+        'league': league,
+        'round': submission_period,
+        'dataJson': json.dumps(datasets),
+    }
