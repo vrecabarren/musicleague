@@ -75,7 +75,8 @@ class ScoreboardEntrySortKey(EntrySortKey):
         _cmp_order = [
             self._cmp_entry_is_valid,
             self._cmp_entry_points,
-            self._cmp_entry_num_voters,
+            self._cmp_entry_num_upvoters,
+            self._cmp_entry_num_downvoters,
             self._cmp_entry_highest_vote
         ]
 
@@ -105,13 +106,23 @@ class ScoreboardEntrySortKey(EntrySortKey):
             return -1
         return 0
 
-    def _cmp_entry_num_voters(self, other):
+    def _cmp_entry_num_upvoters(self, other):
         """ Compare two ScoreboardEntry objects based on the number of unique
-        users who voted for each.
+        users who upvoted each.
         """
-        if len(self.obj.votes) > len(other.votes):
+        if self.obj.num_upvoters > other.num_upvoters:
             return 1
-        elif len(self.obj.votes) < len(other.votes):
+        elif self.obj.num_upvoters < other.num_upvoters:
+            return -1
+        return 0
+
+    def _cmp_entry_num_downvoters(self, other):
+        """ Compare two ScoreboardEntry objects based on the number of unique
+        users who downvoted each.
+        """
+        if self.obj.num_downvoters < other.num_downvoters:
+            return 1
+        elif self.obj.num_downvoters > other.num_downvoters:
             return -1
         return 0
 
