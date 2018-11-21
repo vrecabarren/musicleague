@@ -82,7 +82,8 @@ class RankingEntrySortKey(EntrySortKey):
     def _ordered_cmp(self, other):
         _cmp_order = [
             self._cmp_entry_points,
-            self._cmp_entry_num_voters,
+            self._cmp_entry_num_upvoters,
+            self._cmp_entry_num_downvoters,
             self._cmp_entry_highest_rank
         ]
 
@@ -103,23 +104,43 @@ class RankingEntrySortKey(EntrySortKey):
             return -1
         return 0
 
-    def _cmp_entry_num_voters(self, other):
+    def _cmp_entry_num_upvoters(self, other):
         """ Compare two RankingEntry objects based on the number of unique
-        users who voted for each.
+        users who upvoted each.
         """
-        self_voters = set(
+        self_upvoters = set(
             [v.user.id
              for entry in self.obj.entries if entry.is_valid
-             for v in entry.votes])
+             for v in entry.upvotes])
 
-        other_voters = set(
+        other_upvoters = set(
             [v.user.id
              for entry in other.entries if entry.is_valid
-             for v in entry.votes])
+             for v in entry.upvotes])
 
-        if len(self_voters) > len(other_voters):
+        if len(self_upvoters) > len(other_upvoters):
             return 1
-        elif len(self_voters) < len(other_voters):
+        elif len(self_upvoters) < len(other_upvoters):
+            return -1
+        return 0
+    
+    def _cmp_entry_num_downvoters(self, other):
+        """ Compare two RankingEntry objects based on the number of unique
+        users who downvoted each.
+        """
+        self_downvoters = set(
+            [v.user.id
+             for entry in self.obj.entries if entry.is_valid
+             for v in entry.downvotes])
+
+        other_downvoters = set(
+            [v.user.id
+             for entry in other.entries if entry.is_valid
+             for v in entry.downvotes])
+
+        if len(self_downvoters) < len(other_downvoters):
+            return 1
+        elif len(self_downvoters) > len(other_downvoters):
             return -1
         return 0
 
