@@ -3,7 +3,7 @@
 # ================
 
 CREATE_TABLE_USER_PREFERENCES = """CREATE TABLE IF NOT EXISTS user_preferences (
-                                        user_id VARCHAR(255) NOT NULL PRIMARY KEY REFERENCES users(id),
+                                        user_id TEXT NOT NULL PRIMARY KEY REFERENCES users(id),
                                         owner_all_users_submitted_notifications BOOL NOT NULL DEFAULT TRUE,
                                         owner_all_users_voted_notifications BOOL NOT NULL DEFAULT TRUE,
                                         owner_user_left_notifications BOOL NOT NULL DEFAULT TRUE,
@@ -70,12 +70,12 @@ UPSERT_USER_PREFERENCES = """INSERT INTO user_preferences (user_id,
 # =====
 
 CREATE_TABLE_USERS = """CREATE TABLE IF NOT EXISTS users (
-                            id VARCHAR(255) NOT NULL PRIMARY KEY,
-                            email VARCHAR(255) DEFAULT '',
-                            image_url VARCHAR(255) NOT NULL,
+                            id TEXT NOT NULL PRIMARY KEY,
+                            email TEXT DEFAULT '',
+                            image_url TEXT NOT NULL,
                             joined TIMESTAMP NOT NULL DEFAULT NOW(),
-                            name VARCHAR(255) DEFAULT '',
-                            profile_bg VARCHAR(255) NOT NULL,
+                            name TEXT DEFAULT '',
+                            profile_bg TEXT NOT NULL,
                             is_admin BOOL NOT NULL DEFAULT FALSE);"""
 
 DELETE_USER = "DELETE FROM users WHERE id = %s;"
@@ -108,10 +108,10 @@ UPSERT_USER = """INSERT INTO users (id, email, image_url, joined, name, profile_
 # =============
 
 CREATE_TABLE_INVITED_USERS = """CREATE TABLE IF NOT EXISTS invited_users (
-                                    id VARCHAR(255) NOT NULL PRIMARY KEY,
+                                    id TEXT NOT NULL PRIMARY KEY,
                                     invited TIMESTAMP NOT NULL DEFAULT NOW(),
-                                    email VARCHAR(255) NOT NULL,
-                                    league_id VARCHAR(255) NOT NULL REFERENCES leagues(id),
+                                    email TEXT NOT NULL,
+                                    league_id TEXT NOT NULL REFERENCES leagues(id),
                                     UNIQUE (email, league_id));"""
 
 DELETE_INVITED_USER = "DELETE FROM invited_users WHERE id = %s;"
@@ -129,9 +129,9 @@ SELECT_INVITED_USERS_IN_LEAGUE = "SELECT id, email FROM invited_users WHERE leag
 # ====
 
 CREATE_TABLE_BOTS = """CREATE TABLE IF NOT EXISTS bots (
-                            id VARCHAR(255) NOT NULL PRIMARY KEY,
-                            access_token VARCHAR(255) NOT NULL,
-                            refresh_token VARCHAR(255) NOT NULL,
+                            id TEXT NOT NULL PRIMARY KEY,
+                            access_token TEXT NOT NULL,
+                            refresh_token TEXT NOT NULL,
                             expires_at INT NOT NULL);"""
 
 SELECT_BOT = "SELECT access_token, refresh_token, expires_at FROM bots WHERE id = %s;"
@@ -148,7 +148,7 @@ UPSERT_BOT = """INSERT INTO bots (id, access_token, refresh_token, expires_at)
 # ==================
 
 CREATE_TABLE_LEAGUE_PREFERENCES = """CREATE TABLE IF NOT EXISTS league_preferences (
-                                        league_id VARCHAR(255) NOT NULL PRIMARY KEY REFERENCES leagues(id),
+                                        league_id TEXT NOT NULL PRIMARY KEY REFERENCES leagues(id),
                                         track_count SMALLINT NOT NULL,
                                         upvote_bank_size SMALLINT NOT NULL,
                                         max_upvotes_per_song SMALLINT NOT NULL,
@@ -182,10 +182,10 @@ UPSERT_LEAGUE_PREFERENCES = """INSERT INTO league_preferences
 # =======
 
 CREATE_TABLE_LEAGUES = """CREATE TABLE IF NOT EXISTS leagues (
-                            id VARCHAR(255) PRIMARY KEY,
+                            id TEXT PRIMARY KEY,
                             created TIMESTAMP NOT NULL DEFAULT NOW(),
-                            name VARCHAR(255) NOT NULL,
-                            owner_id VARCHAR(255) NOT NULL REFERENCES users(id),
+                            name TEXT NOT NULL,
+                            owner_id TEXT NOT NULL REFERENCES users(id),
                             status SMALLINT NOT NULL DEFAULT 0);"""
 
 DELETE_LEAGUE = "DELETE FROM leagues WHERE id = %s;"
@@ -212,9 +212,9 @@ UPDATE_LEAGUE_STATUS = "UPDATE leagues SET status = %s WHERE id = %s;"
 
 CREATE_TABLE_MEMBERSHIPS = """CREATE TABLE IF NOT EXISTS memberships (
                                 created TIMESTAMP NOT NULL DEFAULT NOW(),
-                                league_id VARCHAR(255) NOT NULL REFERENCES leagues(id),
+                                league_id TEXT NOT NULL REFERENCES leagues(id),
                                 rank SMALLINT NOT NULL DEFAULT -1,
-                                user_id VARCHAR(255) NOT NULL REFERENCES users(id),
+                                user_id TEXT NOT NULL REFERENCES users(id),
                                 UNIQUE (league_id, user_id));"""
 
 DELETE_MEMBERSHIP = "DELETE FROM memberships WHERE league_id = %s AND user_id = %s;"
@@ -254,12 +254,12 @@ SELECT_SCOREBOARD = """SELECT users.id, memberships.rank
 # ======
 
 CREATE_TABLE_ROUNDS = """CREATE TABLE IF NOT EXISTS rounds (
-                            id VARCHAR(255) PRIMARY KEY,
+                            id TEXT PRIMARY KEY,
                             created TIMESTAMP NOT NULL DEFAULT NOW(),
-                            description VARCHAR(255) DEFAULT '',
-                            league_id VARCHAR(255) NOT NULL REFERENCES leagues(id),
-                            name VARCHAR(255) NOT NULL,
-                            playlist_url VARCHAR(255) DEFAULT '',
+                            description TEXT DEFAULT '',
+                            league_id TEXT NOT NULL REFERENCES leagues(id),
+                            name TEXT NOT NULL,
+                            playlist_url TEXT DEFAULT '',
                             status SMALLINT NOT NULL DEFAULT 0,
                             submissions_due TIMESTAMP NOT NULL,
                             votes_due TIMESTAMP NOT NULL);"""
@@ -309,9 +309,9 @@ UPSERT_ROUND = """INSERT INTO rounds (id, created, description, league_id, name,
 CREATE_TABLE_SUBMISSIONS = """CREATE TABLE IF NOT EXISTS submissions (
                                     created TIMESTAMP NOT NULL DEFAULT NOW(),
                                     rank SMALLINT NOT NULL DEFAULT -1,
-                                    round_id VARCHAR(255) NOT NULL REFERENCES rounds(id),
-                                    spotify_uri VARCHAR(255) NOT NULL,
-                                    submitter_id VARCHAR(255) NOT NULL REFERENCES users(id),
+                                    round_id TEXT NOT NULL REFERENCES rounds(id),
+                                    spotify_uri TEXT NOT NULL,
+                                    submitter_id TEXT NOT NULL REFERENCES users(id),
                                     revision SMALLINT NOT NULL DEFAULT 1,
                                     UNIQUE (round_id, spotify_uri));"""
 
@@ -363,9 +363,9 @@ UPDATE_SUBMISSION_RANK = "UPDATE submissions SET rank = %s WHERE round_id = %s A
 
 CREATE_TABLE_VOTES = """CREATE TABLE IF NOT EXISTS votes (
                             created TIMESTAMP DEFAULT NOW(),
-                            round_id VARCHAR(255) NOT NULL,
-                            spotify_uri VARCHAR(255) NOT NULL,
-                            voter_id VARCHAR(255) NOT NULL REFERENCES users(id),
+                            round_id TEXT NOT NULL,
+                            spotify_uri TEXT NOT NULL,
+                            voter_id TEXT NOT NULL REFERENCES users(id),
                             weight SMALLINT NOT NULL,
                             comment TEXT DEFAULT '',
                             FOREIGN KEY (round_id, spotify_uri) REFERENCES submissions(round_id, spotify_uri),
