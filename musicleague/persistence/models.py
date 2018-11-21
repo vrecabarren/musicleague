@@ -111,8 +111,20 @@ class ScoreboardEntry:
         return self.potential_points
 
     @property
+    def num_voters(self):
+        return sum((1 for vote in self.votes if self.uri in vote.votes))
+
+    @property
+    def num_commenters(self):
+        return sum((1 for vote in self.votes if self.uri in vote.comments))
+
+    @property
     def downvote_points(self):
         return sum([min(0, vote.votes.get(self.uri, 0)) for vote in self.votes])
+
+    @property
+    def upvote_points(self):
+        return sum([max(0, vote.votes.get(self.uri, 0)) for vote in self.votes])
 
     @property
     def potential_points(self):

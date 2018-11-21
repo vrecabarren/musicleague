@@ -31,7 +31,7 @@
             </div>
             <div class="stats-wrapper with-trophy col-xs-7 col-sm-3">
                 <div class="voters-wrapper">
-                    <span class="voter-count">{{ entry.votes|length }} {% if entry.votes|length == 1 %}Person{% else %}People{% endif %} Voted On This</span>
+                    <span class="voter-count">{{ entry.num_voters }} {% if entry.num_voters == 1 %}Person{% else %}People{% endif %} Voted On This</span>
                 </div>
                 <div class="points-wrapper">
                     {% if display_invalid %}
@@ -49,7 +49,7 @@
             {% else %}
             <div class="stats-wrapper col-xs-8 col-xs-offset-2 col-sm-3 col-sm-offset-2">
                 <div class="voters-wrapper">
-                    <span class="voter-count">{{ entry.votes|length }} {% if entry.votes|length == 1 %}Person{% else %}People{% endif %} Voted On This</span>
+                    <span class="voter-count">{{ entry.num_voters }} {% if entry.num_voters == 1 %}Person{% else %}People{% endif %} Voted On This</span>
                 </div>
                 <div class="points-wrapper">
                     {% if display_invalid %}
