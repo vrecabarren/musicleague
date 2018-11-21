@@ -173,4 +173,7 @@ def submit(league_id, submission_period_id):
     except Exception:
         app.logger.exception(
             'Failed to process submissions',
-            extra={'user': g.user.id, 'league': league_id, 'round': submission_period_id})
+            extra={'user': g.user.id, 'league': league_id, 'round': submission_period_id,
+                   'form_values': request.form})
+
+        return 'There was an error processing your submission', 500
