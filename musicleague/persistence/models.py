@@ -112,11 +112,11 @@ class ScoreboardEntry:
 
     @property
     def num_voters(self):
-        return sum((1 for vote in self.votes if self.uri in vote.votes))
+        return sum((1 for vote in self.votes if vote.votes.get(self.uri, 0) != 0))
 
     @property
     def num_commenters(self):
-        return sum((1 for vote in self.votes if self.uri in vote.comments))
+        return sum((1 for vote in self.votes if vote.comments.get(self.uri, '') != ''))
 
     @property
     def downvote_points(self):
