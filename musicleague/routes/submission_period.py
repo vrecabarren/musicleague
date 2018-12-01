@@ -128,9 +128,9 @@ def view_submission_period(league_id, submission_period_id):
     # Make sure this round has an up-to-date scoreboard
     ctx = {'user': g.user.id, 'league': league_id, 'round': submission_period_id}
     app.logger.info('User viewing round', extra=ctx)
-    if not submission_period.scoreboard or not submission_period.is_complete:
-        app.logger.info('Updating round scoreboard for user view', extra=ctx)
-        submission_period = calculate_round_scoreboard(submission_period)
+    # if not submission_period.scoreboard or not submission_period.is_complete:
+    app.logger.info('Updating round scoreboard for user view', extra=ctx)
+    submission_period = calculate_round_scoreboard(submission_period)
 
     return {
         'user': g.user,
