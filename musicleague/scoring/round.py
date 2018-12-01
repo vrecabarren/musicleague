@@ -13,6 +13,7 @@ WIN = 1
 BROKEN_BY_NUM_UPVOTERS = 'This tie was broken based on the number of people who upvoted'
 BROKEN_BY_NUM_DOWNVOTERS = 'This tie was broken based on the number of people who downvoted'
 BROKEN_BY_HIGHEST_VOTE = 'This tie was broken based on the entry with the highest single vote'
+NOT_BROKEN = 'This tie was unable to be broken and is displayed in random order'
 
 def calculate_round_scoreboard(round):
     """ Calculate and store scoreboard on round. The scoreboard consists of
@@ -93,6 +94,8 @@ class ScoreboardEntrySortKey(EntrySortKey):
             if diff != TIE:
                 return diff
 
+        self.obj.tie_breaker = NOT_BROKEN
+        other.tie_breaker = NOT_BROKEN
         return TIE
 
     def _cmp_entry_is_valid(self, other):
