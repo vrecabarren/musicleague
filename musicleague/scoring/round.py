@@ -10,6 +10,10 @@ LOSE = -1
 TIE = 0
 WIN = 1
 
+BROKEN_BY_NUM_UPVOTERS = 'This tie was broken based on the number of people who upvoted'
+BROKEN_BY_NUM_DOWNVOTERS = 'This tie was broken based on the number of people who downvoted'
+BROKEN_BY_HIGHEST_VOTE = 'This tie was broken based on the entry with the highest single vote'
+
 def calculate_round_scoreboard(round):
     """ Calculate and store scoreboard on round. The scoreboard consists of
     a dict where keys are the rankings for each entry. The values for the
@@ -115,8 +119,12 @@ class ScoreboardEntrySortKey(EntrySortKey):
         users who upvoted each.
         """
         if self.obj.num_upvoters > other.num_upvoters:
+            self.obj.tie_breaker = BROKEN_BY_NUM_UPVOTERS
+            other.tie_breaker = BROKEN_BY_NUM_UPVOTERS
             return WIN
         elif self.obj.num_upvoters < other.num_upvoters:
+            self.obj.tie_breaker = BROKEN_BY_NUM_UPVOTERS
+            other.tie_breaker = BROKEN_BY_NUM_UPVOTERS
             return LOSE
         return TIE
 
@@ -125,8 +133,12 @@ class ScoreboardEntrySortKey(EntrySortKey):
         users who downvoted each.
         """
         if self.obj.num_downvoters < other.num_downvoters:
+            self.obj.tie_breaker = BROKEN_BY_NUM_DOWNVOTERS
+            other.tie_breaker = BROKEN_BY_NUM_DOWNVOTERS
             return WIN
         elif self.obj.num_downvoters > other.num_downvoters:
+            self.obj.tie_breaker = BROKEN_BY_NUM_DOWNVOTERS
+            other.tie_breaker = BROKEN_BY_NUM_DOWNVOTERS
             return LOSE
         return TIE
 
@@ -148,7 +160,11 @@ class ScoreboardEntrySortKey(EntrySortKey):
         other_asym = sorted(list(other_counter.elements()), reverse=True)
 
         if next(iter(self_asym), 0) > next(iter(other_asym), 0):
+            self.obj.tie_breaker = BROKEN_BY_HIGHEST_VOTE
+            other.tie_breaker = BROKEN_BY_HIGHEST_VOTE
             return WIN
         elif next(iter(self_asym), 0) < next(iter(other_asym), 0):
+            self.obj.tie_breaker = BROKEN_BY_HIGHEST_VOTE
+            other.tie_breaker = BROKEN_BY_HIGHEST_VOTE
             return LOSE
         return TIE

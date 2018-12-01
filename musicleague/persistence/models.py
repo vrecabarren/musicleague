@@ -83,6 +83,7 @@ class ScoreboardEntry:
         self.submission = submission
         self.uri = uri
         self.votes = []
+        self.tie_breaker = kwargs.get('tie_breaker', '')
 
     @property
     def round(self):
