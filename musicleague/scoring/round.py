@@ -6,6 +6,9 @@ from musicleague.persistence.models import Scoreboard
 from musicleague.persistence.models import ScoreboardEntry
 from musicleague.scoring import EntrySortKey
 
+LOSE = -1
+TIE = 0
+WIN = 1
 
 def calculate_round_scoreboard(round):
     """ Calculate and store scoreboard on round. The scoreboard consists of
@@ -80,20 +83,21 @@ class ScoreboardEntrySortKey(EntrySortKey):
             self._cmp_entry_highest_vote
         ]
 
+        # Work through each tie breaker until we break the tie
         for _cmp in _cmp_order:
             diff = _cmp(other)
-            if diff != 0:
+            if diff != TIE:
                 return diff
 
-        return 0
+        return TIE
 
     def _cmp_entry_is_valid(self, other):
         """ Compare two ScoreboardEntry objects based on their validity. """
         if self.obj.is_valid and not other.is_valid:
-            return 1
+            return WIN
         elif not self.obj.is_valid and other.is_valid:
-            return -1
-        return 0
+            return LOSE
+        return TIE
 
 
     def _cmp_entry_points(self, other):
@@ -101,30 +105,30 @@ class ScoreboardEntrySortKey(EntrySortKey):
         points.
         """
         if self.obj.points > other.points:
-            return 1
+            return WIN
         elif self.obj.points < other.points:
-            return -1
-        return 0
+            return LOSE
+        return TIE
 
     def _cmp_entry_num_upvoters(self, other):
         """ Compare two ScoreboardEntry objects based on the number of unique
         users who upvoted each.
         """
         if self.obj.num_upvoters > other.num_upvoters:
-            return 1
+            return WIN
         elif self.obj.num_upvoters < other.num_upvoters:
-            return -1
-        return 0
+            return LOSE
+        return TIE
 
     def _cmp_entry_num_downvoters(self, other):
         """ Compare two ScoreboardEntry objects based on the number of unique
         users who downvoted each.
         """
         if self.obj.num_downvoters < other.num_downvoters:
-            return 1
+            return WIN
         elif self.obj.num_downvoters > other.num_downvoters:
-            return -1
-        return 0
+            return LOSE
+        return TIE
 
     def _cmp_entry_highest_vote(self, other):
         """ Compare two ScoreboardEntry objects based on the highest
@@ -144,8 +148,7 @@ class ScoreboardEntrySortKey(EntrySortKey):
         other_asym = sorted(list(other_counter.elements()), reverse=True)
 
         if next(iter(self_asym), 0) > next(iter(other_asym), 0):
-            return 1
+            return WIN
         elif next(iter(self_asym), 0) < next(iter(other_asym), 0):
-            return -1
-
-        return 0
+            return LOSE
+        return TIE
