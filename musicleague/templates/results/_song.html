@@ -76,6 +76,10 @@
                                     <div class="col-xs-12 col-sm-5">
                                         <div class="comments-banner">
                                         {% set received_comments = false %}
+                                        {% if entry.tie_breaker %}
+                                        {% set received_comments = true %}
+                                        <p class="comment" style="color: #F8C62C; background-color: lightyellow; border: 1px solid #F8C62C; border-radius: 8px; text-align: center; padding: 5px;">{{ entry.tie_breaker }}</p>
+                                        {% endif %}
                                         {% for vote in entry.votes if vote.comments[entry.uri]|length > 0 %}
                                             {% set received_comments = true %}
                                             {% set comment = vote.comments[entry.uri] %}
