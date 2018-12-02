@@ -70,7 +70,7 @@ def complete_submission_period(submission_period_id):
         league = select_league(league_id)
         submission_period = next((r for r in league.submission_periods
                                   if r.id == submission_period_id), None)
-        calculate_round_scoreboard(submission_period)
+        calculate_round_scoreboard(submission_period, persist_updates=True)
         update_round_status(submission_period, RoundStatus.COMPLETE)
 
         league = select_league(submission_period.league_id)

@@ -130,7 +130,7 @@ def view_submission_period(league_id, submission_period_id):
     app.logger.info('User viewing round', extra=ctx)
     # if not submission_period.scoreboard or not submission_period.is_complete:
     app.logger.info('Updating round scoreboard for user view', extra=ctx)
-    submission_period = calculate_round_scoreboard(submission_period)
+    submission_period = calculate_round_scoreboard(submission_period, persist_updates=False)
 
     return {
         'user': g.user,
@@ -147,7 +147,7 @@ def score_round(league_id, submission_period_id):
     league = select_league(league_id)
     submission_period = next((sp for sp in league.submission_periods
                               if sp.id == submission_period_id), None)
-    submission_period = calculate_round_scoreboard(submission_period)
+    submission_period = calculate_round_scoreboard(submission_period, persist_updates=True)
     calculate_league_scoreboard(league)
     ret = {rank: [entry.submission.user.id for entry in entries]
            for rank, entries in submission_period.scoreboard.rankings.iteritems()}

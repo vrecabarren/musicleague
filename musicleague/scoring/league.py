@@ -27,7 +27,7 @@ def calculate_league_scoreboard(league):
             continue
 
         # Ensure each round has had its scoreboard calculated
-        round = calculate_round_scoreboard(round)
+        round = calculate_round_scoreboard(round, persist_updates=True)
 
         for entry_list in round.scoreboard.rankings.values():
             for entry in entry_list:

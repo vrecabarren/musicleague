@@ -15,7 +15,7 @@ BROKEN_BY_NUM_DOWNVOTERS = 'The tie was broken based on which song received fewe
 BROKEN_BY_HIGHEST_VOTE = 'The tie was broken based on which song received the highest single number of votes from a voter'
 NOT_BROKEN = 'This tie was unable to be broken and is displayed in random order'
 
-def calculate_round_scoreboard(round):
+def calculate_round_scoreboard(round, persist_updates=True):
     """ Calculate and store scoreboard on round. The scoreboard consists of
     a dict where keys are the rankings for each entry. The values for the
     scoreboard are lists of entries. In most cases, the list will have a
@@ -46,8 +46,9 @@ def calculate_round_scoreboard(round):
     rankings = rank_entries(entries.values())
     for rank, entries in rankings.iteritems():
         round.scoreboard._rankings[rank] = entries
-        for entry in entries:
-            update_submission_rank(round, entry.uri, rank)
+        if persist_updates:
+            for entry in entries:
+                update_submission_rank(round, entry.uri, rank)
 
     return round
 
