@@ -127,6 +127,8 @@ class ScoreboardEntrySortKey(EntrySortKey):
             other.tie_breaker = BROKEN_BY_NUM_UPVOTERS
             return WIN
         elif self.obj.num_upvoters < other.num_upvoters:
+            self.obj.tie_breaker = ''
+            other.tie_breaker = ''
             return LOSE
         return TIE
 
@@ -139,6 +141,8 @@ class ScoreboardEntrySortKey(EntrySortKey):
             other.tie_breaker = BROKEN_BY_NUM_DOWNVOTERS
             return WIN
         elif self.obj.num_downvoters > other.num_downvoters:
+            self.obj.tie_breaker = ''
+            other.tie_breaker = ''
             return LOSE
         return TIE
 
@@ -164,5 +168,7 @@ class ScoreboardEntrySortKey(EntrySortKey):
             other.tie_breaker = BROKEN_BY_HIGHEST_VOTE
             return WIN
         elif next(iter(self_asym), 0) < next(iter(other_asym), 0):
+            self.obj.tie_breaker = ''
+            other.tie_breaker = ''
             return LOSE
         return TIE
