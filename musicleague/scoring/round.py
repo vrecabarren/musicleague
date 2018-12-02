@@ -13,7 +13,7 @@ WIN = 1
 BROKEN_BY_NUM_UPVOTERS = 'The tie was broken based on which song received more upvotes'
 BROKEN_BY_NUM_DOWNVOTERS = 'The tie was broken based on which song received fewer downvotes'
 BROKEN_BY_HIGHEST_VOTE = 'The tie was broken based on which song received the highest single number of votes from a voter'
-NOT_BROKEN = 'This tie was unable to be broken and is displayed in random order'
+NOT_BROKEN = 'These songs are tied and are displayed in random order'
 
 def calculate_round_scoreboard(round, persist_updates=True):
     """ Calculate and store scoreboard on round. The scoreboard consists of

@@ -41,7 +41,7 @@
     {% for place, entries in round.scoreboard.rankings.iteritems() if place != 1 %}
         {% for entry in entries %}
             {% set display_invalid = not entry.is_valid and entry.potential_points != entry.points %}
-            {% set display_tie_breaker = not loop.last %}
+            {% set display_tie_breaker = True %}
             {% set song = tracks_by_uri[entry.uri] %}
             {% include "results/_song.html" %}
         {% endfor %}
