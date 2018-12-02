@@ -39,12 +39,20 @@
 
 {% block page_content %}
     {% for place, entries in round.scoreboard.rankings.iteritems() if place != 1 %}
+        {% if entries|len < 2 %}
+            {% set entry = entries[0] %}
+            {% set display_invalid = not entry.is_valid and entry.potential_points != entry.points %}
+            {% set display_tie_breaker = loop.nextitem[1]|len > 0 and loop.nextitem[1][0].points == entry.points %}
+            {% set song = tracks_by_uri[entry.uri] %}
+            {% include "results/_song.html" %}
+        {% else %}
         {% for entry in entries %}
             {% set display_invalid = not entry.is_valid and entry.potential_points != entry.points %}
             {% set display_tie_breaker = not loop.last %}
             {% set song = tracks_by_uri[entry.uri] %}
             {% include "results/_song.html" %}
         {% endfor %}
+        {% endif %}
     {% endfor %}
 {% endblock %}
 
