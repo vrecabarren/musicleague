@@ -32,7 +32,7 @@ def calculate_round_scoreboard(round):
     # Get Votes for each entry
     for vote in round.votes:
         for uri, points in vote.votes.iteritems():
-            if points != 0 and uri in entries:
+            if uri in entries:
                 entries[uri].votes.append(vote)
 
     # Sort votes on each entry by number of points awarded
