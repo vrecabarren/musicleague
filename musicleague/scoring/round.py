@@ -96,7 +96,7 @@ class ScoreboardEntrySortKey(EntrySortKey):
                 return diff
 
         self.obj.tie_breaker = NOT_BROKEN
-        other.tie_breaker = NOT_BROKEN
+        other.tie_breaker = ''
         return TIE
 
     def _cmp_entry_is_valid(self, other):
