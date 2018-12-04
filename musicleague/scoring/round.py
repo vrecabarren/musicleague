@@ -84,6 +84,7 @@ class ScoreboardEntrySortKey(EntrySortKey):
         _cmp_order = [
             self._cmp_entry_is_valid,
             self._cmp_entry_points,
+            self._cmp_entry_potential_points,
             self._cmp_entry_num_upvoters,
             self._cmp_entry_num_downvoters,
             self._cmp_entry_highest_vote
@@ -115,6 +116,16 @@ class ScoreboardEntrySortKey(EntrySortKey):
         if self.obj.points > other.points:
             return WIN
         elif self.obj.points < other.points:
+            return LOSE
+        return TIE
+        
+    def _cmp_entry_potential_points(self, other):
+        """ Compare two ScoreboardEntry objects based on the potential number
+        of points they would have received if valid.
+        """
+        if self.obj.potential_points > other.potential_points:
+            return WIN
+        elif self.obj.potential_points < other.potential_points:
             return LOSE
         return TIE
 
