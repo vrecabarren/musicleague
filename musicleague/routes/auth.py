@@ -48,7 +48,13 @@ def before_request():
         if int(expiration) < int(time()):
             refresh_token = session['refresh_token']
             oauth = get_spotify_oauth()
-            token_info = oauth.refresh_access_token(refresh_token)
+            
+            # Calls to refresh token sometimes fail, so retry
+            token_info = None
+            retries = 0
+            while token_info is None and retries < 3:
+                token_info = oauth.refresh_access_token(refresh_token)
+
             access_token = token_info['access_token']
             _update_session(
                 current_user, access_token, token_info['refresh_token'],
