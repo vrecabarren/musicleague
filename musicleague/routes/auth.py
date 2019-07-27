@@ -54,6 +54,7 @@ def before_request():
             retries = 0
             while token_info is None and retries < 3:
                 token_info = oauth.refresh_access_token(refresh_token)
+                retries += 1
 
             access_token = token_info['access_token']
             _update_session(
