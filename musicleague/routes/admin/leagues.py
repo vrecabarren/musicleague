@@ -43,5 +43,10 @@ def admin_league_state(league_id):
         elif (r.accepting_submissions and
               (r.submission_due_date < utc.localize(datetime.utcnow()))):
             update_round_status(r, RoundStatus.ACCEPTING_VOTES)
+        elif r.accepting_votes and not r.have_not_voted:
+            update_round_status(r, RoundStatus.COMPLETE)
+        elif (r.accepting_votes and
+              (r.vote_due_date < utc.localize(datetime.utcnow()))):
+            update_round_status(r, RoundStatus.COMPLETE)
 
     return redirect(request.referrer)
