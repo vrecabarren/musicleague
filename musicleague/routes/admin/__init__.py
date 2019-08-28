@@ -36,7 +36,7 @@ def admin():
         'num_leagues': select_leagues_count(),
         'num_rounds': select_rounds_count(),
         'num_submissions': select_submissions_count(),
-        'num_tasks': len(scheduler.get_jobs()),
+        'num_tasks': scheduler.count(),
         'num_users': select_users_count(),
         'num_votes': select_votes_count()
     }
