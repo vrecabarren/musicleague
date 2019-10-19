@@ -168,7 +168,7 @@ def post_manage_league(league_id):
     upsert_league_preferences(league)
 
     for added_member in added_members:
-        insert_membership(league, added_member)
+        add_user(league, added_member.email, notify=True, user=added_member)
 
     for email in emails:
         add_user(league, email, notify=True)
