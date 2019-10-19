@@ -18,11 +18,11 @@ from musicleague.submission_period import remove_submission_period
 from musicleague.user import get_user_by_email
 
 
-def add_user(league, user_email, notify=True):
+def add_user(league, user_email, notify=True, user=None):
     if not user_email:
         return
 
-    user = get_user_by_email(user_email)
+    user = user or get_user_by_email(user_email)
     if user and user not in league.users:
         league.users.append(user)
         insert_membership(league, user)
@@ -49,7 +49,7 @@ def remove_user(league, user_id):
     league.users = remaining_users
 
 
-def create_league(user, name=None, users=None):
+def create_league(user, name=None, users=None, notify=True):
     if name is None:
         haikunator = Haikunator()
         name = haikunator.haikunate(token_length=0)
@@ -66,6 +66,9 @@ def create_league(user, name=None, users=None):
 
     for member in members:
         insert_membership(new_league, member)
+
+        if notify and member.id != user.id:
+            user_added_to_league_notification(member, new_league)
 
     return new_league
 

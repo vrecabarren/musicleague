@@ -9,14 +9,11 @@ services:
             - postgres
             - redis
         environment:
-            - DATABASE_URL=postgres://postgres@postgres:5432/postgres
+            - DATABASE_URL=postgresql://postgres@postgres:5432/postgres
             - ON_HEROKU=false
             - PORT=5000
             - REDISCLOUD_URL=redis://redis:6379
             - SECRET_KEY=localsecretkey
-            # - SERVER_NAME=
-            # - SPOTIFY_BOT_PASSWORD=${SPOTIFY_BOT_PASSWORD}
-            # - SPOTIFY_BOT_USERNAME=${SPOTIFY_BOT_USERNAME}
             - SPOTIFY_CLIENT_ID=14ced677d7f74665ba1084960d990ffb
             - SPOTIFY_CLIENT_SECRET=8b6167e06e9b435191ee7a6110fcaaed
             - SPOTIFY_REDIRECT_URI=http://localhost:5000/login/
@@ -32,7 +29,6 @@ services:
             - postgres
             - redis
         environment:
-            # - DATABASE_URL=postgres://postgres@postgres:5342/postgres
             - ON_HEROKU=false
             - REDISCLOUD_URL=redis://redis:6379
     worker:
@@ -44,14 +40,11 @@ services:
             - postgres
             - redis
         environment:
-            - DATABASE_URL=postgres://postgres@postgres:5432/postgres
+            - DATABASE_URL=postgresql://postgres@postgres:5432/postgres
             - ON_HEROKU=false
             - REDISCLOUD_URL=redis://redis:6379
             - SPOTIFY_BOT_PASSWORD=${SPOTIFY_BOT_PASSWORD}
             - SPOTIFY_BOT_USERNAME=${SPOTIFY_BOT_USERNAME}
-            # - SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}
-            # - SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}
-            # - SPOTIFY_REDIRECT_URI=localhost:5000/login/
     redis:
         image: "redis:3.2-alpine"
     postgres:
