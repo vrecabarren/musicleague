@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: Publish to Registry
+    - name: Publish Web Image to Registry
       uses: elgohr/Publish-Docker-Github-Action@2.14
       with:
         name: nathancoleman/musicleague/web
@@ -14,3 +14,12 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: docker.pkg.github.com
         dockerfile: Dockerfile.web
+    - name: Publish Worker Image to Registry
+      uses: elgohr/Publish-Docker-Github-Action@2.14
+      with:
+        name: nathancoleman/musicleague/worker
+        tags: latest
+        username: nathancoleman
+        password: ${{ secrets.GITHUB_TOKEN }}
+        registry: docker.pkg.github.com
+        dockerfile: Dockerfile.worker     
