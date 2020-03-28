@@ -9,6 +9,7 @@ jobs:
       uses: elgohr/Publish-Docker-Github-Action@2.14
       with:
         name: nathancoleman/musicleague
+        tags: latest
         username: nathancoleman
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: docker.pkg.github.com
