@@ -8,7 +8,7 @@ jobs:
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@2.14
       with:
-        name: nathancoleman/musicleague
+        name: nathancoleman/musicleague/web
         tags: latest
         username: nathancoleman
         password: ${{ secrets.GITHUB_TOKEN }}
