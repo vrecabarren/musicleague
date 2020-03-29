@@ -73,7 +73,7 @@ def login():
         oauth = get_spotify_oauth()
         code = oauth.parse_response_code(url)
         if code:
-            token_info = oauth.get_access_token(code, check_cache=False)
+            token_info = oauth.get_access_token(code)
             access_token = token_info['access_token']
             refresh_token = token_info['refresh_token']
             expires_at = int(token_info['expires_at'])
