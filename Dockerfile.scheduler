@@ -1,5 +1,5 @@
 FROM python:2-alpine
-MAINTAINER Nathan Coleman "nathan@ncmn.me"
+MAINTAINER Nathan Coleman "nathandanielcoleman@gmail.com"
 RUN apk update
 RUN apk add --virtual build-deps gcc python-dev musl-dev
 RUN apk add --update git postgresql-dev
