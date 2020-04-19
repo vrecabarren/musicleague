@@ -87,8 +87,8 @@ def post_create_league_v2():
         r = requests.post('https://musicleague-server.herokuapp.com/v1/leagues/' + league_id + '/rounds',
             data=json.dumps(
                 {'name': new_round['name'], 'description': new_round['description'],
-                 'submissionsDue': submission_due_date, 'votesDue': vote_due_date},
-            headers=auth_headers))
+                 'submissionsDue': submission_due_date, 'votesDue': vote_due_date}),
+            headers=auth_headers)
 
         app.logger.info('Successful post to API server', extra={'resp': r.json()})
 
