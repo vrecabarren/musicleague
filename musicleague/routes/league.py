@@ -72,7 +72,7 @@ def post_create_league_v2():
 
     app.logger.info('Successful post to API server', extra={'resp': r.json()})
 
-    league_id = r.json()['ID']
+    league_id = r.json()['id']
 
     rounds = json.loads(request.form.get('added-rounds', []))
     for new_round in rounds:
