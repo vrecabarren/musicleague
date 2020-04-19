@@ -65,7 +65,8 @@ def get_create_league_v2():
 def post_create_league_v2():
     name = request.form.get('league-name')
     resp = requests.post('https://musicleague-server.herokuapp.com/v1/leagues',
-        data=json.dumps({'name': name}))
+        data=json.dumps({'name': name}),
+        headers={'Authorization': 'Bearer ' + g.access_token})
 
     app.logger.info('Successful post to API server', extra={'resp', resp.text})
 

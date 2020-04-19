@@ -40,6 +40,7 @@ def before_request():
         g.user = select_user(current_user)
 
     access_token = session['access_token'] if 'access_token' in session else ''
+    g.access_token = access_token
     g.spotify = None
     if access_token:
         expiration = session['expires_at']
