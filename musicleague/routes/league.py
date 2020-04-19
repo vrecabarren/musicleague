@@ -66,7 +66,7 @@ def post_create_league_v2():
     auth_headers = {'Authorization': 'Bearer ' + g.access_token}
 
     name = request.form.get('league-name')
-    r = requests.post('https://musicleague-server.herokuapp.com/v1/leagues',
+    r = requests.post('https://api.musicleague.app/v1/leagues',
         data=json.dumps({'name': name}),
         headers=auth_headers)
 
@@ -84,7 +84,7 @@ def post_create_league_v2():
         vote_due_date = utc.localize(
             datetime.strptime(vote_due_date_str, '%m/%d/%y %I%p'))
 
-        r = requests.post('https://musicleague-server.herokuapp.com/v1/leagues/' + league_id + '/rounds',
+        r = requests.post('https://api.musicleague.app/v1/leagues/' + league_id + '/rounds',
             data=json.dumps(
                 {'name': new_round['name'], 'description': new_round['description'],
                  'submissionsDue': submission_due_date.isoformat(), 'votesDue': vote_due_date.isoformat()}),
