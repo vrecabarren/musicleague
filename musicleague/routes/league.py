@@ -63,15 +63,36 @@ def get_create_league_v2():
 @app.route(CREATE_LEAGUE_URL_V2, methods=['POST'])
 @login_required
 def post_create_league_v2():
+    auth_headers = {'Authorization': 'Bearer ' + g.access_token}
+
     name = request.form.get('league-name')
-    resp = requests.post('https://musicleague-server.herokuapp.com/v1/leagues',
+    r = requests.post('https://musicleague-server.herokuapp.com/v1/leagues',
         data=json.dumps({'name': name}),
-        headers={'Authorization': 'Bearer ' + g.access_token})
+        headers=auth_headers)
 
-    app.logger.info('Successful post to API server', extra={'resp': resp.text})
+    app.logger.info('Successful post to API server', extra={'resp': r.json()})
 
+    league_id = r.json()['ID']
 
     rounds = json.loads(request.form.get('added-rounds', []))
+    for new_round in rounds:
+        submission_due_date_str = new_round['submission-due-date-utc']
+        submission_due_date = utc.localize(
+            datetime.strptime(submission_due_date_str, '%m/%d/%y %I%p'))
+
+        vote_due_date_str = new_round['voting-due-date-utc']
+        vote_due_date = utc.localize(
+            datetime.strptime(vote_due_date_str, '%m/%d/%y %I%p'))
+
+        r = requests.post('https://musicleague-server.herokuapp.com/v1/leagues/' + league_id + '/rounds',
+            data=json.dumps(
+                {'name': new_round['name'], description: new_round['description'],
+                 'submissionsDue': submission_due_date, 'votesDue': vote_due_date},
+            headers=auth_headers))
+
+        app.logger.info('Successful post to API server', extra={'resp': r.json()})
+
+    return league_id, 200     
 
 
 @app.route(CREATE_LEAGUE_URL, methods=['POST'])
