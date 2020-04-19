@@ -68,7 +68,7 @@ def post_create_league_v2():
         data=json.dumps({'name': name}),
         headers={'Authorization': 'Bearer ' + g.access_token})
 
-    app.logger.info('Successful post to API server', extra={'resp', resp.text})
+    app.logger.info('Successful post to API server', extra={'resp': resp.text})
 
 
     rounds = json.loads(request.form.get('added-rounds', []))
