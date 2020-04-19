@@ -3,6 +3,7 @@ from datetime import timedelta
 import httplib
 import json
 from pytz import utc
+import requests
 
 from flask import g
 from flask import redirect
@@ -37,6 +38,7 @@ from musicleague.user import get_user
 from musicleague.vote import get_my_vote
 
 CREATE_LEAGUE_URL = '/l/create/'
+CREATE_LEAGUE_URL_V2 = '/l/create/v2/'
 JOIN_LEAGUE_URL = '/l/<league_id>/join/'
 LEADERBOARD_URL = '/l/<league_id>/leaderboard/'
 MANAGE_LEAGUE_URL = '/l/<league_id>/manage/'
@@ -49,6 +51,26 @@ VIEW_LEAGUE_URL = '/l/<league_id>/'
 @login_required
 def get_create_league():
     return {'user': g.user}
+
+
+@app.route(CREATE_LEAGUE_URL_V2, methods=['GET'])
+@templated('league/create/page_v2.html')
+@login_required
+def get_create_league_v2():
+    return {'user': g.user}
+
+
+@app.route(CREATE_LEAGUE_URL_V2, methods=['POST'])
+@login_required
+def post_create_league_v2():
+    name = request.form.get('league-name')
+    resp = requests.post('https://musicleague-server.herokuapp.com/v1/leagues',
+        data=json.dumps({'name': name}))
+
+    app.logger.info('Successful post to API server', extra={'resp', resp})
+
+
+    rounds = json.loads(request.form.get('added-rounds', []))
 
 
 @app.route(CREATE_LEAGUE_URL, methods=['POST'])
