@@ -54,7 +54,7 @@ def get_create_league():
 
 
 @app.route(CREATE_LEAGUE_URL_V2, methods=['GET'])
-@templated('league/create/page_v2.html')
+@templated('league/create/page.html')
 @login_required
 def get_create_league_v2():
     return {'user': g.user}
