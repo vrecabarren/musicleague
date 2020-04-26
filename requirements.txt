@@ -1,3 +1,4 @@
+boto3
 bson==0.5.6
 Flask==0.12.2
 Flask-Moment==0.5.2

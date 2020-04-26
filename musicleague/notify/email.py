@@ -1,6 +1,7 @@
 import httplib
 import requests
 
+import boto3
 import sendgrid
 from flask import render_template
 from rq.decorators import job
@@ -201,38 +202,32 @@ def _send_email(to, subject, text, html, bcc_list=None, additional_data=None):
     if not is_deployed():
         app.logger.info(text)
         return
-    
-    api_key = get_setting(SENDGRID_API_KEY)
-    
-    from_email = Email(get_setting(NOTIFICATION_SENDER))
-
-    mail = Mail(from_email=from_email, subject=subject)
-    mail.add_content(Content("text/plain", text))
-    mail.add_content(Content("text/html", html))
-
-    personalization = Personalization()
-    personalization.add_to(Email(to))
-
-    if bcc_list is not None:
-        for bcc in bcc_list:
-            personalization.add_bcc(Email(bcc))
-    # TODO Remove once all outstanding tasks have completed
-    elif additional_data is not None and 'bcc' in additional_data:
-        bcc_list = additional_data.get('bcc', '').split(',')
-        for bcc in bcc_list:
-            personalization.add_bcc(Email(bcc))
-
-    mail.add_personalization(personalization)
 
     try:
-        sg = sendgrid.SendGridAPIClient(apikey=api_key)
-        response = sg.client.mail.send.post(request_body=mail.get())
-
-        if response.status_code not in (httplib.OK, httplib.ACCEPTED):
-            app.logger.error(
-                u'Mail send failed w/ status: {}, Response: {}'.format(
-                    response.status_code, response.__dict__))
-            return
+        ses = boto3.client('ses', region_name='us-east-1')
+        response = ses.send_email(
+            Destination={
+                'ToAddresses': [to],
+                'BccAddresses': bcc_list if bcc_list else [],
+            },
+            Message={
+                'Body': {
+                    'Html': {
+                        'Charset': 'UTF-8',
+                        'Data': html,
+                    },
+                    'Text': {
+                        'Charset': 'UTF-8',
+                        'Data': text,
+                    }
+                },
+                'Subject': {
+                    'Charset': 'UTF-8',
+                    'Data': subject,
+                }
+            },
+            Source=get_setting(NOTIFICATION_SENDER),
+        )
 
     except Exception as e:
         app.logger.exception(u'Mail send failed w/ exception: %s', str(e))
