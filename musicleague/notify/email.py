@@ -2,20 +2,14 @@ import httplib
 import requests
 
 import boto3
-import sendgrid
 from flask import render_template
 from rq.decorators import job
-from sendgrid.helpers.mail import Content
-from sendgrid.helpers.mail import Email
-from sendgrid.helpers.mail import Mail
-from sendgrid.helpers.mail import Personalization
 
 from musicleague import app
 from musicleague import redis_conn
 from musicleague.environment import is_deployed
 from musicleague.environment import get_setting
 from musicleague.environment.variables import NOTIFICATION_SENDER
-from musicleague.environment.variables import SENDGRID_API_KEY
 
 
 HTML_PATH = 'email/html/%s'
