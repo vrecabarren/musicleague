@@ -3,7 +3,6 @@ from unittest import TestCase
 from mock import patch
 
 from musicleague.environment.variables import NOTIFICATION_SENDER
-from musicleague.environment.variables import SENDGRID_API_KEY
 from musicleague.notify.email import HTML_PATH
 from musicleague.notify.email import TXT_PATH
 from musicleague.notify.email import _html_email
@@ -37,7 +36,6 @@ class SendEmailTestCase(TestCase):
     def test_send_email(self, post_request):
         api_key = 'api_key'
         sender = 'sender@test.com'
-        set_environment_state(SENDGRID_API_KEY, api_key)
         set_environment_state(NOTIFICATION_SENDER.key, sender)
 
         _send_email(self.to, self.subject, self.text, self.html)
