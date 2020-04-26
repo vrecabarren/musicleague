@@ -18,7 +18,6 @@ PORT = EnvironmentVariable(key='PORT', default=5000)
 PRODUCTION = EnvironmentVariable(key='IS_PRODUCTION', default=False)
 REDISCLOUD_URL = EnvironmentVariable(key='REDISCLOUD_URL', default='redis://127.0.0.1')  # noqa
 SECRET_KEY = EnvironmentVariable(key='SECRET_KEY', default='')
-SENDGRID_API_KEY = EnvironmentVariable(key='SENDGRID_API_KEY', default='')
 SERVER_NAME = EnvironmentVariable(key='SERVER_NAME', default='localhost:5000')
 SPOTIFY_BOT_USERNAME = EnvironmentVariable(key='SPOTIFY_BOT_USERNAME', default='')  # noqa
 SPOTIFY_CLIENT_ID = EnvironmentVariable(key='SPOTIFY_CLIENT_ID', default='')
