@@ -34,10 +34,6 @@ def get_botify(bot_id=None):
     return bot_id, Spotify(bot.access_token)
 
 
-def is_bot(user_id):
-    return user_id == get_setting(SPOTIFY_BOT_USERNAME)
-
-
 def create_bot(id, access_token, refresh_token, expires_at):
     if get_bot(id):
         raise BotExistsError('Bot with id %s already exists' % id)

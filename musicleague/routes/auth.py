@@ -136,10 +136,6 @@ def add_bot():
         spotify_user = spotify.current_user()
         bot_id = spotify_user['id']
 
-        # Check that we're adding a bot listed in env var list
-        if not is_bot(bot_id):
-            return 'Invalid bot: %s. If valid, add to environment.' % (bot_id)
-
         app.logger.warn('Create/update bot %s: %s, %s, %s', bot_id,
                         access_token, refresh_token, expires_at)
 
