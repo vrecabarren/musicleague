@@ -13,8 +13,10 @@ from musicleague.persistence.update import upsert_bot
 from musicleague.spotify import get_spotify_oauth
 
 
-def get_botify():
-    bot_id = get_setting(SPOTIFY_BOT_USERNAME)
+def get_botify(bot_id=None):
+    if bot_id is None:
+        bot_id = get_setting(SPOTIFY_BOT_USERNAME)
+
     bot = select_bot(bot_id)
     if not bot:
         return None, None
