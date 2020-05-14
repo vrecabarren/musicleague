@@ -13,7 +13,6 @@ from musicleague.analytics import track_new_user
 from musicleague.analytics import track_user_login
 from musicleague.analytics import track_user_logout
 from musicleague.bot import create_or_update_bot
-from musicleague.bot import is_bot
 from musicleague.persistence.select import select_user
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
