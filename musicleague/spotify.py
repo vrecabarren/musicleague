@@ -91,7 +91,12 @@ def update_playlist(submission_period):
     try:
         app.logger.info("Replacing existing tracks with: %s", tracks)
         playlist_id = to_playlist_id(submission_period.playlist_url)
-        playlist = botify.user_playlist(bot_id, playlist_id)
+        playlist = botify.playlist(playlist_id)
+
+        playlist_bot_id = playlist.get('owner').get('id')
+        if playlist_bot_id != bot_id:
+            bot_id, botify = get_botify(bot_id=playlist_bot_id)
+
         botify.user_playlist_replace_tracks(bot_id, playlist_id, tracks)
     except Exception as e:
         app.logger.error("Error updating tracks: %s", json.dumps(tracks))
