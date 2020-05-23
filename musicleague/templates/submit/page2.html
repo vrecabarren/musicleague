@@ -33,7 +33,7 @@
     </div>
 </div>
 <div id="app">
-    <h1>{{ hello }}</h1>
+    <h1>[[ hello ]]</h1>
 </div>
 {% endblock %}
 
@@ -49,7 +49,8 @@
 <script>
     new Vue({
         el: '#app',
-        data: { hello: 'Hello World!' }
+        data: { hello: 'Hello World!' },
+        delimiters: ['[[', ']]']
     });
 </script>
 {% endblock %}
