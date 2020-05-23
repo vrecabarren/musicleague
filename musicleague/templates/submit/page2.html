@@ -1,0 +1,29 @@
+{% extends "frame.html" %}
+
+{% block title %}Music League | {{ league.name }}{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/submit_3.css">
+{% endblock %}
+
+{% block title_bar_content %}
+<span class="round-title">{{ round.name }}:&nbsp;</span>
+<span class="round-action">Submitting</span>
+<span class="league-title">
+    <a href="{{ url_for('view_league', league_id=league.id) }}">{{ league.name }}</a>
+</span>
+{% endblock %}
+
+{% block page_content %}
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    var accessToken = "{{ access_token }}";
+    {% if repeat_submissions is defined %}
+    var repeatSubmissions = {{ repeat_submissions|tojson|safe }};
+    {% endif %}
+</script>
+<script type="text/javascript" src="/static/js/jquery.sticky-kit.min.js"></script>
+{% endblock %}
