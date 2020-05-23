@@ -30,12 +30,10 @@ from musicleague.routes.decorators import admin_required
 from musicleague.routes.decorators import login_required
 from musicleague.routes.decorators import templated
 from musicleague.scoring.league import calculate_league_scoreboard
-from musicleague.submission import get_my_submission
 from musicleague.submission_period import create_submission_period
 from musicleague.submission_period import remove_submission_period
 from musicleague.submission_period import update_submission_period
 from musicleague.user import get_user
-from musicleague.vote import get_my_vote
 
 CREATE_LEAGUE_URL = '/l/create/'
 CREATE_LEAGUE_URL_V2 = '/l/create/v2/'
@@ -92,7 +90,7 @@ def post_create_league_v2():
 
         app.logger.info('Successful post to API server', extra={'resp': r.json()})
 
-    return league_id, 200     
+    return league_id, httplib.OK
 
 
 @app.route(CREATE_LEAGUE_URL, methods=['POST'])
@@ -333,7 +331,7 @@ def score_league(league_id, **kwargs):
     league = calculate_league_scoreboard(league)
     ret = {rank: [entry.user.id for entry in entries]
            for rank, entries in league.scoreboard.rankings.iteritems()}
-    return json.dumps(ret), 200
+    return json.dumps(ret), httplib.OK
 
 
 @app.route(LEADERBOARD_URL)
