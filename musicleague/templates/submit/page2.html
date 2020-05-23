@@ -32,6 +32,9 @@
         </div>
     </div>
 </div>
+<div id="app">
+    <h1>{{ data }}</h1>
+</div>
 {% endblock %}
 
 {% block js %}
@@ -42,4 +45,11 @@
     {% endif %}
 </script>
 <script type="text/javascript" src="/static/js/jquery.sticky-kit.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data: { hello: 'Hello World!' }
+    })
+</script>
 {% endblock %}
