@@ -88,7 +88,7 @@
                     axios
                         .get(`https://api.spotify.com/v1/tracks?ids=${ids}`, {headers: {"Authorization": `Bearer ${accessToken}`}})
                         .then( (response) => {
-                            this.tracks = response.data;
+                            this.tracks = response.data.tracks;
                             console.log(response.data);
                         }).catch( (error) => { console.log(error); });
                     this.submissions = response.data;
