@@ -83,7 +83,7 @@
                     var ids = uris.map(function(uri) { return uri.replace("spotify:track:", ""); }).join(",");
                     console.log(ids);
                     axios
-                        .get("https://api.spotify.com/v1/tracks?ids=${ids}", {headers: {"Authorization": `Bearer ${accessToken}`}})
+                        .get(`https://api.spotify.com/v1/tracks?ids=${ids}`, {headers: {"Authorization": `Bearer ${accessToken}`}})
                         .then( (response) => {
                             this.tracks = response.data;
                             console.log(response.data);
