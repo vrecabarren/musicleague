@@ -33,7 +33,7 @@
     </div>
 </div>
 <div id="app" class="container">
-    <div v-for="(submission, index) in submissions" class="song row found" data-uri="[[ submission.spotifyUri ]]">
+    <div v-for="(submission, index) in submissions" class="song row found" v-bind:data-uri="submission.spotifyUri">
         <div class="col-xs-12">
             <span class="song-header">Song [[ index + 1 ]]</span>
         </div>
