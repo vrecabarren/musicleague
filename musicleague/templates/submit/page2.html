@@ -57,7 +57,7 @@
         mounted () {
             axios
                 .get('https://api.musicleague.app/v1/leagues/{{ league.id }}/rounds/{{ round.id }}/submissions/{{ user.id }}', {headers: {'Authorization': 'Bearer ${accessToken}'}})
-                .then( (response) => { this.submissions = response; })
+                .then( (response) => { this.submissions = response.data; })
                 .catch( (error) => { console.log(error); })
         }
     });
