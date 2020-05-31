@@ -81,7 +81,7 @@
                     console.log(response.data);
                     var uris = response.data.map(function(s) { return s.spotifyUri }).join(",");
                     axios
-                        .get("https://api.spotify.com/v1/tracks/?ids=${uris}", {headers: {"Authorization": "Bearer: ${accessToken}"}})
+                        .get("https://api.spotify.com/v1/tracks/?ids=${uris}", {headers: {"Authorization": "Bearer ${accessToken}"}})
                         .then( (response) => {
                             this.tracks = response.data;
                             console.log(response.data);
