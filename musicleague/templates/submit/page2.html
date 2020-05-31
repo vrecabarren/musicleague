@@ -32,10 +32,30 @@
         </div>
     </div>
 </div>
-<div id="app">
-    <ul>
-        <li v-for="submission in submissions">[[ submission.spotifyUri ]]</li>
-    </ul>
+<div id="app" class="container">
+    <div v-for="(submission, index) in submissions" class="song row found" data-uri="[[ submission.spotifyUri ]]">
+        <div class="col-xs-12">
+            <span class="song-header">Song [[ index + 1 ]]</span>
+        </div>
+        <div class="col-xs-12">
+            <input type="text" class="form-control find-song-inp" placeholder="Spotify Song Link">
+        </div>
+        <div class="song-info">
+            <div class="col-xs-12">
+                <span class="you-selected">You Selected:</span>
+                <span class="message"></span>
+            </div>
+            <div class="col-xs-12">
+                <img src="" alt="" class="img">
+                <div class="text-info">
+                    <span class="name"></span>
+                    <span class="artist"></span>
+                    <span class="album"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="songs-inp" name="songs">
 </div>
 {% endblock %}
 
