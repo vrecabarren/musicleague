@@ -46,11 +46,11 @@
                 <span class="message"></span>
             </div>
             <div class="col-xs-12">
-                <img src="" alt="" class="img">
+                <img v-bind:src="tracks[index].album.images[1].url" alt="" class="img">
                 <div class="text-info">
-                    <span class="name"></span>
-                    <span class="artist"></span>
-                    <span class="album"></span>
+                    <span class="name">[[ tracks[index].name ]]</span>
+                    <span class="artist">[[ tracks[index].artists[0].name ]]</span>
+                    <span class="album">[[ tracks[index].album.name ]]</span>
                 </div>
             </div>
         </div>
@@ -72,7 +72,10 @@
 <script>
     new Vue({
         el: '#app',
-        data: { submissions: [] },
+        data: {
+            submissions: [],
+            tracks: []
+        },
         delimiters: ['[[', ']]'],
         mounted () {
             axios
