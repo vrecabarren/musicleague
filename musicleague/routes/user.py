@@ -1,8 +1,10 @@
 import json
+from os import getenv
 
 from flask import g
 from flask import redirect
 from flask import request
+from flask import session
 from flask import url_for
 
 from musicleague import app
@@ -56,8 +58,10 @@ def profile():
         'page_user': page_user,
         'leagues': leagues,
         'contributor_leagues': len(leagues),
-        'placed_leagues': placed_leagues
-        }
+        'placed_leagues': placed_leagues,
+        'access_token': session['access_token'],
+        'api_domain': getenv('API_DOMAIN'),
+    }
 
 
 @app.route(SETTINGS_URL, methods=['GET'])
