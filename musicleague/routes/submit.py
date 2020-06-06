@@ -1,5 +1,6 @@
 import httplib
 import json
+from os import getenv
 
 from flask import g
 from flask import redirect
@@ -29,7 +30,31 @@ from musicleague.validate import check_repeat_submissions
 
 
 SUBMIT_URL = '/l/<league_id>/<submission_period_id>/submit/'
+SUBMIT2_URL = SUBMIT_URL + '2/'
 
+@app.route(SUBMIT2_URL, methods=['GET'])
+@templated('submit/page2.html')
+@login_required
+def view_submit_2(league_id, submission_period_id):
+    league = select_league(league_id)
+    submission_period = next((sp for sp in league.submission_periods
+                              if sp.id == submission_period_id), None)
+    if not league.has_user(g.user):
+        return redirect(url_for('view_league', league_id=league.id))
+
+    if not submission_period.accepting_submissions:
+        return redirect(url_for('view_league', league_id=league.id))
+
+    my_submission = get_my_submission(g.user, submission_period)
+
+    return {
+        'user': g.user,
+        'league': league,
+        'round': submission_period,
+        'my_submission': my_submission,
+        'access_token': session['access_token'],
+        'api_domain': getenv('API_DOMAIN'),
+    }
 
 @app.route(SUBMIT_URL, methods=['GET'])
 @templated('submit/page.html')

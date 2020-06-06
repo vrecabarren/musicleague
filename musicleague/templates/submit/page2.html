@@ -1,0 +1,99 @@
+{% extends "frame.html" %}
+
+{% block title %}Music League | {{ league.name }}{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/submit_3.css">
+{% endblock %}
+
+{% block title_bar_content %}
+<span class="round-title">{{ round.name }}:&nbsp;</span>
+<span class="round-action">Submitting</span>
+<span class="league-title">
+    <a href="{{ url_for('view_league', league_id=league.id) }}">{{ league.name }}</a>
+</span>
+{% endblock %}
+
+{% block page_content %}
+<form method="post">
+    <div id="status-bar">
+        <div class="container">
+            <div class="row">
+                <div class="hidden-xs col-sm-4 col-md-4 vcenter text-center">
+                    <span id="paste-directive">Paste A Link or URI Below To Begin!</span>
+                </div><!--
+                --><div class="col-xs-6 col-sm-3 col-md-4 vcenter text-center">
+                    <span id="progress"><span id="num-selected">00</span> of {{ "%02d" % league.preferences.track_count }}</span>
+                    <br>
+                    <span><span class="hidden-xs">Songs </span>Selected</span>
+                </div><!--
+                --><div class="col-xs-6 col-sm-5 col-md-4 vcenter text-center disabled" id="submit-songs-btn-wrapper">
+                    <button type="submit" id="submit-songs-btn" class="btn btn-lg disabled" disabled>Submit<span class="hidden-xs"> Songs</span>!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="app" class="container">
+        <div v-for="(submission, index) in submissions" class="song row found" v-bind:data-uri="submission.spotifyUri">
+            <div class="col-xs-12">
+                <span class="song-header">Song [[ index + 1 ]]</span>
+            </div>
+            <div class="col-xs-12">
+                <input type="text" class="form-control find-song-inp" placeholder="Spotify Song Link">
+            </div>
+            <div class="song-info">
+                <div class="col-xs-12">
+                    <span class="you-selected">You Selected:</span>
+                    <span class="message"></span>
+                </div>
+                <div class="col-xs-12">
+                    <img v-bind:src="tracks[index].album.images[1].url" alt="" class="img">
+                    <div class="text-info">
+                        <span class="name">[[ tracks[index].name ]]</span>
+                        <span class="artist">[[ tracks[index].artists[0].name ]]</span>
+                        <span class="album">[[ tracks[index].album.name ]]</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" id="songs-inp" name="songs">
+    </div>
+</form>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    var accessToken = "{{ access_token }}";
+    {% if repeat_submissions is defined %}
+    var repeatSubmissions = {{ repeat_submissions|tojson|safe }};
+    {% endif %}
+</script>
+<script type="text/javascript" src="/static/js/jquery.sticky-kit.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            submissions: [],
+            tracks: []
+        },
+        delimiters: ['[[', ']]'],
+        mounted () {
+            axios
+                .get('https://{{ api_domain }}/v1/leagues/{{ league.id }}/rounds/{{ round.id }}/submissions/{{ user.id }}', {headers: {'Authorization': `Bearer ${accessToken}`}})
+                .then( (response) => {
+                    var submissions = response.data;
+                    var uris = submissions.map(function(submission) { return submission.spotifyUri });
+                    var ids = uris.map(function(uri) { return uri.replace("spotify:track:", ""); }).join(",");
+                    axios
+                        .get(`https://api.spotify.com/v1/tracks?ids=${ids}`, {headers: {"Authorization": `Bearer ${accessToken}`}})
+                        .then( (response) => {
+                            this.tracks = response.data.tracks;
+                            this.submissions = submissions;
+                        }).catch( (error) => { console.log(error); });
+                }).catch( (error) => { console.log(error); });
+        }
+    });
+</script>
+{% endblock %}
