@@ -1,5 +1,6 @@
 import httplib
 import json
+from os import getenv
 
 from flask import g
 from flask import redirect
@@ -52,6 +53,7 @@ def view_submit_2(league_id, submission_period_id):
         'round': submission_period,
         'my_submission': my_submission,
         'access_token': session['access_token'],
+        'api_domain': getenv('API_DOMAIN'),
     }
 
 @app.route(SUBMIT_URL, methods=['GET'])
