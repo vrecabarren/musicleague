@@ -1,5 +1,4 @@
 import json
-from random import shuffle
 import re
 
 from spotipy import oauth2
@@ -50,7 +49,6 @@ def create_playlist(submission_period):
     description = submission_period.description or ''
     description = description.replace('\n', ' ').replace('\r', ' ')
     tracks = submission_period.all_tracks
-    shuffle(tracks)
 
     try:
         app.logger.info("Creating new playlist: %s", playlist_name)
@@ -85,7 +83,6 @@ def update_playlist(submission_period):
     bot_id, botify = get_botify()
 
     tracks = submission_period.all_tracks
-    shuffle(tracks)
 
     # TODO Reference submission period's url so we don't have to return this
     try:

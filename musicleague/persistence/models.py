@@ -319,7 +319,7 @@ class Round:
         all_tracks = []
         for submission in self.submissions:
             all_tracks.extend(filter(len, submission.tracks))
-        return all_tracks
+        return sorted(all_tracks)
 
     @property
     def have_not_submitted(self):
