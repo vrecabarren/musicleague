@@ -1,3 +1,4 @@
+from collections import OrderedDict
 import httplib
 import json
 
@@ -53,7 +54,11 @@ def view_vote(league_id, submission_period_id):
     tracks = []
     if submission_period.all_tracks:
         tracks = g.spotify.tracks(submission_period.all_tracks).get('tracks')
-    tracks_by_uri = {track.get('uri'): track for track in tracks if track}
+
+    tracks_by_uri = OrderedDict()
+    for track in tracks:
+        if track:
+            tracks_by_uri[track.get('uri')] = track
 
     # Remove user's own submitted songs from tracks shown on page
     if my_submission:
