@@ -384,9 +384,10 @@ class Round:
 
 
 class Submission:
-    def __init__(self, user, tracks, created):
+    def __init__(self, user, tracks, comments, created):
         self.user = user
         self.tracks = tracks
+        self.comments = comments
         self.created = created
         self.league = None
         self.submission_period = None

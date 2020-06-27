@@ -82,6 +82,7 @@ def insert_submission(submission):
 
             # Insert tracks for new submission
             for uri in submission.tracks:
+                # TODO Insert comments
                 values = (submission.created, submission.submission_period.id,
                           uri, submission.user.id, submission.count)
                 cur.execute(INSERT_SUBMISSION, values)

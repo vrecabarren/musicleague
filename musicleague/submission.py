@@ -23,9 +23,10 @@ def create_or_update_submission(tracks, submission_period, league, user):
     return s
 
 
-def create_submission(tracks, submission_period, user, league, persist=True):
+def create_submission(tracks, submission_period, user, league):
     """ Create a new Submission for specified user in the specified round. """
-    new_submission = Submission(user=user, tracks=tracks, created=datetime.utcnow())
+    # TODO Proxy comments through
+    new_submission = Submission(user=user, tracks=tracks, comments=[], created=datetime.utcnow())
     new_submission.count = 1
     new_submission.league = league
     new_submission.submission_period = submission_period

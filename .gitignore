@@ -6,3 +6,4 @@ settingslocal.py
 /.coverage
 .DS_Store
 /node_modules
+*.iml

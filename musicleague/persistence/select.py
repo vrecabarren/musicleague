@@ -186,7 +186,8 @@ def select_league(league_id, exclude_properties=None):
                                 continue
                             user_idx[user_id] = submitter
 
-                        s = Submission(user=submitter, tracks=tracks.keys(), created=created)
+                        # TODO Retrieve comments field
+                        s = Submission(user=submitter, tracks=tracks.keys(), comments=[], created=created)
                         s.count = revision
                         s.league = league
                         s.submission_period = round
