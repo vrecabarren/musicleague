@@ -73,6 +73,14 @@
     .song .find-song-inp::-moz-placeholder { color: #02B8EF; opacity: 1; }
     .song .find-song-inp:-ms-input-placeholder { color: #02B8EF; }
 
+.song .comment-inp {
+    background: #fff;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-top: 20px;
+    vertical-align: middle;
+}
+
 .song .song-info {
     display: none;
     float: left;
