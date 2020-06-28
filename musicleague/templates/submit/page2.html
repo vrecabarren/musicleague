@@ -136,6 +136,18 @@
                         newSubmission.spotifyUri = `spotify:track:${trackId}`;
                         this.$set(this.submissions, i, newSubmission);
                     }
+
+                    // Retrieve updated list of Spotify track objects
+                    let ids = this.submissions.map(function (submission) {
+                        return submission.spotifyUri.replace("spotify:track:", "");
+                    }).join(",");
+                    axios
+                        .get(`https://api.spotify.com/v1/tracks?ids=${ids}`, {headers: {"Authorization": `Bearer ${accessToken}`}})
+                        .then((response) => {
+                            this.tracks = response.data.tracks;
+                        }).catch((error) => {
+                            console.log(error);
+                        });
                 }
             }
         }
