@@ -108,6 +108,7 @@
         watch: {
             submissions: {
                 deep: true,
+                immediate: true,
                 handler(newSubmissions) {
                     for (let i = 0; i < newSubmissions.length; i++) {
                         let newSubmission = newSubmissions[i];
