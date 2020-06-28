@@ -24,39 +24,39 @@
                         <span id="paste-directive">Paste A Link or URI Below To Begin!</span>
                     </div><!--
                 --><div class="col-xs-6 col-sm-3 col-md-4 vcenter text-center">
-                    <span id="progress"><span id="num-selected">[[ tracks.length ]]</span> of [[ expectedNumSubmissions ]]</span>
+                    <span id="progress"><span id="num-selected">[[ Object.keys(tracks).length ]]</span> of [[ expectedNumSubmissions ]]</span>
                     <br>
                     <span><span class="hidden-xs">Songs </span>Selected</span>
                 </div><!--
-                --><div class="col-xs-6 col-sm-5 col-md-4 vcenter text-center" v-bind:class="{ disabled: expectedNumSubmissions !== tracks.length }" id="submit-songs-btn-wrapper">
-                    <button type="submit" id="submit-songs-btn" class="btn btn-lg" v-bind:class="{ disabled: expectedNumSubmissions !== tracks.length }" v-bind:disabled="expectedNumSubmissions !== tracks.length">Submit<span class="hidden-xs"> Songs</span>!</button>
+                --><div class="col-xs-6 col-sm-5 col-md-4 vcenter text-center" v-bind:class="{ disabled: expectedNumSubmissions !== Object.keys(tracks).length }" id="submit-songs-btn-wrapper">
+                    <button type="submit" id="submit-songs-btn" class="btn btn-lg" v-bind:class="{ disabled: expectedNumSubmissions !== Object.keys(tracks).length }" v-bind:disabled="expectedNumSubmissions !== Object.keys(tracks).length">Submit<span class="hidden-xs"> Songs</span>!</button>
                 </div>
                 </div>
             </div>
         </div>
         <div class="container">
-            <div v-for="(submission, index) in submissions" class="song row" v-bind:class="{ found: submission.spotifyUri }">
+            <div v-for="(submission, index) in submissions" class="song row" v-bind:class="{ found: submission.spotifyUri in tracks }">
                 <div class="col-xs-12">
                     <span class="song-header">Song [[ index + 1 ]]</span>
                 </div>
                 <div class="col-xs-12">
                     <input type="text" class="form-control find-song-inp" placeholder="Spotify Song Link" v-model="submission.spotifyUri">
                 </div>
-                <div class="song-info" v-if="tracks.length > index">
+                <div class="song-info" v-if="submission.spotifyUri in tracks">
                     <div class="col-xs-12">
                         <span class="you-selected">You Selected:</span>
                         <span class="message"></span>
                     </div>
                     <div class="col-xs-12">
-                        <img v-bind:src="tracks[index].album.images[1].url" alt="" class="img">
+                        <img v-bind:src="tracks[submission.spotifyUri].album.images[1].url" alt="" class="img">
                         <div class="text-info">
-                            <span class="name">[[ tracks[index].name ]]</span>
-                            <span class="artist">[[ tracks[index].artists[0].name ]]</span>
-                            <span class="album">[[ tracks[index].album.name ]]</span>
+                            <span class="name">[[ tracks[submission.spotifyUri].name ]]</span>
+                            <span class="artist">[[ tracks[submission.spotifyUri].artists[0].name ]]</span>
+                            <span class="album">[[ tracks[submission.spotifyUri].album.name ]]</span>
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-12" v-if="tracks.length > index">
+                <div class="col-xs-12" v-if="submission.spotifyUri in tracks">
                     <input type="text" class="form-control comment-inp" placeholder="Comment on the submission above (optional)" v-model="submission.comment">
                 </div>
             </div>
@@ -82,7 +82,7 @@
         data: {
             expectedNumSubmissions: expectedNumSubmissions,
             submissions: [],
-            tracks: []
+            tracks: {}
         },
         delimiters: ['[[', ']]'],
         mounted () {
@@ -151,7 +151,11 @@
                     axios
                         .get(`https://api.spotify.com/v1/tracks?ids=${ids.join(",")}`, {headers: {"Authorization": `Bearer ${accessToken}`}})
                         .then((response) => {
-                            this.tracks = response.data.tracks;
+                            this.tracks = {};
+                            for (let i = 0; i < response.data.tracks.length; i++) {
+                                let track = response.data.tracks[i];
+                                this.tracks[track.uri] = track;
+                            }
                         }).catch((error) => {
                             console.log(error);
                         });
