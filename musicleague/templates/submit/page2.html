@@ -16,7 +16,7 @@
 
 {% block page_content %}
 <div id="app">
-    <form method="post">
+    <form v-on:submit.prevent="onSubmit">
         <div id="status-bar">
             <div class="container">
                 <div class="row">
@@ -102,7 +102,7 @@
                 });
         },
         methods: {
-          send: function() {
+          onSubmit: function() {
               alert(JSON.stringify(this.submissions));
           }
         },
