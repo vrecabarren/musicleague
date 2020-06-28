@@ -66,7 +66,7 @@
 {% block js %}
 <script type="text/javascript">
     var accessToken = "{{ access_token }}";
-    let expectedNumSubmissions = league.preferences.track_count;
+    let expectedNumSubmissions = {{ league.preferences.track_count }};
     {% if repeat_submissions is defined %}
     var repeatSubmissions = {{ repeat_submissions|tojson|safe }};
     {% endif %}
