@@ -109,26 +109,37 @@
             submissions: {
                 deep: true,
                 immediate: true,
-                handler(newSubmissions) {
+                handler(newSubmissions, oldSubmissions) {
                     for (let i = 0; i < newSubmissions.length; i++) {
                         let newSubmission = newSubmissions[i];
                         let url_or_uri = newSubmission.spotifyUri;
 
+                        // If already a URI, leave as-is
+                        let uri_regex = /spotify\:track\:([a-zA-Z0-9]{22})/;
+                        if (url_or_uri.match(uri_regex)) {
+                            continue;
+                        }
+
                         let url_play_regex = /play\.spotify\.com\/track\/([a-zA-Z0-9]{22})/;
                         let url_open_regex = /open\.spotify\.com\/track\/([a-zA-Z0-9]{22})/;
-                        let uri_regex = /spotify\:track\:([a-zA-Z0-9]{22})/;
 
                         let trackId  = null;
                         if (url_or_uri.match(url_open_regex))
                             trackId = url_or_uri.match(url_open_regex)[1];
                         else if (url_or_uri.match(url_play_regex))
                             trackId = url_or_uri.match(url_play_regex)[1];
-                        else if (url_or_uri.match(uri_regex))
-                            trackId = url_or_uri.match(uri_regex)[1];
-                        else
+                        else {
+                            console.warn("Invalid Spotify URI or URL")
+                            this.submissions = oldSubmissions;
                             return;
+                        }
 
                         console.log(trackId);
+
+                        let uri = `spotify:track:{trackId}`;
+                        console.log(uri);
+                        newSubmission.spotifyUri = uri;
+                        this.submissions.$set(i, newSubmission);
                     }
                 }
             }
