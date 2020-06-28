@@ -106,26 +106,29 @@
             });
         },
         watch: {
-            submissions(newSubmissions) {
-                for (let i = 0; i < newSubmissions.length; i++) {
-                    let newSubmission = newSubmissions[i];
-                    let url_or_uri = newSubmission.spotifyUri;
+            submissions: {
+                deep: true,
+                handler(newSubmissions) {
+                    for (let i = 0; i < newSubmissions.length; i++) {
+                        let newSubmission = newSubmissions[i];
+                        let url_or_uri = newSubmission.spotifyUri;
 
-                    let url_play_regex = /play\.spotify\.com\/track\/([a-zA-Z0-9]{22})/;
-                    let url_open_regex = /open\.spotify\.com\/track\/([a-zA-Z0-9]{22})/;
-                    let uri_regex = /spotify\:track\:([a-zA-Z0-9]{22})/;
+                        let url_play_regex = /play\.spotify\.com\/track\/([a-zA-Z0-9]{22})/;
+                        let url_open_regex = /open\.spotify\.com\/track\/([a-zA-Z0-9]{22})/;
+                        let uri_regex = /spotify\:track\:([a-zA-Z0-9]{22})/;
 
-                    let trackId  = null;
-                    if (url_or_uri.match(url_open_regex))
-                        trackId = url_or_uri.match(url_open_regex)[1];
-                    else if (url_or_uri.match(url_play_regex))
-                        trackId = url_or_uri.match(url_play_regex)[1];
-                    else if (url_or_uri.match(uri_regex))
-                        trackId = url_or_uri.match(uri_regex)[1];
-                    else
-                        return;
+                        let trackId  = null;
+                        if (url_or_uri.match(url_open_regex))
+                            trackId = url_or_uri.match(url_open_regex)[1];
+                        else if (url_or_uri.match(url_play_regex))
+                            trackId = url_or_uri.match(url_play_regex)[1];
+                        else if (url_or_uri.match(uri_regex))
+                            trackId = url_or_uri.match(uri_regex)[1];
+                        else
+                            return;
 
-                    console.log(trackId);
+                        console.log(trackId);
+                    }
                 }
             }
         }
