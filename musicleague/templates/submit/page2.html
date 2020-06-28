@@ -90,6 +90,8 @@
                 .get('https://{{ api_domain }}/v1/leagues/{{ league.id }}/rounds/{{ round.id }}/submissions/{{ user.id }}', {headers: {'Authorization': `Bearer ${accessToken}`}})
                 .then((response) => {
                     let submissions = response.data;
+                    if (!submissions)
+                        submissions = [];
 
                     // Pad list of submissions for any that are missing
                     console.log(`Expected ${this.expectedNumSubmissions} submissions, ${submissions.length} found`)
