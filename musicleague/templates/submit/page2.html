@@ -41,7 +41,7 @@
             <div class="col-xs-12">
                 <input type="text" class="form-control find-song-inp" placeholder="Spotify Song Link" v-model="submission.spotifyUri">
             </div>
-            <div class="song-info">
+            <div class="song-info" v-if="tracks.length > index">
                 <div class="col-xs-12">
                     <span class="you-selected">You Selected:</span>
                     <span class="message"></span>
