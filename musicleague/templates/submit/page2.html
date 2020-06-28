@@ -28,8 +28,8 @@
                     <br>
                     <span><span class="hidden-xs">Songs </span>Selected</span>
                 </div><!--
-                --><div class="col-xs-6 col-sm-5 col-md-4 vcenter text-center disabled" id="submit-songs-btn-wrapper">
-                    <button type="submit" id="submit-songs-btn" class="btn btn-lg disabled" v-bind:disabled="submissions.length !== tracks.length">Submit<span class="hidden-xs"> Songs</span>!</button>
+                --><div class="col-xs-6 col-sm-5 col-md-4 vcenter text-center" v-bind:class="{ disabled: submissions.length !== tracks.length }" id="submit-songs-btn-wrapper">
+                    <button type="submit" id="submit-songs-btn" class="btn btn-lg" v-bind:class="{ disabled: submissions.length !== tracks.length }" v-bind:disabled="submissions.length !== tracks.length">Submit<span class="hidden-xs"> Songs</span>!</button>
                 </div>
                 </div>
             </div>
