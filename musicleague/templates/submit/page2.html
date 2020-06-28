@@ -24,12 +24,12 @@
                         <span id="paste-directive">Paste A Link or URI Below To Begin!</span>
                     </div><!--
                 --><div class="col-xs-6 col-sm-3 col-md-4 vcenter text-center">
-                    <span id="progress"><span id="num-selected">[[ tracks.length ]]</span> of {{ "%02d" % league.preferences.track_count }}</span>
+                    <span id="progress"><span id="num-selected">[[ String.format("%02d", tracks.length) ]]</span> of [[ String.format("%02d", expectedNumSubmissions) ]]</span>
                     <br>
                     <span><span class="hidden-xs">Songs </span>Selected</span>
                 </div><!--
-                --><div class="col-xs-6 col-sm-5 col-md-4 vcenter text-center" v-bind:class="{ disabled: submissions.length !== tracks.length }" id="submit-songs-btn-wrapper">
-                    <button type="submit" id="submit-songs-btn" class="btn btn-lg" v-bind:class="{ disabled: submissions.length !== tracks.length }" v-bind:disabled="submissions.length !== tracks.length">Submit<span class="hidden-xs"> Songs</span>!</button>
+                --><div class="col-xs-6 col-sm-5 col-md-4 vcenter text-center" v-bind:class="{ disabled: expectedNumSubmissions !== tracks.length }" id="submit-songs-btn-wrapper">
+                    <button type="submit" id="submit-songs-btn" class="btn btn-lg" v-bind:class="{ disabled: expectedNumSubmissions !== tracks.length }" v-bind:disabled="expectedNumSubmissions !== tracks.length">Submit<span class="hidden-xs"> Songs</span>!</button>
                 </div>
                 </div>
             </div>
@@ -67,10 +67,10 @@
 
 {% block js %}
 <script type="text/javascript">
-    var accessToken = "{{ access_token }}";
+    let accessToken = "{{ access_token }}";
     let expectedNumSubmissions = {{ league.preferences.track_count }};
     {% if repeat_submissions is defined %}
-    var repeatSubmissions = {{ repeat_submissions|tojson|safe }};
+    let repeatSubmissions = {{ repeat_submissions|tojson|safe }};
     {% endif %}
 </script>
 <script type="text/javascript" src="/static/js/jquery.sticky-kit.min.js"></script>
@@ -80,6 +80,7 @@
     new Vue({
         el: '#app',
         data: {
+            expectedNumSubmissions: expectedNumSubmissions,
             submissions: [],
             tracks: []
         },
@@ -91,9 +92,9 @@
                     let submissions = response.data;
 
                     // Pad list of submissions for any that are missing
-                    console.log(`Expected ${expectedNumSubmissions} submissions, ${submissions.length} found`)
-                    if (submissions.length < expectedNumSubmissions)
-                        submissions = submissions.concat(Array(expectedNumSubmissions - submissions.length).fill({spotifyUri: ""}));
+                    console.log(`Expected ${this.expectedNumSubmissions} submissions, ${submissions.length} found`)
+                    if (submissions.length < this.expectedNumSubmissions)
+                        submissions = submissions.concat(Array(this.expectedNumSubmissions - submissions.length).fill({spotifyUri: ""}));
                     console.log(submissions);
 
                     this.submissions = submissions;
