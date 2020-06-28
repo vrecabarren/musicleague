@@ -59,7 +59,6 @@
                 <input type="text" class="form-control comment-inp" placeholder="Comment on the submission above (optional)" v-model="submission.comment">
             </div>
         </div>
-        <input type="hidden" id="songs-inp" name="songs">
     </div>
 </form>
 {% endblock %}
@@ -67,6 +66,7 @@
 {% block js %}
 <script type="text/javascript">
     var accessToken = "{{ access_token }}";
+    let expectedNumSubmissions = league.preferences.track_count;
     {% if repeat_submissions is defined %}
     var repeatSubmissions = {{ repeat_submissions|tojson|safe }};
     {% endif %}
@@ -86,7 +86,13 @@
             axios
                 .get('https://{{ api_domain }}/v1/leagues/{{ league.id }}/rounds/{{ round.id }}/submissions/{{ user.id }}', {headers: {'Authorization': `Bearer ${accessToken}`}})
                 .then((response) => {
-                    this.submissions = response.data;
+                    let submissions = response.data;
+
+                    // Pad list of submissions for any that are missing
+                    if (submissions.length < expectedNumSubmissions)
+                        submissions.concat(Array(expectedNumSubmissions - submissions.length).fill({}));
+
+                    this.submissions = submissions;
                 }).catch((error) => {
                     console.log(error);
                 });
@@ -116,7 +122,6 @@
                         else if (url_or_uri.match(url_play_regex))
                             trackId = url_or_uri.match(url_play_regex)[1];
                         else {
-                            alert("Invalid Spotify URI or URL");
                             continue;
                         }
 
