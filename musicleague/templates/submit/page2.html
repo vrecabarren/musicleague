@@ -101,6 +101,11 @@
                     console.log(error);
                 });
         },
+        methods: {
+          send: function() {
+              alert(JSON.stringify(this.submissions));
+          }
+        },
         watch: {
             submissions: {
                 deep: true,
