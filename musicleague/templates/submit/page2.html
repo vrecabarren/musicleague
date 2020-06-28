@@ -102,6 +102,8 @@
                 deep: true,
                 immediate: true,
                 handler(newSubmissions) {
+                    let ids = [];
+
                     for (let i = 0; i < newSubmissions.length; i++) {
                         let newSubmission = newSubmissions[i];
                         let url_or_uri = newSubmission.spotifyUri;
@@ -125,16 +127,17 @@
                         else
                             continue;
 
+                        ids.push(trackId);
                         newSubmission.spotifyUri = `spotify:track:${trackId}`;
                         this.$set(this.submissions, i, newSubmission);
                     }
 
+                    if (!ids || ids.length === 0)
+                        return;
+
                     // Retrieve updated list of Spotify track objects
-                    let ids = this.submissions.map(function (submission) {
-                        return submission.spotifyUri.replace("spotify:track:", "");
-                    }).join(",");
                     axios
-                        .get(`https://api.spotify.com/v1/tracks?ids=${ids}`, {headers: {"Authorization": `Bearer ${accessToken}`}})
+                        .get(`https://api.spotify.com/v1/tracks?ids=${ids.join(",")}`, {headers: {"Authorization": `Bearer ${accessToken}`}})
                         .then((response) => {
                             this.tracks = response.data.tracks;
                         }).catch((error) => {
