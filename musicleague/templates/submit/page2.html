@@ -34,7 +34,7 @@
         </div>
     </div>
     <div id="app" class="container">
-        <div v-for="(submission, index) in submissions" class="song row found" v-bind:data-uri="submission.spotifyUri">
+        <div v-for="(submission, index) in submissions" class="song row" v-bind:class="{ found: submission.spotifyUri }">
             <div class="col-xs-12">
                 <span class="song-header">Song [[ index + 1 ]]</span>
             </div>
@@ -106,6 +106,7 @@
                             continue;
                         }
 
+                        // Else convert to URI so all submissions have predictable format
                         let url_play_regex = /play\.spotify\.com\/track\/([a-zA-Z0-9]{22})/;
                         let url_open_regex = /open\.spotify\.com\/track\/([a-zA-Z0-9]{22})/;
 
