@@ -91,7 +91,7 @@
                     // Pad list of submissions for any that are missing
                     console.log(`Expected ${expectedNumSubmissions} submissions, ${submissions.length} found`)
                     if (submissions.length < expectedNumSubmissions)
-                        submissions.concat(Array(expectedNumSubmissions - submissions.length).fill({spotifyUri: ""}));
+                        submissions = submissions.concat(Array(expectedNumSubmissions - submissions.length).fill({spotifyUri: ""}));
                     console.log(submissions);
 
                     this.submissions = submissions;
