@@ -15,52 +15,54 @@
 {% endblock %}
 
 {% block page_content %}
-<form method="post">
-    <div id="status-bar">
-        <div class="container">
-            <div class="row">
-                <div class="hidden-xs col-sm-4 col-md-4 vcenter text-center">
-                    <span id="paste-directive">Paste A Link or URI Below To Begin!</span>
-                </div><!--
+<div id="app">
+    <form method="post">
+        <div id="status-bar">
+            <div class="container">
+                <div class="row">
+                    <div class="hidden-xs col-sm-4 col-md-4 vcenter text-center">
+                        <span id="paste-directive">Paste A Link or URI Below To Begin!</span>
+                    </div><!--
                 --><div class="col-xs-6 col-sm-3 col-md-4 vcenter text-center">
                     <span id="progress"><span id="num-selected">00</span> of {{ "%02d" % league.preferences.track_count }}</span>
                     <br>
                     <span><span class="hidden-xs">Songs </span>Selected</span>
                 </div><!--
                 --><div class="col-xs-6 col-sm-5 col-md-4 vcenter text-center disabled" id="submit-songs-btn-wrapper">
-                    <button type="submit" id="submit-songs-btn" class="btn btn-lg disabled" disabled>Submit<span class="hidden-xs"> Songs</span>!</button>
+                    <button type="submit" id="submit-songs-btn" class="btn btn-lg disabled" v-bind:disabled="submissions.length === tracks.length">Submit<span class="hidden-xs"> Songs</span>!</button>
+                </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="app" class="container">
-        <div v-for="(submission, index) in submissions" class="song row" v-bind:class="{ found: submission.spotifyUri }">
-            <div class="col-xs-12">
-                <span class="song-header">Song [[ index + 1 ]]</span>
-            </div>
-            <div class="col-xs-12">
-                <input type="text" class="form-control find-song-inp" placeholder="Spotify Song Link" v-model="submission.spotifyUri">
-            </div>
-            <div class="song-info" v-if="tracks.length > index">
+        <div class="container">
+            <div v-for="(submission, index) in submissions" class="song row" v-bind:class="{ found: submission.spotifyUri }">
                 <div class="col-xs-12">
-                    <span class="you-selected">You Selected:</span>
-                    <span class="message"></span>
+                    <span class="song-header">Song [[ index + 1 ]]</span>
                 </div>
                 <div class="col-xs-12">
-                    <img v-bind:src="tracks[index].album.images[1].url" alt="" class="img">
-                    <div class="text-info">
-                        <span class="name">[[ tracks[index].name ]]</span>
-                        <span class="artist">[[ tracks[index].artists[0].name ]]</span>
-                        <span class="album">[[ tracks[index].album.name ]]</span>
+                    <input type="text" class="form-control find-song-inp" placeholder="Spotify Song Link" v-model="submission.spotifyUri">
+                </div>
+                <div class="song-info" v-if="tracks.length > index">
+                    <div class="col-xs-12">
+                        <span class="you-selected">You Selected:</span>
+                        <span class="message"></span>
+                    </div>
+                    <div class="col-xs-12">
+                        <img v-bind:src="tracks[index].album.images[1].url" alt="" class="img">
+                        <div class="text-info">
+                            <span class="name">[[ tracks[index].name ]]</span>
+                            <span class="artist">[[ tracks[index].artists[0].name ]]</span>
+                            <span class="album">[[ tracks[index].album.name ]]</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-xs-12">
-                <input type="text" class="form-control comment-inp" placeholder="Comment on the submission above (optional)" v-model="submission.comment">
+                <div class="col-xs-12">
+                    <input type="text" class="form-control comment-inp" placeholder="Comment on the submission above (optional)" v-model="submission.comment">
+                </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>
 {% endblock %}
 
 {% block js %}
