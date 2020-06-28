@@ -89,6 +89,7 @@
                     let submissions = response.data;
 
                     // Pad list of submissions for any that are missing
+                    console.log(`Expected ${expectedNumSubmissions} submissions, ${submissions.length} existing`)
                     if (submissions.length < expectedNumSubmissions)
                         submissions.concat(Array(expectedNumSubmissions - submissions.length).fill({spotifyUri: ""}));
 
@@ -110,17 +111,14 @@
                         if (!url_or_uri || url_or_uri.length === 0)
                             continue;
 
-                        // If already a URI, leave as-is
                         let uri_regex = /spotify\:track\:([a-zA-Z0-9]{22})/;
-                        if (url_or_uri.match(uri_regex))
-                            continue;
-
-                        // Else convert to URI so all submissions have predictable format
                         let url_play_regex = /play\.spotify\.com\/track\/([a-zA-Z0-9]{22})/;
                         let url_open_regex = /open\.spotify\.com\/track\/([a-zA-Z0-9]{22})/;
 
                         let trackId  = null;
-                        if (url_or_uri.match(url_open_regex))
+                        if (url_or_uri.match(uri_regex))
+                            trackId = url_or_uri.match(uri_regex)[1];
+                        else if (url_or_uri.match(url_open_regex))
                             trackId = url_or_uri.match(url_open_regex)[1];
                         else if (url_or_uri.match(url_play_regex))
                             trackId = url_or_uri.match(url_play_regex)[1];
