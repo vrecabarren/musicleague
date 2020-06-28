@@ -133,10 +133,9 @@
 
                         console.log(trackId);
 
-                        let uri = `spotify:track:{trackId}`;
-                        console.log(uri);
-                        newSubmission.spotifyUri = uri;
-                        this.submissions.$set(i, newSubmission);
+                        console.log(`spotify:track:{trackId}`);
+                        newSubmission.spotifyUri = `spotify:track:{trackId}`;
+                        this.$set(this.submissions, i, newSubmission);
                     }
                 }
             }
