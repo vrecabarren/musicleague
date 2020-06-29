@@ -104,7 +104,14 @@
         },
         methods: {
           onSubmit: function() {
-              alert(JSON.stringify(this.submissions));
+              console.log(`Submitting ${JSON.stringify(this.submissions)}`);
+              axios
+                  .put('https://{{ api_domain }}/v1/leagues/{{ league.id }}/rounds/{{ round.id }}/submissions/{{ user.id }}', this.submissions, {headers: {'Authorization': `Bearer ${accessToken}`}})
+                  .then((response) => {
+                      console.log(response);
+                  }).catch((error) => {
+                      console.error(error);
+                  });
           }
         },
         watch: {
