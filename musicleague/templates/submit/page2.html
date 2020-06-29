@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="container">
-            <div v-for="(submission, index) in submissions" class="song row" v-bind:class="{ found: submission.spotifyUri in tracks }">
+            <div v-for="(submission, index) in submissions" v-bind:key="index" class="song row" v-bind:class="{ found: submission.spotifyUri in tracks }">
                 <div class="col-xs-12">
                     <span class="song-header">Song [[ index + 1 ]]</span>
                 </div>
@@ -94,10 +94,8 @@
                         submissions = [];
 
                     // Pad list of submissions for any that are missing
-                    console.log(`Expected ${this.expectedNumSubmissions} submissions, ${submissions.length} found`)
                     if (submissions.length < this.expectedNumSubmissions)
-                        submissions = submissions.concat(Array(this.expectedNumSubmissions - submissions.length).fill({spotifyUri: ""}));
-                    console.log(submissions);
+                        submissions = submissions.concat(Array.from({length:(this.expectedNumSubmissions - submissions.length)},()=> ({spotifyUri: ""})))
 
                     this.submissions = submissions;
                 }).catch((error) => {
@@ -143,7 +141,7 @@
 
                         ids.push(trackId);
                         newSubmission.spotifyUri = `spotify:track:${trackId}`;
-                        this.$set(this.submissions, i, newSubmission);
+                        return;
                     }
 
                     if (!ids || ids.length === 0)

@@ -20,6 +20,13 @@ services:
             - WEB_CONCURRENCY=4
         ports:
             - 5000:5000
+    api:
+        image: nathancoleman/ml-server
+        depends_on:
+            - postgres
+        environment:
+            - DATABASE_URL=postgresql://postgres:password@postgres:5432/postgres
+            -
     scheduler:
         image: nathancoleman/ml-scheduler
         build:
