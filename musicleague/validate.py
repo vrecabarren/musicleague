@@ -69,6 +69,25 @@ def check_duplicate_tracks(my_tracks, their_tracks):
     return duplicate_tracks
 
 
+def check_duplicate_season_entry(my_tracks, season_tracks):
+    """ Collect the track ID and title for each track already submitted to this league this season. 
+    Compare the track ID and title for each track currently being
+    submitted and add any track being submitted to duplicate_tracks if
+    track ID or title has already been submitted to this league this season.
+    """
+    duplicate_tracks = []
+    if not season_tracks:
+        return duplicate_tracks
+    
+    season_track_ids = [track['id'] for track in season_tracks if track]
+    
+    for my_track in my_tracks:
+        if my_track['id'] in season_ids:
+            duplicate_tracks.append(my_track['uri'])
+
+    return duplicate_tracks
+
+
 def check_repeat_submissions(user_id, tracks, exclude_league_id):
     # TODO Batch into one network call for query
     repeat_submissions = {}
